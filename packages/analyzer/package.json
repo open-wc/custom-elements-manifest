@@ -1,6 +1,6 @@
 {
-  "name": "test-analyzer-ignore",
-  "version": "0.0.7",
+  "name": "@custom-elements-manifest/analyzer",
+  "version": "0.1.9",
   "description": "",
   "license": "MIT",
   "type": "module",
