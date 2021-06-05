@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "0.1.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/plugin-lit/package/my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "decoratedProperty"
+            },
+            {
+              "kind": "field",
+              "name": "decoratedPropertyAlsoAttr"
+            },
+            {
+              "kind": "field",
+              "name": "decoratedPropertyNoAttr"
+            },
+            {
+              "kind": "field",
+              "name": "prop1",
+              "privacy": "public",
+              "default": "'foo'"
+            },
+            {
+              "kind": "field",
+              "name": "prop2",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "attr",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "noAttr",
+              "privacy": "public"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "decoratedProperty",
+              "fieldName": "decoratedProperty"
+            },
+            {
+              "name": "my-attr2",
+              "fieldName": "decoratedPropertyAlsoAttr"
+            },
+            {
+              "name": "prop1",
+              "fieldName": "prop1"
+            },
+            {
+              "name": "prop2",
+              "fieldName": "prop2"
+            },
+            {
+              "name": "my-attr",
+              "fieldName": "attr"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement"
+          },
+          "tagName": "my-element",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "my-element",
+          "declaration": {
+            "name": "MyElement",
+            "module": "fixtures/plugin-lit/package/my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

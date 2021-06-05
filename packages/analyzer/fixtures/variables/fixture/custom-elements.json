@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "0.1.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/variables/package/my-element.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "var1"
+        },
+        {
+          "kind": "variable",
+          "name": "var2"
+        },
+        {
+          "kind": "variable",
+          "name": "var3A"
+        },
+        {
+          "kind": "variable",
+          "name": "var4"
+        },
+        {
+          "kind": "variable",
+          "name": "var5"
+        },
+        {
+          "kind": "variable",
+          "name": "var6"
+        },
+        {
+          "kind": "variable",
+          "name": "var7"
+        },
+        {
+          "kind": "function",
+          "name": "function1"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Class1"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "var1",
+          "declaration": {
+            "name": "var1",
+            "module": "fixtures/variables/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "var2",
+          "declaration": {
+            "name": "var2",
+            "module": "fixtures/variables/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "var3B",
+          "declaration": {
+            "name": "var3A",
+            "module": "fixtures/variables/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "var4",
+          "declaration": {
+            "name": "var4",
+            "module": "fixtures/variables/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "var5",
+          "declaration": {
+            "name": "var5",
+            "module": "fixtures/variables/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "var6",
+          "declaration": {
+            "name": "var6",
+            "module": "fixtures/variables/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "var7",
+          "declaration": {
+            "name": "var7",
+            "module": "fixtures/variables/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "function1",
+          "declaration": {
+            "name": "function1",
+            "module": "fixtures/variables/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Class1",
+          "declaration": {
+            "name": "Class1",
+            "module": "fixtures/variables/package/my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

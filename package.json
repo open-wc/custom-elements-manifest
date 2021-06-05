@@ -1,0 +1,15 @@
+{
+  "name": "@custom-elements-manifest/root",
+  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-wc/custom-elements-manifest.git"
+  },
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {},
+  "workspaces": [
+    "packages/*"
+  ]
+}

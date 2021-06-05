@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "0.1.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/-default/package/bar.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "foo"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "foo",
+          "declaration": {
+            "name": "foo",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        }
+      ]
+    }
+  ]
+}

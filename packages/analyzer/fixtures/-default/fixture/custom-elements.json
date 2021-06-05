@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "0.1.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "./fixtures/default/package/my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MyElement",
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "foo",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "public",
+              "default": "'bar'"
+            }
+          ],
+          "tagName": "my-element"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "my-element",
+          "declaration": {
+            "name": "MyElement",
+            "module": "./fixtures/default/package/my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

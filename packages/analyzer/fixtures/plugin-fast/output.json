@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "0.1.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/plugin-fast/package/my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "NameTag",
+          "members": [
+            {
+              "kind": "field",
+              "name": "greeting",
+              "type": {
+                "text": "string"
+              },
+              "default": "Hello"
+            },
+            {
+              "kind": "field",
+              "name": "bar"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "greeting",
+              "type": {
+                "text": "string"
+              },
+              "default": "Hello",
+              "fieldName": "greeting"
+            },
+            {
+              "name": "my-attr",
+              "fieldName": "bar"
+            }
+          ],
+          "superclass": {
+            "name": "FASTElement"
+          },
+          "customElement": true,
+          "tagName": "name-tag"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NameTag",
+          "declaration": {
+            "name": "NameTag",
+            "module": "fixtures/plugin-fast/package/my-element.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "name-tag",
+          "declaration": {
+            "name": "NameTag",
+            "module": "fixtures/plugin-fast/package/my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "0.1.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/inheritance-superclass/package/BatchingElement.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "BatchingElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "superClassField"
+            },
+            {
+              "kind": "method",
+              "name": "superClassMethod"
+            }
+          ],
+          "events": [
+            {
+              "name": "superClass-event",
+              "type": {
+                "text": "Event"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "superClass-attr"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BatchingElement",
+          "declaration": {
+            "name": "BatchingElement",
+            "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/inheritance-superclass/package/my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "classField"
+            },
+            {
+              "kind": "method",
+              "name": "classMethod"
+            },
+            {
+              "kind": "field",
+              "name": "superClassField",
+              "inheritedFrom": {
+                "name": "BatchingElement",
+                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "superClassMethod",
+              "inheritedFrom": {
+                "name": "BatchingElement",
+                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+              }
+            }
+          ],
+          "events": [
+            {
+              "name": "class-event",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "superClass-event",
+              "type": {
+                "text": "Event"
+              },
+              "inheritedFrom": {
+                "name": "BatchingElement",
+                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "class-attr"
+            },
+            {
+              "name": "superClass-attr",
+              "inheritedFrom": {
+                "name": "BatchingElement",
+                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "BatchingElement"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MyElement",
+          "declaration": {
+            "name": "MyElement",
+            "module": "fixtures/inheritance-superclass/package/my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

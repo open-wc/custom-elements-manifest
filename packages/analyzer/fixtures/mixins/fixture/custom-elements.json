@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "0.1.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/mixins/package/my-element.js",
+      "declarations": [
+        {
+          "kind": "mixin",
+          "description": "",
+          "name": "ArrowFunctionMixin",
+          "parameters": [
+            {
+              "name": "klass"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "foo"
+            },
+            {
+              "kind": "method",
+              "name": "method"
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "my-attribute"
+            }
+          ]
+        },
+        {
+          "kind": "mixin",
+          "description": "",
+          "name": "FunctionDeclarationMixin",
+          "parameters": [
+            {
+              "name": "klass"
+            }
+          ]
+        },
+        {
+          "kind": "mixin",
+          "description": "",
+          "name": "ReturnValMixin",
+          "parameters": [
+            {
+              "name": "klass"
+            }
+          ]
+        },
+        {
+          "kind": "mixin",
+          "description": "",
+          "name": "ReexportedWrappedMixin",
+          "mixins": [
+            {
+              "name": "BarMixin",
+              "module": "/fixtures/mixins/package/bar-mixin.js"
+            },
+            {
+              "name": "dedupeMixin",
+              "package": "@open-wc/dedupe-mixin"
+            }
+          ],
+          "parameters": [
+            {
+              "name": "klass",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "type": {
+            "text": "Element"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ArrowFunctionMixin",
+          "declaration": {
+            "name": "ArrowFunctionMixin",
+            "module": "fixtures/mixins/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "FunctionDeclarationMixin",
+          "declaration": {
+            "name": "FunctionDeclarationMixin",
+            "module": "fixtures/mixins/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ReturnValMixin",
+          "declaration": {
+            "name": "ReturnValMixin",
+            "module": "fixtures/mixins/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ReexportedWrappedMixin",
+          "declaration": {
+            "name": "ReexportedWrappedMixin",
+            "module": "fixtures/mixins/package/my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

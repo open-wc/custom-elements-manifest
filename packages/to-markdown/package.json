@@ -1,0 +1,52 @@
+{
+  "name": "@custom-elements-manifest/to-markdown",
+  "version": "0.0.3",
+  "description": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-wc/custom-elements-manifest.git"
+  },
+  "author": "open-wc",
+  "homepage": "https://github.com/open-wc/custom-elements-manifest",
+  "bugs": {
+    "url": "https://github.com/open-wc/custom-elements-manifest"
+  },
+  "main": "index.js",
+  "module": "index.mjs",
+  "scripts": {
+    "start": "nodemon ./dev/index.mjs"
+  },
+  "files": [
+    "*.d.ts",
+    "*.js",
+    "*.mjs",
+    "dist",
+    "src"
+  ],
+  "keywords": [
+    "custom-elements",
+    "custom-elements-json",
+    "custom-elements-manifest",
+    "customelements",
+    "webcomponents",
+    "customelementsjson",
+    "customelementsmanifest",
+    "markdown",
+    "md"
+  ],
+  "devDependencies": {
+    "custom-elements-manifest": "^0.1.0",
+    "nodemon": "^2.0.4"
+  },
+  "contributors": [
+    "Pascal Schilp <pascalschilp@gmail.com>"
+  ],
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./dist/index.js",
+      "browser": "./dist/esm/index.js"
+    }
+  }
+}

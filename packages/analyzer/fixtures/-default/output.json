@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "0.1.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/default/package/my-element.js",
+      "declarations": [
+        {
+          "kind": "mixin",
+          "description": "",
+          "name": "ReexportedWrappedMixin",
+          "mixins": [
+            {
+              "name": "dedupeMixin",
+              "module": "fixtures/default/package/my-element.js"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ReexportedWrappedMixin",
+          "declaration": {
+            "name": "ReexportedWrappedMixin",
+            "module": "fixtures/default/package/my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "0.1.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/class-attributes/package/my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyEl",
+          "members": [
+            {
+              "kind": "field",
+              "name": "myField"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "a-a"
+            },
+            {
+              "name": "b-b"
+            },
+            {
+              "name": "c-c"
+            },
+            {
+              "name": "d-d"
+            },
+            {
+              "name": "myField",
+              "fieldName": "myField"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "name": "attr1"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "name": "attr2"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "my-el",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "my-el",
+          "declaration": {
+            "name": "MyEl",
+            "module": "fixtures/class-attributes/package/my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

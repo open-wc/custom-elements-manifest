@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "0.1.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/plugin-stencil/package/my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "TodoList",
+          "members": [
+            {
+              "kind": "field",
+              "name": "color",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "isValid",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "controller",
+              "type": {
+                "text": "MyController"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "message",
+              "default": "Hello"
+            },
+            {
+              "kind": "method",
+              "name": "someMethod"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "color",
+              "fieldName": "color",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "is-valid",
+              "fieldName": "isValid",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "valid",
+              "fieldName": "isValid",
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ],
+          "tagName": "todo-list",
+          "events": [
+            {
+              "name": "todoCompleted",
+              "type": {
+                "text": "EventEmitter<Todo>"
+              }
+            },
+            {
+              "name": "foo",
+              "type": {
+                "text": "EventEmitter<Todo>"
+              }
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TodoList",
+          "declaration": {
+            "name": "TodoList",
+            "module": "fixtures/plugin-stencil/package/my-element.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "todo-list",
+          "declaration": {
+            "name": "TodoList",
+            "module": "fixtures/plugin-stencil/package/my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

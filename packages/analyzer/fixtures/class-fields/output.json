@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "0.1.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/class-fields/package/my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyEl",
+          "members": [
+            {
+              "kind": "field",
+              "name": "prop1",
+              "default": ""
+            },
+            {
+              "kind": "field",
+              "name": "prop2",
+              "default": "'default'"
+            },
+            {
+              "kind": "field",
+              "name": "prop3",
+              "type": {
+                "text": "SomeType"
+              },
+              "default": "'default'"
+            },
+            {
+              "kind": "field",
+              "name": "prop4",
+              "type": {
+                "text": "Some.Type"
+              },
+              "default": "'default'"
+            },
+            {
+              "kind": "field",
+              "name": "prop5",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "setter",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "alsoAttr",
+              "description": "This is also an attribute",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "prop6",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "prop7",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "prop8",
+              "privacy": "protected"
+            },
+            {
+              "kind": "field",
+              "name": "prop9",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "prop10",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "prop11",
+              "privacy": "protected"
+            },
+            {
+              "kind": "field",
+              "name": "prop12",
+              "static": true
+            },
+            {
+              "kind": "field",
+              "name": "#prop13",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "alsoAttr",
+              "description": "This is also an attribute",
+              "type": {
+                "text": "string"
+              },
+              "fieldName": "alsoAttr"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "customElement": true,
+          "tagName": "my-el"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "my-el",
+          "declaration": {
+            "name": "MyEl",
+            "module": "fixtures/class-fields/package/my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,355 @@
+{
+  "schemaVersion": "0.1.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/functionLike/package/my-element.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "arrow1",
+          "description": "ARROW FUNCTIONS"
+        },
+        {
+          "kind": "function",
+          "name": "arrow2",
+          "parameters": [
+            {
+              "name": "bar"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "arrow3",
+          "parameters": [
+            {
+              "name": "bar",
+              "type": {
+                "text": "string"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "arrow4",
+          "return": {
+            "type": {
+              "text": "boolean"
+            }
+          },
+          "parameters": [
+            {
+              "name": "bar",
+              "type": {
+                "text": "string"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "arrow5",
+          "return": {
+            "type": {
+              "text": "boolean"
+            }
+          },
+          "parameters": [
+            {
+              "name": "bar",
+              "type": {
+                "text": "number"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "arrow6",
+          "return": {
+            "type": {
+              "text": "string"
+            }
+          },
+          "parameters": [
+            {
+              "name": "bar",
+              "type": {
+                "text": "number"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "functionDeclaration1",
+          "description": "FUNCTION DECLARATIONS"
+        },
+        {
+          "kind": "function",
+          "name": "functionDeclaration2",
+          "parameters": [
+            {
+              "name": "bar"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "functionDeclaration3",
+          "parameters": [
+            {
+              "name": "bar",
+              "type": {
+                "text": "string"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "functionDeclaration4",
+          "return": {
+            "type": {
+              "text": "boolean"
+            }
+          },
+          "parameters": [
+            {
+              "name": "bar",
+              "type": {
+                "text": "string"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "functionDeclaration5",
+          "return": {
+            "type": {
+              "text": "boolean"
+            }
+          },
+          "parameters": [
+            {
+              "name": "bar",
+              "type": {
+                "text": "number"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "functionDeclaration6",
+          "return": {
+            "type": {
+              "text": "string"
+            }
+          },
+          "parameters": [
+            {
+              "name": "bar",
+              "type": {
+                "text": "number"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "description": "METHODS",
+          "name": "MyEl",
+          "members": [
+            {
+              "kind": "method",
+              "name": "functionDeclaration1"
+            },
+            {
+              "kind": "method",
+              "name": "functionDeclaration2",
+              "parameters": [
+                {
+                  "name": "bar"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "functionDeclaration3",
+              "parameters": [
+                {
+                  "name": "bar",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "functionDeclaration4",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "bar",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "functionDeclaration5",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "bar",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "functionDeclaration6",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "bar",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "arrow1",
+          "declaration": {
+            "name": "arrow1",
+            "module": "fixtures/functionLike/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "arrow2",
+          "declaration": {
+            "name": "arrow2",
+            "module": "fixtures/functionLike/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "arrow3",
+          "declaration": {
+            "name": "arrow3",
+            "module": "fixtures/functionLike/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "arrow4",
+          "declaration": {
+            "name": "arrow4",
+            "module": "fixtures/functionLike/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "arrow5",
+          "declaration": {
+            "name": "arrow5",
+            "module": "fixtures/functionLike/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "arrow6",
+          "declaration": {
+            "name": "arrow6",
+            "module": "fixtures/functionLike/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "functionDeclaration1",
+          "declaration": {
+            "name": "functionDeclaration1",
+            "module": "fixtures/functionLike/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "functionDeclaration2",
+          "declaration": {
+            "name": "functionDeclaration2",
+            "module": "fixtures/functionLike/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "functionDeclaration3",
+          "declaration": {
+            "name": "functionDeclaration3",
+            "module": "fixtures/functionLike/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "functionDeclaration4",
+          "declaration": {
+            "name": "functionDeclaration4",
+            "module": "fixtures/functionLike/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "functionDeclaration5",
+          "declaration": {
+            "name": "functionDeclaration5",
+            "module": "fixtures/functionLike/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "functionDeclaration6",
+          "declaration": {
+            "name": "functionDeclaration6",
+            "module": "fixtures/functionLike/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "MyEl",
+          "declaration": {
+            "name": "MyEl",
+            "module": "fixtures/functionLike/package/my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,311 @@
+{
+  "schemaVersion": "experimental",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "./fixtures/-TEST/package/my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "SuperClass",
+          "events": [
+            {
+              "name": "custom-event",
+              "type": {
+                "text": "SuperCustomEvent"
+              },
+              "description": "this is custom"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit-element"
+          },
+          "members": [
+            {
+              "kind": "method",
+              "name": "superClassMethod",
+              "privacy": "public"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "name": "MyElement",
+          "cssProperties": [
+            {
+              "name": "--background-color",
+              "description": "Controls the color of bar"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "bar",
+              "description": "Styles the color of bar"
+            }
+          ],
+          "slots": [
+            {
+              "name": "container",
+              "description": "You can put some elements here"
+            }
+          ],
+          "events": [
+            {
+              "name": "my-event",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "custom-event",
+              "type": {
+                "text": "SuperCustomEvent"
+              },
+              "description": "this is custom",
+              "inheritedFrom": {
+                "name": "SuperClass",
+                "module": "./fixtures/-TEST/package/my-element.js"
+              }
+            }
+          ],
+          "mixins": [
+            {
+              "name": "LocalizeMixin",
+              "package": "lion"
+            },
+            {
+              "name": "Mixin",
+              "module": "./fixtures/-TEST/package/my-element.js"
+            }
+          ],
+          "superclass": {
+            "name": "SuperClass",
+            "module": "./fixtures/-TEST/package/my-element.js"
+          },
+          "attributes": [
+            {
+              "name": "prop-1",
+              "fieldName": "prop1"
+            },
+            {
+              "name": "prop2",
+              "fieldName": "prop2"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "prop1",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "prop2",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "prop3",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "kind": "field",
+              "name": "foo",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "description": "description goes here",
+              "default": "'bar'"
+            },
+            {
+              "kind": "method",
+              "name": "instanceMethod",
+              "privacy": "public",
+              "description": "Some description of the method here",
+              "return": {
+                "type": {
+                  "text": ""
+                }
+              },
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                },
+                {
+                  "name": "a",
+                  "type": {
+                    "text": "String"
+                  },
+                  "description": "some description"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "mixinProp",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "protected",
+              "default": "1",
+              "inheritedFrom": {
+                "name": "Mixin",
+                "module": "./fixtures/-TEST/package/my-element.js"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "superClassMethod",
+              "privacy": "public",
+              "inheritedFrom": {
+                "name": "SuperClass",
+                "module": "./fixtures/-TEST/package/my-element.js"
+              }
+            }
+          ],
+          "tagName": "my-element"
+        },
+        {
+          "kind": "variable",
+          "name": "variableExport",
+          "description": "this is a var export",
+          "type": {
+            "text": "boolean"
+          }
+        },
+        {
+          "kind": "variable",
+          "name": "stringVariableExport",
+          "description": "this is a string var export",
+          "type": {
+            "text": "string"
+          }
+        },
+        {
+          "kind": "function",
+          "name": "functionExport",
+          "description": "This is a function export",
+          "return": {
+            "type": {
+              "text": "boolean"
+            }
+          },
+          "parameters": [
+            {
+              "name": "a",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "b",
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "mixin",
+          "name": "MyMixin4",
+          "parameters": [
+            {
+              "name": "klass",
+              "type": {
+                "text": "*"
+              },
+              "description": "This is the description"
+            },
+            {
+              "name": "foo",
+              "type": {
+                "text": "string"
+              },
+              "description": "Description goes here"
+            }
+          ]
+        },
+        {
+          "kind": "mixin",
+          "name": "Mixin",
+          "superclass": {
+            "name": "klass",
+            "module": "./fixtures/-TEST/package/my-element.js"
+          },
+          "parameters": [
+            {
+              "name": "klass",
+              "type": {
+                "text": "*"
+              },
+              "description": "This is the description"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "mixinProp",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "protected",
+              "default": "1"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SuperClass",
+          "declaration": {
+            "name": "SuperClass",
+            "module": "./fixtures/-TEST/package/my-element.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "my-element",
+          "declaration": {
+            "name": "MyElement",
+            "module": "./fixtures/-TEST/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "variableExport",
+          "declaration": {
+            "name": "variableExport",
+            "module": "./fixtures/-TEST/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "stringVariableExport",
+          "declaration": {
+            "name": "stringVariableExport",
+            "module": "./fixtures/-TEST/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "functionExport",
+          "declaration": {
+            "name": "functionExport",
+            "module": "./fixtures/-TEST/package/my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

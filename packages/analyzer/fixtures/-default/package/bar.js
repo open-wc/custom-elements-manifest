@@ -1,0 +1,7 @@
+
+/**
+ * @deprecated
+ */
+export function foo() {
+
+}

@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/typescript@4.3.2/lib/typescript.js"></script>
+    <script src="../../browser/create.js"></script>
+  </head>
+  <body>
+    <script>
+      const code = `export function foo() {}`;
+
+      const modules = [ts.createSourceFile(
+        '',
+        code,
+        ts.ScriptTarget.ES2015,
+        true,
+      )];
+
+      console.log(analyzer.create({modules}));
+    </script>
+  </body>
+</html>

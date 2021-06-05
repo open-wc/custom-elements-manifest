@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "0.1.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/plugin-catalyst/package/my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HelloWorldElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "foo",
+              "default": "hello"
+            },
+            {
+              "kind": "field",
+              "name": "bar"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "foo",
+              "default": "hello",
+              "fieldName": "foo"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hello-world",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "hello-world",
+          "declaration": {
+            "name": "HelloWorldElement",
+            "module": "fixtures/plugin-catalyst/package/my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

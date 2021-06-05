@@ -1,0 +1,333 @@
+{
+  "schemaVersion": "0.1.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/inheritance-mixins/package/ModuleMixin.js",
+      "declarations": [
+        {
+          "kind": "mixin",
+          "description": "",
+          "name": "ModuleMixin",
+          "members": [
+            {
+              "kind": "field",
+              "name": "moduleMixinField"
+            },
+            {
+              "kind": "method",
+              "name": "moduleMixinMethod"
+            }
+          ],
+          "events": [
+            {
+              "name": "moduleMixin-event",
+              "type": {
+                "text": "Event"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "moduleMixin-attr"
+            }
+          ],
+          "parameters": [
+            {
+              "name": "klass"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModuleMixin",
+          "declaration": {
+            "name": "ModuleMixin",
+            "module": "fixtures/inheritance-mixins/package/ModuleMixin.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/inheritance-mixins/package/my-element.js",
+      "declarations": [
+        {
+          "kind": "mixin",
+          "description": "",
+          "name": "NestedMixin",
+          "members": [
+            {
+              "kind": "field",
+              "name": "nestedMixinField"
+            },
+            {
+              "kind": "method",
+              "name": "nestedMixinMethod"
+            }
+          ],
+          "events": [
+            {
+              "name": "nestedMixin-event",
+              "type": {
+                "text": "Event"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "nestedMixin-attr"
+            }
+          ],
+          "parameters": [
+            {
+              "name": "klass"
+            }
+          ]
+        },
+        {
+          "kind": "mixin",
+          "description": "",
+          "name": "MyMixin",
+          "members": [
+            {
+              "kind": "field",
+              "name": "mixinField"
+            },
+            {
+              "kind": "method",
+              "name": "mixinMethod"
+            },
+            {
+              "kind": "field",
+              "name": "nestedMixinField",
+              "inheritedFrom": {
+                "name": "NestedMixin",
+                "module": "fixtures/inheritance-mixins/package/my-element.js"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "nestedMixinMethod",
+              "inheritedFrom": {
+                "name": "NestedMixin",
+                "module": "fixtures/inheritance-mixins/package/my-element.js"
+              }
+            }
+          ],
+          "events": [
+            {
+              "name": "mixin-event",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "nestedMixin-event",
+              "type": {
+                "text": "Event"
+              },
+              "inheritedFrom": {
+                "name": "NestedMixin",
+                "module": "fixtures/inheritance-mixins/package/my-element.js"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "mixin-attr"
+            },
+            {
+              "name": "nestedMixin-attr",
+              "inheritedFrom": {
+                "name": "NestedMixin",
+                "module": "fixtures/inheritance-mixins/package/my-element.js"
+              }
+            }
+          ],
+          "mixins": [
+            {
+              "name": "NestedMixin",
+              "module": "fixtures/inheritance-mixins/package/my-element.js"
+            }
+          ],
+          "parameters": [
+            {
+              "name": "klass"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "classField"
+            },
+            {
+              "kind": "method",
+              "name": "classMethod"
+            },
+            {
+              "kind": "field",
+              "name": "moduleMixinField",
+              "inheritedFrom": {
+                "name": "ModuleMixin",
+                "module": "fixtures/inheritance-mixins/package/ModuleMixin.js"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "moduleMixinMethod",
+              "inheritedFrom": {
+                "name": "ModuleMixin",
+                "module": "fixtures/inheritance-mixins/package/ModuleMixin.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "mixinField",
+              "inheritedFrom": {
+                "name": "MyMixin",
+                "module": "fixtures/inheritance-mixins/package/my-element.js"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "mixinMethod",
+              "inheritedFrom": {
+                "name": "MyMixin",
+                "module": "fixtures/inheritance-mixins/package/my-element.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "nestedMixinField",
+              "inheritedFrom": {
+                "name": "NestedMixin",
+                "module": "fixtures/inheritance-mixins/package/my-element.js"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "nestedMixinMethod",
+              "inheritedFrom": {
+                "name": "NestedMixin",
+                "module": "fixtures/inheritance-mixins/package/my-element.js"
+              }
+            }
+          ],
+          "events": [
+            {
+              "name": "class-event",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "moduleMixin-event",
+              "type": {
+                "text": "Event"
+              },
+              "inheritedFrom": {
+                "name": "ModuleMixin",
+                "module": "fixtures/inheritance-mixins/package/ModuleMixin.js"
+              }
+            },
+            {
+              "name": "mixin-event",
+              "type": {
+                "text": "Event"
+              },
+              "inheritedFrom": {
+                "name": "MyMixin",
+                "module": "fixtures/inheritance-mixins/package/my-element.js"
+              }
+            },
+            {
+              "name": "nestedMixin-event",
+              "type": {
+                "text": "Event"
+              },
+              "inheritedFrom": {
+                "name": "NestedMixin",
+                "module": "fixtures/inheritance-mixins/package/my-element.js"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "class-attr"
+            },
+            {
+              "name": "moduleMixin-attr",
+              "inheritedFrom": {
+                "name": "ModuleMixin",
+                "module": "fixtures/inheritance-mixins/package/ModuleMixin.js"
+              }
+            },
+            {
+              "name": "mixin-attr",
+              "inheritedFrom": {
+                "name": "MyMixin",
+                "module": "fixtures/inheritance-mixins/package/my-element.js"
+              }
+            },
+            {
+              "name": "nestedMixin-attr",
+              "inheritedFrom": {
+                "name": "NestedMixin",
+                "module": "fixtures/inheritance-mixins/package/my-element.js"
+              }
+            }
+          ],
+          "mixins": [
+            {
+              "name": "ModuleMixin",
+              "module": "/fixtures/inheritance-mixins/package/ModuleMixin.js"
+            },
+            {
+              "name": "MyMixin",
+              "module": "fixtures/inheritance-mixins/package/my-element.js"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NestedMixin",
+          "declaration": {
+            "name": "NestedMixin",
+            "module": "fixtures/inheritance-mixins/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "MyMixin",
+          "declaration": {
+            "name": "MyMixin",
+            "module": "fixtures/inheritance-mixins/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "MyElement",
+          "declaration": {
+            "name": "MyElement",
+            "module": "fixtures/inheritance-mixins/package/my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}
