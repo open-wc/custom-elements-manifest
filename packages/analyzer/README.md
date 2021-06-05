@@ -4,6 +4,15 @@ Custom Elements Manifest is a file format that describes custom elements. This f
 
 > ✨ Try it out in the [online playground](https://custom-elements-manifest.netlify.app/)! ✨
 
+## Table of Contents
+
+- [Usage](#install)
+- [Libraries Support](#support)
+- [JSDoc Support](#supported-jsdoc)
+- [Advanced configuration](#advanced-configuration)
+- [Plugins](#plugins)
+- [Browser](#usage-in-the-browser)
+
 ## Install
 
 ```bash
