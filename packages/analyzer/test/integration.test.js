@@ -1,6 +1,7 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
 import path from 'path';
+import { pathToFileURL } from 'url';
 import fs from 'fs';
 import globby from 'globby';
 import ts from 'typescript';
@@ -27,13 +28,14 @@ testCases.forEach(testCase => {
     const fixture = JSON.parse(fs.readFileSync(fixturePath, 'utf-8'));
 
     const packagePath = path.join(fixturesDir, `${testCase}/package`);
+    const packagePathPosix = packagePath.split(path.sep).join(path.posix.sep);
     const outputPath = path.join(fixturesDir, `${testCase}/output.json`);
 
-    const globs = await globby(packagePath);
+    const globs = await globby(packagePathPosix);
     const modules = globs
       .filter(path => !path.includes('custom-elements-manifest.config.js'))
       .map(glob => {
-        const relativeModulePath = `./${path.relative(process.cwd(), glob)}`;
+        const relativeModulePath = `.${path.sep}${path.relative(process.cwd(), glob)}`;
         const source = fs.readFileSync(relativeModulePath).toString();
     
         return ts.createSourceFile(
@@ -45,8 +47,9 @@ testCases.forEach(testCase => {
       });
 
     let plugins = [];
+    const manifestPathFileURL = pathToFileURL(`${packagePath}/custom-elements-manifest.config.js`).href;
     try {
-      const config = await import(`${packagePath}/custom-elements-manifest.config.js`);
+      const config = await import(manifestPathFileURL);
       plugins = [...config.default.plugins];
     } catch {}
     
