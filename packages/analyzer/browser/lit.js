@@ -244,8 +244,14 @@ var lit = (function (exports, ts) {
                   if(attributeName) {
                     attribute.name = attributeName;
                   }
-                  
-                  currClass.attributes.push(attribute);
+
+                  const existingAttribute = currClass?.attributes?.find(attr => attr.name === attribute.name);
+
+                  if(!existingAttribute) {
+                    currClass.attributes.push(attribute);
+                  } else {
+                    currClass.attributes = currClass?.attributes?.map(attr => attr.name === attribute.name ? ({...attr, ...attribute}) : attr);
+                  }
                 }
               }
             });
@@ -304,6 +310,10 @@ var lit = (function (exports, ts) {
           if(!parameterAlreadyExists) {
             doc.parameters = [...(doc?.parameters || []), parameterTemplate];
           }
+        }
+
+        if(tag?.comment) {
+          doc.description = tag.comment;
         }
 
         /** @returns */

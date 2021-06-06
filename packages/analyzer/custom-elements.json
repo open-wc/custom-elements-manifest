@@ -14,7 +14,17 @@
             {
               "kind": "field",
               "name": "message",
-              "default": ""
+              "default": "'bar'",
+              "description": "- some description",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "description": "description goes here",
+              "name": "my-attr"
             }
           ],
           "superclass": {

@@ -73,6 +73,10 @@ export function handleJsDoc(doc, node) {
         }
       }
 
+      if(tag?.comment) {
+        doc.description = tag.comment;
+      }
+
       /** @returns */
       if(tag.kind === ts.SyntaxKind.JSDocReturnTag) {
         doc.return = {

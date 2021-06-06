@@ -39,8 +39,14 @@ export function propertyDecoratorPlugin() {
                 if(attributeName) {
                   attribute.name = attributeName;
                 }
-                
-                currClass.attributes.push(attribute);
+
+                const existingAttribute = currClass?.attributes?.find(attr => attr.name === attribute.name);
+
+                if(!existingAttribute) {
+                  currClass.attributes.push(attribute);
+                } else {
+                  currClass.attributes = currClass?.attributes?.map(attr => attr.name === attribute.name ? ({...attr, ...attribute}) : attr);
+                }
               }
             }
           });

@@ -472,6 +472,10 @@ var analyzer = (function (exports, ts) {
           }
         }
 
+        if(tag?.comment) {
+          doc.description = tag.comment;
+        }
+
         /** @returns */
         if(tag.kind === ts__default['default'].SyntaxKind.JSDocReturnTag) {
           doc.return = {
@@ -1640,7 +1644,9 @@ var analyzer = (function (exports, ts) {
                       break;
                     case 'tag':
                     case 'tagname':
+                    case 'element':
                       classDoc.tagName = jsDoc?.name || '';
+                      break;
                   }
                 });
               });
@@ -2153,10 +2159,8 @@ var analyzer = (function (exports, ts) {
   ].flat();
 
   /**
-   * 
-   * 🚨🚨🚨 TODO
+   * 🚨 TODO
    * - Lightning web components
-   * - playground 
    * - storybook
    */
 

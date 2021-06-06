@@ -1,6 +1,14 @@
+
+
+/**
+ * @attr my-attr description goes here
+ */
 export class MyElement extends HTMLElement {
-  /**
-   * @foo Some custom information!
-   */ 
   message = ''
+
+  constructor() {
+    super();
+    /** @type {string} - some description */
+    this.message = 'bar';
+  }
 }

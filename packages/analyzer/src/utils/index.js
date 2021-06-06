@@ -38,3 +38,11 @@ export const toKebabCase = str => {
      : letter;
   }).join('');
 }
+
+export const safe = (cb, returnType = '') => {
+  try {
+    return cb();
+  } catch {
+    return returnType;
+  }
+} 
