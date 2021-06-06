@@ -132,11 +132,11 @@ customElements.define('my-element', MyElement);
 
 `@custom-elements-manifest/analyzer` by default supports standard JavaScript, and _vanilla_ web components. Dedicated web component libraries can be supported through the use of plugins. Currently, support for LitElement, Stencil and Catalyst is provided in this project via plugins. You can enable them by using the CLI flags `--litelement`, `--fast`, `--stencil` and `--catalyst` respectively, or loading the plugin via your `custom-elements-manifest.config.js`.
 
-**TL;DR:** 
-- JavaScript 
+**TL;DR:**
+- JavaScript
 - TypeScript
-- LitElement (opt-in via CLI flag) 
-- FASTElement (opt-in via CLI flag) 
+- LitElement (opt-in via CLI flag)
+- FASTElement (opt-in via CLI flag)
 - Stencil (opt-in via CLI flag)
 - Catalyst (opt-in via CLI flag)
 
@@ -314,6 +314,7 @@ customElements.define('my-element', MyElement);
 | `@fires`,<br>`@event`         | Documents events that your component might fire    |
 | `@tag`,<br>`@tagname`         | Documents the name of your custom element          |
 | `@summary`                    | Documents a short summary                          |
+| `@example`                    | Documents an example Usage                         |
 
 ```js
 /**
@@ -333,11 +334,23 @@ customElements.define('my-element', MyElement);
  * @fires custom-event - some description for custom-event
  * @fires {Event} typed-event - some description for typed-event
  * @event {CustomEvent} typed-custom-event - some description for typed-custom-event
- * 
+ *
  * @summary This is MyElement
- * 
+ *
  * @tag my-element
  * @tagname my-element
+ *
+ * @example Simple Usage
+ * ```html
+ * <my-element></my-element>
+ * ```
+ *
+ * @example With Slotted Elements
+ * ```html
+ * <my-element>
+ *   <div></div>
+ * </my-element>
+ * ```
  */
 class MyElement extends HTMLElement {}
 ```
@@ -351,7 +364,7 @@ You can also specify a custom `custom-elements-manifest.config.mjs` configuratio
 import myAwesomePlugin from 'awesome-plugin';
 
 export default {
-  globs: ['src/**/*.js'], 
+  globs: ['src/**/*.js'],
   exclude: ['src/foo.js'],
   dev: true,
   plugins: [
@@ -396,7 +409,7 @@ A plugin is a function that returns an object. There are several hooks you can o
 
 > **TIP:** When writing custom plugins, [ASTExplorer](https://astexplorer.net/#/gist/f99a9fba2c21e015d0a8590d291523e5/cce02565e487b584c943d317241991f19b105f94) is your friend 🙂
 
-To get started developing custom plugins, take a look at the [cem-plugin-template](https://github.com/open-wc/cem-plugin-template) repository to quickly get you up and running. 
+To get started developing custom plugins, take a look at the [cem-plugin-template](https://github.com/open-wc/cem-plugin-template) repository to quickly get you up and running.
 
 Here's an example of a simple plugin, that adds a custom JSDoc tag to a members doc:
 
@@ -406,7 +419,7 @@ Example source code:
 export class MyElement extends HTMLElement {
   /**
    * @foo Some custom information!
-   */ 
+   */
   message = ''
 }
 ```
@@ -435,7 +448,7 @@ export default {
 
                     const classDeclaration = moduleDoc.declarations.find(declaration => declaration.name === className);
                     const messageField = classDeclaration.members.find(member => member.name === memberName);
-                    
+
                     messageField.foo = description
                   }
                 });
@@ -448,7 +461,7 @@ export default {
       // Runs after modules have been parsed and after post-processing
       packageLinkPhase({customElementsManifest, context}){},
     }
-  ]  
+  ]
 }
 ```
 
@@ -467,7 +480,7 @@ function generateReadme() {
         mod.declarations.forEach(declaration => {
           if(components.includes(declaration.tagName)) {
             fs.writeFileSync(
-              `${path.dirname(mod.path)}/README.md`, 
+              `${path.dirname(mod.path)}/README.md`,
               renderClassdocAsMarkdown(declaration)
             );
           }
@@ -520,7 +533,7 @@ import { myPlugin } from './my-plugin.js';
 let typeChecker;
 
 export default {
-  globs: ['fixtures/-default/package/**/*.js'], 
+  globs: ['fixtures/-default/package/**/*.js'],
   exclude: [],
   dev: true,
   overrideModuleCreation: ({ts, globs}) => {
