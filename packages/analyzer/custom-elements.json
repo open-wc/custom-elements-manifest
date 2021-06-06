@@ -7,16 +7,28 @@
       "path": "fixtures/-default/package/bar.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "foo"
+          "kind": "class",
+          "description": "",
+          "name": "MyElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "message",
+              "default": ""
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "foo",
+          "name": "MyElement",
           "declaration": {
-            "name": "foo",
+            "name": "MyElement",
             "module": "fixtures/-default/package/bar.js"
           }
         }
