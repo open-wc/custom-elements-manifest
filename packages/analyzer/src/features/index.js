@@ -16,6 +16,7 @@ import { mixinPlugin } from './analyse-phase/mixins.js';
 import { variablePlugin } from './analyse-phase/variables.js';
 import { classJsDocPlugin } from './analyse-phase/class-jsdoc.js';
 import { reexportedWrappedMixinExportsPlugin } from './analyse-phase/reexported-wrapped-mixin-exports.js';
+import { exampleJSDocTagPlugin } from './analyse-phase/example-jsdoc-tag.js';
 
 /**
  * LINK
@@ -57,6 +58,7 @@ export const FEATURES = [
   variablePlugin(),
   reexportedWrappedMixinExportsPlugin(),
   classJsDocPlugin(),
+  exampleJSDocTagPlugin(),
 
   /** LINK */
   removeUnexportedDeclarationsPlugin(),

@@ -8,7 +8,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "",
+          "description": "## Examples\n\n### Simple Usage\n```html\n<my-element></my-element>\n```\n\n### With Slotted Elements\n```html\n<my-element>\n<div></div>\n</my-element>\n```",
           "name": "MyElement",
           "cssProperties": [
             {

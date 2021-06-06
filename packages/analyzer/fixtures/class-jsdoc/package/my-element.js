@@ -23,10 +23,22 @@
  * @fires custom-event - some description for custom-event
  * @fires {Event} typed-event - some description for typed-event
  * @event {CustomEvent} typed-custom-event - some description for typed-custom-event
- * 
+ *
  * @summary This is MyElement
- * 
+ *
  * @tag my-element
  * @tagname my-element
+ * 
+ * @example Simple Usage
+ * ```html
+ * <my-element></my-element>
+ * ```
+ *
+ * @example With Slotted Elements
+ * ```html
+ * <my-element>
+ *   <div></div>
+ * </my-element>
+ * ```
  */
 export class MyElement extends HTMLElement {}
