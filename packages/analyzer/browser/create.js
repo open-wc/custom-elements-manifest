@@ -405,773 +405,6 @@ var analyzer = (function (exports, ts) {
     }
   }
 
-  /**
-   * UTILITIES RELATED TO JSDOC
-   */
-
-  function handleJsDocType(type) {
-    return type?.replace(/(import\(.+?\).)/g, '') || '';
-  }
-
-  /**
-   * @example static foo;
-   * @example public foo;
-   * @example private foo;
-   * @example protected foo;
-   */
-  function handleModifiers(doc, node) {
-    node?.modifiers?.forEach(modifier => {
-      if(modifier?.kind === ts__default['default'].SyntaxKind.StaticKeyword) {
-        doc.static = true;
-      }
-
-      switch (modifier.kind) {
-        case ts__default['default'].SyntaxKind.PublicKeyword:
-          doc.privacy = 'public';
-          break;
-        case ts__default['default'].SyntaxKind.PrivateKeyword:
-          doc.privacy = 'private';
-          break;
-        case ts__default['default'].SyntaxKind.ProtectedKeyword:
-          doc.privacy = 'protected';
-          break;
-      }
-    });
-
-    return doc;
-  }
-
-  /**
-   * Handles JsDoc
-   */
-  function handleJsDoc(doc, node) {
-    node?.jsDoc?.forEach(jsDocComment => {
-      if(jsDocComment?.comment) {
-        doc.description = jsDocComment.comment;
-      }
-
-      jsDocComment?.tags?.forEach(tag => {
-        /** @param */
-        if(tag.kind === ts__default['default'].SyntaxKind.JSDocParameterTag) {
-          const parameter = doc?.parameters?.find(parameter => parameter.name === tag.name.text);
-          const parameterAlreadyExists = !!parameter;
-          const parameterTemplate = parameter || {};
-
-          if(tag?.comment) {
-            parameterTemplate.description = tag.comment;
-          }
-
-          if(tag?.name) {
-            parameterTemplate.name = tag.name.getText();
-          }
-
-          /**
-           * If its bracketed, that means its optional
-           * @example [foo]
-           */
-          if(tag?.isBracketed) {
-            parameterTemplate.optional = true;
-          }
-
-          if(tag?.typeExpression) {
-            parameterTemplate.type = {
-              text: handleJsDocType(tag.typeExpression.type.getText())
-            };
-          }
-
-          if(!parameterAlreadyExists) {
-            doc.parameters = [...(doc?.parameters || []), parameterTemplate];
-          }
-        }
-
-        if(tag?.comment) {
-          doc.description = tag.comment;
-        }
-
-        /** @returns */
-        if(tag.kind === ts__default['default'].SyntaxKind.JSDocReturnTag) {
-          doc.return = {
-            type: {
-              text: handleJsDocType(tag?.typeExpression?.type?.getText())
-            }
-          };
-        }
-
-        /** @type */
-        if(tag.kind === ts__default['default'].SyntaxKind.JSDocTypeTag) {
-          doc.type = {
-            text: handleJsDocType(tag.typeExpression.type.getText())
-          };
-        }
-
-
-        /** @summary */
-        if(safe(() => tag?.tagName?.getText()) === 'summary') {
-          doc.summary = tag.comment;
-        }
-
-        /**
-         * Overwrite privacy
-         * @public
-         * @private
-         * @protected
-         */
-        switch(tag.kind) {
-          case ts__default['default'].SyntaxKind.JSDocPublicTag:
-            doc.privacy = 'public';
-            break;
-          case ts__default['default'].SyntaxKind.JSDocPrivateTag:
-            doc.privacy = 'private';
-            break;
-          case ts__default['default'].SyntaxKind.JSDocProtectedTag:
-            doc.privacy = 'protected';
-            break;
-        }
-      });
-    });
-
-    return doc;
-  }
-
-
-
-  /**
-   * Creates a mixin for inside a classDoc
-   */
-  function createClassDeclarationMixin(name, moduleDoc) {
-    const mixin = { 
-      name,
-      ...resolveModuleOrPackageSpecifier(moduleDoc, name)
-    };
-    return mixin;
-  }
-
-  /**
-   * Handles mixins and superclass
-   */
-  function handleHeritage(classTemplate, moduleDoc, node) {
-    node?.heritageClauses?.forEach((clause) => {
-      clause?.types?.forEach((type) => {
-        const mixins = [];
-        let node = type.expression;
-        let superClass;
-
-        /* gather mixin calls */
-        if (ts__default['default'].isCallExpression(node)) {
-          const mixinName = node.expression.getText();
-          mixins.push(createClassDeclarationMixin(mixinName, moduleDoc));
-          while (ts__default['default'].isCallExpression(node.arguments[0])) {
-            node = node.arguments[0];
-            const mixinName = node.expression.getText();
-            mixins.push(createClassDeclarationMixin(mixinName, moduleDoc));
-          }
-          superClass = node.arguments[0].text;
-        } else {
-          superClass = node.text;
-        }
-
-        if (has(mixins)) {
-          classTemplate.mixins = mixins;
-        }
-
-        classTemplate.superclass = {
-          name: superClass,
-        };
-
-        if(superClass === 'HTMLElement') {
-          delete classTemplate.superclass.module;
-        }
-      });
-    });
-
-    return classTemplate;
-  }
-
-  /**
-   * Creates a functionLike, does _not_ handle arrow functions
-   */
-  function createFunctionLike(node) {
-    const isDefault = hasDefaultModifier(node);
-
-    let functionLikeTemplate = {
-      kind: '',
-      name: isDefault ? 'default' : node?.name?.getText() || ''
-    };
-    
-    functionLikeTemplate = handleKind(functionLikeTemplate, node);
-    functionLikeTemplate = handleModifiers(functionLikeTemplate, node);
-    functionLikeTemplate = handleParametersAndReturnType(functionLikeTemplate, node);
-    functionLikeTemplate = handleJsDoc(functionLikeTemplate, node);
-    
-    return functionLikeTemplate;
-  }
-
-  /**
-   * Determine the kind of the functionLike, either `'function'` or `'method'` 
-   */
-  function handleKind(functionLike, node) {
-    switch(node.kind) {
-      case ts__default['default'].SyntaxKind.FunctionDeclaration:
-        functionLike.kind = 'function';
-        break;
-      case ts__default['default'].SyntaxKind.MethodDeclaration:
-        functionLike.kind = 'method';
-        break;
-    }
-    return functionLike;
-  }
-
-  /**
-   * Handle a functionLikes return type and parameters/parameter types
-   */
-  function handleParametersAndReturnType(functionLike, node) {
-    if(node?.type) {
-      functionLike.return = {
-        type: { text: node.type.getText() }
-      };
-    }
-
-    const parameters = [];
-    node?.parameters?.forEach((param) => {  
-      const parameter = {
-        name: param.name.getText(),
-      };
-
-      if(param?.initializer) {
-        parameter.default = param.initializer.getText();
-      }
-
-      if(param?.questionToken) {
-        parameter.optional = true;
-      }
-
-      if(param?.type) {
-        parameter.type = {text: param.type.getText() };
-      }
-
-      parameters.push(parameter);
-    });
-
-    if(has(parameters)) {
-      functionLike.parameters = parameters;
-    }
-
-    return functionLike;
-  }
-
-  const isMixin = node => !!extractMixinNodes(node);
-
-  function extractMixinNodes(node) {
-    if (ts__default['default'].isVariableStatement(node) || ts__default['default'].isFunctionDeclaration(node)) {
-      if (ts__default['default'].isVariableStatement(node)) {
-        /**
-         * @example const MyMixin = klass => class MyMixin extends klass {}
-         * @example export const MyMixin = klass => class MyMixin extends klass {}
-         */
-        const variableDeclaration = node.declarationList.declarations.find(declaration =>
-          ts__default['default'].isVariableDeclaration(declaration),
-        );
-        if (variableDeclaration) {
-          const body = variableDeclaration?.initializer?.body;
-          if (body && ts__default['default'].isClassExpression(body)) {
-            return { 
-              mixinFunction: node,
-              mixinClass: body,
-            };
-          }
-
-          /**
-           * @example const MyMixin = klass => { return class MyMixin extends Klass{} }
-           */
-          if (body && ts__default['default'].isBlock(body)) {
-            const returnStatement = body.statements.find(statement => ts__default['default'].isReturnStatement(statement));
-
-            if (returnStatement && returnStatement?.expression?.kind && ts__default['default'].isClassExpression(returnStatement.expression)) {
-              return { 
-                mixinFunction: variableDeclaration.initializer,
-                mixinClass: returnStatement.expression
-              };
-            }
-          }
-        }
-      }
-
-      /**
-       *  @example function MyMixin(klass) { return class MyMixin extends Klass{} }
-       */
-      if (ts__default['default'].isFunctionDeclaration(node)) {
-        if (node.body && ts__default['default'].isBlock(node.body)) {
-
-          const returnStatement = node.body.statements.find(statement => ts__default['default'].isReturnStatement(statement));
-
-          if (returnStatement && ts__default['default'].isClassExpression(returnStatement.expression)) {
-            return { 
-              mixinFunction: node, 
-              mixinClass: returnStatement.expression
-            };
-          }
-        }
-      }
-
-      /**
-       * @example function MyMixin(klass) {class A extends klass {} return A;}
-       */
-      if (ts__default['default'].isFunctionDeclaration(node)) {
-        if (node.body && ts__default['default'].isBlock(node.body)) {
-          const classDeclaration = node.body.statements.find(statement => ts__default['default'].isClassDeclaration(statement));
-          const returnStatement = node.body.statements.find(statement => ts__default['default'].isReturnStatement(statement));
-
-          /**
-           * If the classDeclaration inside the function body has the same name as whats being 
-           * returned from the function, consider it a mixin
-           */
-          if(
-            /** Avoid undefined === undefined */
-            (classDeclaration && returnStatement) &&
-            (classDeclaration?.name?.getText() === returnStatement?.expression?.getText())
-          ) {
-            return {
-              mixinFunction: node,
-              mixinClass: classDeclaration
-            }
-          }
-        }
-      }
-    }
-    return false;
-  }
-
-  /**
-   * functionLikePlugin
-   * 
-   * handles functionLikes such as class methods and functions
-   * does NOT handle arrow functions
-   */
-  function functionLikePlugin() {
-    return {
-      analyzePhase({ts, node, moduleDoc}){
-        switch(node.kind) {
-          case ts.SyntaxKind.FunctionDeclaration:
-            if(!isMixin(node)) {
-              const functionLike = createFunctionLike(node);
-              moduleDoc.declarations.push(functionLike);
-            }
-            break;
-        }
-      }
-    }
-  }
-
-  function createArrowFunction(node) {
-    const arrowFunction = node?.declarationList?.declarations?.find(declaration => ts__default['default'].SyntaxKind.ArrowFunction === declaration?.initializer?.kind);
-
-    let functionLikeTemplate = {
-      kind: 'function',
-      name: arrowFunction?.name?.getText() || '',
-    };
-    
-    functionLikeTemplate = handleParametersAndReturnType(functionLikeTemplate, arrowFunction?.initializer);
-    functionLikeTemplate = handleJsDoc(functionLikeTemplate, node);
-
-    return functionLikeTemplate;
-  }
-
-  /**
-   * arrowFunctionPlugin
-   * 
-   * handles arrow functions
-   */
-  function arrowFunctionPlugin() {
-    return {
-      analyzePhase({ts, node, moduleDoc}){
-        switch(node.kind) {
-          case ts.SyntaxKind.VariableStatement:
-            if(!isMixin(node) && hasInitializer(node)) {
-              const functionLike = createArrowFunction(node);
-              moduleDoc.declarations.push(functionLike);
-            }
-            break;
-        }
-      }
-    }
-  }
-
-  function createAttribute(node) {
-    const attributeTemplate = {
-      name: node?.text || ''
-    };
-    return attributeTemplate;
-  }
-
-  function createAttributeFromField(field) {
-    const attribute = {
-      ...field,
-      fieldName: field.name
-    };
-
-    /** 
-     * Delete the following properties because they don't exist on a attributeDoc 
-     */
-    delete attribute.kind;
-    delete attribute.static;
-    delete attribute.privacy;
-
-    return attribute;
-  }
-
-  function createField(node) {
-    let fieldTemplate = {
-      kind: 'field',
-      name: node?.name?.getText() || '',
-    };
-
-    /** 
-     * if is private field
-     * @example class Foo { #bar = ''; }
-     */ 
-    if (ts__default['default'].isPrivateIdentifier(node.name)) {
-      fieldTemplate.privacy = 'private';
-    }
-
-    /**
-     * Add TS type
-     * @example class Foo { bar: string = ''; }
-     */ 
-    if(node.type) {
-      fieldTemplate.type = { text: node.type.getText() };
-    }
-
-    fieldTemplate = handleModifiers(fieldTemplate, node);
-    fieldTemplate = handleJsDoc(fieldTemplate, node);
-    fieldTemplate = handleDefaultValue(fieldTemplate, node);
-
-    return fieldTemplate;
-  }
-
-  function handleDefaultValue(fieldTemplate, node) {
-    if(isPrimitive(node.initializer)) {
-      fieldTemplate.default = node.initializer.text;
-    }
-
-    return fieldTemplate;
-  }
-
-  /**
-   * Creates a classDoc
-   */
-  function createClass(node, moduleDoc) {
-    const isDefault = hasDefaultModifier(node);
-    
-    let classTemplate = {
-      kind: 'class',
-      description: '',
-      name: isDefault ? 'default' : node?.name?.getText() || node?.parent?.parent?.name?.getText() || '',
-      cssProperties: [],
-      cssParts: [],
-      slots: [],
-      members: [],
-      events: [],
-      attributes: []
-    };
-
-    node?.members?.forEach(member => {
-      /**
-       * Handle attributes
-       */
-      if (isProperty(member)) {
-        if (member?.name?.getText() === 'observedAttributes') {
-          /** 
-           * @example static observedAttributes
-           */
-          if (ts__default['default'].isPropertyDeclaration(member)) {
-            member?.initializer?.elements?.forEach((element) => {
-              if (ts__default['default'].isStringLiteral(element)) {
-                const attribute = createAttribute(element);
-                classTemplate.attributes.push(attribute);
-              }
-            });
-          }
-
-          /**
-           * @example static get observedAttributes() {}
-           */
-          if (ts__default['default'].isGetAccessor(member)) {
-            const returnStatement = member?.body?.statements?.find(isReturnStatement);
-
-            returnStatement?.expression?.elements?.forEach((element) => {
-              if (ts__default['default'].isStringLiteral(element)) {
-                const attribute = createAttribute(element);
-                classTemplate.attributes.push(attribute);
-              }
-            });
-          }
-        }
-      }
-    });
-
-    /**
-     * Second pass through a class's members.
-     * We do this in two passes, because we need to know whether or not a class has any 
-     * attributes, so we handle those first.
-     */
-    const gettersAndSetters = [];
-    node?.members?.forEach(member => {
-      /**
-       * Handle class methods
-       */
-      if(ts__default['default'].isMethodDeclaration(member)) {
-        const method = createFunctionLike(member);
-        classTemplate.members.push(method);
-      }
-
-      /**
-       * Handle fields
-       */
-      if (isProperty(member)) {
-        if (gettersAndSetters.includes(member?.name?.getText())) {
-          return;
-        } else {
-          gettersAndSetters.push(member?.name?.getText());
-        }
-
-        const field = createField(member);
-        classTemplate.members.push(field);
-
-        /**
-         * Handle @attr
-         * If a field has a @attr annotation, also create an attribute for it
-         */
-        if(hasAttrAnnotation(member)) {
-          const attribute = createAttributeFromField(field);
-
-          /**
-           * If the attribute already exists, merge it together with the extra
-           * information we got from the field (like type, summary, description, etc)
-           */
-          let attrAlreadyExists = classTemplate.attributes.find(attr => attr.name === attribute.name);
-          
-          if(attrAlreadyExists) {
-            classTemplate.attributes = classTemplate.attributes.map(attr => {
-              return attr.name === attribute.name ? { ...attrAlreadyExists, ...attribute } : attr;
-            });
-          } else {
-            classTemplate.attributes.push(attribute);
-          }
-        }
-      }
-
-      /**
-       * Handle events
-       * 
-       * In order to find `this.dispatchEvent` calls, we have to traverse a method's AST
-       */
-      if (ts__default['default'].isMethodDeclaration(member)) {
-        eventsVisitor(member, classTemplate);
-      }
-    });
-
-    classTemplate?.members?.forEach(member => {
-      getDefaultValuesFromConstructorVisitor(node, member);
-    });
-
-    /**
-     * Inheritance
-     */
-    classTemplate = handleHeritage(classTemplate, moduleDoc, node);
-
-    return classTemplate;
-  }
-
-  function eventsVisitor(source, classTemplate) {
-    visitNode(source);
-
-    function visitNode(node) {
-      switch (node.kind) {
-        case ts__default['default'].SyntaxKind.CallExpression:
-
-          /** If callexpression is `this.dispatchEvent` */
-          if (isDispatchEvent(node)) {
-            node?.arguments?.forEach((arg) => {
-              if (arg.kind === ts__default['default'].SyntaxKind.NewExpression) {
-                const eventName = arg.arguments[0].text;
-
-                /**
-                 * Check if event already exists
-                 */
-                const eventExists = classTemplate?.events?.some(event => event.name === eventName);
-
-                if(!eventExists) {
-                  let eventDoc = {
-                    name: eventName,
-                    type: {
-                      text: arg.expression.text,
-                    },
-                  };
-    
-                  eventDoc = handleJsDoc(eventDoc, node?.parent);
-                  classTemplate.events.push(eventDoc);
-                }
-              }
-            });
-
-          }
-      }
-
-      ts__default['default'].forEachChild(node, visitNode);
-    }
-  }
-
-  function getDefaultValuesFromConstructorVisitor(source, member) {
-    visitNode(source);
-
-    function visitNode(node) {
-      switch (node.kind) {
-        case ts__default['default'].SyntaxKind.Constructor:
-          /** 
-           * For every member that was added in the classDoc, we want to add a default value if we can
-           * To do this, we visit a class's constructor, and loop through the statements
-           */
-          node.body?.statements?.filter((statement) => statement.kind === ts__default['default'].SyntaxKind.ExpressionStatement)
-            .filter((statement) => statement.expression.kind === ts__default['default'].SyntaxKind.BinaryExpression)
-            .forEach((statement) => {
-              if (
-                statement.expression?.left?.name?.getText() === member.name &&
-                member.kind === 'field'
-              ) {
-                member = handleJsDoc(member, statement);
-
-                /** Only add defaults for primitives for now */
-                if(isPrimitive(statement.expression.right)) {
-                  member.default = statement.expression.right.getText();
-                }
-              }
-            });
-          break;
-      }
-
-      ts__default['default'].forEachChild(node, visitNode);
-    }
-  }
-
-  /**
-   * classPlugin
-   * 
-   * handles classes
-   */
-  function classPlugin() {
-    return {
-      analyzePhase({ts, node, moduleDoc}){
-        switch(node.kind) {
-          case ts.SyntaxKind.ClassDeclaration:
-            const klass = createClass(node, moduleDoc);
-            moduleDoc.declarations.push(klass);
-            break;
-        }
-      }
-    }
-  }
-
-  /**
-   * Takes a mixinFunctionNode, which is the function/arrow function containing the mixin class
-   * and the actual class node returned by the mixin declaration
-   */
-  function createMixin(mixinFunctionNode, mixinClassNode, moduleDoc) {
-    let mixinTemplate = createClass(mixinClassNode, moduleDoc);
-
-    mixinTemplate = handleParametersAndReturnType(mixinTemplate, mixinFunctionNode?.declarationList?.declarations?.[0]?.initializer || mixinFunctionNode);
-    mixinTemplate = handleJsDoc(mixinTemplate, mixinFunctionNode);
-    mixinTemplate = handleName(mixinTemplate, mixinFunctionNode);
-    mixinTemplate = turnClassDocIntoMixin(mixinTemplate);
-
-    return mixinTemplate;
-  }
-
-  function handleName(mixin, node) {
-    mixin.name = node?.name?.getText()  || node?.parent?.name?.getText() || node?.declarationList?.declarations?.[0]?.name?.getText() || '';
-    return mixin;
-  }
-
-  /**
-   * Turns a classDoc into a mixin
-   */
-  function turnClassDocIntoMixin(mixin) {
-    mixin.kind = 'mixin';
-    delete mixin.superclass;
-    delete mixin.return;
-    return mixin;
-  }
-
-  /**
-   * mixinPlugin
-   * 
-   * handles mixins
-   */
-  function mixinPlugin() {
-    return {
-      analyzePhase({ts, node, moduleDoc}){
-        switch(node.kind) {
-          case ts.SyntaxKind.VariableStatement:
-          case ts.SyntaxKind.FunctionDeclaration:
-            /**
-             * Try to extract mixin nodes, if its a mixin
-             */
-            if(isMixin(node)) {
-              const { mixinFunction, mixinClass } = extractMixinNodes(node);
-              let mixin = createMixin(mixinFunction, mixinClass, moduleDoc);
-              moduleDoc.declarations.push(mixin);
-            }
-            break;
-        }
-      }
-    }
-  }
-
-  function createVariable(variableStatementNode, declarationNode) {
-    let variableTemplate = {
-      kind: 'variable',
-      name: declarationNode?.name?.getText() || ''
-    };
-
-    if(declarationNode?.type) {
-      variableTemplate.type = { text: declarationNode?.type?.getText() };
-    }
-
-    variableTemplate = handleJsDoc(variableTemplate, variableStatementNode);
-
-    return variableTemplate;
-  }
-
-  /**
-   * variablePlugin
-   * 
-   * handles variables
-   */
-  function variablePlugin() {
-    return {
-      analyzePhase({ts, node, moduleDoc}){
-        switch(node.kind) {
-          case ts.SyntaxKind.VariableStatement:
-            if(!isMixin(node)) {
-              node?.declarationList?.declarations?.forEach(declaration => {
-                /**
-                 * It can be the case that a variable is already present in the declarations,
-                 * for example if the variable is also an arrow function. So we need to make sure
-                 * the declaration doesnt already exist before adding it to a modules declarations
-                 */
-                const alreadyExists = moduleDoc?.declarations?.some(_declaration => _declaration.name === declaration?.name?.getText());
-
-                if(!alreadyExists) {
-                  const variable = createVariable(node, declaration);
-                  moduleDoc.declarations.push(variable);
-                }
-              });
-            }
-            break;
-        }
-      }
-    }
-  }
-
   function isSpace(source) {
       return /^\s+$/.test(source);
   }
@@ -1575,6 +808,807 @@ var analyzer = (function (exports, ts) {
 
   function parse(source, options = {}) {
       return getParser(options)(source);
+  }
+
+  /**
+   * UTILITIES RELATED TO JSDOC
+   */
+
+  function handleJsDocType(type) {
+    return type?.replace(/(import\(.+?\).)/g, '') || '';
+  }
+
+  /**
+   * @example static foo;
+   * @example public foo;
+   * @example private foo;
+   * @example protected foo;
+   */
+  function handleModifiers(doc, node) {
+    node?.modifiers?.forEach(modifier => {
+      if(modifier?.kind === ts__default['default'].SyntaxKind.StaticKeyword) {
+        doc.static = true;
+      }
+
+      switch (modifier.kind) {
+        case ts__default['default'].SyntaxKind.PublicKeyword:
+          doc.privacy = 'public';
+          break;
+        case ts__default['default'].SyntaxKind.PrivateKeyword:
+          doc.privacy = 'private';
+          break;
+        case ts__default['default'].SyntaxKind.ProtectedKeyword:
+          doc.privacy = 'protected';
+          break;
+      }
+    });
+
+    return doc;
+  }
+
+  /**
+   * Handles JsDoc
+   */
+  function handleJsDoc(doc, node) {
+    node?.jsDoc?.forEach(jsDocComment => {
+      if(jsDocComment?.comment) {
+        doc.description = jsDocComment.comment;
+      }
+
+      jsDocComment?.tags?.forEach(tag => {
+        /** @param */
+        if(tag.kind === ts__default['default'].SyntaxKind.JSDocParameterTag) {
+          const parameter = doc?.parameters?.find(parameter => parameter.name === tag.name.text);
+          const parameterAlreadyExists = !!parameter;
+          const parameterTemplate = parameter || {};
+
+          if(tag?.comment) {
+            parameterTemplate.description = tag.comment;
+          }
+
+          if(tag?.name) {
+            parameterTemplate.name = tag.name.getText();
+          }
+
+          /**
+           * If its bracketed, that means its optional
+           * @example [foo]
+           */
+          if(tag?.isBracketed) {
+            parameterTemplate.optional = true;
+          }
+
+          if(tag?.typeExpression) {
+            parameterTemplate.type = {
+              text: handleJsDocType(tag.typeExpression.type.getText())
+            };
+          }
+
+          if(!parameterAlreadyExists) {
+            doc.parameters = [...(doc?.parameters || []), parameterTemplate];
+          }
+        }
+
+        /**
+         * @TODO I dont think this is good here
+         * I think I added this to add a description to members in a constructor, but it looks like it
+         * takes the description of the @attr jsdoc notation, so I gotta take a look at this and fix it
+         * in a good way
+         * 
+         * Make sure to add some tests for both these cases (members in constructor and @attr)
+         */
+        // if(tag?.comment && safe(() => tag?.tagName?.getText()) !== 'attr') {
+        //   doc.description = tag.comment;
+        // }
+
+        /** @returns */
+        if(tag.kind === ts__default['default'].SyntaxKind.JSDocReturnTag) {
+          doc.return = {
+            type: {
+              text: handleJsDocType(tag?.typeExpression?.type?.getText())
+            }
+          };
+        }
+
+        /** @type */
+        if(tag.kind === ts__default['default'].SyntaxKind.JSDocTypeTag) {
+          if(tag?.comment) {
+            doc.description = tag.comment;
+          }
+
+          doc.type = {
+            text: handleJsDocType(tag.typeExpression.type.getText())
+          };
+        }
+
+
+        /** @summary */
+        if(safe(() => tag?.tagName?.getText()) === 'summary') {
+          doc.summary = tag.comment;
+        }
+
+        /**
+         * Overwrite privacy
+         * @public
+         * @private
+         * @protected
+         */
+        switch(tag.kind) {
+          case ts__default['default'].SyntaxKind.JSDocPublicTag:
+            doc.privacy = 'public';
+            break;
+          case ts__default['default'].SyntaxKind.JSDocPrivateTag:
+            doc.privacy = 'private';
+            break;
+          case ts__default['default'].SyntaxKind.JSDocProtectedTag:
+            doc.privacy = 'protected';
+            break;
+        }
+      });
+    });
+
+    return doc;
+  }
+
+
+
+  /**
+   * Creates a mixin for inside a classDoc
+   */
+  function createClassDeclarationMixin(name, moduleDoc) {
+    const mixin = { 
+      name,
+      ...resolveModuleOrPackageSpecifier(moduleDoc, name)
+    };
+    return mixin;
+  }
+
+  /**
+   * Handles mixins and superclass
+   */
+  function handleHeritage(classTemplate, moduleDoc, node) {
+    node?.heritageClauses?.forEach((clause) => {
+      clause?.types?.forEach((type) => {
+        const mixins = [];
+        let node = type.expression;
+        let superClass;
+
+        /* gather mixin calls */
+        if (ts__default['default'].isCallExpression(node)) {
+          const mixinName = node.expression.getText();
+          mixins.push(createClassDeclarationMixin(mixinName, moduleDoc));
+          while (ts__default['default'].isCallExpression(node.arguments[0])) {
+            node = node.arguments[0];
+            const mixinName = node.expression.getText();
+            mixins.push(createClassDeclarationMixin(mixinName, moduleDoc));
+          }
+          superClass = node.arguments[0].text;
+        } else {
+          superClass = node.text;
+        }
+
+        if (has(mixins)) {
+          classTemplate.mixins = mixins;
+        }
+
+        classTemplate.superclass = {
+          name: superClass,
+        };
+
+        if(superClass === 'HTMLElement') {
+          delete classTemplate.superclass.module;
+        }
+      });
+    });
+
+    return classTemplate;
+  }
+
+  /**
+   * Handles fields that have an @attr jsdoc annotation and gets the attribute name (if specified) and the description
+   * @example @attr my-attr this is the attr description
+   */
+  function handleAttrJsDoc(node, doc) {
+    node?.jsDoc?.forEach(jsDoc => {
+      const docs = parse(jsDoc?.getFullText())?.find(doc => doc?.tags?.some(({tag}) => tag === 'attr'));
+      const attrTag = docs?.tags?.find(({tag}) => tag === 'attr');
+
+      if(attrTag?.name) {
+        doc.name = attrTag.name;
+      }
+      
+      if(attrTag?.description) {
+        doc.description = attrTag.description;
+      }
+    });
+
+    return doc;
+  }
+
+  /**
+   * Creates a functionLike, does _not_ handle arrow functions
+   */
+  function createFunctionLike(node) {
+    const isDefault = hasDefaultModifier(node);
+
+    let functionLikeTemplate = {
+      kind: '',
+      name: isDefault ? 'default' : node?.name?.getText() || ''
+    };
+    
+    functionLikeTemplate = handleKind(functionLikeTemplate, node);
+    functionLikeTemplate = handleModifiers(functionLikeTemplate, node);
+    functionLikeTemplate = handleParametersAndReturnType(functionLikeTemplate, node);
+    functionLikeTemplate = handleJsDoc(functionLikeTemplate, node);
+    
+    return functionLikeTemplate;
+  }
+
+  /**
+   * Determine the kind of the functionLike, either `'function'` or `'method'` 
+   */
+  function handleKind(functionLike, node) {
+    switch(node.kind) {
+      case ts__default['default'].SyntaxKind.FunctionDeclaration:
+        functionLike.kind = 'function';
+        break;
+      case ts__default['default'].SyntaxKind.MethodDeclaration:
+        functionLike.kind = 'method';
+        break;
+    }
+    return functionLike;
+  }
+
+  /**
+   * Handle a functionLikes return type and parameters/parameter types
+   */
+  function handleParametersAndReturnType(functionLike, node) {
+    if(node?.type) {
+      functionLike.return = {
+        type: { text: node.type.getText() }
+      };
+    }
+
+    const parameters = [];
+    node?.parameters?.forEach((param) => {  
+      const parameter = {
+        name: param.name.getText(),
+      };
+
+      if(param?.initializer) {
+        parameter.default = param.initializer.getText();
+      }
+
+      if(param?.questionToken) {
+        parameter.optional = true;
+      }
+
+      if(param?.type) {
+        parameter.type = {text: param.type.getText() };
+      }
+
+      parameters.push(parameter);
+    });
+
+    if(has(parameters)) {
+      functionLike.parameters = parameters;
+    }
+
+    return functionLike;
+  }
+
+  const isMixin = node => !!extractMixinNodes(node);
+
+  function extractMixinNodes(node) {
+    if (ts__default['default'].isVariableStatement(node) || ts__default['default'].isFunctionDeclaration(node)) {
+      if (ts__default['default'].isVariableStatement(node)) {
+        /**
+         * @example const MyMixin = klass => class MyMixin extends klass {}
+         * @example export const MyMixin = klass => class MyMixin extends klass {}
+         */
+        const variableDeclaration = node.declarationList.declarations.find(declaration =>
+          ts__default['default'].isVariableDeclaration(declaration),
+        );
+        if (variableDeclaration) {
+          const body = variableDeclaration?.initializer?.body;
+          if (body && ts__default['default'].isClassExpression(body)) {
+            return { 
+              mixinFunction: node,
+              mixinClass: body,
+            };
+          }
+
+          /**
+           * @example const MyMixin = klass => { return class MyMixin extends Klass{} }
+           */
+          if (body && ts__default['default'].isBlock(body)) {
+            const returnStatement = body.statements.find(statement => ts__default['default'].isReturnStatement(statement));
+
+            if (returnStatement && returnStatement?.expression?.kind && ts__default['default'].isClassExpression(returnStatement.expression)) {
+              return { 
+                mixinFunction: variableDeclaration.initializer,
+                mixinClass: returnStatement.expression
+              };
+            }
+          }
+        }
+      }
+
+      /**
+       *  @example function MyMixin(klass) { return class MyMixin extends Klass{} }
+       */
+      if (ts__default['default'].isFunctionDeclaration(node)) {
+        if (node.body && ts__default['default'].isBlock(node.body)) {
+
+          const returnStatement = node.body.statements.find(statement => ts__default['default'].isReturnStatement(statement));
+
+          if (returnStatement && ts__default['default'].isClassExpression(returnStatement.expression)) {
+            return { 
+              mixinFunction: node, 
+              mixinClass: returnStatement.expression
+            };
+          }
+        }
+      }
+
+      /**
+       * @example function MyMixin(klass) {class A extends klass {} return A;}
+       */
+      if (ts__default['default'].isFunctionDeclaration(node)) {
+        if (node.body && ts__default['default'].isBlock(node.body)) {
+          const classDeclaration = node.body.statements.find(statement => ts__default['default'].isClassDeclaration(statement));
+          const returnStatement = node.body.statements.find(statement => ts__default['default'].isReturnStatement(statement));
+
+          /**
+           * If the classDeclaration inside the function body has the same name as whats being 
+           * returned from the function, consider it a mixin
+           */
+          if(
+            /** Avoid undefined === undefined */
+            (classDeclaration && returnStatement) &&
+            (classDeclaration?.name?.getText() === returnStatement?.expression?.getText())
+          ) {
+            return {
+              mixinFunction: node,
+              mixinClass: classDeclaration
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * functionLikePlugin
+   * 
+   * handles functionLikes such as class methods and functions
+   * does NOT handle arrow functions
+   */
+  function functionLikePlugin() {
+    return {
+      analyzePhase({ts, node, moduleDoc}){
+        switch(node.kind) {
+          case ts.SyntaxKind.FunctionDeclaration:
+            if(!isMixin(node)) {
+              const functionLike = createFunctionLike(node);
+              moduleDoc.declarations.push(functionLike);
+            }
+            break;
+        }
+      }
+    }
+  }
+
+  function createArrowFunction(node) {
+    const arrowFunction = node?.declarationList?.declarations?.find(declaration => ts__default['default'].SyntaxKind.ArrowFunction === declaration?.initializer?.kind);
+
+    let functionLikeTemplate = {
+      kind: 'function',
+      name: arrowFunction?.name?.getText() || '',
+    };
+    
+    functionLikeTemplate = handleParametersAndReturnType(functionLikeTemplate, arrowFunction?.initializer);
+    functionLikeTemplate = handleJsDoc(functionLikeTemplate, node);
+
+    return functionLikeTemplate;
+  }
+
+  /**
+   * arrowFunctionPlugin
+   * 
+   * handles arrow functions
+   */
+  function arrowFunctionPlugin() {
+    return {
+      analyzePhase({ts, node, moduleDoc}){
+        switch(node.kind) {
+          case ts.SyntaxKind.VariableStatement:
+            if(!isMixin(node) && hasInitializer(node)) {
+              const functionLike = createArrowFunction(node);
+              moduleDoc.declarations.push(functionLike);
+            }
+            break;
+        }
+      }
+    }
+  }
+
+  function createAttribute(node) {
+    const attributeTemplate = {
+      name: node?.text || ''
+    };
+    return attributeTemplate;
+  }
+
+  function createAttributeFromField(field) {
+    const attribute = {
+      ...field,
+      fieldName: field.name
+    };
+
+    /** 
+     * Delete the following properties because they don't exist on a attributeDoc 
+     */
+    delete attribute.kind;
+    delete attribute.static;
+    delete attribute.privacy;
+
+    return attribute;
+  }
+
+  function createField(node) {
+    let fieldTemplate = {
+      kind: 'field',
+      name: node?.name?.getText() || '',
+    };
+
+    /** 
+     * if is private field
+     * @example class Foo { #bar = ''; }
+     */ 
+    if (ts__default['default'].isPrivateIdentifier(node.name)) {
+      fieldTemplate.privacy = 'private';
+    }
+
+    /**
+     * Add TS type
+     * @example class Foo { bar: string = ''; }
+     */ 
+    if(node.type) {
+      fieldTemplate.type = { text: node.type.getText() };
+    }
+
+    fieldTemplate = handleModifiers(fieldTemplate, node);
+    fieldTemplate = handleJsDoc(fieldTemplate, node);
+    fieldTemplate = handleDefaultValue(fieldTemplate, node);
+
+    return fieldTemplate;
+  }
+
+  function handleDefaultValue(fieldTemplate, node) {
+    if(isPrimitive(node.initializer)) {
+      fieldTemplate.default = node.initializer.text;
+    }
+
+    return fieldTemplate;
+  }
+
+  /**
+   * Creates a classDoc
+   */
+  function createClass(node, moduleDoc) {
+    const isDefault = hasDefaultModifier(node);
+    
+    let classTemplate = {
+      kind: 'class',
+      description: '',
+      name: isDefault ? 'default' : node?.name?.getText() || node?.parent?.parent?.name?.getText() || '',
+      cssProperties: [],
+      cssParts: [],
+      slots: [],
+      members: [],
+      events: [],
+      attributes: []
+    };
+
+    node?.members?.forEach(member => {
+      /**
+       * Handle attributes
+       */
+      if (isProperty(member)) {
+        if (member?.name?.getText() === 'observedAttributes') {
+          /** 
+           * @example static observedAttributes
+           */
+          if (ts__default['default'].isPropertyDeclaration(member)) {
+            member?.initializer?.elements?.forEach((element) => {
+              if (ts__default['default'].isStringLiteral(element)) {
+                const attribute = createAttribute(element);
+                classTemplate.attributes.push(attribute);
+              }
+            });
+          }
+
+          /**
+           * @example static get observedAttributes() {}
+           */
+          if (ts__default['default'].isGetAccessor(member)) {
+            const returnStatement = member?.body?.statements?.find(isReturnStatement);
+
+            returnStatement?.expression?.elements?.forEach((element) => {
+              if (ts__default['default'].isStringLiteral(element)) {
+                const attribute = createAttribute(element);
+                classTemplate.attributes.push(attribute);
+              }
+            });
+          }
+        }
+      }
+    });
+
+    /**
+     * Second pass through a class's members.
+     * We do this in two passes, because we need to know whether or not a class has any 
+     * attributes, so we handle those first.
+     */
+    const gettersAndSetters = [];
+    node?.members?.forEach(member => {
+      /**
+       * Handle class methods
+       */
+      if(ts__default['default'].isMethodDeclaration(member)) {
+        const method = createFunctionLike(member);
+        classTemplate.members.push(method);
+      }
+
+      /**
+       * Handle fields
+       */
+      if (isProperty(member)) {
+        if (gettersAndSetters.includes(member?.name?.getText())) {
+          return;
+        } else {
+          gettersAndSetters.push(member?.name?.getText());
+        }
+
+        const field = createField(member);
+        classTemplate.members.push(field);
+
+        /**
+         * Handle @attr
+         * If a field has a @attr annotation, also create an attribute for it
+         */
+        if(hasAttrAnnotation(member)) {
+          let attribute = createAttributeFromField(field);
+          attribute = handleAttrJsDoc(member, attribute);
+
+          /**
+           * If the attribute already exists, merge it together with the extra
+           * information we got from the field (like type, summary, description, etc)
+           */
+          let attrAlreadyExists = classTemplate.attributes.find(attr => attr.name === attribute.name);
+          
+          if(attrAlreadyExists) {
+            classTemplate.attributes = classTemplate.attributes.map(attr => {
+              return attr.name === attribute.name ? { ...attrAlreadyExists, ...attribute } : attr;
+            });
+          } else {
+            classTemplate.attributes.push(attribute);
+          }
+        }
+      }
+
+      /**
+       * Handle events
+       * 
+       * In order to find `this.dispatchEvent` calls, we have to traverse a method's AST
+       */
+      if (ts__default['default'].isMethodDeclaration(member)) {
+        eventsVisitor(member, classTemplate);
+      }
+    });
+
+    classTemplate?.members?.forEach(member => {
+      getDefaultValuesFromConstructorVisitor(node, member);
+    });
+
+    /**
+     * Inheritance
+     */
+    classTemplate = handleHeritage(classTemplate, moduleDoc, node);
+
+    return classTemplate;
+  }
+
+  function eventsVisitor(source, classTemplate) {
+    visitNode(source);
+
+    function visitNode(node) {
+      switch (node.kind) {
+        case ts__default['default'].SyntaxKind.CallExpression:
+
+          /** If callexpression is `this.dispatchEvent` */
+          if (isDispatchEvent(node)) {
+            node?.arguments?.forEach((arg) => {
+              if (arg.kind === ts__default['default'].SyntaxKind.NewExpression) {
+                const eventName = arg.arguments[0].text;
+
+                /**
+                 * Check if event already exists
+                 */
+                const eventExists = classTemplate?.events?.some(event => event.name === eventName);
+
+                if(!eventExists) {
+                  let eventDoc = {
+                    name: eventName,
+                    type: {
+                      text: arg.expression.text,
+                    },
+                  };
+    
+                  eventDoc = handleJsDoc(eventDoc, node?.parent);
+                  classTemplate.events.push(eventDoc);
+                }
+              }
+            });
+
+          }
+      }
+
+      ts__default['default'].forEachChild(node, visitNode);
+    }
+  }
+
+  function getDefaultValuesFromConstructorVisitor(source, member) {
+    visitNode(source);
+
+    function visitNode(node) {
+      switch (node.kind) {
+        case ts__default['default'].SyntaxKind.Constructor:
+          /** 
+           * For every member that was added in the classDoc, we want to add a default value if we can
+           * To do this, we visit a class's constructor, and loop through the statements
+           */
+          node.body?.statements?.filter((statement) => statement.kind === ts__default['default'].SyntaxKind.ExpressionStatement)
+            .filter((statement) => statement.expression.kind === ts__default['default'].SyntaxKind.BinaryExpression)
+            .forEach((statement) => {
+              if (
+                statement.expression?.left?.name?.getText() === member.name &&
+                member.kind === 'field'
+              ) {
+                member = handleJsDoc(member, statement);
+
+                /** Only add defaults for primitives for now */
+                if(isPrimitive(statement.expression.right)) {
+                  member.default = statement.expression.right.getText();
+                }
+              }
+            });
+          break;
+      }
+
+      ts__default['default'].forEachChild(node, visitNode);
+    }
+  }
+
+  /**
+   * classPlugin
+   * 
+   * handles classes
+   */
+  function classPlugin() {
+    return {
+      analyzePhase({ts, node, moduleDoc}){
+        switch(node.kind) {
+          case ts.SyntaxKind.ClassDeclaration:
+            const klass = createClass(node, moduleDoc);
+            moduleDoc.declarations.push(klass);
+            break;
+        }
+      }
+    }
+  }
+
+  /**
+   * Takes a mixinFunctionNode, which is the function/arrow function containing the mixin class
+   * and the actual class node returned by the mixin declaration
+   */
+  function createMixin(mixinFunctionNode, mixinClassNode, moduleDoc) {
+    let mixinTemplate = createClass(mixinClassNode, moduleDoc);
+
+    mixinTemplate = handleParametersAndReturnType(mixinTemplate, mixinFunctionNode?.declarationList?.declarations?.[0]?.initializer || mixinFunctionNode);
+    mixinTemplate = handleJsDoc(mixinTemplate, mixinFunctionNode);
+    mixinTemplate = handleName(mixinTemplate, mixinFunctionNode);
+    mixinTemplate = turnClassDocIntoMixin(mixinTemplate);
+
+    return mixinTemplate;
+  }
+
+  function handleName(mixin, node) {
+    mixin.name = node?.name?.getText()  || node?.parent?.name?.getText() || node?.declarationList?.declarations?.[0]?.name?.getText() || '';
+    return mixin;
+  }
+
+  /**
+   * Turns a classDoc into a mixin
+   */
+  function turnClassDocIntoMixin(mixin) {
+    mixin.kind = 'mixin';
+    delete mixin.superclass;
+    delete mixin.return;
+    return mixin;
+  }
+
+  /**
+   * mixinPlugin
+   * 
+   * handles mixins
+   */
+  function mixinPlugin() {
+    return {
+      analyzePhase({ts, node, moduleDoc}){
+        switch(node.kind) {
+          case ts.SyntaxKind.VariableStatement:
+          case ts.SyntaxKind.FunctionDeclaration:
+            /**
+             * Try to extract mixin nodes, if its a mixin
+             */
+            if(isMixin(node)) {
+              const { mixinFunction, mixinClass } = extractMixinNodes(node);
+              let mixin = createMixin(mixinFunction, mixinClass, moduleDoc);
+              moduleDoc.declarations.push(mixin);
+            }
+            break;
+        }
+      }
+    }
+  }
+
+  function createVariable(variableStatementNode, declarationNode) {
+    let variableTemplate = {
+      kind: 'variable',
+      name: declarationNode?.name?.getText() || ''
+    };
+
+    if(declarationNode?.type) {
+      variableTemplate.type = { text: declarationNode?.type?.getText() };
+    }
+
+    variableTemplate = handleJsDoc(variableTemplate, variableStatementNode);
+
+    return variableTemplate;
+  }
+
+  /**
+   * variablePlugin
+   * 
+   * handles variables
+   */
+  function variablePlugin() {
+    return {
+      analyzePhase({ts, node, moduleDoc}){
+        switch(node.kind) {
+          case ts.SyntaxKind.VariableStatement:
+            if(!isMixin(node)) {
+              node?.declarationList?.declarations?.forEach(declaration => {
+                /**
+                 * It can be the case that a variable is already present in the declarations,
+                 * for example if the variable is also an arrow function. So we need to make sure
+                 * the declaration doesnt already exist before adding it to a modules declarations
+                 */
+                const alreadyExists = moduleDoc?.declarations?.some(_declaration => _declaration.name === declaration?.name?.getText());
+
+                if(!alreadyExists) {
+                  const variable = createVariable(node, declaration);
+                  moduleDoc.declarations.push(variable);
+                }
+              });
+            }
+            break;
+        }
+      }
+    }
   }
 
   /**
@@ -2173,6 +2207,7 @@ var analyzer = (function (exports, ts) {
   /**
    * 🚨 TODO
    * - Lightning web components
+   * - handle name after @attr my-attribute jsdoc annotation
    */
 
   /**

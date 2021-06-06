@@ -2,7 +2,7 @@ import ts from 'typescript';
 import { createFunctionLike } from './createFunctionLike.js';
 import { createAttribute, createAttributeFromField } from './createAttribute.js';
 import { createField } from './createClassField.js';
-import { handleHeritage, handleJsDoc } from './handlers.js';
+import { handleHeritage, handleJsDoc, handleAttrJsDoc } from './handlers.js';
 import { hasDefaultModifier } from '../../../utils/exports.js';
 import { isProperty, isDispatchEvent, hasAttrAnnotation, isReturnStatement, isPrimitive } from '../../../utils/ast-helpers.js';
 
@@ -93,7 +93,8 @@ export function createClass(node, moduleDoc) {
        * If a field has a @attr annotation, also create an attribute for it
        */
       if(hasAttrAnnotation(member)) {
-        const attribute = createAttributeFromField(field);
+        let attribute = createAttributeFromField(field);
+        attribute = handleAttrJsDoc(member, attribute);
 
         /**
          * If the attribute already exists, merge it together with the extra

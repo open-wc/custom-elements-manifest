@@ -51,6 +51,46 @@
           },
           "customElement": true,
           "tagName": "my-el"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Foo",
+          "members": [
+            {
+              "kind": "field",
+              "name": "foo",
+              "description": "this is the field description",
+              "type": {
+                "text": "string"
+              },
+              "default": ""
+            },
+            {
+              "kind": "field",
+              "name": "member",
+              "description": "this is the description",
+              "type": {
+                "text": "string"
+              },
+              "default": "''"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "my-attr",
+              "description": "this is the attr description",
+              "type": {
+                "text": "string"
+              },
+              "default": "",
+              "fieldName": "foo"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "customElement": true
         }
       ],
       "exports": [
@@ -59,6 +99,14 @@
           "name": "my-el",
           "declaration": {
             "name": "MyEl",
+            "module": "fixtures/class-attributes/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Foo",
+          "declaration": {
+            "name": "Foo",
             "module": "fixtures/class-attributes/package/my-element.js"
           }
         }
