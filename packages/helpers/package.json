@@ -1,0 +1,22 @@
+{
+  "name": "helpers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "uvu test",
+    "test:watch": "watchexec -w test npm test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "uvu": "^0.5.1",
+    "watchexec-bin": "^1.0.0"
+  }
+}
