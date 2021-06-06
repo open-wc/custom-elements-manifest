@@ -396,7 +396,9 @@ A plugin is a function that returns an object. There are several hooks you can o
 
 > **TIP:** When writing custom plugins, [ASTExplorer](https://astexplorer.net/#/gist/f99a9fba2c21e015d0a8590d291523e5/cce02565e487b584c943d317241991f19b105f94) is your friend 🙂
 
-For a reference implementation of a plugin, you can take a look at the [Stencil plugin](/plugins/stencil.js), here's an example of a simpler plugin, that adds a custom JSDoc tag to a members doc:
+To get started developing custom plugins, take a look at the [cem-plugin-template](https://github.com/open-wc/cem-plugin-template) repository to quickly get you up and running. 
+
+Here's an example of a simple plugin, that adds a custom JSDoc tag to a members doc:
 
 Example source code:
 ```js
@@ -475,6 +477,8 @@ function generateReadme() {
   }
 }
 ```
+
+> Make sure to check out the [cem-plugin-template](https://github.com/open-wc/cem-plugin-template) repository if you're interested in authoring custom plugins.
 
 ## How it works
 
