@@ -72,7 +72,7 @@ export interface PackageLinkPhaseParams {
  */
 export interface Plugin {
   /**
-   * @summary Plugin hook that runs in the analyze phase.
+   * @summary Plugin hook that runs in the collect phase.
    *
    * Runs for all modules in a project, before continuing to the `analyzePhase`
    */
