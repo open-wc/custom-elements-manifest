@@ -4,6 +4,7 @@ import { FEATURES } from './features/index.js';
 /**
  * 🚨 TODO
  * - Lightning web components
+ * - handle name after @attr my-attribute jsdoc annotation
  */
 
 /**

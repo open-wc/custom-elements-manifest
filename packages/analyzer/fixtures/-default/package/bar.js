@@ -1,8 +1,18 @@
-export class Foo { 
+export class Foo extends HTMLElement { 
   /**
-   * Determines whether the element should attempt to subscribe i.e. begin querying
-   * Override to prevent subscribing unless your conditions are met
-   * @override
+   * this is the field description
+   * @type {string}
+   * @attr my-attr this is the attr description
    */
-  shouldSubscribe() {}
+  foo = '';
+
+  member;
+
+  constructor() {
+    super();
+    /** @type {string} this is the description */
+    this.member = '';
+  }
+
+  static observedAttributes = ['my-attr']
 }

@@ -324,9 +324,17 @@ var lit = (function (exports, ts) {
           }
         }
 
-        if(tag?.comment) {
-          doc.description = tag.comment;
-        }
+        /**
+         * @TODO I dont think this is good here
+         * I think I added this to add a description to members in a constructor, but it looks like it
+         * takes the description of the @attr jsdoc notation, so I gotta take a look at this and fix it
+         * in a good way
+         * 
+         * Make sure to add some tests for both these cases (members in constructor and @attr)
+         */
+        // if(tag?.comment && safe(() => tag?.tagName?.getText()) !== 'attr') {
+        //   doc.description = tag.comment;
+        // }
 
         /** @returns */
         if(tag.kind === ts__default['default'].SyntaxKind.JSDocReturnTag) {
@@ -339,6 +347,10 @@ var lit = (function (exports, ts) {
 
         /** @type */
         if(tag.kind === ts__default['default'].SyntaxKind.JSDocTypeTag) {
+          if(tag?.comment) {
+            doc.description = tag.comment;
+          }
+
           doc.type = {
             text: handleJsDocType(tag.typeExpression.type.getText())
           };

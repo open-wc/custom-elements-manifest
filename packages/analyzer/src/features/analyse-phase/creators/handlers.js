@@ -1,4 +1,6 @@
 import ts from 'typescript';
+import parse from 'comment-parser';
+
 import { has, resolveModuleOrPackageSpecifier, safe } from '../../../utils/index.js';
 import { handleJsDocType } from '../../../utils/jsdoc.js';
 
@@ -73,10 +75,6 @@ export function handleJsDoc(doc, node) {
         }
       }
 
-      if(tag?.comment) {
-        doc.description = tag.comment;
-      }
-
       /** @returns */
       if(tag.kind === ts.SyntaxKind.JSDocReturnTag) {
         doc.return = {
@@ -88,6 +86,10 @@ export function handleJsDoc(doc, node) {
 
       /** @type */
       if(tag.kind === ts.SyntaxKind.JSDocTypeTag) {
+        if(tag?.comment) {
+          doc.description = tag.comment;
+        }
+
         doc.type = {
           text: handleJsDocType(tag.typeExpression.type.getText())
         }
@@ -174,4 +176,25 @@ export function handleHeritage(classTemplate, moduleDoc, node) {
   });
 
   return classTemplate;
+}
+
+/**
+ * Handles fields that have an @attr jsdoc annotation and gets the attribute name (if specified) and the description
+ * @example @attr my-attr this is the attr description
+ */
+export function handleAttrJsDoc(node, doc) {
+  node?.jsDoc?.forEach(jsDoc => {
+    const docs = parse.parse(jsDoc?.getFullText())?.find(doc => doc?.tags?.some(({tag}) => tag === 'attr'));
+    const attrTag = docs?.tags?.find(({tag}) => tag === 'attr');
+
+    if(attrTag?.name) {
+      doc.name = attrTag.name;
+    }
+    
+    if(attrTag?.description) {
+      doc.description = attrTag.description;
+    }
+  });
+
+  return doc;
 }
