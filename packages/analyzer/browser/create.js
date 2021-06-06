@@ -2223,6 +2223,7 @@ var analyzer = (function (exports, ts) {
       analyze(currModule, moduleDoc, context, mergedPlugins);
       customElementsManifest.modules.push(moduleDoc);
 
+      if(dev) console.log('[MODULE LINK PHASE]: ', currModule.fileName);
       /**
        * LINK PHASE
        * All information for a module has been gathered, now we can link information together. Like:
@@ -2234,6 +2235,7 @@ var analyzer = (function (exports, ts) {
       });
     });
 
+    if(dev) console.log('[PACKAGE LINK PHASE]');
     /** 
      * PACKAGE LINK PHASE 
      * All modules have now been parsed, we can now link information from across modules together
