@@ -4,6 +4,7 @@
   "description": "",
   "license": "MIT",
   "type": "module",
+  "types": "index.d.ts",
   "bin": {
     "custom-elements-manifest": "./index.js",
     "cem": "./index.js"
