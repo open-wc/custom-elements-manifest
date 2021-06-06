@@ -35,7 +35,7 @@ export function exampleJSDocTagPlugin() {
             const tags = (doc?.tags ?? []).filter(isExampleTag);
 
             if (tags.length && !sawExamples) {
-              classDoc.description += `## Examples\n\n`;
+              classDoc.description += `\n\n## Examples\n\n`;
               sawExamples = true;
             }
 
@@ -45,7 +45,7 @@ export function exampleJSDocTagPlugin() {
                 console.log(`Found @example ${heading}`);
               classDoc.description += `### ${heading}\n${rest.join('\n')}\n\n`;
             }
-            classDoc.description = classDoc.description.trimEnd();
+            classDoc.description = classDoc.description.trim();
           }
         }
       }
