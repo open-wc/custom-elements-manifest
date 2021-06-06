@@ -45,7 +45,7 @@ export interface AnalyzePhaseParams {
 
 export interface ModuleLinkPhaseParams {
   /**
-   * The completed manifest, i.e. the output of the analyze phase
+   * The completed moduleDoc, i.e. the output of the analyze phase
    */
   moduleDoc: Module;
 
