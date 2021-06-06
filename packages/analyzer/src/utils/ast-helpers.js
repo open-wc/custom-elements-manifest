@@ -1,4 +1,5 @@
 import ts from 'typescript';
+import { safe } from './index.js';
 
 /**
  * AST HELPERS
@@ -23,7 +24,7 @@ export const isCustomElementsDefineCall = node => (node?.expression?.getText() =
  * @example @attr
  */
 export function hasAttrAnnotation(member) {
-  return member?.jsDoc?.some(jsDoc => jsDoc?.tags?.some(tag => tag?.tagName?.getText() === 'attr'));
+  return member?.jsDoc?.some(jsDoc => jsDoc?.tags?.some(tag => safe(() => tag?.tagName?.getText()) === 'attr'));
 }
 
 

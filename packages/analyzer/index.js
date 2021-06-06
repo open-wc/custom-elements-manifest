@@ -68,6 +68,7 @@ import {
     const customElementsManifest = create({
       modules,
       plugins,
+      dev: mergedOptions.dev
     });
     
     fs.writeFileSync(`${process.cwd()}/custom-elements.json`, `${JSON.stringify(customElementsManifest, null, 2)}\n`);

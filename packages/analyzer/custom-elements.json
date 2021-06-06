@@ -9,36 +9,22 @@
         {
           "kind": "class",
           "description": "",
-          "name": "MyElement",
+          "name": "Foo",
           "members": [
             {
-              "kind": "field",
-              "name": "message",
-              "default": "'bar'",
-              "description": "- some description",
-              "type": {
-                "text": "string"
-              }
+              "kind": "method",
+              "name": "shouldSubscribe",
+              "description": "Determines whether the element should attempt to subscribe i.e. begin querying\nOverride to prevent subscribing unless your conditions are met"
             }
-          ],
-          "attributes": [
-            {
-              "description": "description goes here",
-              "name": "my-attr"
-            }
-          ],
-          "superclass": {
-            "name": "HTMLElement"
-          },
-          "customElement": true
+          ]
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "MyElement",
+          "name": "Foo",
           "declaration": {
-            "name": "MyElement",
+            "name": "Foo",
             "module": "fixtures/-default/package/bar.js"
           }
         }

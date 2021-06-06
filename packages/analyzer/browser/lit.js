@@ -5,6 +5,47 @@ var lit = (function (exports, ts) {
 
   var ts__default = /*#__PURE__*/_interopDefaultLegacy(ts);
 
+  /**
+   * GENERAL UTILITIES
+   */
+
+  const has = arr => Array.isArray(arr) && arr.length > 0;
+
+  /**
+   * @example node?.decorators?.find(decorator('Component'))
+   */
+  const decorator = type => decorator => decorator?.expression?.expression?.getText() === type || decorator?.expression?.getText() === type;
+
+  function resolveModuleOrPackageSpecifier(moduleDoc, name) {
+    const foundImport = moduleDoc?.imports?.find(_import => _import.name === name);
+
+    /* item is imported from another file */
+    if(foundImport) {
+      if(foundImport.isBareModuleSpecifier) {
+        /* import is from 3rd party package */
+        return { package: foundImport.importPath }
+      } else {
+        /* import is imported from a local module */
+        return { module: new URL(foundImport.importPath, `file:///${moduleDoc.path}`).pathname }
+      }
+    } else {
+      /* item is in current module */
+      return { module: moduleDoc.path }
+    }
+  }
+
+  /**
+   * TS seems to struggle sometimes with the `.getText()` method on JSDoc annotations, like `@deprecated` in ts v4.0.0 and `@override` in ts v4.3.2
+   * This is a bug in TS, but still annoying, so we add some safety rails here
+   */
+  const safe = (cb, returnType = '') => {
+    try {
+      return cb();
+    } catch {
+      return returnType;
+    }
+  };
+
   /** 
    * Whether or not node is:
    * - Number
@@ -44,35 +85,6 @@ var lit = (function (exports, ts) {
         }
       });
       return result;
-    }
-  }
-
-  /**
-   * GENERAL UTILITIES
-   */
-
-  const has = arr => Array.isArray(arr) && arr.length > 0;
-
-  /**
-   * @example node?.decorators?.find(decorator('Component'))
-   */
-  const decorator = type => decorator => decorator?.expression?.expression?.getText() === type || decorator?.expression?.getText() === type;
-
-  function resolveModuleOrPackageSpecifier(moduleDoc, name) {
-    const foundImport = moduleDoc?.imports?.find(_import => _import.name === name);
-
-    /* item is imported from another file */
-    if(foundImport) {
-      if(foundImport.isBareModuleSpecifier) {
-        /* import is from 3rd party package */
-        return { package: foundImport.importPath }
-      } else {
-        /* import is imported from a local module */
-        return { module: new URL(foundImport.importPath, `file:///${moduleDoc.path}`).pathname }
-      }
-    } else {
-      /* item is in current module */
-      return { module: moduleDoc.path }
     }
   }
 
@@ -334,7 +346,7 @@ var lit = (function (exports, ts) {
 
 
         /** @summary */
-        if(tag?.tagName?.getText() === 'summary') {
+        if(safe(() => tag?.tagName?.getText()) === 'summary') {
           doc.summary = tag.comment;
         }
 

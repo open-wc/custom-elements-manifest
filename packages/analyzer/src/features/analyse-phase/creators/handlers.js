@@ -1,5 +1,5 @@
 import ts from 'typescript';
-import { has, resolveModuleOrPackageSpecifier } from '../../../utils/index.js';
+import { has, resolveModuleOrPackageSpecifier, safe } from '../../../utils/index.js';
 import { handleJsDocType } from '../../../utils/jsdoc.js';
 
 /**
@@ -95,7 +95,7 @@ export function handleJsDoc(doc, node) {
 
 
       /** @summary */
-      if(tag?.tagName?.getText() === 'summary') {
+      if(safe(() => tag?.tagName?.getText()) === 'summary') {
         doc.summary = tag.comment;
       }
 
