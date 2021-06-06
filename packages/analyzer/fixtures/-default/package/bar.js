@@ -1,14 +1,8 @@
-
-
-/**
- * @attr my-attr description goes here
- */
-export class MyElement extends HTMLElement {
-  message = ''
-
-  constructor() {
-    super();
-    /** @type {string} - some description */
-    this.message = 'bar';
-  }
+export class Foo { 
+  /**
+   * Determines whether the element should attempt to subscribe i.e. begin querying
+   * Override to prevent subscribing unless your conditions are met
+   * @override
+   */
+  shouldSubscribe() {}
 }

@@ -39,6 +39,10 @@ export const toKebabCase = str => {
   }).join('');
 }
 
+/**
+ * TS seems to struggle sometimes with the `.getText()` method on JSDoc annotations, like `@deprecated` in ts v4.0.0 and `@override` in ts v4.3.2
+ * This is a bug in TS, but still annoying, so we add some safety rails here
+ */
 export const safe = (cb, returnType = '') => {
   try {
     return cb();

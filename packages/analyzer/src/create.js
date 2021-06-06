@@ -4,7 +4,6 @@ import { FEATURES } from './features/index.js';
 /**
  * 🚨 TODO
  * - Lightning web components
- * - storybook
  */
 
 /**
@@ -13,7 +12,7 @@ import { FEATURES } from './features/index.js';
  * This function is the core of the analyzer. It takes an array of ts sourceFiles, and creates a
  * custom elements manifest.
  */
-export function create({modules, plugins = []}) {
+export function create({modules, plugins = [], dev = false}) {
   const customElementsManifest = {
     schemaVersion: '0.1.0',
     readme: '',
@@ -28,6 +27,7 @@ export function create({modules, plugins = []}) {
   const context = {};
 
   modules.forEach(currModule => {
+    if(dev) console.log('[COLLECT PHASE]: ', currModule.fileName);
     /**
      * COLLECT PHASE
      * First pass through all modules. Can be used to gather imports, exports, types, default values, 
@@ -37,6 +37,7 @@ export function create({modules, plugins = []}) {
   });
 
   modules.forEach(currModule => {
+    if(dev) console.log('[ANALYZE PHASE]: ', currModule.fileName);
     const moduleDoc = {
       kind: "javascript-module",
       path: currModule.fileName,

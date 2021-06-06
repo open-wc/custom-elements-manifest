@@ -38,6 +38,7 @@ cem analyze
 | analyze          |            | Analyze your components                              |                       |
 | --globs          | string[]   | Globs to analyze                                     | `--globs "foo.js"`    |
 | --exclude        | string[]   | Globs to exclude                                     | `--exclude "foo.js"`  |
+| --dev            | boolean    | Enables extra logging for debugging                  | `--dev`               |
 | --litelement     | boolean    | Enable special handling for LitElement syntax        | `--litelement`        |
 | --fast           | boolean    | Enable special handling for FASTElement syntax       | `--fast`              |
 | --stencil        | boolean    | Enable special handling for Stencil syntax           | `--stencil`           |

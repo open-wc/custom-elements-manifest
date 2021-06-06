@@ -34,6 +34,18 @@ var analyzer = (function (exports, ts) {
   }
 
   /**
+   * TS seems to struggle sometimes with the `.getText()` method on JSDoc annotations, like `@deprecated` in ts v4.0.0 and `@override` in ts v4.3.2
+   * This is a bug in TS, but still annoying, so we add some safety rails here
+   */
+  const safe = (cb, returnType = '') => {
+    try {
+      return cb();
+    } catch {
+      return returnType;
+    }
+  };
+
+  /**
    * UTILITIES RELATED TO MODULE IMPORTS
    */
 
@@ -330,7 +342,7 @@ var analyzer = (function (exports, ts) {
    * @example @attr
    */
   function hasAttrAnnotation(member) {
-    return member?.jsDoc?.some(jsDoc => jsDoc?.tags?.some(tag => tag?.tagName?.getText() === 'attr'));
+    return member?.jsDoc?.some(jsDoc => jsDoc?.tags?.some(tag => safe(() => tag?.tagName?.getText()) === 'attr'));
   }
 
 
@@ -494,7 +506,7 @@ var analyzer = (function (exports, ts) {
 
 
         /** @summary */
-        if(tag?.tagName?.getText() === 'summary') {
+        if(safe(() => tag?.tagName?.getText()) === 'summary') {
           doc.summary = tag.comment;
         }
 
@@ -1666,7 +1678,7 @@ var analyzer = (function (exports, ts) {
                * Instead, we use TS for this JSDoc annotation.
                */
               jsDoc?.tags?.forEach(tag => {
-                switch(tag?.tagName?.getText()) {
+                switch(safe(() => tag?.tagName?.getText())) {
                   case 'summary':
                     classDoc.summary = tag?.comment;
                     break;
@@ -2161,7 +2173,6 @@ var analyzer = (function (exports, ts) {
   /**
    * 🚨 TODO
    * - Lightning web components
-   * - storybook
    */
 
   /**
@@ -2170,7 +2181,7 @@ var analyzer = (function (exports, ts) {
    * This function is the core of the analyzer. It takes an array of ts sourceFiles, and creates a
    * custom elements manifest.
    */
-  function create({modules, plugins = []}) {
+  function create({modules, plugins = [], dev = false}) {
     const customElementsManifest = {
       schemaVersion: '0.1.0',
       readme: '',
@@ -2185,6 +2196,7 @@ var analyzer = (function (exports, ts) {
     const context = {};
 
     modules.forEach(currModule => {
+      if(dev) console.log('[COLLECT PHASE]: ', currModule.fileName);
       /**
        * COLLECT PHASE
        * First pass through all modules. Can be used to gather imports, exports, types, default values, 
@@ -2194,6 +2206,7 @@ var analyzer = (function (exports, ts) {
     });
 
     modules.forEach(currModule => {
+      if(dev) console.log('[ANALYZE PHASE]: ', currModule.fileName);
       const moduleDoc = {
         kind: "javascript-module",
         path: currModule.fileName,
