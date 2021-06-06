@@ -25,7 +25,7 @@ export function create({modules, plugins = [], dev = false}) {
     ...plugins,
   ];
 
-  const context = {};
+  const context = { dev };
 
   modules.forEach(currModule => {
     if(dev) console.log('[COLLECT PHASE]: ', currModule.fileName);
