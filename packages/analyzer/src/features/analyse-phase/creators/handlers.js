@@ -130,7 +130,7 @@ export function handleJsDoc(doc, node) {
  * Creates a mixin for inside a classDoc
  */
 export function createClassDeclarationMixin(name, moduleDoc) {
-  const mixin = { 
+  const mixin = {
     name,
     ...resolveModuleOrPackageSpecifier(moduleDoc, name)
   };
@@ -139,9 +139,15 @@ export function createClassDeclarationMixin(name, moduleDoc) {
 
 /**
  * Handles mixins and superclass
+ + * @param {import('custom-elements-manifest/schema').ClassDeclaration} classTemplate
+ + * @param {import('custom-elements-manifest/schema').Module} moduleDoc
+ + * @param {import('typescript').ClassDeclaration} node
  */
 export function handleHeritage(classTemplate, moduleDoc, node) {
   node?.heritageClauses?.forEach((clause) => {
+    if (clause.token !== ts.SyntaxKind.ExtendsKeyword)
+      return;
+
     clause?.types?.forEach((type) => {
       const mixins = [];
       let node = type.expression;
@@ -190,7 +196,7 @@ export function handleAttrJsDoc(node, doc) {
     if(attrTag?.name) {
       doc.name = attrTag.name;
     }
-    
+
     if(attrTag?.description) {
       doc.description = attrTag.description;
     }
