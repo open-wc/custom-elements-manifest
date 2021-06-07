@@ -62,15 +62,20 @@ export function extractMixinNodes(node) {
         const classDeclaration = node.body.statements.find(statement => ts.isClassDeclaration(statement));
         const returnStatement = node.body.statements.find(statement => ts.isReturnStatement(statement));
 
+        /** Avoid undefined === undefined */
+        if(!(classDeclaration && returnStatement))
+          return;
+
+        const classDeclarationName = classDeclaration.name?.getText?.();
+        const returnValue =
+            returnStatement.expression?.kind === ts.SyntaxKind.AsExpression ? returnStatement.expression.expression.getText()
+          : returnStatement.expression?.getText();
+
         /**
-         * If the classDeclaration inside the function body has the same name as whats being 
+         * If the classDeclaration inside the function body has the same name as whats being
          * returned from the function, consider it a mixin
          */
-        if(
-          /** Avoid undefined === undefined */
-          (classDeclaration && returnStatement) &&
-          (classDeclaration?.name?.getText() === returnStatement?.expression?.getText())
-        ) {
+        if (classDeclarationName === returnValue) {
           return {
             mixinFunction: node,
             mixinClass: classDeclaration
