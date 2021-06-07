@@ -10,11 +10,6 @@
           "kind": "mixin",
           "description": "",
           "name": "ArrowFunctionMixin",
-          "parameters": [
-            {
-              "name": "klass"
-            }
-          ],
           "members": [
             {
               "kind": "field",
@@ -37,6 +32,11 @@
             {
               "name": "my-attribute"
             }
+          ],
+          "parameters": [
+            {
+              "name": "klass"
+            }
           ]
         },
         {
@@ -53,6 +53,16 @@
           "kind": "mixin",
           "description": "",
           "name": "ReturnValMixin",
+          "parameters": [
+            {
+              "name": "klass"
+            }
+          ]
+        },
+        {
+          "kind": "mixin",
+          "description": "",
+          "name": "ReturnValArrowMixin",
           "parameters": [
             {
               "name": "klass"
@@ -108,6 +118,14 @@
           "name": "ReturnValMixin",
           "declaration": {
             "name": "ReturnValMixin",
+            "module": "fixtures/mixins/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ReturnValArrowMixin",
+          "declaration": {
+            "name": "ReturnValArrowMixin",
             "module": "fixtures/mixins/package/my-element.js"
           }
         },
