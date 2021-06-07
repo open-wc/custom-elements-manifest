@@ -20,6 +20,7 @@
   },
   "main": "index.js",
   "scripts": {
+    "prepublishOnly": "npm test && npm run build:browser",
     "start": "nodemon --ignore './custom-elements.json' index.js analyze --dev",
     "test": "uvu test",
     "build:browser": "rollup -c rollup.config.js",
