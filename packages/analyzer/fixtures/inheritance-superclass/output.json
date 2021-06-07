@@ -65,12 +65,7 @@
             },
             {
               "kind": "method",
-              "name": "requestUpdate",
-              "return": {
-                "type": {
-                  "text": "Promise<boolean>"
-                }
-              }
+              "name": "implementsMethod"
             },
             {
               "kind": "method",
