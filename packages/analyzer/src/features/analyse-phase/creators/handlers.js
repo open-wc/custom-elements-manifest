@@ -130,7 +130,7 @@ export function handleJsDoc(doc, node) {
  * Creates a mixin for inside a classDoc
  */
 export function createClassDeclarationMixin(name, moduleDoc) {
-  const mixin = { 
+  const mixin = {
     name,
     ...resolveModuleOrPackageSpecifier(moduleDoc, name)
   };
@@ -142,6 +142,10 @@ export function createClassDeclarationMixin(name, moduleDoc) {
  */
 export function handleHeritage(classTemplate, moduleDoc, node) {
   node?.heritageClauses?.forEach((clause) => {
+    // NB: Ignoring `ImplementsKeyword` for now, future revisions may retrieve docs per-field for the implemented methods.
+    if (clause.token !== ts.SyntaxKind.ExtendsKeyword)
+      return;
+
     clause?.types?.forEach((type) => {
       const mixins = [];
       let node = type.expression;
@@ -190,7 +194,7 @@ export function handleAttrJsDoc(node, doc) {
     if(attrTag?.name) {
       doc.name = attrTag.name;
     }
-    
+
     if(attrTag?.description) {
       doc.description = attrTag.description;
     }
