@@ -371,6 +371,14 @@ var analyzer = (function (exports, ts) {
   }
 
   /**
+   * Get the return value expression of a return statement, omitting the type assertion
+   */
+  const getReturnValue = returnStatement => (
+      returnStatement.expression?.kind === ts__default['default'].SyntaxKind.AsExpression ? returnStatement.expression.expression.getText()
+    : returnStatement.expression?.getText()
+  );
+
+  /**
    * CUSTOM-ELEMENTS-DEFINE-CALLS
    * 
    * Analyzes calls for:
@@ -1122,6 +1130,29 @@ var analyzer = (function (exports, ts) {
               };
             }
           }
+
+          /**
+           * @example const MyMixin = klass => { class MyMixin extends klass {} return MyMixin;}
+           */
+          if (body && ts__default['default'].isBlock(body)) {
+            const classDeclaration = body.statements.find(statement => ts__default['default'].isClassDeclaration(statement));
+            const returnStatement = body.statements.find(statement => ts__default['default'].isReturnStatement(statement));
+            /** Avoid undefined === undefined */
+            if(!(classDeclaration && returnStatement))
+              return;
+            const classDeclarationName = classDeclaration.name?.getText?.();
+            const returnValue = getReturnValue(returnStatement);
+            /**
+             * If the classDeclaration inside the function body has the same name as whats being
+             * returned from the function, consider it a mixin
+             */
+            if (classDeclarationName === returnValue) {
+              return {
+                mixinFunction: node,
+                mixinClass: classDeclaration
+              }
+            }
+          }
         }
       }
 
@@ -1150,15 +1181,18 @@ var analyzer = (function (exports, ts) {
           const classDeclaration = node.body.statements.find(statement => ts__default['default'].isClassDeclaration(statement));
           const returnStatement = node.body.statements.find(statement => ts__default['default'].isReturnStatement(statement));
 
+          /** Avoid undefined === undefined */
+          if(!(classDeclaration && returnStatement))
+            return;
+
+          const classDeclarationName = classDeclaration.name?.getText?.();
+          const returnValue = getReturnValue(returnStatement);
+
           /**
-           * If the classDeclaration inside the function body has the same name as whats being 
+           * If the classDeclaration inside the function body has the same name as whats being
            * returned from the function, consider it a mixin
            */
-          if(
-            /** Avoid undefined === undefined */
-            (classDeclaration && returnStatement) &&
-            (classDeclaration?.name?.getText() === returnStatement?.expression?.getText())
-          ) {
+          if (classDeclarationName === returnValue) {
             return {
               mixinFunction: node,
               mixinClass: classDeclaration
