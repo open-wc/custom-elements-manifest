@@ -1,5 +1,7 @@
 import ts from 'typescript';
 
+import { getReturnValue } from '../utils/ast-helpers.js';
+
 export const isMixin = node => !!extractMixinNodes(node);
 
 export function extractMixinNodes(node) {
@@ -32,6 +34,29 @@ export function extractMixinNodes(node) {
               mixinFunction: variableDeclaration.initializer,
               mixinClass: returnStatement.expression
             };
+          }
+        }
+
+        /**
+         * @example const MyMixin = klass => { class MyMixin extends klass {} return MyMixin;}
+         */
+        if (body && ts.isBlock(body)) {
+          const classDeclaration = body.statements.find(statement => ts.isClassDeclaration(statement));
+          const returnStatement = body.statements.find(statement => ts.isReturnStatement(statement));
+          /** Avoid undefined === undefined */
+          if(!(classDeclaration && returnStatement))
+            return;
+          const classDeclarationName = classDeclaration.name?.getText?.();
+          const returnValue = getReturnValue(returnStatement)
+          /**
+           * If the classDeclaration inside the function body has the same name as whats being
+           * returned from the function, consider it a mixin
+           */
+          if (classDeclarationName === returnValue) {
+            return {
+              mixinFunction: node,
+              mixinClass: classDeclaration
+            }
           }
         }
       }
@@ -67,9 +92,7 @@ export function extractMixinNodes(node) {
           return;
 
         const classDeclarationName = classDeclaration.name?.getText?.();
-        const returnValue =
-            returnStatement.expression?.kind === ts.SyntaxKind.AsExpression ? returnStatement.expression.expression.getText()
-          : returnStatement.expression?.getText();
+        const returnValue = getReturnValue(returnStatement)
 
         /**
          * If the classDeclaration inside the function body has the same name as whats being

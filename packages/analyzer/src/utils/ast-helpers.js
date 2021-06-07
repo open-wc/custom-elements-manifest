@@ -85,3 +85,11 @@ export function getElementNameFromDecorator(decorator) {
  * @example @attr({attribute: 'my-el'})
  */
 export const getOptionsObject = decorator => decorator?.expression?.arguments?.find(arg => arg.kind === ts.SyntaxKind.ObjectLiteralExpression);
+
+/**
+ * Get the return value expression of a return statement, omitting the type assertion
+ */
+export const getReturnValue = returnStatement => (
+    returnStatement.expression?.kind === ts.SyntaxKind.AsExpression ? returnStatement.expression.expression.getText()
+  : returnStatement.expression?.getText()
+);
