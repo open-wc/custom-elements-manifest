@@ -1,4 +1,4 @@
-const has = arr => Array.isArray(arr) && arr?.length > 0;
+export const has = arr => Array.isArray(arr) && arr?.length > 0;
 
 /** Package */
 export function hasModules(_package) {

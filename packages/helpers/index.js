@@ -9,6 +9,7 @@ export class CustomElementsJson {
   _tagNames = new Map();
   _definitions = new Map();
   _mixins = new Map();
+  _classLikes = new Map();
 
   constructor(
     { schemaVersion, readme, modules } = {
@@ -27,12 +28,16 @@ export class CustomElementsJson {
     this.loopAll((item) => {
       if (h.isClass(item)) {
         this._classes.set(item.name, item);
+        this._classLikes.set(item.name, item);
       }
 
       if (h.isMixin(item)) {
         this._mixins.set(item.name, item);
+        this._classLikes.set(item.name, item);
       }
+    });
 
+    this.loopAll((item) => {
       if (h.isCustomElementExport(item)) {
         this._tagNames.set(
           item.name,
@@ -92,29 +97,55 @@ export class CustomElementsJson {
   getInheritanceTree(className) {
     const tree = [];
 
-    let klass = this._classes.get(className);
+    let klass = this._classLikes.get(className);
+    const mixins = this.getMixins();
 
-    if (klass) {
+    if(klass) {
       tree.push(klass);
 
-      klass?.mixins?.forEach((mixin) => {
-        tree.push(this._mixins.get(mixin.name));
+      klass?.mixins?.forEach(mixin => {
+        let foundMixin = mixins.find(m => m.name === mixin.name);
+        if(foundMixin) {
+          tree.push(foundMixin);
+
+          while(h.has(foundMixin?.mixins)) {
+            foundMixin?.mixins?.forEach(mixin => {
+              foundMixin =  mixins.find(m => m.name === mixin.name);
+              if(foundMixin) {
+                tree.push(foundMixin);
+              }
+            });
+          }
+        }
       });
-
-      while (this._classes.has(klass.superclass.name)) {
-        const newKlass = this._classes.get(klass.superclass.name);
-
-        newKlass?.mixins?.forEach((mixin) => {
-          tree.push(this._mixins.get(mixin.name));
+      
+      while(this._classLikes.has(klass?.superclass?.name)) {
+        const newKlass = this._classLikes.get(klass.superclass.name);
+        
+        klass?.mixins?.forEach(mixin => {
+          let foundMixin = mixins.find(m => m.name === mixin.name);
+          if(foundMixin) {
+            tree.push(foundMixin);
+    
+            while(h.has(foundMixin?.mixins)) {
+              foundMixin?.mixins?.forEach(mixin => {
+                foundMixin =  mixins.find(m => m.name === mixin.name);
+                if(foundMixin) {
+                  tree.push(foundMixin);
+                }
+              });
+            }
+          }
         });
 
         tree.push(newKlass);
         klass = newKlass;
       }
-
-      return tree;
-    }
+      
+      return [...new Map(tree.map(item => [item.name, item])).values()];
+    } 
     return [];
+
   }
 
   getModuleForClass(className) {
