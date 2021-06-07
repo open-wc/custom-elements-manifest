@@ -91,6 +91,11 @@
             },
             {
               "kind": "field",
+              "name": "prop11",
+              "static": true
+            },
+            {
+              "kind": "field",
               "name": "prop12",
               "static": true
             },

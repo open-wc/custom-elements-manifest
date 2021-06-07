@@ -93,3 +93,9 @@ export const getReturnValue = returnStatement => (
     returnStatement.expression?.kind === ts.SyntaxKind.AsExpression ? returnStatement.expression.expression.getText()
   : returnStatement.expression?.getText()
 );
+
+/**
+ * Is this class member a static member?
+ */
+export const isStaticMember = member =>
+  member.modifiers?.some?.(x => x.kind === ts.SyntaxKind.StaticKeyword);
