@@ -944,7 +944,7 @@ var analyzer = (function (exports, ts) {
    * Creates a mixin for inside a classDoc
    */
   function createClassDeclarationMixin(name, moduleDoc) {
-    const mixin = { 
+    const mixin = {
       name,
       ...resolveModuleOrPackageSpecifier(moduleDoc, name)
     };
@@ -956,6 +956,9 @@ var analyzer = (function (exports, ts) {
    */
   function handleHeritage(classTemplate, moduleDoc, node) {
     node?.heritageClauses?.forEach((clause) => {
+      /* Ignoring `ImplementsKeyword` for now, future revisions may retrieve docs per-field for the implemented methods. */
+      if (clause.token !== ts__default['default'].SyntaxKind.ExtendsKeyword) return;
+
       clause?.types?.forEach((type) => {
         const mixins = [];
         let node = type.expression;
@@ -1004,7 +1007,7 @@ var analyzer = (function (exports, ts) {
       if(attrTag?.name) {
         doc.name = attrTag.name;
       }
-      
+
       if(attrTag?.description) {
         doc.description = attrTag.description;
       }
