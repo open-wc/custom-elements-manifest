@@ -64,58 +64,12 @@
               "name": "classField"
             },
             {
-              "kind": "field",
-              "name": "controllers",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "addController",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "controller",
-                  "type": {
-                    "text": "ReactiveController"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "removeController",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "controller",
-                  "type": {
-                    "text": "ReactiveController"
-                  }
-                }
-              ]
-            },
-            {
               "kind": "method",
               "name": "requestUpdate",
               "return": {
                 "type": {
                   "text": "Promise<boolean>"
                 }
-              }
-            },
-            {
-              "kind": "field",
-              "name": "updateComplete",
-              "type": {
-                "text": "Promise<boolean>"
               }
             },
             {

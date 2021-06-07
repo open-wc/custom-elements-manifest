@@ -139,12 +139,10 @@ export function createClassDeclarationMixin(name, moduleDoc) {
 
 /**
  * Handles mixins and superclass
- + * @param {import('custom-elements-manifest/schema').ClassDeclaration} classTemplate
- + * @param {import('custom-elements-manifest/schema').Module} moduleDoc
- + * @param {import('typescript').ClassDeclaration} node
  */
 export function handleHeritage(classTemplate, moduleDoc, node) {
   node?.heritageClauses?.forEach((clause) => {
+    // NB: Ignoring `ImplementsKeyword` for now, future revisions may retrieve docs per-field for the implemented methods.
     if (clause.token !== ts.SyntaxKind.ExtendsKeyword)
       return;
 
