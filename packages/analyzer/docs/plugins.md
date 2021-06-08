@@ -175,11 +175,12 @@ export default function myPlugin() {
 
 The `context` object also holds an array of a modules imports that are available during the `analyzePhase` and the `moduleLinkPhase`.
 
-source code:
+Source code:
 ```js
 import { foo } from 'bar';
 ```
 
+Plugin code:
 ```js
 export default function myPlugin() {
   return {
