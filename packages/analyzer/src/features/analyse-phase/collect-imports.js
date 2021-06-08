@@ -85,6 +85,9 @@ export function collectImportsPlugin() {
       }
     },
     moduleLinkPhase({context}) {
+      console.log(context);
+    },
+    packageLinkPhase({context}) {
       context.imports = [];
     }
   }

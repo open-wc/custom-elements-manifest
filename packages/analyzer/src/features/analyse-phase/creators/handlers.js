@@ -141,7 +141,6 @@ export function createClassDeclarationMixin(name, moduleDoc, context) {
  * Handles mixins and superclass
  */
 export function handleHeritage(classTemplate, moduleDoc, context, node) {
-  console.log(1, context)
   node?.heritageClauses?.forEach((clause) => {
     /* Ignoring `ImplementsKeyword` for now, future revisions may retrieve docs per-field for the implemented methods. */
     if (clause.token !== ts.SyntaxKind.ExtendsKeyword) return;
