@@ -6,17 +6,6 @@ import {
 import { isBareModuleSpecifier } from '../../utils/index.js';
 
 /**
- * @TODO: For some reason it now adds a / at the start of a path, not sure why... figure out
- *         Actual:
-        --················"module":·"/fixtures/inheritance-superclass/package/BatchingElement.js"
-        Expected:
-        ++················"module":·"fixtures/inheritance-superclass/package/BatchingElement.js"
-        ················}
-
- */
-
-
-/**
  * COLLECT-IMPORTS
  * 
  * Collects a modules imports so that declarations can later be resolved to their module/package.
