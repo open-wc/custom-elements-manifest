@@ -33,6 +33,7 @@ export function collectImportsPlugin() {
           kind: 'default',
           importPath: node.moduleSpecifier.text,
           isBareModuleSpecifier: isBareModuleSpecifier(node.moduleSpecifier.text),
+          isTypeOnly: !!node?.importClause?.isTypeOnly
         };
         currModuleImports.push(importTemplate);
       }
@@ -49,6 +50,7 @@ export function collectImportsPlugin() {
             kind: 'named',
             importPath: node.moduleSpecifier.text,
             isBareModuleSpecifier: isBareModuleSpecifier(node.moduleSpecifier.text),
+            isTypeOnly: !!node?.importClause?.isTypeOnly
           };
           currModuleImports.push(importTemplate);
         });
@@ -63,14 +65,17 @@ export function collectImportsPlugin() {
           kind: 'aggregate',
           importPath: node.moduleSpecifier.text,
           isBareModuleSpecifier: isBareModuleSpecifier(node.moduleSpecifier.text),
+          isTypeOnly: !!node?.importClause?.isTypeOnly
         };
         currModuleImports.push(importTemplate);
       }
     },
     analyzePhase({ts, node, context}) {
       if(node.kind === ts.SyntaxKind.SourceFile) {
+        
         /** Makes the imports available on the context object for a given module */
         context.imports = files[node.fileName];
+        console.log(context);
       }
     },
     packageLinkPhase({context}) {

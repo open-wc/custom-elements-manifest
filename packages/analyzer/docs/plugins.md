@@ -198,7 +198,8 @@ Outputs:
     name: 'foo',
     kind: 'named',
     importPath: 'bar',
-    isBareModuleSpecifier: true
+    isBareModuleSpecifier: true,
+    isTypeOnly: false // handles `import type { Foo } from 'bar';
   },
 ]
 ```
