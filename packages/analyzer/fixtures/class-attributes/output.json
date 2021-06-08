@@ -60,10 +60,10 @@
             {
               "kind": "field",
               "name": "foo",
-              "description": "this is the field description",
               "type": {
                 "text": "string"
               },
+              "description": "this is the field description",
               "default": ""
             },
             {
@@ -79,10 +79,10 @@
           "attributes": [
             {
               "name": "my-attr",
-              "description": "this is the attr description",
               "type": {
                 "text": "string"
               },
+              "description": "this is the attr description",
               "default": "",
               "fieldName": "foo"
             }

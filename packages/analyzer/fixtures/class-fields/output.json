@@ -14,6 +14,9 @@
             {
               "kind": "field",
               "name": "prop1",
+              "type": {
+                "text": "string"
+              },
               "default": ""
             },
             {
@@ -103,6 +106,53 @@
               "kind": "field",
               "name": "#prop13",
               "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "string",
+              "type": {
+                "text": "string"
+              },
+              "default": "string"
+            },
+            {
+              "kind": "field",
+              "name": "num",
+              "type": {
+                "text": "number"
+              },
+              "default": "1"
+            },
+            {
+              "kind": "field",
+              "name": "bool",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "stringConst",
+              "type": {
+                "text": "'string'"
+              },
+              "default": "'string'"
+            },
+            {
+              "kind": "field",
+              "name": "numConst",
+              "type": {
+                "text": "1"
+              },
+              "default": "1"
+            },
+            {
+              "kind": "field",
+              "name": "boolConst",
+              "type": {
+                "text": "false"
+              },
+              "default": "false"
             }
           ],
           "attributes": [

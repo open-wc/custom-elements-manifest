@@ -99,3 +99,18 @@ export const getReturnValue = returnStatement => (
  */
 export const isStaticMember = member =>
   member?.modifiers?.some?.(x => x.kind === ts.SyntaxKind.StaticKeyword);
+
+export function isBoolean(node) {
+  const v = node.initializer?.getText?.();
+  return v === 'true' || v === 'false';
+}
+
+export function isAsConst(initializer) {
+  return (
+    initializer &&
+    initializer.kind &&
+    ts.isAsExpression(initializer) &&
+    ts.isTypeReferenceNode(initializer.type) &&
+    initializer.type.typeName.getText() === 'const'
+  );
+}

@@ -36,7 +36,15 @@ class MyEl extends HTMLElement {
   static prop12;
 
   #prop13;
-  
+
+  string = 'string';
+  num = 1;
+  bool = true;
+
+  stringConst = 'string' as const;
+  numConst = 1 as const;
+  boolConst = false as const;
+
   constructor() {
     super();
     this.prop2 = 'default';
