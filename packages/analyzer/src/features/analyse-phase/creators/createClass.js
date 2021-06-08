@@ -4,7 +4,7 @@ import { createAttribute, createAttributeFromField } from './createAttribute.js'
 import { createField } from './createClassField.js';
 import { handleHeritage, handleJsDoc, handleAttrJsDoc } from './handlers.js';
 import { hasDefaultModifier } from '../../../utils/exports.js';
-import { isProperty, isDispatchEvent, hasAttrAnnotation, isReturnStatement, isPrimitive } from '../../../utils/ast-helpers.js';
+import { hasAttrAnnotation, isDispatchEvent, isPrimitive, isProperty, isReturnStatement, isStaticMember } from '../../../utils/ast-helpers.js';
 
 
 /**
@@ -79,10 +79,12 @@ export function createClass(node, moduleDoc) {
      * Handle fields
      */
     if (isProperty(member)) {
-      if (gettersAndSetters.includes(member?.name?.getText())) {
-        return;
-      } else {
-        gettersAndSetters.push(member?.name?.getText());
+      if (!isStaticMember(member)) {
+        if (gettersAndSetters.includes(member?.name?.getText())) {
+          return;
+        } else {
+          gettersAndSetters.push(member?.name?.getText());
+        }
       }
 
       const field = createField(member);
