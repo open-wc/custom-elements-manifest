@@ -379,6 +379,12 @@ var analyzer = (function (exports, ts) {
   );
 
   /**
+   * Is this class member a static member?
+   */
+  const isStaticMember = member =>
+    member?.modifiers?.some?.(x => x.kind === ts__default['default'].SyntaxKind.StaticKeyword);
+
+  /**
    * CUSTOM-ELEMENTS-DEFINE-CALLS
    * 
    * Analyzes calls for:
@@ -1391,10 +1397,16 @@ var analyzer = (function (exports, ts) {
        * Handle fields
        */
       if (isProperty(member)) {
-        if (gettersAndSetters.includes(member?.name?.getText())) {
-          return;
-        } else {
-          gettersAndSetters.push(member?.name?.getText());
+        /**
+         * A  class can have a static prop and an instance prop with the same name,
+         * both should be output in the CEM
+         */
+        if (!isStaticMember(member)) {
+          if (gettersAndSetters.includes(member?.name?.getText())) {
+            return;
+          } else {
+            gettersAndSetters.push(member?.name?.getText());
+          }
         }
 
         const field = createField(member);
