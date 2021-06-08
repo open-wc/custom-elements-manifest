@@ -84,10 +84,8 @@ export function collectImportsPlugin() {
         context.imports = files[node.fileName];
       }
     },
-    moduleLinkPhase({context}) {
-      console.log(context);
-    },
     packageLinkPhase({context}) {
+      /** Reset */
       context.imports = [];
     }
   }

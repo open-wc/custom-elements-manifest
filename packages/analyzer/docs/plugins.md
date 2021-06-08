@@ -143,6 +143,8 @@ plugins.forEach(({packageLinkPhase}) => {
 
 You may have noticed the `context` object that gets passed to each plugin hook. This is just an object that you can use to mutate and pass arbitrary data around in your plugins different hooks. It also contains some meta information, like for example whether or not a user is running the analyzer in `--dev` mode, for extra logging. This can be helpful for debugging purposes. The `context` object also holds an array of a modules imports.
 
+### Dev logging
+
 This means you can use the `context` object to supply additional logging, for example: 
 ```js
 export default function myPlugin() {
@@ -169,7 +171,9 @@ export default function myPlugin() {
 }
 ```
 
-The `context` object also holds an array of a modules imports:
+### Imports
+
+The `context` object also holds an array of a modules imports that are available during the `analyzePhase` and the `moduleLinkPhase`.
 
 source code:
 ```js
