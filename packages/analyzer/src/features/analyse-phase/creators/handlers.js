@@ -3,6 +3,17 @@ import parse from 'comment-parser';
 
 import { has, resolveModuleOrPackageSpecifier, safe } from '../../../utils/index.js';
 import { handleJsDocType } from '../../../utils/jsdoc.js';
+import { isAsConst, isBoolean, isPrimitive } from '../../../utils/ast-helpers.js';
+
+export function handleDefaultValue(doc, node) {
+  if(isPrimitive(node.initializer)) {
+    doc.default = node.initializer.text;
+  } else if (isAsConst(node.initializer)) {
+    doc.default = node.initializer.expression?.getText?.()
+  }
+
+  return doc;
+}
 
 /**
  * @example static foo;
@@ -28,6 +39,26 @@ export function handleModifiers(doc, node) {
         break;
     }
   });
+
+  return doc;
+}
+
+/**
+ * Add TS type
+ * @example class Foo { bar: string = ''; }
+ */
+export function handleTypeInference(doc, node) {
+  if (isBoolean(node))
+    doc.type = { text: 'boolean' };
+  else if (isAsConst(node.initializer))
+    doc.type = { text: node.initializer.expression.getText() };
+  else if (node.initializer && ts.isStringLiteral(node.initializer))
+    doc.type = { text: 'string' };
+  else if (node.initializer && ts.isNumericLiteral(node.initializer))
+    doc.type = { text: 'number' };
+  else if(node.type) {
+    doc.type = { text: node.type.getText() }
+  }
 
   return doc;
 }
