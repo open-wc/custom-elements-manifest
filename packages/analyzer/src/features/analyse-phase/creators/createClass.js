@@ -79,6 +79,10 @@ export function createClass(node, moduleDoc) {
      * Handle fields
      */
     if (isProperty(member)) {
+      /**
+       * A  class can have a static prop and an instance prop with the same name,
+       * both should be output in the CEM
+       */
       if (!isStaticMember(member)) {
         if (gettersAndSetters.includes(member?.name?.getText())) {
           return;

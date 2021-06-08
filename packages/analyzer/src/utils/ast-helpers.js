@@ -98,4 +98,4 @@ export const getReturnValue = returnStatement => (
  * Is this class member a static member?
  */
 export const isStaticMember = member =>
-  member.modifiers?.some?.(x => x.kind === ts.SyntaxKind.StaticKeyword);
+  member?.modifiers?.some?.(x => x.kind === ts.SyntaxKind.StaticKeyword);

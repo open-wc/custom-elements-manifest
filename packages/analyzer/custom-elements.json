@@ -8,15 +8,20 @@
       "declarations": [
         {
           "kind": "function",
-          "name": "foo"
+          "name": "AMixin",
+          "parameters": [
+            {
+              "name": "superclass"
+            }
+          ]
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "foo",
+          "name": "AMixin",
           "declaration": {
-            "name": "foo",
+            "name": "AMixin",
             "module": "fixtures/-default/package/bar.js"
           }
         }
