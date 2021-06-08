@@ -19,7 +19,7 @@ import { createClassDeclarationMixin } from './creators/handlers.js';
  */
 export function reexportedWrappedMixinExportsPlugin() {
   return {
-    analyzePhase({ts, node, moduleDoc}){
+    analyzePhase({ts, node, moduleDoc, context}){
       switch(node.kind) {
         case ts.SyntaxKind.VariableStatement:
           if(!isMixin(node)) {
@@ -61,7 +61,7 @@ export function reexportedWrappedMixinExportsPlugin() {
                      * Next, we need to add any other mixins found along the way to the exported mixin's `mixins` array
                      */
                     mixins?.forEach(mixin => {
-                      const newMixin = createClassDeclarationMixin(mixin, moduleDoc);
+                      const newMixin = createClassDeclarationMixin(mixin, moduleDoc, context);
                       foundMixin.mixins = [...(foundMixin?.mixins || []), newMixin];
                     });
 

@@ -15,8 +15,8 @@ var analyzer = (function (exports, ts) {
     return !!specifier?.replace(/'/g, '')[0].match(/[@a-zA-Z]/g);
   }
 
-  function resolveModuleOrPackageSpecifier(moduleDoc, name) {
-    const foundImport = moduleDoc?.imports?.find(_import => _import.name === name);
+  function resolveModuleOrPackageSpecifier(moduleDoc, context, name) {
+    const foundImport = context?.imports?.find(_import => _import.name === name);
 
     /* item is imported from another file */
     if(foundImport) {
@@ -68,14 +68,20 @@ var analyzer = (function (exports, ts) {
    * COLLECT-IMPORTS
    * 
    * Collects a modules imports so that declarations can later be resolved to their module/package.
-   * 
-   * Imports are not specified in the schema, so they will be deleted from the Manifest at a later stage.
    */
   function collectImportsPlugin() {
-    const imports = [];
+    const files = {};
+    let currModuleImports;
 
     return {
-      analyzePhase({node, moduleDoc}){
+      collectPhase({ts, node}) {
+        if(node.kind === ts.SyntaxKind.SourceFile) {
+          /**
+           * Create an empty array for each module we visit
+           */
+          files[node.fileName] = [];
+          currModuleImports = files[node.fileName];
+        }
 
         /** 
          * @example import defaultExport from 'foo'; 
@@ -86,8 +92,9 @@ var analyzer = (function (exports, ts) {
             kind: 'default',
             importPath: node.moduleSpecifier.text,
             isBareModuleSpecifier: isBareModuleSpecifier(node.moduleSpecifier.text),
+            isTypeOnly: !!node?.importClause?.isTypeOnly
           };
-          imports.push(importTemplate);
+          currModuleImports.push(importTemplate);
         }
 
         /**
@@ -102,8 +109,9 @@ var analyzer = (function (exports, ts) {
               kind: 'named',
               importPath: node.moduleSpecifier.text,
               isBareModuleSpecifier: isBareModuleSpecifier(node.moduleSpecifier.text),
+              isTypeOnly: !!node?.importClause?.isTypeOnly
             };
-            imports.push(importTemplate);
+            currModuleImports.push(importTemplate);
           });
         }
 
@@ -116,22 +124,22 @@ var analyzer = (function (exports, ts) {
             kind: 'aggregate',
             importPath: node.moduleSpecifier.text,
             isBareModuleSpecifier: isBareModuleSpecifier(node.moduleSpecifier.text),
+            isTypeOnly: !!node?.importClause?.isTypeOnly
           };
-          imports.push(importTemplate);
+          currModuleImports.push(importTemplate);
         }
-
-        moduleDoc.imports = imports;
       },
-
-      packageLinkPhase({customElementsManifest, context}){
-        /**
-         * Delete `imports` from the moduleDoc, since they are not specced in the schema
-         * and we only need them during AST stuff.
-         */
-        customElementsManifest.modules.forEach(moduleDoc => {
-          delete moduleDoc.imports;
-        });
+      analyzePhase({ts, node, context}) {
+        if(node.kind === ts.SyntaxKind.SourceFile) {
+          
+          /** Makes the imports available on the context object for a given module */
+          context.imports = files[node.fileName];
+        }
       },
+      packageLinkPhase({context}) {
+        /** Reset */
+        context.imports = [];
+      }
     }
   }
 
@@ -393,7 +401,7 @@ var analyzer = (function (exports, ts) {
    */
   function customElementsDefineCallsPlugin() {
     return {
-      analyzePhase({node, moduleDoc}){    
+      analyzePhase({node, moduleDoc, context}){    
 
         /** 
          * @example customElements.define('my-el', MyEl); 
@@ -408,7 +416,7 @@ var analyzer = (function (exports, ts) {
             name: elementTag,
             declaration: {
               name: elementClass,
-              ...resolveModuleOrPackageSpecifier(moduleDoc, elementClass)
+              ...resolveModuleOrPackageSpecifier(moduleDoc, context, elementClass)
             },
           };
       
@@ -957,10 +965,10 @@ var analyzer = (function (exports, ts) {
   /**
    * Creates a mixin for inside a classDoc
    */
-  function createClassDeclarationMixin(name, moduleDoc) {
+  function createClassDeclarationMixin(name, moduleDoc, context) {
     const mixin = {
       name,
-      ...resolveModuleOrPackageSpecifier(moduleDoc, name)
+      ...resolveModuleOrPackageSpecifier(moduleDoc, context, name)
     };
     return mixin;
   }
@@ -968,7 +976,7 @@ var analyzer = (function (exports, ts) {
   /**
    * Handles mixins and superclass
    */
-  function handleHeritage(classTemplate, moduleDoc, node) {
+  function handleHeritage(classTemplate, moduleDoc, context, node) {
     node?.heritageClauses?.forEach((clause) => {
       /* Ignoring `ImplementsKeyword` for now, future revisions may retrieve docs per-field for the implemented methods. */
       if (clause.token !== ts__default['default'].SyntaxKind.ExtendsKeyword) return;
@@ -981,11 +989,11 @@ var analyzer = (function (exports, ts) {
         /* gather mixin calls */
         if (ts__default['default'].isCallExpression(node)) {
           const mixinName = node.expression.getText();
-          mixins.push(createClassDeclarationMixin(mixinName, moduleDoc));
+          mixins.push(createClassDeclarationMixin(mixinName, moduleDoc, context));
           while (ts__default['default'].isCallExpression(node.arguments[0])) {
             node = node.arguments[0];
             const mixinName = node.expression.getText();
-            mixins.push(createClassDeclarationMixin(mixinName, moduleDoc));
+            mixins.push(createClassDeclarationMixin(mixinName, moduleDoc, context));
           }
           superClass = node.arguments[0].text;
         } else {
@@ -1328,7 +1336,7 @@ var analyzer = (function (exports, ts) {
   /**
    * Creates a classDoc
    */
-  function createClass(node, moduleDoc) {
+  function createClass(node, moduleDoc, context) {
     const isDefault = hasDefaultModifier(node);
     
     let classTemplate = {
@@ -1453,7 +1461,7 @@ var analyzer = (function (exports, ts) {
     /**
      * Inheritance
      */
-    classTemplate = handleHeritage(classTemplate, moduleDoc, node);
+    classTemplate = handleHeritage(classTemplate, moduleDoc, context, node);
 
     return classTemplate;
   }
@@ -1536,10 +1544,10 @@ var analyzer = (function (exports, ts) {
    */
   function classPlugin() {
     return {
-      analyzePhase({ts, node, moduleDoc}){
+      analyzePhase({ts, node, moduleDoc, context}){
         switch(node.kind) {
           case ts.SyntaxKind.ClassDeclaration:
-            const klass = createClass(node, moduleDoc);
+            const klass = createClass(node, moduleDoc, context);
             moduleDoc.declarations.push(klass);
             break;
         }
@@ -1551,8 +1559,8 @@ var analyzer = (function (exports, ts) {
    * Takes a mixinFunctionNode, which is the function/arrow function containing the mixin class
    * and the actual class node returned by the mixin declaration
    */
-  function createMixin(mixinFunctionNode, mixinClassNode, moduleDoc) {
-    let mixinTemplate = createClass(mixinClassNode, moduleDoc);
+  function createMixin(mixinFunctionNode, mixinClassNode, moduleDoc, context) {
+    let mixinTemplate = createClass(mixinClassNode, moduleDoc, context);
 
     mixinTemplate = handleParametersAndReturnType(mixinTemplate, mixinFunctionNode?.declarationList?.declarations?.[0]?.initializer || mixinFunctionNode);
     mixinTemplate = handleJsDoc(mixinTemplate, mixinFunctionNode);
@@ -1584,7 +1592,7 @@ var analyzer = (function (exports, ts) {
    */
   function mixinPlugin() {
     return {
-      analyzePhase({ts, node, moduleDoc}){
+      analyzePhase({ts, node, moduleDoc, context}){
         switch(node.kind) {
           case ts.SyntaxKind.VariableStatement:
           case ts.SyntaxKind.FunctionDeclaration:
@@ -1593,7 +1601,7 @@ var analyzer = (function (exports, ts) {
              */
             if(isMixin(node)) {
               const { mixinFunction, mixinClass } = extractMixinNodes(node);
-              let mixin = createMixin(mixinFunction, mixinClass, moduleDoc);
+              let mixin = createMixin(mixinFunction, mixinClass, moduleDoc, context);
               moduleDoc.declarations.push(mixin);
             }
             break;
@@ -1800,7 +1808,7 @@ var analyzer = (function (exports, ts) {
    */
   function reexportedWrappedMixinExportsPlugin() {
     return {
-      analyzePhase({ts, node, moduleDoc}){
+      analyzePhase({ts, node, moduleDoc, context}){
         switch(node.kind) {
           case ts.SyntaxKind.VariableStatement:
             if(!isMixin(node)) {
@@ -1842,7 +1850,7 @@ var analyzer = (function (exports, ts) {
                        * Next, we need to add any other mixins found along the way to the exported mixin's `mixins` array
                        */
                       mixins?.forEach(mixin => {
-                        const newMixin = createClassDeclarationMixin(mixin, moduleDoc);
+                        const newMixin = createClassDeclarationMixin(mixin, moduleDoc, context);
                         foundMixin.mixins = [...(foundMixin?.mixins || []), newMixin];
                       });
 
@@ -2189,7 +2197,7 @@ var analyzer = (function (exports, ts) {
 
                 newItem.inheritedFrom = {
                   name: klass.name,
-                  ...resolveModuleOrPackageSpecifier(containingModule, klass.name)
+                  ...resolveModuleOrPackageSpecifier(containingModule, context, klass.name)
                 };
 
                 customElement[type] = [...(customElement[type] || []), newItem];
@@ -2210,9 +2218,9 @@ var analyzer = (function (exports, ts) {
    */
   const FEATURES = [
     /** COLLECT */
+    collectImportsPlugin(),
     
     /** ANALYSE */
-    collectImportsPlugin(),
     exportsPlugin(),
     customElementsDefineCallsPlugin(),
     functionLikePlugin(),

@@ -8,21 +8,36 @@
       "declarations": [
         {
           "kind": "function",
-          "name": "AMixin",
-          "parameters": [
-            {
-              "name": "superclass"
-            }
-          ]
+          "name": "bar"
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "AMixin",
+          "name": "bar",
           "declaration": {
-            "name": "AMixin",
+            "name": "bar",
             "module": "fixtures/-default/package/bar.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/-default/package/foo.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "foo"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "foo",
+          "declaration": {
+            "name": "foo",
+            "module": "fixtures/-default/package/foo.js"
           }
         }
       ]

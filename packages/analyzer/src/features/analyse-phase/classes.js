@@ -7,10 +7,10 @@ import { createClass } from './creators/createClass.js';
  */
 export function classPlugin() {
   return {
-    analyzePhase({ts, node, moduleDoc}){
+    analyzePhase({ts, node, moduleDoc, context}){
       switch(node.kind) {
         case ts.SyntaxKind.ClassDeclaration:
-          const klass = createClass(node, moduleDoc);
+          const klass = createClass(node, moduleDoc, context);
           moduleDoc.declarations.push(klass);
           break;
       }

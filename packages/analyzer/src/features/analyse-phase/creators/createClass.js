@@ -10,7 +10,7 @@ import { hasAttrAnnotation, isDispatchEvent, isPrimitive, isProperty, isReturnSt
 /**
  * Creates a classDoc
  */
-export function createClass(node, moduleDoc) {
+export function createClass(node, moduleDoc, context) {
   const isDefault = hasDefaultModifier(node);
   
   let classTemplate = {
@@ -135,7 +135,7 @@ export function createClass(node, moduleDoc) {
   /**
    * Inheritance
    */
-  classTemplate = handleHeritage(classTemplate, moduleDoc, node);
+  classTemplate = handleHeritage(classTemplate, moduleDoc, context, node);
 
   return classTemplate;
 }

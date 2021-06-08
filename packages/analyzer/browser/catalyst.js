@@ -14,8 +14,8 @@ var catalyst = (function (exports, ts) {
    */
   const decorator = type => decorator => decorator?.expression?.expression?.getText() === type || decorator?.expression?.getText() === type;
 
-  function resolveModuleOrPackageSpecifier(moduleDoc, name) {
-    const foundImport = moduleDoc?.imports?.find(_import => _import.name === name);
+  function resolveModuleOrPackageSpecifier(moduleDoc, context, name) {
+    const foundImport = context?.imports?.find(_import => _import.name === name);
 
     /* item is imported from another file */
     if(foundImport) {
@@ -101,7 +101,7 @@ var catalyst = (function (exports, ts) {
 
   function controllerPlugin() {
     return {
-      analyzePhase({ts, node, moduleDoc}){
+      analyzePhase({ts, node, moduleDoc, context}){
         switch(node.kind) {
           case ts.SyntaxKind.ClassDeclaration:
             /**
@@ -117,7 +117,7 @@ var catalyst = (function (exports, ts) {
                 name: toKebabCase(className).replace('-element', ''),
                 declaration: {
                   name: className,
-                  ...resolveModuleOrPackageSpecifier(moduleDoc, className)
+                  ...resolveModuleOrPackageSpecifier(moduleDoc, context, className)
                 },
               };
 

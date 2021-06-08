@@ -16,8 +16,8 @@ var lit = (function (exports, ts) {
    */
   const decorator = type => decorator => decorator?.expression?.expression?.getText() === type || decorator?.expression?.getText() === type;
 
-  function resolveModuleOrPackageSpecifier(moduleDoc, name) {
-    const foundImport = moduleDoc?.imports?.find(_import => _import.name === name);
+  function resolveModuleOrPackageSpecifier(moduleDoc, context, name) {
+    const foundImport = context?.imports?.find(_import => _import.name === name);
 
     /* item is imported from another file */
     if(foundImport) {
@@ -96,7 +96,7 @@ var lit = (function (exports, ts) {
    */
   function customElementDecoratorPlugin() {
     return {
-      analyzePhase({node, moduleDoc}){
+      analyzePhase({node, moduleDoc, context}){
         if(has(node.decorators)) {
           const customElementDecorator = node.decorators?.find(decorator('customElement'));
 
@@ -109,7 +109,7 @@ var lit = (function (exports, ts) {
               name: tagName,
               declaration: {
                 name: className,
-                ...resolveModuleOrPackageSpecifier(moduleDoc, className)
+                ...resolveModuleOrPackageSpecifier(moduleDoc, context, className)
               },
             };
 

@@ -1,12 +1,11 @@
 /**
  * COLLECT
  */
-
+import { collectImportsPlugin } from './collect-phase/collect-imports.js';
 
 /**
  * ANALYSE
  */
-import { collectImportsPlugin } from './analyse-phase/collect-imports.js';
 import { exportsPlugin } from './analyse-phase/exports.js';
 import { customElementsDefineCallsPlugin } from './analyse-phase/custom-elements-define-calls.js';
 import { functionLikePlugin } from './analyse-phase/function-like.js';
@@ -45,9 +44,9 @@ import { litPlugin } from './framework-plugins/lit/lit.js';
  */
 export const FEATURES = [
   /** COLLECT */
+  collectImportsPlugin(),
   
   /** ANALYSE */
-  collectImportsPlugin(),
   exportsPlugin(),
   customElementsDefineCallsPlugin(),
   functionLikePlugin(),
