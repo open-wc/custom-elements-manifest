@@ -45,7 +45,7 @@ export function applyInheritancePlugin() {
 
               newItem.inheritedFrom = {
                 name: klass.name,
-                ...resolveModuleOrPackageSpecifier(containingModule, klass.name)
+                ...resolveModuleOrPackageSpecifier(containingModule, context, klass.name)
               }
 
               customElement[type] = [...(customElement[type] || []), newItem];

@@ -6,8 +6,8 @@ import { handleJsDoc } from './handlers.js';
  * Takes a mixinFunctionNode, which is the function/arrow function containing the mixin class
  * and the actual class node returned by the mixin declaration
  */
-export function createMixin(mixinFunctionNode, mixinClassNode, moduleDoc) {
-  let mixinTemplate = createClass(mixinClassNode, moduleDoc);
+export function createMixin(mixinFunctionNode, mixinClassNode, moduleDoc, context) {
+  let mixinTemplate = createClass(mixinClassNode, moduleDoc, context);
 
   mixinTemplate = handleParametersAndReturnType(mixinTemplate, mixinFunctionNode?.declarationList?.declarations?.[0]?.initializer || mixinFunctionNode);
   mixinTemplate = handleJsDoc(mixinTemplate, mixinFunctionNode);

@@ -13,8 +13,8 @@ export function isBareModuleSpecifier(specifier) {
   return !!specifier?.replace(/'/g, '')[0].match(/[@a-zA-Z]/g);
 }
 
-export function resolveModuleOrPackageSpecifier(moduleDoc, name) {
-  const foundImport = moduleDoc?.imports?.find(_import => _import.name === name);
+export function resolveModuleOrPackageSpecifier(moduleDoc, context, name) {
+  const foundImport = context?.imports?.find(_import => _import.name === name);
 
   /* item is imported from another file */
   if(foundImport) {

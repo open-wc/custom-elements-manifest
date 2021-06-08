@@ -129,10 +129,10 @@ export function handleJsDoc(doc, node) {
 /**
  * Creates a mixin for inside a classDoc
  */
-export function createClassDeclarationMixin(name, moduleDoc) {
+export function createClassDeclarationMixin(name, moduleDoc, context) {
   const mixin = {
     name,
-    ...resolveModuleOrPackageSpecifier(moduleDoc, name)
+    ...resolveModuleOrPackageSpecifier(moduleDoc, context, name)
   };
   return mixin;
 }
@@ -140,7 +140,8 @@ export function createClassDeclarationMixin(name, moduleDoc) {
 /**
  * Handles mixins and superclass
  */
-export function handleHeritage(classTemplate, moduleDoc, node) {
+export function handleHeritage(classTemplate, moduleDoc, context, node) {
+  console.log(1, context)
   node?.heritageClauses?.forEach((clause) => {
     /* Ignoring `ImplementsKeyword` for now, future revisions may retrieve docs per-field for the implemented methods. */
     if (clause.token !== ts.SyntaxKind.ExtendsKeyword) return;
@@ -153,11 +154,11 @@ export function handleHeritage(classTemplate, moduleDoc, node) {
       /* gather mixin calls */
       if (ts.isCallExpression(node)) {
         const mixinName = node.expression.getText();
-        mixins.push(createClassDeclarationMixin(mixinName, moduleDoc))
+        mixins.push(createClassDeclarationMixin(mixinName, moduleDoc, context))
         while (ts.isCallExpression(node.arguments[0])) {
           node = node.arguments[0];
           const mixinName = node.expression.getText();
-          mixins.push(createClassDeclarationMixin(mixinName, moduleDoc));
+          mixins.push(createClassDeclarationMixin(mixinName, moduleDoc, context));
         }
         superClass = node.arguments[0].text;
       } else {
