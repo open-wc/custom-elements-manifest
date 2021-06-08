@@ -75,7 +75,6 @@ export function collectImportsPlugin() {
         
         /** Makes the imports available on the context object for a given module */
         context.imports = files[node.fileName];
-        console.log(context);
       }
     },
     packageLinkPhase({context}) {
