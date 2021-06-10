@@ -136,10 +136,11 @@ customElements.define('my-element', MyElement);
 **TL;DR:** 
 - JavaScript 
 - TypeScript
-- LitElement (opt-in via CLI flag) 
-- FASTElement (opt-in via CLI flag) 
-- Stencil (opt-in via CLI flag)
-- Catalyst (opt-in via CLI flag)
+- [LitElement](https://lit.dev) (opt-in via CLI flag) 
+- [FASTElement](https://www.fast.design/docs/fast-element/getting-started/) (opt-in via CLI flag) 
+- [Stencil](https://stenciljs.com/) (opt-in via CLI flag)
+- [Catalyst](https://github.github.io/catalyst/) (opt-in via CLI flag)
+- [Atomico](https://atomicojs.github.io/) (opt-in via [community plugin](https://github.com/atomicojs/custom-elements-manifest))
 
 Support for other web component libraries can be done via custom [plugins](#plugins), feel free to create your own for your favourite libraries.
 
