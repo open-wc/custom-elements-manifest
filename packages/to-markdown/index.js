@@ -20,7 +20,6 @@ const render = (item, properties) => {
     }
 
     if(prop === 'type') {
-      console.log(item)
       md += `${item?.type?.text || ''} |`
       return `${md}\n`;
     }
