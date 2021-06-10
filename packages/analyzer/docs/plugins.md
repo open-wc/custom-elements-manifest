@@ -68,6 +68,8 @@ A plugin usually is a function that returns an object, and has several (optional
 ```js
 export default function myPlugin() {
   return {
+    // Make sure to always give your plugin a name! This helps when debugging
+    name: 'my-plugin',
     // Runs for all modules in a project, before continuing to the `analyzePhase`
     collectPhase({ts, node, context}){},
     // Runs for each module
@@ -149,6 +151,7 @@ This means you can use the `context` object to supply additional logging, for ex
 ```js
 export default function myPlugin() {
   return {
+    name: 'my-plugin',
     analyzePhase({context}) {
       if(context.dev) {
         console.log('[my-plugin-name]: Some extra logging!');
@@ -164,6 +167,7 @@ Alternatively, it's also fine to keep 'state' in the closure of your plugin:
 export default function myPlugin() {
   const state = {};
   return {
+    name: 'my-plugin',
     analyzePhase() {
       // do something with state
     }
@@ -184,6 +188,7 @@ Plugin code:
 ```js
 export default function myPlugin() {
   return {
+    name: 'my-plugin',
     analyzePhase({context}) {
       console.log(context.imports);
     }
@@ -226,6 +231,7 @@ In a custom plugin, we have full access to our source code's AST, and we can eas
 ```js
 export default function fooPlugin() {
   return {
+    name: 'foo-plugin',
     analyzePhase({ts, node, moduleDoc, context}){
       switch (node.kind) {
         case ts.SyntaxKind.ClassDeclaration:
@@ -315,6 +321,7 @@ function generateReadme() {
   const components = ['my-component-a', 'my-component-b'];
 
   return {
+    name: 'readme-plugin',
     packageLinkPhase({customElementsManifest, context}) {
       customElementsManifest.modules.forEach(mod => {
         mod.declarations.forEach(declaration => {
@@ -367,6 +374,7 @@ export default {
 ```js
 export function myPlugin(typeChecker) {
   return {
+    name: 'my-plugin',
     analyzePhase({ts, moduleDoc, context}) {
       // do something with typeChecker
     }

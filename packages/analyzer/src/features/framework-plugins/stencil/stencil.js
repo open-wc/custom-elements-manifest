@@ -7,6 +7,7 @@ export function stencilPlugin() {
   const METHOD_DENYLIST = ['componentWillLoad', 'componentDidLoad', 'componentShouldUpdate', 'componentWillRender', 'componentDidRender', 'componentWillUpdate', 'componentDidUpdate'];
 
   return {
+    name: 'CORE - STENCIL',
     // Runs for each module
     analyzePhase({ts, node, moduleDoc}){
       switch (node.kind) {

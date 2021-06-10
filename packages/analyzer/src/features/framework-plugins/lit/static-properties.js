@@ -9,6 +9,7 @@ import { isAlsoAttribute, hasStaticKeyword, getPropertiesObject, getAttributeNam
  */
 export function staticPropertiesPlugin() {
   return {
+    name: 'CORE - LIT-STATIC-PROPERTIES',
     analyzePhase({ts, node, moduleDoc}){
       switch (node.kind) {
         case ts.SyntaxKind.ClassDeclaration:    

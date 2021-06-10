@@ -96,6 +96,7 @@ var lit = (function (exports, ts) {
    */
   function customElementDecoratorPlugin() {
     return {
+      name: 'CORE - CUSTOM-ELEMENT-DECORATOR',
       analyzePhase({node, moduleDoc, context}){
         if(has(node.decorators)) {
           const customElementDecorator = node.decorators?.find(decorator('customElement'));
@@ -130,6 +131,7 @@ var lit = (function (exports, ts) {
     const METHOD_DENY_LIST = ['requestUpdate', 'performUpdate', 'shouldUpdate', 'update', 'render', 'firstUpdated', 'updated', 'willUpdate'];
 
     return {
+      name: 'CORE - LIT-METHOD-DENYLIST',
       moduleLinkPhase({moduleDoc}){
         const classes = moduleDoc?.declarations?.filter(declaration => declaration.kind === 'class');
 
@@ -150,6 +152,7 @@ var lit = (function (exports, ts) {
     const MEMBER_DENY_LIST = ['properties', 'styles'];
 
     return {
+      name: 'CORE - LIT-MEMBER-DENYLIST',
       moduleLinkPhase({moduleDoc}){
         const classes = moduleDoc?.declarations?.filter(declaration => declaration.kind === 'class');
 
@@ -227,6 +230,7 @@ var lit = (function (exports, ts) {
    */
   function propertyDecoratorPlugin() {
     return {
+      name: 'CORE - LIT-PROPERTY-DECORATOR',
       analyzePhase({ts, node, moduleDoc}){
         switch (node.kind) {
           case ts.SyntaxKind.ClassDeclaration:    
@@ -412,6 +416,7 @@ var lit = (function (exports, ts) {
    */
   function staticPropertiesPlugin() {
     return {
+      name: 'CORE - LIT-STATIC-PROPERTIES',
       analyzePhase({ts, node, moduleDoc}){
         switch (node.kind) {
           case ts.SyntaxKind.ClassDeclaration:    

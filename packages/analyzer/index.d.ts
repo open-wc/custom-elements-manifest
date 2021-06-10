@@ -71,6 +71,7 @@ export interface PackageLinkPhaseParams {
  * A Custom Elements Manifest Analyzer plugin
  */
 export interface Plugin {
+  name: string,
   /**
    * @summary Plugin hook that runs in the collect phase.
    *

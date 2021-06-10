@@ -86,6 +86,7 @@ var fast = (function (exports, ts) {
 
   function attrDecoratorPlugin() {
     return {
+      name: 'CORE - ATTR-DECORATOR',
       analyzePhase({ts, node, moduleDoc}){
         switch(node.kind) {
           case ts.SyntaxKind.ClassDeclaration:
@@ -129,6 +130,7 @@ var fast = (function (exports, ts) {
    */
   function customElementDecoratorPlugin() {
     return {
+      name: 'CORE - CUSTOM-ELEMENT-DECORATOR',
       analyzePhase({node, moduleDoc, context}){
         if(has(node.decorators)) {
           const customElementDecorator = node.decorators?.find(decorator('customElement'));

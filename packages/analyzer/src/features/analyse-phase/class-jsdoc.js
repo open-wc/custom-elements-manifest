@@ -9,6 +9,7 @@ import { safe } from '../../utils/index.js';
  */
 export function classJsDocPlugin() {
   return {
+    name: 'CORE - CLASS-JSDOC',
     analyzePhase({ts, node, moduleDoc}){
       switch (node.kind) {
         case ts.SyntaxKind.ClassDeclaration:

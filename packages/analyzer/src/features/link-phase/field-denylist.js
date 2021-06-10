@@ -9,6 +9,7 @@ export function fieldDenyListPlugin() {
   ];
 
   return {
+    name: 'CORE - FIELD-DENYLIST',
     moduleLinkPhase({moduleDoc}){
       const classes = moduleDoc?.declarations?.filter(declaration => declaration.kind === 'class' || declaration.kind === 'mixin');
 

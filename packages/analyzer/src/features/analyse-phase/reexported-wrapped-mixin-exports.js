@@ -19,6 +19,7 @@ import { createClassDeclarationMixin } from './creators/handlers.js';
  */
 export function reexportedWrappedMixinExportsPlugin() {
   return {
+    name: 'CORE - REEXPORTED-WRAPPED-MIXINS',
     analyzePhase({ts, node, moduleDoc, context}){
       switch(node.kind) {
         case ts.SyntaxKind.VariableStatement:

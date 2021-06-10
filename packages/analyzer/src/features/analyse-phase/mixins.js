@@ -8,6 +8,7 @@ import { createMixin } from './creators/createMixin.js';
  */
 export function mixinPlugin() {
   return {
+    name: 'CORE - MIXINS',
     analyzePhase({ts, node, moduleDoc, context}){
       switch(node.kind) {
         case ts.SyntaxKind.VariableStatement:
