@@ -11,6 +11,7 @@ const BASECLASSES = [
  */
 export function isCustomElementPlugin() {
   return {
+    name: 'CORE - IS-CUSTOM-ELEMENT',
     packageLinkPhase({customElementsManifest, context}) {
       customElementsManifest?.modules?.forEach(_module => {
         _module?.declarations?.forEach(declaration => {

@@ -43,7 +43,22 @@ var analyzer = (function (exports, ts) {
     } catch {
       return returnType;
     }
-  };
+  }; 
+
+  const externalError = `Looks like you've hit an error in a third party plugin.`;
+  const coreError = `Looks like you've hit an error in the core library. Please try to create a minimal reproduction at https://custom-elements-manifest.netlify.com and create an issue at: https://github.com/open-wc/custom-elements-manifest/issues`;
+  function withErrorHandling(name, cb) {
+    try {
+      cb();
+    } catch(e) { 
+      let errorMessage = '';
+      if(name) {
+        errorMessage = name.startsWith('CORE') ? coreError : externalError;
+      }
+      
+      throw new Error(`[${name ?? 'unnamed-plugin'}]: ${e}\n\n${errorMessage}\n`);
+    }
+  }
 
   /**
    * UTILITIES RELATED TO MODULE IMPORTS
@@ -74,6 +89,7 @@ var analyzer = (function (exports, ts) {
     let currModuleImports;
 
     return {
+      name: 'CORE - IMPORTS',
       collectPhase({ts, node}) {
         if(node.kind === ts.SyntaxKind.SourceFile) {
           /**
@@ -192,6 +208,7 @@ var analyzer = (function (exports, ts) {
    */
   function exportsPlugin() {
     return {
+      name: 'CORE - EXPORTS',
       analyzePhase({ts, node, moduleDoc}){
         /**
          * @example export const foo = '';
@@ -401,6 +418,7 @@ var analyzer = (function (exports, ts) {
    */
   function customElementsDefineCallsPlugin() {
     return {
+      name: 'CORE - CUSTOM-ELEMENTS-DEFINE-CALLS',
       analyzePhase({node, moduleDoc, context}){    
 
         /** 
@@ -1226,6 +1244,7 @@ var analyzer = (function (exports, ts) {
    */
   function functionLikePlugin() {
     return {
+      name: 'CORE - FUNCTION-LIKE',
       analyzePhase({ts, node, moduleDoc}){
         switch(node.kind) {
           case ts.SyntaxKind.FunctionDeclaration:
@@ -1260,6 +1279,7 @@ var analyzer = (function (exports, ts) {
    */
   function arrowFunctionPlugin() {
     return {
+      name: 'CORE - ARROW-FUNCTION',
       analyzePhase({ts, node, moduleDoc}){
         switch(node.kind) {
           case ts.SyntaxKind.VariableStatement:
@@ -1544,6 +1564,7 @@ var analyzer = (function (exports, ts) {
    */
   function classPlugin() {
     return {
+      name: 'CORE - CLASSES',
       analyzePhase({ts, node, moduleDoc, context}){
         switch(node.kind) {
           case ts.SyntaxKind.ClassDeclaration:
@@ -1592,6 +1613,7 @@ var analyzer = (function (exports, ts) {
    */
   function mixinPlugin() {
     return {
+      name: 'CORE - MIXINS',
       analyzePhase({ts, node, moduleDoc, context}){
         switch(node.kind) {
           case ts.SyntaxKind.VariableStatement:
@@ -1632,6 +1654,7 @@ var analyzer = (function (exports, ts) {
    */
   function variablePlugin() {
     return {
+      name: 'CORE - VARIABLES',
       analyzePhase({ts, node, moduleDoc}){
         switch(node.kind) {
           case ts.SyntaxKind.VariableStatement:
@@ -1663,6 +1686,7 @@ var analyzer = (function (exports, ts) {
    */
   function classJsDocPlugin() {
     return {
+      name: 'CORE - CLASS-JSDOC',
       analyzePhase({ts, node, moduleDoc}){
         switch (node.kind) {
           case ts.SyntaxKind.ClassDeclaration:
@@ -1808,6 +1832,7 @@ var analyzer = (function (exports, ts) {
    */
   function reexportedWrappedMixinExportsPlugin() {
     return {
+      name: 'CORE - REEXPORTED-WRAPPED-MIXINS',
       analyzePhase({ts, node, moduleDoc, context}){
         switch(node.kind) {
           case ts.SyntaxKind.VariableStatement:
@@ -1878,6 +1903,7 @@ var analyzer = (function (exports, ts) {
    */
   function removeUnexportedDeclarationsPlugin() {
     return {
+      name: 'CORE - REMOVE-UNEXPORTED-DECLARATIONS',
       moduleLinkPhase({moduleDoc}){
         moduleDoc.declarations = moduleDoc?.declarations?.filter(declaration => {
           return moduleDoc?.exports?.some(_export => {
@@ -1902,6 +1928,7 @@ var analyzer = (function (exports, ts) {
     ];
 
     return {
+      name: 'CORE - METHOD-DENYLIST',
       moduleLinkPhase({moduleDoc}){
         const classes = moduleDoc?.declarations?.filter(declaration => declaration.kind === 'class' || declaration.kind === 'mixin');
 
@@ -1923,6 +1950,7 @@ var analyzer = (function (exports, ts) {
     ];
 
     return {
+      name: 'CORE - FIELD-DENYLIST',
       moduleLinkPhase({moduleDoc}){
         const classes = moduleDoc?.declarations?.filter(declaration => declaration.kind === 'class' || declaration.kind === 'mixin');
 
@@ -1941,6 +1969,7 @@ var analyzer = (function (exports, ts) {
    */
   function cleanupClassesPlugin() {
     return {
+      name: 'CORE - CLEANUP-CLASSES',
       moduleLinkPhase({moduleDoc}){
         const classes = moduleDoc?.declarations?.filter(declaration => declaration.kind === 'class' || declaration.kind === 'mixin');
 
@@ -1968,6 +1997,7 @@ var analyzer = (function (exports, ts) {
    */
   function isCustomElementPlugin() {
     return {
+      name: 'CORE - IS-CUSTOM-ELEMENT',
       packageLinkPhase({customElementsManifest, context}) {
         customElementsManifest?.modules?.forEach(_module => {
           _module?.declarations?.forEach(declaration => {
@@ -2135,6 +2165,7 @@ var analyzer = (function (exports, ts) {
    */
   function linkClassToTagnamePlugin() {
     return {
+      name: 'CORE - LINK-CLASS-TO-TAGNAME',
       packageLinkPhase({customElementsManifest, context}){
         /* Get all class declarations and custom element definitions in the manifest */
         const classes = getAllDeclarationsOfKind(customElementsManifest, 'class');
@@ -2160,6 +2191,7 @@ var analyzer = (function (exports, ts) {
    */
   function applyInheritancePlugin() {
     return {
+      name: 'CORE - APPLY-INHERITANCE',
       packageLinkPhase({customElementsManifest, context}){
         const classes = getAllDeclarationsOfKind(customElementsManifest, 'class');
         const mixins = getAllDeclarationsOfKind(customElementsManifest, 'mixin');
@@ -2250,12 +2282,6 @@ var analyzer = (function (exports, ts) {
   ].flat();
 
   /**
-   * 🚨 TODO
-   * - Lightning web components
-   * - handle name after @attr my-attribute jsdoc annotation
-   */
-
-  /**
    * CORE
    * 
    * This function is the core of the analyzer. It takes an array of ts sourceFiles, and creates a
@@ -2310,8 +2336,10 @@ var analyzer = (function (exports, ts) {
        * - Finding a CustomElement's tagname by finding its customElements.define() call (or 'export')
        * - Applying inheritance to classes (adding `inheritedFrom` properties/attrs/events/methods)
        */
-      mergedPlugins.forEach(({moduleLinkPhase}) => {
-        moduleLinkPhase && moduleLinkPhase({ts: ts__default['default'], moduleDoc, context});
+      mergedPlugins.forEach(({name, moduleLinkPhase}) => {
+        withErrorHandling(name, () => {
+          moduleLinkPhase?.({ts: ts__default['default'], moduleDoc, context});
+        });
       });
     });
 
@@ -2323,8 +2351,10 @@ var analyzer = (function (exports, ts) {
      * - Match tagNames for classDocs
      * - Apply inheritance
      */
-    mergedPlugins.forEach(({packageLinkPhase}) => {
-      packageLinkPhase && packageLinkPhase({customElementsManifest, context});
+    mergedPlugins.forEach(({name, packageLinkPhase}) => {
+      withErrorHandling(name, () => {
+        packageLinkPhase?.({customElementsManifest, context});
+      });
     });
 
     return customElementsManifest;
@@ -2334,8 +2364,10 @@ var analyzer = (function (exports, ts) {
     visitNode(source);
 
     function visitNode(node) {
-      mergedPlugins.forEach(({collectPhase}) => {
-        collectPhase && collectPhase({ts: ts__default['default'], node, context});
+      mergedPlugins.forEach(({name, collectPhase}) => {
+        withErrorHandling(name, () => {
+          collectPhase?.({ts: ts__default['default'], node, context});
+        });
       });
 
       ts__default['default'].forEachChild(node, visitNode);
@@ -2346,8 +2378,10 @@ var analyzer = (function (exports, ts) {
     visitNode(source);
 
     function visitNode(node) {
-      mergedPlugins.forEach(({analyzePhase}) => {
-        analyzePhase && analyzePhase({ts: ts__default['default'], node, moduleDoc, context});
+      mergedPlugins.forEach(({name, analyzePhase}) => {
+        withErrorHandling(name, () => {
+          analyzePhase?.({ts: ts__default['default'], node, moduleDoc, context});
+        });
       });
 
       ts__default['default'].forEachChild(node, visitNode);

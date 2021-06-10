@@ -12,6 +12,7 @@ export function methodDenyListPlugin() {
   ];
 
   return {
+    name: 'CORE - METHOD-DENYLIST',
     moduleLinkPhase({moduleDoc}){
       const classes = moduleDoc?.declarations?.filter(declaration => declaration.kind === 'class' || declaration.kind === 'mixin');
 

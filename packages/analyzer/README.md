@@ -405,6 +405,8 @@ To get started developing custom plugins, take a look at the [cem-plugin-templat
 export default {
   plugins: [
     {
+      // Make sure to always give your plugins a name, this helps when debugging
+      name: 'my-plugin',
       // Runs for all modules in a project, before continuing to the `analyzePhase`
       collectPhase({ts, node, context}){},
       // Runs for each module

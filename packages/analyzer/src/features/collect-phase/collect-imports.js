@@ -15,6 +15,7 @@ export function collectImportsPlugin() {
   let currModuleImports;
 
   return {
+    name: 'CORE - IMPORTS',
     collectPhase({ts, node}) {
       if(node.kind === ts.SyntaxKind.SourceFile) {
         /**

@@ -10,6 +10,7 @@ import { hasPropertyDecorator, isAlsoAttribute, getAttributeName } from './utils
  */
 export function propertyDecoratorPlugin() {
   return {
+    name: 'CORE - LIT-PROPERTY-DECORATOR',
     analyzePhase({ts, node, moduleDoc}){
       switch (node.kind) {
         case ts.SyntaxKind.ClassDeclaration:    

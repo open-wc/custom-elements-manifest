@@ -8,6 +8,7 @@ import { resolveModuleOrPackageSpecifier } from '../../utils/index.js';
  */
 export function applyInheritancePlugin() {
   return {
+    name: 'CORE - APPLY-INHERITANCE',
     packageLinkPhase({customElementsManifest, context}){
       const classes = getAllDeclarationsOfKind(customElementsManifest, 'class');
       const mixins = getAllDeclarationsOfKind(customElementsManifest, 'mixin');

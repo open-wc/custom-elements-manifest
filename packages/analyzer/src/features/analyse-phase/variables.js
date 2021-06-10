@@ -8,6 +8,7 @@ import { isMixin } from '../../utils/mixins.js';
  */
 export function variablePlugin() {
   return {
+    name: 'CORE - VARIABLES',
     analyzePhase({ts, node, moduleDoc}){
       switch(node.kind) {
         case ts.SyntaxKind.VariableStatement:

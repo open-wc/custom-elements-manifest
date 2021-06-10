@@ -5,6 +5,7 @@
  */
 export function removeUnexportedDeclarationsPlugin() {
   return {
+    name: 'CORE - REMOVE-UNEXPORTED-DECLARATIONS',
     moduleLinkPhase({moduleDoc}){
       moduleDoc.declarations = moduleDoc?.declarations?.filter(declaration => {
         return moduleDoc?.exports?.some(_export => {

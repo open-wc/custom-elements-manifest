@@ -64,6 +64,7 @@ var catalyst = (function (exports, ts) {
 
   function attrDecoratorPlugin() {
     return {
+      name: 'CORE - ATTR-DECORATOR',
       analyzePhase({ts, node, moduleDoc}){
         switch(node.kind) {
           case ts.SyntaxKind.ClassDeclaration:
@@ -101,6 +102,7 @@ var catalyst = (function (exports, ts) {
 
   function controllerPlugin() {
     return {
+      name: 'CORE - CONTROLLER',
       analyzePhase({ts, node, moduleDoc, context}){
         switch(node.kind) {
           case ts.SyntaxKind.ClassDeclaration:
