@@ -51,13 +51,13 @@ export const safe = (cb, returnType = '') => {
   }
 } 
 
-const externalError = `Looks like you've hit an error in a third party plugin.`;
-const coreError = `Looks like you've hit an error in the core library. Please try to create a minimal reproduction at https://custom-elements-manifest.netlify.com and create an issue at: https://github.com/open-wc/custom-elements-manifest/issues`;
 export function withErrorHandling(name, cb) {
   try {
     cb()
   } catch(e) { 
     let errorMessage = '';
+    const externalError = `Looks like you've hit an error in third party plugin: ${name}. Please try to create a minimal reproduction and inform the author of the ${name} plugin.`;
+    const coreError = `Looks like you've hit an error in the core library. Please try to create a minimal reproduction at https://custom-elements-manifest.netlify.com and create an issue at: https://github.com/open-wc/custom-elements-manifest/issues`;
     if(name) {
       errorMessage = name.startsWith('CORE') ? coreError : externalError;
     }
