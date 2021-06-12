@@ -453,7 +453,7 @@ You can also run the analyzer in the browser. You can import it like so:
 <html>
   <body>
     <script type="module">
-      import { ts, create, litPlugin } from '@custom-element-manifest/analyzer';
+      import { ts, create, litPlugin } from '@custom-element-manifest/analyzer/browser/index.js';
       // or
       import { ts, create, litPlugin } from 'https://unpkg.com/@custom-element-manifest/analyzer/browser/index.js';
 
