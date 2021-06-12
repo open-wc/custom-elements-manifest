@@ -28,5 +28,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: run tests
         run: |
+          yarn
           cd packages/analyzer
           npm test
