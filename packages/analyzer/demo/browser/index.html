@@ -1,10 +1,10 @@
 <html>
   <head>
-    <script src="https://unpkg.com/typescript@4.3.2/lib/typescript.js"></script>
-    <script src="../../browser/create.js"></script>
   </head>
   <body>
-    <script>
+    <script type="module">
+      import {ts, create} from '../../browser/index.js';
+
       const code = `export function foo() {}`;
 
       const modules = [ts.createSourceFile(
@@ -14,7 +14,7 @@
         true,
       )];
 
-      console.log(analyzer.create({modules}));
+      console.log(create({modules}));
     </script>
   </body>
 </html>

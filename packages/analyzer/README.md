@@ -451,26 +451,29 @@ You can also run the analyzer in the browser. You can import it like so:
 
 ```html
 <html>
-  <head>
-    <!-- For reasons, you need to load typescript separately. Make sure to load version ~4.3.0, otherwise things might break -->
-    <script src="https://unpkg.com/typescript@4.3.2/lib/typescript.js"></script>
-
-    <!-- Import the code for the analyzer -->
-    <script src="https://unpkg.com/@custom-element-manifest/analyzer@1.0.0/browser/create.js"></script>
-  </head>
   <body>
-    <script>
-      const code = `export function foo() {}`;
+    <script type="module">
+      import { ts, create, litPlugin } from '@custom-element-manifest/analyzer';
+      // or
+      import { ts, create, litPlugin } from 'https://unpkg.com/@custom-element-manifest/analyzer/browser/index.js';
 
       const modules = [ts.createSourceFile(
-        '',
-        code,
+        'src/my-element.js',
+        'export function foo() {}',
         ts.ScriptTarget.ES2015,
         true,
       )];
 
-      console.log(analyzer.create({modules}));
+      const manifest = create({
+        modules,
+        plugins: [litPlugin()],
+        dev: false
+      });
+
+      console.log(manifest);
     </script>
   </body>
 </html>
 ```
+
+Because typescript doesn't follow semver, and may do breaking changes on minor or patch versions, typescript is bundled with the analyzer to avoid any typescript version mismatches.
