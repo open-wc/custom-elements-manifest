@@ -154,12 +154,13 @@ npx custom-elements-json analyze
 **TL;DR:** 
 - JavaScript 
 - TypeScript
-- LitElement (opt-in via CLI flag) 
-- FASTElement (opt-in via CLI flag) 
-- Stencil (opt-in via CLI flag)
-- Catalyst (opt-in via CLI flag)
+- [LitElement](https://lit.dev) (opt-in via CLI flag) 
+- [FASTElement](https://www.fast.design/docs/fast-element/getting-started/) (opt-in via CLI flag) 
+- [Stencil](https://stenciljs.com/) (opt-in via CLI flag)
+- [Catalyst](https://github.github.io/catalyst/) (opt-in via CLI flag)
+- [Atomico](https://atomicojs.github.io/) (opt-in via [community plugin](https://github.com/atomicojs/custom-elements-manifest))
 
-Support for other web component libraries can be done via custom [plugins](#plugins), feel free to create your own for your favourite libraries.
+Support for other web component libraries can be done via custom [plugins](https://github.com/open-wc/custom-elements-manifest/blob/master/packages/analyzer/docs/plugins.md), feel free to create your own for your favourite libraries.
 
 ### Plugins
 
@@ -195,6 +196,8 @@ In a custom plugin, we have full access to our source code's AST, and we can eas
 export default {
   plugins: [
     {
+      // Always give your plugin a name!
+      name: 'foo-plugin',
       // Runs for all modules in a project, before continuing to the `analyzePhase`
       collectPhase({ts, node, context}){},
       // Runs for each module
@@ -273,6 +276,8 @@ And the output `custom-elements.json` will look like this:
   ]
 }
 ```
+
+To get started developing custom plugins, take a look at the [cem-plugin-template](https://github.com/open-wc/cem-plugin-template) repository to quickly get you up and running. 
 
 ## Concluding
 
