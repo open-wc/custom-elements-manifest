@@ -93,6 +93,15 @@
           "tagName": "my-element",
           "summary": "This is MyElement",
           "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HelperElement",
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "customElement": true
         }
       ],
       "exports": [
@@ -101,6 +110,14 @@
           "name": "MyElement",
           "declaration": {
             "name": "MyElement",
+            "module": "fixtures/class-jsdoc/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HelperElement",
+          "declaration": {
+            "name": "HelperElement",
             "module": "fixtures/class-jsdoc/package/my-element.js"
           }
         }

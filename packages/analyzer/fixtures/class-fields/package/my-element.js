@@ -1,3 +1,5 @@
+const priv = Symbol();
+
 /**
  * @property {string} prop5
  */
@@ -36,7 +38,10 @@ class MyEl extends HTMLElement {
   static prop12;
 
   #prop13;
-  
+
+  /** @ignore */
+  [priv] = 'hidden';
+
   constructor() {
     super();
     this.prop2 = 'default';
@@ -44,6 +49,8 @@ class MyEl extends HTMLElement {
     this.prop3 = 'default';
     /** @type {import('foo').Some.Type} */
     this.prop4 = 'default';
+    /** @ignore */
+    this.priv = 'hidden';
   }
 }
 customElements.define('my-el', MyEl);

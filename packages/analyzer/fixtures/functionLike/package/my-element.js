@@ -54,3 +54,6 @@ export class MyEl {
    */
   functionDeclaration6(bar:string):boolean{}
 }
+
+/** @ignore */
+export const hidden = () => {};

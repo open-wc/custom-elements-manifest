@@ -242,6 +242,10 @@
               ]
             }
           ]
+        },
+        {
+          "kind": "function",
+          "name": "hidden"
         }
       ],
       "exports": [
@@ -346,6 +350,14 @@
           "name": "MyEl",
           "declaration": {
             "name": "MyEl",
+            "module": "fixtures/functionLike/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "hidden",
+          "declaration": {
+            "name": "hidden",
             "module": "fixtures/functionLike/package/my-element.js"
           }
         }

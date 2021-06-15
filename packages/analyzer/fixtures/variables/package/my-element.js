@@ -8,3 +8,5 @@ export let var5, var6;
 export let var7 = var6 = var5;
 export function function1() {}
 export class Class1 {}
+/** @ignore */
+export var hidden = '';
