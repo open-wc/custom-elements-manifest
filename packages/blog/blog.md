@@ -44,7 +44,7 @@ Will result in the following `custom-elements.json`:
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "fixtures/-default/package/my-element.js",
+      "path": "src/my-element.js",
       "declarations": [
         {
           "kind": "class",
@@ -85,7 +85,7 @@ Will result in the following `custom-elements.json`:
           "name": "my-element",
           "declaration": {
             "name": "MyElement",
-            "module": "fixtures/-default/package/my-element.js"
+            "module": "src/my-element.js"
           }
         }
       ]
@@ -208,39 +208,37 @@ In a custom plugin, we have full access to our source code's AST, and we can eas
 export default {
   plugins: [
     {
-      // Always give your plugin a name!
       name: 'foo-plugin',
-      // Runs for all modules in a project, before continuing to the `analyzePhase`
-      collectPhase({ts, node, context}){},
-      // Runs for each module
       analyzePhase({ts, node, moduleDoc, context}){
-        // You can use this phase to access a module's AST nodes and mutate the custom-elements-manifest
         switch (node.kind) {
           case ts.SyntaxKind.ClassDeclaration:
+            /* If the current AST node is a class, get the class's name */
             const className = node.name.getText();
 
+            /* We loop through all the members of the class */
             node.members?.forEach(member => {
               const memberName = member.name.getText();
 
-              member.jsDoc?.forEach(jsDoc => {
-                jsDoc.tags?.forEach(tag => {
+              /* If a member has JSDoc notations, we loop through them */
+              member?.jsDoc?.forEach(jsDoc => {
+                jsDoc?.tags?.forEach(tag => {
+                  /* If we find a `@foo` JSDoc tag, we want to extract the comment */
                   if(tag.tagName.getText() === 'foo') {
                     const description = tag.comment;
 
+                    /* We then find the current class from the `moduleDoc` */
                     const classDeclaration = moduleDoc.declarations.find(declaration => declaration.name === className);
+                    /* And then we find the current field from the class */
                     const messageField = classDeclaration.members.find(member => member.name === memberName);
                     
+                    /* And we mutate the field with the information we got from the `@foo` JSDoc annotation */
                     messageField.foo = description
                   }
                 });
               });
             });
         }
-      },
-      // Runs for each module, after analyzing, all information about your module should now be available
-      moduleLinkPhase({moduleDoc, context}){},
-      // Runs after modules have been parsed and after post-processing
-      packageLinkPhase({customElementsManifest, context}){},
+      }
     }
   ]  
 }
@@ -249,12 +247,12 @@ export default {
 And the output `custom-elements.json` will look like this:
 ```diff
 {
-  "schemaVersion": "0.1.0",
+  "schemaVersion": "1.0.0",
   "readme": "",
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "fixtures/-default/package/bar.js",
+      "path": "src/bar.js",
       "declarations": [
         {
           "kind": "class",
@@ -280,7 +278,7 @@ And the output `custom-elements.json` will look like this:
           "name": "MyElement",
           "declaration": {
             "name": "MyElement",
-            "module": "fixtures/-default/package/bar.js"
+            "module": "src/bar.js"
           }
         }
       ]
