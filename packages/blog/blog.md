@@ -130,15 +130,15 @@ A major usecase of `custom-elements.json` is that it allows us to reliably detec
 
 ### Much, much more!
 
-We believe `custom-elements.json` will open the door for a lot, lot more new exciting ideas and tooling. Which usecases can _you_ come up with? Do you have an idea, but are unsure where to start? Feel free to reach out to us on the [Lit and Friends](https://lit.dev/slack-invite), we're always happy to have a chat and help you get started.
+We believe `custom-elements.json` will open the door for a lot, lot more new exciting ideas and tooling. Which usecases can _you_ come up with? Do you have an idea, but are unsure where to start? Feel free to reach out to us on the [Lit and Friends](https://lit.dev/slack-invite) slack, we're always happy to have a chat and help you get started.
 
 ## 🛠 The Tools
 
 It's unlikely that developers will write their `custom-elements.json` file by hand. So at [open-wc](http://open-wc.org/), we worked hard on a tool that does it for you!
 
-## `@custom-elements-json/analyzer`
+## `@custom-elements-manifest/analyzer`
 
-[`@custom-elements-json/analyzer`](TODO) will scan the source files in your project, and generate a `custom-elements.json` for you.
+[`@custom-elements-manifest/analyzer`](https://www.npmjs.com/package/@custom-elements-manifest/analyzer) will scan the source files in your project, and generate a `custom-elements.json` for you.
 
 Here's how you can use it today:
 
@@ -149,7 +149,7 @@ npx custom-elements-json analyze
 > ✨ Or try it out in the [online playground](https://custom-elements-manifest.netlify.app/)! ✨
 
 
-`@custom-elements-manifest/analyzer` by default supports standard JavaScript, and _vanilla_ web components. Dedicated web component libraries can be supported through the use of plugins. Currently, support for LitElement, Stencil and Catalyst is provided in this project via plugins. You can enable them by using the CLI flags `--litelement`, `--fast`, `--stencil` and `--catalyst` respectively, or loading the plugin via your `custom-elements-manifest.config.js`.
+`@custom-elements-manifest/analyzer` by default supports standard JavaScript, and _vanilla_ web components. Dedicated web component libraries can be supported through the use of plugins. Currently, support for LitElement, Fast, Stencil and Catalyst is provided in this project via plugins. You can enable them by using the CLI flags `--litelement`, `--fast`, `--stencil` and `--catalyst` respectively, or loading the plugin via your `custom-elements-manifest.config.js`.
 
 **TL;DR:** 
 - JavaScript 
