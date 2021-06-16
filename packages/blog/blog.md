@@ -7,7 +7,7 @@ this [GitHub issue](https://github.com/w3c/webcomponents/issues/776) on the web 
 
 Developers tend to have many differing opinions, and standardization tends to... take time. More than 3 years later, we are happy to finally be able to share with you: _Custom Elements Manifest_ 🎉
 
-Custom Elements Manifest is a file format that describes the custom elements in your project. This format will allow tooling and IDEs to give rich information about the custom elements in a given project. A `custom-elements.json` contains metadata about the custom elements in your project; their properties, methods, attributes, inheritance, slots, CSS Shadow Parts, CSS custom properties, and a modules exports.
+Custom Elements Manifest is a file format that describes the custom elements in your project. This format will allow tooling and IDEs to give rich information about the custom elements in a given project. A `custom-elements.json` contains metadata about the custom elements in your project; their properties, methods, attributes, inheritance, slots, CSS Shadow Parts, CSS custom properties, and a modules exports. If you're interested in following the specification of the schema, or contributing to it, you can find the repository here: [webcomponents/custom-elements-manifest](https://github.com/webcomponents/custom-elements-manifest).
 
 ## Example
 
@@ -94,7 +94,7 @@ Will result in the following `custom-elements.json`:
 }
 ```
 
-## Usecases
+## Potential Usecases
 
 Why Custom Elements Manifest?
 
@@ -132,9 +132,21 @@ A major usecase of `custom-elements.json` is that it allows us to reliably detec
 
 We believe `custom-elements.json` will open the door for a lot, lot more new exciting ideas and tooling. Which usecases can _you_ come up with? Do you have an idea, but are unsure where to start? Feel free to reach out to us on the [Lit and Friends](https://lit.dev/slack-invite) slack, we're always happy to have a chat and help you get started.
 
+## How should I use a Custom Elements Manifest?
+
+If you're publishing a component, or a library of components, we recommend people to create a Custom Elements Manifest and publish it alongside your components to NPM.
+
+If your package makes use of [Export Maps](https://nodejs.org/api/packages.html#packages_exports), make sure to add your Custom Elements Manifest there under the `"custom-elements-manifest"` key. This will allow consumers of your manifest to easily import it like so:
+
+```js
+import cem from '@my-element/custom-elements-manifest' assert { type: 'json' };
+```
+
+If your package does not use Export Maps yet, we recommend adding a `"customElements": "./custom-elements.json"` to your project's `package.json`. This allows tools to easily find whether or not a package contains a Custom Elements Manifest, and read its contents.
+
 ## 🛠 The Tools
 
-It's unlikely that developers will write their `custom-elements.json` file by hand. So at [open-wc](http://open-wc.org/), we worked hard on a tool that does it for you!
+It's unlikely that developers will write their `custom-elements.json` file by hand. So at [Open Web Components](http://open-wc.org/), we worked hard on a tool that does it for you!
 
 ## `@custom-elements-manifest/analyzer`
 
