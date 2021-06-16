@@ -74,7 +74,7 @@ customElements.define('my-element', MyElement);
 
 ```JSON
 {
-  "schemaVersion": "0.1.0",
+  "schemaVersion": "1.0.0",
   "readme": "",
   "modules": [
     {
@@ -211,7 +211,7 @@ customElements.define('my-element', MyElement);
 
 ```json
 {
-  "schemaVersion": "0.1.0",
+  "schemaVersion": "1.0.0",
   "readme": "",
   "modules": [
     {
