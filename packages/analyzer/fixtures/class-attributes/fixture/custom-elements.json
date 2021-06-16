@@ -7,7 +7,7 @@
       "path": "fixtures/class-attributes/package/my-element.js",
       "declarations": [
         {
-          "kind": "class",
+          "kind": "custom-element",
           "description": "",
           "name": "MyEl",
           "members": [
@@ -49,11 +49,10 @@
           "superclass": {
             "name": "HTMLElement"
           },
-          "tagName": "my-el",
-          "customElement": true
+          "tagName": "my-el"
         },
         {
-          "kind": "class",
+          "kind": "custom-element",
           "description": "",
           "name": "Foo",
           "members": [
@@ -89,8 +88,7 @@
           ],
           "superclass": {
             "name": "HTMLElement"
-          },
-          "customElement": true
+          }
         }
 
       ],

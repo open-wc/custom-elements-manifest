@@ -64,8 +64,8 @@ export const FEATURES = [
   cleanupClassesPlugin(),
 
   /** POST-PROCESSING */
-  isCustomElementPlugin(),
   linkClassToTagnamePlugin(),
+  isCustomElementPlugin(),
   applyInheritancePlugin(),
 
   /** FRAMEWORKS */

@@ -7,7 +7,7 @@
       "path": "fixtures/plugin-fast/package/my-element.js",
       "declarations": [
         {
-          "kind": "class",
+          "kind": "custom-element",
           "description": "",
           "name": "NameTag",
           "members": [
@@ -41,7 +41,6 @@
           "superclass": {
             "name": "FASTElement"
           },
-          "customElement": true,
           "tagName": "name-tag"
         }
       ],

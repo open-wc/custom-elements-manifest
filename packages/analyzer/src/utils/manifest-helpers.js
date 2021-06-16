@@ -59,7 +59,7 @@ export function getInheritanceTree(cem, className) {
 
   const allClassLikes = new Map();
 
-  const _classes = getAllDeclarationsOfKind(cem, 'class');
+  const _classes = getAllDeclarationsOfKind(cem, 'custom-element');
   const _mixins = getAllDeclarationsOfKind(cem, 'mixin');
   
   [..._mixins, ..._classes].forEach(klass => {
@@ -131,7 +131,7 @@ export function getModuleForClassLike(cem, className) {
 
   cem?.modules?.forEach(_module => {
     _module?.declarations?.forEach(declaration => {
-      if((declaration.kind === 'class' || declaration.kind === 'mixin') && declaration.name === className) {
+      if((declaration.kind === 'class' || declaration.kind === 'mixin' || declaration.kind === 'custom-element') && declaration.name === className) {
         result = _module.path;
       }
     });

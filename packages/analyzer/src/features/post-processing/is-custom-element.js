@@ -18,12 +18,12 @@ export function isCustomElementPlugin() {
           if(declaration?.kind === 'class') {
             /** If a class has a tagName, that means its been defined, and is a custom element */
             if(declaration?.tagName) {
-              declaration.customElement = true;
+              declaration.kind = 'custom-element';
             }
             
             /** If a class extends from any of these, its a custom element */
             if(BASECLASSES.includes(declaration?.superclass?.name?.toLowerCase())) {
-              declaration.customElement = true;
+              declaration.kind = 'custom-element';
             }
           }
         });

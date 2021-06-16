@@ -7,7 +7,7 @@
       "path": "fixtures/plugin-catalyst/package/my-element.js",
       "declarations": [
         {
-          "kind": "class",
+          "kind": "custom-element",
           "description": "",
           "name": "HelloWorldElement",
           "members": [
@@ -31,7 +31,6 @@
           "superclass": {
             "name": "HTMLElement"
           },
-          "customElement": true,
           "tagName": "hello-world"
         }
       ],

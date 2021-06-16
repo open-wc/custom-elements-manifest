@@ -10,15 +10,14 @@ export function applyInheritancePlugin() {
   return {
     name: 'CORE - APPLY-INHERITANCE',
     packageLinkPhase({customElementsManifest, context}){
-      const classes = getAllDeclarationsOfKind(customElementsManifest, 'class');
+      const classes = getAllDeclarationsOfKind(customElementsManifest, 'custom-element');
       const mixins = getAllDeclarationsOfKind(customElementsManifest, 'mixin');
 
       [...classes, ...mixins].forEach((customElement) => {
         const inheritanceChain = getInheritanceTree(customElementsManifest, customElement.name);
-
         inheritanceChain?.forEach(klass => {
           // Handle mixins
-          if (klass?.kind !== 'class') {
+          if (klass?.kind !== 'custom-element') {
             if (klass?.package) {
               // the mixin comes from a bare module specifier, skip it
               return;

@@ -7,7 +7,7 @@
       "path": "fixtures/plugin-lit/package/my-element.js",
       "declarations": [
         {
-          "kind": "class",
+          "kind": "custom-element",
           "description": "",
           "name": "MyElement",
           "members": [
@@ -70,7 +70,6 @@
           "superclass": {
             "name": "LitElement"
           },
-          "customElement": true,
           "tagName": "my-element"
         }
       ],

@@ -7,7 +7,7 @@
       "path": "fixtures/class-jsdoc/package/my-element.js",
       "declarations": [
         {
-          "kind": "class",
+          "kind": "custom-element",
           "description": "",
           "name": "MyElement",
           "cssProperties": [
@@ -91,8 +91,7 @@
             "name": "HTMLElement"
           },
           "tagName": "my-element",
-          "summary": "This is MyElement",
-          "customElement": true
+          "summary": "This is MyElement"
         }
       ],
       "exports": [

@@ -7,7 +7,7 @@
       "path": "fixtures/custom-elements-define/package/my-element.js",
       "declarations": [
         {
-          "kind": "class",
+          "kind": "custom-element",
           "description": "",
           "name": "MyElement",
           "members": [
@@ -20,17 +20,15 @@
           "superclass": {
             "name": "HTMLElement"
           },
-          "customElement": true,
           "tagName": "my-element"
         },
         {
-          "kind": "class",
+          "kind": "custom-element",
           "description": "",
           "name": "MyWindow",
           "superclass": {
             "name": "HTMLElement"
           },
-          "customElement": true,
           "tagName": "my-window"
         }
       ],

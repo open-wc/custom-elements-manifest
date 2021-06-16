@@ -161,7 +161,7 @@
           ]
         },
         {
-          "kind": "class",
+          "kind": "custom-element",
           "description": "",
           "name": "MyElement",
           "members": [
@@ -298,8 +298,7 @@
           ],
           "superclass": {
             "name": "HTMLElement"
-          },
-          "customElement": true
+          }
         }
       ],
       "exports": [

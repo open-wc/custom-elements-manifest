@@ -9,7 +9,12 @@ export function linkClassToTagnamePlugin() {
   return {
     name: 'CORE - LINK-CLASS-TO-TAGNAME',
     packageLinkPhase({customElementsManifest, context}){
-      /* Get all class declarations and custom element definitions in the manifest */
+      /** 
+       * Get all class declarations and custom element definitions in the manifest 
+       * At this point, they're still tagged as `"kind": "class"`, but if a custom-element-definition
+       * has a reference to a class, that means its a `"kind": "custom-element"`, and will get tagged
+       * as custom-element in the `is-custom-element` plugin after this.
+       */
       const classes = getAllDeclarationsOfKind(customElementsManifest, 'class');
       const definitions = getAllExportsOfKind(customElementsManifest, 'custom-element-definition');
 

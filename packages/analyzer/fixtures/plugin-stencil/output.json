@@ -7,7 +7,7 @@
       "path": "fixtures/plugin-stencil/package/my-element.js",
       "declarations": [
         {
-          "kind": "class",
+          "kind": "custom-element",
           "description": "",
           "name": "TodoList",
           "members": [
@@ -79,8 +79,7 @@
                 "text": "EventEmitter<Todo>"
               }
             }
-          ],
-          "customElement": true
+          ]
         }
       ],
       "exports": [

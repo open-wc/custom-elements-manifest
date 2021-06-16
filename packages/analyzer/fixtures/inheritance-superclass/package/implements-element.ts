@@ -2,7 +2,7 @@ import { ReactiveControllerHost } from '@lit/reactive-element';
 
 import { BatchingElement } from './BatchingElement';
 
-export class ImplementsElement extends BatchingElement implements Pick<ReactiveControllerHost, 'implementsMethod'> {
+class ImplementsElement extends BatchingElement implements Pick<ReactiveControllerHost, 'implementsMethod'> {
   classField;
 
   static get observedAttributes() {
@@ -15,3 +15,5 @@ export class ImplementsElement extends BatchingElement implements Pick<ReactiveC
     this.dispatchEvent(new Event('class-event'))
   }
 }
+
+customElements.define('implements-element', ImplementsElement);

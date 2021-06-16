@@ -7,7 +7,7 @@
       "path": "fixtures/inheritance-superclass/package/BatchingElement.js",
       "declarations": [
         {
-          "kind": "class",
+          "kind": "custom-element",
           "description": "",
           "name": "BatchingElement",
           "members": [
@@ -35,8 +35,7 @@
           ],
           "superclass": {
             "name": "HTMLElement"
-          },
-          "customElement": true
+          }
         }
       ],
       "exports": [
@@ -55,7 +54,7 @@
       "path": "fixtures/inheritance-superclass/package/implements-element.ts",
       "declarations": [
         {
-          "kind": "class",
+          "kind": "custom-element",
           "description": "",
           "name": "ImplementsElement",
           "members": [
@@ -120,13 +119,14 @@
           ],
           "superclass": {
             "name": "BatchingElement"
-          }
+          },
+          "tagName": "implements-element"
         }
       ],
       "exports": [
         {
-          "kind": "js",
-          "name": "ImplementsElement",
+          "kind": "custom-element-definition",
+          "name": "implements-element",
           "declaration": {
             "name": "ImplementsElement",
             "module": "fixtures/inheritance-superclass/package/implements-element.ts"
@@ -139,7 +139,7 @@
       "path": "fixtures/inheritance-superclass/package/my-element.js",
       "declarations": [
         {
-          "kind": "class",
+          "kind": "custom-element",
           "description": "",
           "name": "MyElement",
           "members": [
@@ -200,13 +200,14 @@
           ],
           "superclass": {
             "name": "BatchingElement"
-          }
+          },
+          "tagName": "my-element"
         }
       ],
       "exports": [
         {
-          "kind": "js",
-          "name": "MyElement",
+          "kind": "custom-element-definition",
+          "name": "my-element",
           "declaration": {
             "name": "MyElement",
             "module": "fixtures/inheritance-superclass/package/my-element.js"

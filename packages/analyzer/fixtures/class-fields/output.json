@@ -7,7 +7,7 @@
       "path": "fixtures/class-fields/package/my-element.js",
       "declarations": [
         {
-          "kind": "class",
+          "kind": "custom-element",
           "description": "",
           "name": "MyEl",
           "members": [
@@ -118,7 +118,6 @@
           "superclass": {
             "name": "HTMLElement"
           },
-          "customElement": true,
           "tagName": "my-el"
         }
       ],
