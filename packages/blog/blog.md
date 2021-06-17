@@ -108,6 +108,10 @@ Documentation viewers should be able to display all the relevant information abo
 
 Using a `custom-elements.json` file, it would be easy to generate or display demos for your component using tools such as [api-viewer-element](https://github.com/web-padawan/api-viewer-element), or automatically generate [Storybook](https://storybook.js.org/) knobs for your components. [11ty](https://www.11ty.dev/) plugins could be created to automatically create your documentation sites for you.
 
+Another great example is [Apollo Elements](https://apolloelements.dev/) by [Benny Powers](https://twitter.com/PowersBenny), which uses a Custom Elements Manifest to generate their documentation:
+
+![apollo](./apollo.png)
+
 ### Framework Integration
 
 React currently is the only major framework where [custom elements require some special handling](https://custom-elements-everywhere.com/). React will pass all data to a custom element in the form of HTML attributes, and cannot listen for DOM events coming from Custom Elements without the use of a workaround.
@@ -130,7 +134,7 @@ A major usecase of `custom-elements.json` is that it allows us to reliably detec
 
 ### Much, much more!
 
-We believe `custom-elements.json` will open the door for a lot, lot more new exciting ideas and tooling. Which usecases can _you_ come up with? Do you have an idea, but are unsure where to start? Feel free to reach out to us on the [Lit and Friends](https://lit.dev/slack-invite) slack, we're always happy to have a chat and help you get started.
+We believe `custom-elements.json` will open the door for a lot, lot more new exciting ideas and tooling. Which usecases can _you_ come up with? Do you have an idea, but are unsure where to start? Feel free to reach out to us on the [Lit and Friends](https://lit.dev/slack-invite) slack in the #open-wc channel, we're always happy to have a chat and help you get started.
 
 ## How should I use a Custom Elements Manifest?
 
@@ -291,4 +295,4 @@ To get started developing custom plugins, take a look at the [cem-plugin-templat
 
 ## Concluding
 
-We're excited and look forward to see what sorts of tooling you'll build with the Custom Elements Manifest. Do you have a cool idea, but are you unsure how to get started? Drop by the [Lit and Friends](https://lit.dev/slack-invite) slack!
+We're excited and look forward to see what sorts of tooling you'll build with the Custom Elements Manifest. Do you have a cool idea for tooling, or do you want to add support for your library, but are you unsure how to get started? Drop by the [Lit and Friends](https://lit.dev/slack-invite) slack in the #open-wc channel!
