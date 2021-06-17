@@ -9,6 +9,8 @@ Developers tend to have many differing opinions, and standardization tends to...
 
 Custom Elements Manifest is a file format that describes the custom elements in your project. This format will allow tooling and IDEs to give rich information about the custom elements in a given project. A `custom-elements.json` contains metadata about the custom elements in your project; their properties, methods, attributes, inheritance, slots, CSS Shadow Parts, CSS custom properties, and a modules exports. If you're interested in following the specification of the schema, or contributing to it, you can find the repository here: [webcomponents/custom-elements-manifest](https://github.com/webcomponents/custom-elements-manifest).
 
+> It's important to note that the Custom Elements Manifest schema is a _community standard_, [discussion takes place in the open](https://github.com/webcomponents/custom-elements-manifest) and is accessible to anyone. Discussions about the schema have included engineers from a wide variety of stakeholders like: Adobe, Stencil, Google, Open Web Components, ING, and more.
+
 ## Example
 
 Here's an example:
@@ -111,6 +113,8 @@ Using a `custom-elements.json` file, it would be easy to generate or display dem
 Another great example is [Apollo Elements](https://apolloelements.dev/) by [Benny Powers](https://twitter.com/PowersBenny), which uses a Custom Elements Manifest to generate their documentation:
 
 ![apollo](./apollo.png)
+
+At the time of writing, we are also working on adding support for Custom Elements Manifest version 1.0.0 to [Storybook](https://storybook.js.org/). You can track the progress here: [feat: support Custom Elements Manifest v1](https://github.com/storybookjs/storybook/pull/15138).
 
 ### Framework Integration
 
