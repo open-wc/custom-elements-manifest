@@ -136,13 +136,13 @@ We believe `custom-elements.json` will open the door for a lot, lot more new exc
 
 If you're publishing a component, or a library of components, we recommend people to create a Custom Elements Manifest and publish it alongside your components to NPM.
 
-If your package makes use of [Export Maps](https://nodejs.org/api/packages.html#packages_exports), make sure to add your Custom Elements Manifest there under the `"customElements"` key. This will allow consumers of your manifest to easily import it like so:
+We recommend authors of components to add a `"customElements": "./custom-elements.json"` to your project's `package.json`. This allows tools to easily find whether or not a package contains a Custom Elements Manifest, and read its contents.
+
+If your package makes use of [Export Maps](https://nodejs.org/api/packages.html#packages_exports), make sure to also add your Custom Elements Manifest there under the `"customElements"` key. This will allow consumers of your manifest to easily import it like so:
 
 ```js
 import cem from '@my-element/customElements' assert { type: 'json' };
 ```
-
-If your package does not use Export Maps yet, we recommend adding a `"customElements": "./custom-elements.json"` to your project's `package.json`. This allows tools to easily find whether or not a package contains a Custom Elements Manifest, and read its contents.
 
 ## 🛠 The Tools
 
@@ -287,7 +287,7 @@ And the output `custom-elements.json` will look like this:
 }
 ```
 
-To get started developing custom plugins, take a look at the [cem-plugin-template](https://github.com/open-wc/cem-plugin-template) repository to quickly get you up and running. 
+To get started developing custom plugins, take a look at the [cem-plugin-template](https://github.com/open-wc/cem-plugin-template) repository to quickly get you up and running, and take a look at the [Authoring Plugins](https://github.com/open-wc/custom-elements-manifest/blob/master/packages/analyzer/docs/plugins.md) documentation for more in depth information.
 
 ## Concluding
 
