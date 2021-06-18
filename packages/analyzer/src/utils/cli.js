@@ -84,6 +84,11 @@ export async function addFrameworkPlugins(mergedOptions) {
   return plugins;
 }
 
+export function timestamp() {
+  const date = new Date();
+  return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds() }`;
+}
+
 export function addCustomElementsPropertyToPackageJson() {
   const packageJsonPath = `${process.cwd()}/package.json`;
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath).toString());

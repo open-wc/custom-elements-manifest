@@ -15,6 +15,7 @@ import {
   addFrameworkPlugins, 
   addCustomElementsPropertyToPackageJson,
   mergeGlobsAndExcludes,
+  timestamp,
   MENU
 } from './src/utils/cli.js';
 
@@ -51,7 +52,7 @@ import {
       const modules = userConfig?.overrideModuleCreation 
         ? userConfig.overrideModuleCreation({ts, globs})
         : globs.map(glob => {
-            const relativeModulePath = `./${path.relative(process.cwd(), glob)}`;
+            const relativeModulePath = path.relative(process.cwd(), glob);
             const source = fs.readFileSync(relativeModulePath).toString();
   
             return ts.createSourceFile(
@@ -74,14 +75,12 @@ import {
         dev: mergedOptions.dev
       });
 
-      fs.writeFileSync(`${process.cwd()}/custom-elements.json`, `${JSON.stringify(customElementsManifest, null, 2)}\n`);
+      fs.writeFileSync(`${process.cwd()}${path.sep}custom-elements.json`, `${JSON.stringify(customElementsManifest, null, 2)}\n`);
       if(mergedOptions.dev) {
         console.log(JSON.stringify(customElementsManifest, null, 2));
       }
 
-      const date = new Date();
-      const timestamp = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-      console.log(`[${timestamp}] @custom-elements-manifest/analyzer: Created new manifest.`);
+      console.log(`[${timestamp()}] @custom-elements-manifest/analyzer: Created new manifest.`);
     }
     await run();
 
@@ -100,7 +99,7 @@ import {
     try {
       addCustomElementsPropertyToPackageJson();
     } catch {
-      console.log(`Could not add 'customElements' property to ${process.cwd()}/package.json. \nAdding this property helps tooling locate your Custom Elements Manifest. Please consider adding it yourself, or file an issue if you think this is a bug.\nhttps://www.github.com/open-wc/custom-elements-manifest`);
+      console.log(`Could not add 'customElements' property to ${process.cwd()}${path.sep}package.json. \nAdding this property helps tooling locate your Custom Elements Manifest. Please consider adding it yourself, or file an issue if you think this is a bug.\nhttps://www.github.com/open-wc/custom-elements-manifest`);
     }
   } else {
     console.log(MENU);
