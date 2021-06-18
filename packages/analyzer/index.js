@@ -73,11 +73,15 @@ import {
         plugins,
         dev: mergedOptions.dev
       });
-  
+
       fs.writeFileSync(`${process.cwd()}/custom-elements.json`, `${JSON.stringify(customElementsManifest, null, 2)}\n`);
       if(mergedOptions.dev) {
         console.log(JSON.stringify(customElementsManifest, null, 2));
       }
+
+      const date = new Date();
+      const timestamp = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+      console.log(`[${timestamp}] @custom-elements-manifest/analyzer: Created new manifest.`);
     }
     await run();
 
