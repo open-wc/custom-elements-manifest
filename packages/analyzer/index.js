@@ -5,6 +5,8 @@ import path from 'path';
 import globby from 'globby';
 import fs from 'fs';
 import commandLineArgs from 'command-line-args';
+import chokidar from 'chokidar';
+import debounce from 'debounce';
 
 import { create } from './src/create.js';
 import { 
@@ -35,46 +37,60 @@ import {
     const merged = mergeGlobsAndExcludes(userConfig, cliConfig);
     const globs = await globby(merged);
 
+    async function run() {
+      /**
+       * Create modules for `create()`
+       * 
+       * By default, the analyzer doesn't actually compile a users source code with the TS compiler
+       * API. This means that by default, the typeChecker is not available in plugins.
+       * 
+       * If users want to use the typeChecker, they can do so by adding a `overrideModuleCreation` property
+       * in their custom-elements-manifest.config.js. `overrideModuleCreation` is a function that should return
+       * an array of sourceFiles.
+       */
+      const modules = userConfig?.overrideModuleCreation 
+        ? userConfig.overrideModuleCreation({ts, globs})
+        : globs.map(glob => {
+            const relativeModulePath = `./${path.relative(process.cwd(), glob)}`;
+            const source = fs.readFileSync(relativeModulePath).toString();
+  
+            return ts.createSourceFile(
+              relativeModulePath,
+              source,
+              ts.ScriptTarget.ES2015,
+              true,
+            );
+          });
+  
+      let plugins = await addFrameworkPlugins(mergedOptions);
+      plugins = [...plugins, ...(userConfig?.plugins || [])];
+  
+      /**
+       * Create the manifest
+       */
+      const customElementsManifest = create({
+        modules,
+        plugins,
+        dev: mergedOptions.dev
+      });
+  
+      fs.writeFileSync(`${process.cwd()}/custom-elements.json`, `${JSON.stringify(customElementsManifest, null, 2)}\n`);
+      if(mergedOptions.dev) {
+        console.log(JSON.stringify(customElementsManifest, null, 2));
+      }
+    }
+    await run();
+
     /**
-     * Create modules for `create()`
-     * 
-     * By default, the analyzer doesn't actually compile a users source code with the TS compiler
-     * API. This means that by default, the typeChecker is not available in plugins.
-     * 
-     * If users want to use the typeChecker, they can do so by adding a `overrideModuleCreation` property
-     * in their custom-elements-manifest.config.js. `overrideModuleCreation` is a function that should return
-     * an array of sourceFiles.
+     * Watch mode
      */
-    const modules = userConfig?.overrideModuleCreation 
-      ? userConfig.overrideModuleCreation({ts, globs})
-      : globs.map(glob => {
-          const relativeModulePath = `./${path.relative(process.cwd(), glob)}`;
-          const source = fs.readFileSync(relativeModulePath).toString();
-
-          return ts.createSourceFile(
-            relativeModulePath,
-            source,
-            ts.ScriptTarget.ES2015,
-            true,
-          );
-        });
-
-    let plugins = await addFrameworkPlugins(mergedOptions);
-    plugins = [...plugins, ...(userConfig?.plugins || [])];
-
-    /**
-     * Create the manifest
-     */
-    const customElementsManifest = create({
-      modules,
-      plugins,
-      dev: mergedOptions.dev
-    });
-    
-    fs.writeFileSync(`${process.cwd()}/custom-elements.json`, `${JSON.stringify(customElementsManifest, null, 2)}\n`);
-
-    if(mergedOptions.dev) {
-      console.log(JSON.stringify(customElementsManifest, null, 2));
+    if(mergedOptions.watch) {
+      const fileWatcher = chokidar.watch(globs);
+  
+      const onChange = debounce(run, 100);
+  
+      fileWatcher.addListener('change', onChange);
+      fileWatcher.addListener('unlink', onChange);
     }
 
     try {

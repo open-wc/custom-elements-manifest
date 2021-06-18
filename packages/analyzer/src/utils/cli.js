@@ -49,6 +49,7 @@ export function getCliConfig(argv) {
     { name: 'globs', type: String, multiple: true, defaultValue: ['**/*.{js,ts}'] },
     { name: 'exclude', type: String, multiple: true },
     { name: 'dev', type: Boolean, defaultValue: false },
+    { name: 'watch', type: Boolean, defaultValue: false },
     { name: 'litelement', type: Boolean, defaultValue: false },
     { name: 'stencil', type: Boolean, defaultValue: false },
     { name: 'fast', type: Boolean, defaultValue: false },
