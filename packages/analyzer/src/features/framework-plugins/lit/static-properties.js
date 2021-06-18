@@ -39,10 +39,10 @@ export function staticPropertiesPlugin() {
                   if(attributeName) {
                     attribute.name = attributeName;
                   }
-                  currClass.attributes.push(attribute);
+                  currClass?.attributes.push(attribute);
                 }
 
-                currClass.members.push(classMember);
+                currClass?.members.push(classMember);
               });
               return;
             }
