@@ -41,8 +41,8 @@
           "superclass": {
             "name": "FASTElement"
           },
-          "customElement": true,
-          "tagName": "name-tag"
+          "tagName": "name-tag",
+          "customElement": true
         }
       ],
       "exports": [
