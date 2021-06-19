@@ -70,8 +70,8 @@
           "superclass": {
             "name": "LitElement"
           },
-          "customElement": true,
-          "tagName": "my-element"
+          "tagName": "my-element",
+          "customElement": true
         }
       ],
       "exports": [

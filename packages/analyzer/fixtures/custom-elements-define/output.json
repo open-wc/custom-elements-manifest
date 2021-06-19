@@ -20,8 +20,8 @@
           "superclass": {
             "name": "HTMLElement"
           },
-          "customElement": true,
-          "tagName": "my-element"
+          "tagName": "my-element",
+          "customElement": true
         },
         {
           "kind": "class",
@@ -30,8 +30,8 @@
           "superclass": {
             "name": "HTMLElement"
           },
-          "customElement": true,
-          "tagName": "my-window"
+          "tagName": "my-window",
+          "customElement": true
         }
       ],
       "exports": [
