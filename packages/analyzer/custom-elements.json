@@ -7,64 +7,16 @@
       "path": "fixtures/-default/package/bar.js",
       "declarations": [
         {
-          "kind": "class",
-          "description": "",
-          "name": "default",
-          "cssParts": [
-            {
-              "name": "foo"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "propertyDecorator",
-              "type": {
-                "text": "string"
-              },
-              "default": "hi"
-            },
-            {
-              "kind": "field",
-              "name": "mobileopen",
-              "privacy": "public",
-              "default": "false"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "propertyDecorator",
-              "type": {
-                "text": "string"
-              },
-              "default": "hi",
-              "fieldName": "propertyDecorator"
-            },
-            {
-              "name": "mobileopen",
-              "fieldName": "mobileopen"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement"
-          },
-          "customElement": true
+          "kind": "function",
+          "name": "bar"
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "default",
+          "name": "bar",
           "declaration": {
-            "name": "default",
-            "module": "fixtures/-default/package/bar.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "top-bar",
-          "declaration": {
-            "name": "TopBar",
+            "name": "bar",
             "module": "fixtures/-default/package/bar.js"
           }
         }

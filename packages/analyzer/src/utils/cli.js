@@ -1,5 +1,6 @@
 import { readConfig, ConfigLoaderError } from '@web/config-loader';
 import fs from 'fs';
+import path from 'path';
 import commandLineArgs from 'command-line-args';
 import { has } from './index.js';
 
@@ -90,7 +91,7 @@ export function timestamp() {
 }
 
 export function addCustomElementsPropertyToPackageJson() {
-  const packageJsonPath = `${process.cwd()}/package.json`;
+  const packageJsonPath = `${process.cwd()}${path.sep}package.json`;
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath).toString());
   
   if(packageJson?.customElements) {
@@ -105,14 +106,17 @@ export const MENU = `
 @custom-elements-manifest/analyzer
 
 Available commands:
-    | Command/option   | Type       | Description                                          | Example               |
-    | ---------------- | ---------- | ---------------------------------------------------- | --------------------- |
-    | analyze          |            | Analyze your components                              |                       |
-    | --globs          | string[]   | Globs to analyze                                     | \`--globs "foo.js"\`    |
-    | --exclude        | string[]   | Globs to exclude                                     | \`--exclude "foo.js"\`  |
-    | --litelement     | boolean    | Enable special handling for LitElement syntax        | \`--litelement\`        |
-    | --stencil        | boolean    | Enable special handling for Stencil syntax           | \`--stencil\`           |
-    | --catalyst       | boolean    | Enable special handling for Catalyst syntax          | \`--catalyst\`          |
+    | Command/option   | Type       | Description                                                 | Example               |
+    | ---------------- | ---------- | ----------------------------------------------------------- | --------------------- |
+    | analyze          |            | Analyze your components                                     |                       |
+    | --globs          | string[]   | Globs to analyze                                            | \`--globs "foo.js"\`    |
+    | --exclude        | string[]   | Globs to exclude                                            | \`--exclude "foo.js"\`  |
+    | --watch          | boolean    | Enables watch mode, generates a new manifest on file change | \`--watch\`             |
+    | --dev            | boolean    | Enables extra logging for debugging                         | \`--dev\`               |
+    | --litelement     | boolean    | Enable special handling for LitElement syntax               | \`--litelement\`        |
+    | --fast           | boolean    | Enable special handling for FASTElement syntax              | \`--fast\`              |
+    | --stencil        | boolean    | Enable special handling for Stencil syntax                  | \`--stencil\`           |
+    | --catalyst       | boolean    | Enable special handling for Catalyst syntax                 | \`--catalyst\`          |
 
 Example:
     custom-elements-manifest analyze --litelement --globs "**/*.js" --exclude "foo.js" "bar.js"
