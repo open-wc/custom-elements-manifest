@@ -31,3 +31,5 @@ jobs:
           yarn
           cd packages/analyzer
           npm test
+          npm run build:browser
+          npm run test:browser
