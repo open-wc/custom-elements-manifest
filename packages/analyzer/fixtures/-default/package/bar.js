@@ -1,5 +1,13 @@
-import type foo from 'ts';
-import { named } from 'thirdparty';
-export function bar() {
+/**
+ * @property {boolean} src this is desc
+ */
+@customElement("customelement-schema-viewer")
+export class CustomElementSchemaViewerElement extends LitElement {
 
+
+  static get properties() {
+    return {
+      src: { type: Boolean }
+    }
+  }
 }

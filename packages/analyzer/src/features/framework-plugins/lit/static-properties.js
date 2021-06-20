@@ -44,7 +44,14 @@ export function staticPropertiesPlugin() {
                   currClass.attributes = [...(currClass?.attributes || []), attribute]
                 }
 
-                currClass?.members.push(classMember);
+                
+                const existingField = currClass?.members?.find(field => field.name === classMember.name);
+
+                if(!existingField) {
+                  currClass.members.push(classMember);
+                } else {
+                  currClass.members = currClass?.members?.map(field => field.name === classMember.name ? ({...field, ...classMember}) : field);
+                }
               });
               return;
             }

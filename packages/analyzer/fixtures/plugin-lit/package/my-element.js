@@ -1,5 +1,8 @@
 import { LitElement, property, customElement } from 'lit-element';
 
+/**
+ * @prop {string} prop1 this is the description
+ */
 @customElement('my-element')
 class MyElement extends LitElement {
   static get properties() {

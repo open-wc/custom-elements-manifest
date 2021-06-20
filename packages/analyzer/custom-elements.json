@@ -7,37 +7,48 @@
       "path": "fixtures/-default/package/bar.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "bar"
+          "kind": "class",
+          "description": "",
+          "name": "CustomElementSchemaViewerElement",
+          "members": [
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "this is desc",
+              "name": "src",
+              "kind": "field",
+              "privacy": "public"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "src",
+              "fieldName": "src"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement"
+          },
+          "tagName": "customelement-schema-viewer",
+          "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "bar",
+          "name": "CustomElementSchemaViewerElement",
           "declaration": {
-            "name": "bar",
+            "name": "CustomElementSchemaViewerElement",
             "module": "fixtures/-default/package/bar.js"
           }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "fixtures/-default/package/foo.js",
-      "declarations": [
+        },
         {
-          "kind": "function",
-          "name": "foo"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "foo",
+          "kind": "custom-element-definition",
+          "name": "customelement-schema-viewer",
           "declaration": {
-            "name": "foo",
-            "module": "fixtures/-default/package/foo.js"
+            "name": "CustomElementSchemaViewerElement",
+            "module": "fixtures/-default/package/bar.js"
           }
         }
       ]
