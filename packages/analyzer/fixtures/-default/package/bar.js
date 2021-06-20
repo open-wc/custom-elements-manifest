@@ -1,13 +1,7 @@
-/**
- * @property {boolean} src this is desc
- */
 @customElement("customelement-schema-viewer")
 export class CustomElementSchemaViewerElement extends LitElement {
-
-
-  static get properties() {
-    return {
-      src: { type: Boolean }
-    }
-  }
+  /**
+   * Any valid path to load a JSON file that adheres to the custom element manifest schema: {@link https://github.com/webcomponents/custom-elements-manifest/}
+   */
+  src;
 }

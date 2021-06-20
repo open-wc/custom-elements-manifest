@@ -12,19 +12,9 @@
           "name": "CustomElementSchemaViewerElement",
           "members": [
             {
-              "type": {
-                "text": "boolean"
-              },
-              "description": "this is desc",
-              "name": "src",
               "kind": "field",
-              "privacy": "public"
-            }
-          ],
-          "attributes": [
-            {
               "name": "src",
-              "fieldName": "src"
+              "description": "Any valid path to load a JSON file that adheres to the custom element manifest schema: https://github.com/webcomponents/custom-elements-manifest/"
             }
           ],
           "superclass": {
