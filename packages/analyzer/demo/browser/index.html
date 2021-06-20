@@ -5,7 +5,12 @@
     <script type="module">
       import {ts, create} from '../../browser/index.js';
 
-      const code = `export function foo() {}`;
+      const code = `export class MyEl extends HTMLElement {
+        /**
+         * @attr
+         */
+        foo; 
+      }`;
 
       const modules = [ts.createSourceFile(
         '',
