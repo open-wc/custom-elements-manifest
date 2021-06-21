@@ -16,14 +16,14 @@ export function stencilPlugin() {
            * Add tagName to classDoc, extracted from `@Component({tag: 'foo-bar'})` decorator
            * Add custom-element-definition to exports
            */ 
-          const className = node?.name?.getText();
-
           const componentDecorator = node?.decorators?.find(decorator('Component'))?.expression;
 
           const tagName = componentDecorator?.arguments?.[0]?.properties?.find(prop => {
             return prop?.name?.getText() === 'tag'
           })?.initializer?.text;
 
+          const hasDefaultModifier = node?.modifiers?.some(mod => ts.SyntaxKind.DefaultKeyword === mod.kind);
+          const className = hasDefaultModifier ? 'default' : node?.name?.getText();
           const currClass = moduleDoc?.declarations?.find(declaration => declaration.name === className);
           if(tagName) {
             currClass.tagName = tagName;

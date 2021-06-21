@@ -30,7 +30,7 @@ export default [
         if (id === commentParser) {
           return `
   import { parse } from 'comment-parser/es6/index.js'
-  export default parse;
+  export default { parse: parse };
           `;
           }
         }  

@@ -13,7 +13,8 @@ export function staticPropertiesPlugin() {
     analyzePhase({ts, node, moduleDoc}){
       switch (node.kind) {
         case ts.SyntaxKind.ClassDeclaration:    
-          const className = node?.name?.getText();
+          const hasDefaultModifier = node?.modifiers?.some(mod => ts.SyntaxKind.DefaultKeyword === mod.kind);
+          const className = hasDefaultModifier ? 'default' : node?.name?.getText();
           const currClass = moduleDoc?.declarations?.find(declaration => declaration.name === className);
     
           node?.members?.forEach(member => {
@@ -39,10 +40,18 @@ export function staticPropertiesPlugin() {
                   if(attributeName) {
                     attribute.name = attributeName;
                   }
-                  currClass.attributes.push(attribute);
+
+                  currClass.attributes = [...(currClass?.attributes || []), attribute]
                 }
 
-                currClass.members.push(classMember);
+                
+                const existingField = currClass?.members?.find(field => field.name === classMember.name);
+
+                if(!existingField) {
+                  currClass.members.push(classMember);
+                } else {
+                  currClass.members = currClass?.members?.map(field => field.name === classMember.name ? ({...field, ...classMember}) : field);
+                }
               });
               return;
             }

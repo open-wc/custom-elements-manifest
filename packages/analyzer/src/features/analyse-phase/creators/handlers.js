@@ -38,7 +38,11 @@ export function handleModifiers(doc, node) {
 export function handleJsDoc(doc, node) {
   node?.jsDoc?.forEach(jsDocComment => {
     if(jsDocComment?.comment) {
-      doc.description = jsDocComment.comment;
+      if(has(jsDocComment?.comment)) {
+        doc.description = jsDocComment.comment.map(com => `${safe(() => com?.name?.getText()) ?? ''}${com.text}`).join('');
+      } else {
+        doc.description = jsDocComment.comment;
+      }
     }
 
     jsDocComment?.tags?.forEach(tag => {

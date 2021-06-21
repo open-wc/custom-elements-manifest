@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.1.0",
+  "schemaVersion": "1.0.0",
   "readme": "",
   "modules": [
     {
@@ -41,8 +41,8 @@
           "superclass": {
             "name": "FASTElement"
           },
-          "customElement": true,
-          "tagName": "name-tag"
+          "tagName": "name-tag",
+          "customElement": true
         }
       ],
       "exports": [

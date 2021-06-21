@@ -151,8 +151,8 @@ function eventsVisitor(source, classTemplate) {
         if (isDispatchEvent(node)) {
           node?.arguments?.forEach((arg) => {
             if (arg.kind === ts.SyntaxKind.NewExpression) {
-              const eventName = arg.arguments[0].text;
-
+              /** e.g. `selected-changed` */
+              const eventName = arg?.arguments?.[0]?.text;
               /**
                * Check if event already exists
                */
@@ -160,7 +160,7 @@ function eventsVisitor(source, classTemplate) {
 
               if(!eventExists) {
                 let eventDoc = {
-                  name: eventName,
+                  ...(eventName ? {name: eventName} : {}),
                   type: {
                     text: arg.expression.text,
                   },
