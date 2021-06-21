@@ -9,35 +9,32 @@
         {
           "kind": "class",
           "description": "",
-          "name": "CustomElementSchemaViewerElement",
+          "name": "MyElement",
           "members": [
             {
-              "kind": "field",
-              "name": "src",
-              "description": "Any valid path to load a JSON file that adheres to the custom element manifest schema: https://github.com/webcomponents/custom-elements-manifest/"
+              "kind": "method",
+              "name": "myMethod"
+            }
+          ],
+          "events": [
+            {
+              "type": {
+                "text": "MyCustomEvent"
+              }
             }
           ],
           "superclass": {
             "name": "LitElement"
           },
-          "tagName": "customelement-schema-viewer",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "CustomElementSchemaViewerElement",
+          "name": "MyElement",
           "declaration": {
-            "name": "CustomElementSchemaViewerElement",
-            "module": "fixtures/-default/package/bar.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "customelement-schema-viewer",
-          "declaration": {
-            "name": "CustomElementSchemaViewerElement",
+            "name": "MyElement",
             "module": "fixtures/-default/package/bar.js"
           }
         }
