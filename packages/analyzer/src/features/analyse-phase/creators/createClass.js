@@ -4,7 +4,7 @@ import { createAttribute, createAttributeFromField } from './createAttribute.js'
 import { createField } from './createClassField.js';
 import { handleHeritage, handleJsDoc, handleAttrJsDoc } from './handlers.js';
 import { hasDefaultModifier } from '../../../utils/exports.js';
-import { hasAttrAnnotation, isDispatchEvent, isPrimitive, isProperty, isReturnStatement, isStaticMember } from '../../../utils/ast-helpers.js';
+import { hasAttrAnnotation, isDispatchEvent, isPrimitive, isProperty, isReturnStatement, isStaticMember, hasIgnoreJSDoc } from '../../../utils/ast-helpers.js';
 
 
 /**
@@ -70,7 +70,7 @@ export function createClass(node, moduleDoc, context) {
     /**
      * Handle class methods
      */
-    if(ts.isMethodDeclaration(member)) {
+    if(ts.isMethodDeclaration(member) && !hasIgnoreJSDoc(member)) {
       const method = createFunctionLike(member);
       classTemplate.members.push(method);
     }
@@ -78,7 +78,7 @@ export function createClass(node, moduleDoc, context) {
     /**
      * Handle fields
      */
-    if (isProperty(member)) {
+    if (isProperty(member) && !hasIgnoreJSDoc(member)) {
       /**
        * A  class can have a static prop and an instance prop with the same name,
        * both should be output in the CEM

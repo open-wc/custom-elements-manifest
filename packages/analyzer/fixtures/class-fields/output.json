@@ -103,11 +103,6 @@
               "kind": "field",
               "name": "#prop13",
               "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "[priv]",
-              "default": "hidden"
             }
           ],
           "attributes": [

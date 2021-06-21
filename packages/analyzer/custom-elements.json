@@ -7,37 +7,30 @@
       "path": "fixtures/-default/package/bar.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "bar"
+          "kind": "class",
+          "description": "",
+          "name": "MyEl",
+          "members": [
+            {
+              "kind": "field",
+              "name": "priv2",
+              "default": "'hidden'"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "customElement": true,
+          "tagName": "my-el"
         }
       ],
       "exports": [
         {
-          "kind": "js",
-          "name": "bar",
+          "kind": "custom-element-definition",
+          "name": "my-el",
           "declaration": {
-            "name": "bar",
+            "name": "MyEl",
             "module": "fixtures/-default/package/bar.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "fixtures/-default/package/foo.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "foo"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "foo",
-          "declaration": {
-            "name": "foo",
-            "module": "fixtures/-default/package/foo.js"
           }
         }
       ]

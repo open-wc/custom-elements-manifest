@@ -16,11 +16,6 @@
               "name": "moduleMixinField"
             },
             {
-              "kind": "field",
-              "name": "hidden",
-              "default": "hidden"
-            },
-            {
               "kind": "method",
               "name": "moduleMixinMethod"
             }
@@ -181,15 +176,6 @@
             {
               "kind": "field",
               "name": "moduleMixinField",
-              "inheritedFrom": {
-                "name": "ModuleMixin",
-                "module": "fixtures/inheritance-mixins/package/ModuleMixin.js"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "hidden",
-              "default": "hidden",
               "inheritedFrom": {
                 "name": "ModuleMixin",
                 "module": "fixtures/inheritance-mixins/package/ModuleMixin.js"

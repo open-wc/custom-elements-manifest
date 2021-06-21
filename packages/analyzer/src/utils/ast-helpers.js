@@ -99,3 +99,9 @@ export const getReturnValue = returnStatement => (
  */
 export const isStaticMember = member =>
   member?.modifiers?.some?.(x => x.kind === ts.SyntaxKind.StaticKeyword);
+
+
+/**
+ * Whether or not a node has an `@ignore` jsdoc annotation
+ */
+export const hasIgnoreJSDoc = node => node?.jsDoc?.some(doc => doc?.tags?.some(tag => safe(() => tag?.tagName?.getText()) === 'ignore'));

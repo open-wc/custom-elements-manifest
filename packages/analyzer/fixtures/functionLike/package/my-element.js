@@ -53,7 +53,13 @@ export class MyEl {
    * @return {string}
    */
   functionDeclaration6(bar:string):boolean{}
+
+  /** @ignore */
+  hidden(){}
 }
 
 /** @ignore */
 export const hidden = () => {};
+
+/** @ignore */
+export function hidden2(){}

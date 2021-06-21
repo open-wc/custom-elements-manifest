@@ -1,3 +1,4 @@
+import { hasIgnoreJSDoc } from '../../utils/ast-helpers.js';
 import {
   hasExportModifier,
   hasDefaultModifier,
@@ -15,6 +16,8 @@ export function exportsPlugin() {
   return {
     name: 'CORE - EXPORTS',
     analyzePhase({ts, node, moduleDoc}){
+      if(hasIgnoreJSDoc(node)) return;
+      
       /**
        * @example export const foo = '';
        */
