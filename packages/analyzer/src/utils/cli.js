@@ -91,14 +91,18 @@ export function timestamp() {
   return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds() }`;
 }
 
-export function addCustomElementsPropertyToPackageJson() {
+export function addCustomElementsPropertyToPackageJson(outdir) {
   const packageJsonPath = `${process.cwd()}${path.sep}package.json`;
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath).toString());
-  
+
   if(packageJson?.customElements) {
+    if(packageJson?.customElements !== path.join(outdir, 'custom-elements.json')) {
+      packageJson.customElements = path.join(outdir, 'custom-elements.json');
+      fs.writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`);
+    }
     return;
   } else {
-    packageJson.customElements = 'custom-elements.json';
+    packageJson.customElements = path.join(outdir, 'custom-elements.json');
     fs.writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`);
   }
 }
@@ -112,6 +116,7 @@ Available commands:
     | analyze          |            | Analyze your components                                     |                       |
     | --globs          | string[]   | Globs to analyze                                            | \`--globs "foo.js"\`    |
     | --exclude        | string[]   | Globs to exclude                                            | \`--exclude "foo.js"\`  |
+    | --outdir         | string     | Directory to output the Manifest to                         | \`--outdir dist\`       |
     | --watch          | boolean    | Enables watch mode, generates a new manifest on file change | \`--watch\`             |
     | --dev            | boolean    | Enables extra logging for debugging                         | \`--dev\`               |
     | --litelement     | boolean    | Enable special handling for LitElement syntax               | \`--litelement\`        |
