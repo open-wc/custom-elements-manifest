@@ -75,7 +75,8 @@ import {
         dev: mergedOptions.dev
       });
 
-      fs.writeFileSync(`${process.cwd()}${path.sep}custom-elements.json`, `${JSON.stringify(customElementsManifest, null, 2)}\n`);
+      const outdir = path.join(process.cwd(), mergedOptions.outdir);
+      fs.writeFileSync(path.join(outdir, 'custom-elements.json'), `${JSON.stringify(customElementsManifest, null, 2)}\n`);
       if(mergedOptions.dev) {
         console.log(JSON.stringify(customElementsManifest, null, 2));
       }

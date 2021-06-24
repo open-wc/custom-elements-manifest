@@ -39,6 +39,7 @@ cem analyze
 | analyze          |            | Analyze your components                                     |                       |
 | --globs          | string[]   | Globs to analyze                                            | `--globs "foo.js"`    |
 | --exclude        | string[]   | Globs to exclude                                            | `--exclude "foo.js"`  |
+| --outdir         | string     | Directory to output the Manifest to                         | `--outdir dist`       |
 | --watch          | boolean    | Enables watch mode, generates a new manifest on file change | `--watch`             |
 | --dev            | boolean    | Enables extra logging for debugging                         | `--dev`               |
 | --litelement     | boolean    | Enable special handling for LitElement syntax               | `--litelement`        |
@@ -356,6 +357,7 @@ import myAwesomePlugin from 'awesome-plugin';
 export default {
   globs: ['src/**/*.js'], 
   exclude: ['src/foo.js'],
+  outdir: 'dist',
   dev: true,
   watch: true,
   plugins: [
@@ -378,6 +380,7 @@ Config types:
 interface userConfigOptions {
   globs: string[],
   exclude: string[],
+  outdir: string,
   dev: boolean,
   watch: boolean,
   plugins: Array<() => Plugin>,
