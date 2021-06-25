@@ -326,6 +326,7 @@ customElements.define('my-element', MyElement);
  *
  * @csspart bar - Styles the color of bar
  *
+ * @slot - This is a default/unnamed slot
  * @slot container - You can put some elements here
  *
  * @cssprop --text-color - Controls the color of foo
