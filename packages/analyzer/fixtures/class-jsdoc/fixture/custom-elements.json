@@ -29,6 +29,10 @@
           ],
           "slots": [
             {
+              "description": "This is the default slot",
+              "name": ""
+            },
+            {
               "description": "- You can put some elements here",
               "name": "container"
             }

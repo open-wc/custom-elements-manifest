@@ -10,17 +10,14 @@
           "kind": "class",
           "description": "",
           "name": "MyElement",
-          "members": [
+          "slots": [
             {
-              "kind": "method",
-              "name": "myMethod"
-            }
-          ],
-          "events": [
+              "description": "- foo slot",
+              "name": "foo"
+            },
             {
-              "type": {
-                "text": "MyCustomEvent"
-              }
+              "description": "description is this",
+              "name": ""
             }
           ],
           "superclass": {

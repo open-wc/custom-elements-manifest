@@ -129,7 +129,7 @@ function handleClassJsDoc(doc, tag) {
   }
 
   if(tag?.name) {
-    doc.name = tag.name;
+    doc.name = tag.name === '-' ? '' : tag.name;
   }
 
   if(tag?.default) {
