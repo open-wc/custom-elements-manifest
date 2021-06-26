@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.1.0",
+  "schemaVersion": "1.0.0",
   "readme": "",
   "modules": [
     {
@@ -46,6 +46,90 @@
           "declaration": {
             "name": "BatchingElement",
             "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/inheritance-superclass/package/implements-element.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ImplementsElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "classField"
+            },
+            {
+              "kind": "method",
+              "name": "implementsMethod"
+            },
+            {
+              "kind": "method",
+              "name": "classMethod"
+            },
+            {
+              "kind": "field",
+              "name": "superClassField",
+              "inheritedFrom": {
+                "name": "BatchingElement",
+                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "superClassMethod",
+              "inheritedFrom": {
+                "name": "BatchingElement",
+                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+              }
+            }
+          ],
+          "events": [
+            {
+              "name": "class-event",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "superClass-event",
+              "type": {
+                "text": "Event"
+              },
+              "inheritedFrom": {
+                "name": "BatchingElement",
+                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "class-attr"
+            },
+            {
+              "name": "superClass-attr",
+              "inheritedFrom": {
+                "name": "BatchingElement",
+                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "BatchingElement"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ImplementsElement",
+          "declaration": {
+            "name": "ImplementsElement",
+            "module": "fixtures/inheritance-superclass/package/implements-element.ts"
           }
         }
       ]

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.1.0",
+  "schemaVersion": "1.0.0",
   "readme": "",
   "modules": [
     {
@@ -26,6 +26,10 @@
             {
               "kind": "field",
               "name": "prop1",
+              "type": {
+                "text": "string"
+              },
+              "description": "this is the description",
               "privacy": "public",
               "default": "'foo'"
             },

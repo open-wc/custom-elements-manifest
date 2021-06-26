@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.1.0",
+  "schemaVersion": "1.0.0",
   "readme": "",
   "modules": [
     {
@@ -24,8 +24,12 @@
               "name": "decoratedPropertyNoAttr"
             },
             {
-              "kind": "field",
+              "type": {
+                "text": "string"
+              },
+              "description": "this is the description",
               "name": "prop1",
+              "kind": "field",
               "privacy": "public",
               "default": "'foo'"
             },
@@ -70,8 +74,8 @@
           "superclass": {
             "name": "LitElement"
           },
-          "customElement": true,
-          "tagName": "my-element"
+          "tagName": "my-element",
+          "customElement": true
         }
       ],
       "exports": [

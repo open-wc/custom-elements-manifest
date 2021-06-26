@@ -32,6 +32,7 @@ class MyEl extends HTMLElement {
   private prop10;
   protected prop11;
 
+  static prop11;
   static prop12;
 
   #prop13;

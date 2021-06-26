@@ -8,6 +8,7 @@ import { has } from "../../utils/index.js"
  */
 export function cleanupClassesPlugin() {
   return {
+    name: 'CORE - CLEANUP-CLASSES',
     moduleLinkPhase({moduleDoc}){
       const classes = moduleDoc?.declarations?.filter(declaration => declaration.kind === 'class' || declaration.kind === 'mixin');
 

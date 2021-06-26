@@ -9,14 +9,21 @@ import { isBareModuleSpecifier } from '../../utils/index.js';
  * COLLECT-IMPORTS
  * 
  * Collects a modules imports so that declarations can later be resolved to their module/package.
- * 
- * Imports are not specified in the schema, so they will be deleted from the Manifest at a later stage.
  */
 export function collectImportsPlugin() {
-  const imports = [];
+  const files = {};
+  let currModuleImports;
 
   return {
-    analyzePhase({node, moduleDoc}){
+    name: 'CORE - IMPORTS',
+    collectPhase({ts, node}) {
+      if(node.kind === ts.SyntaxKind.SourceFile) {
+        /**
+         * Create an empty array for each module we visit
+         */
+        files[node.fileName] = [];
+        currModuleImports = files[node.fileName];
+      }
 
       /** 
        * @example import defaultExport from 'foo'; 
@@ -27,8 +34,9 @@ export function collectImportsPlugin() {
           kind: 'default',
           importPath: node.moduleSpecifier.text,
           isBareModuleSpecifier: isBareModuleSpecifier(node.moduleSpecifier.text),
+          isTypeOnly: !!node?.importClause?.isTypeOnly
         };
-        imports.push(importTemplate);
+        currModuleImports.push(importTemplate);
       }
 
       /**
@@ -43,8 +51,9 @@ export function collectImportsPlugin() {
             kind: 'named',
             importPath: node.moduleSpecifier.text,
             isBareModuleSpecifier: isBareModuleSpecifier(node.moduleSpecifier.text),
+            isTypeOnly: !!node?.importClause?.isTypeOnly
           };
-          imports.push(importTemplate);
+          currModuleImports.push(importTemplate);
         });
       }
 
@@ -57,22 +66,22 @@ export function collectImportsPlugin() {
           kind: 'aggregate',
           importPath: node.moduleSpecifier.text,
           isBareModuleSpecifier: isBareModuleSpecifier(node.moduleSpecifier.text),
+          isTypeOnly: !!node?.importClause?.isTypeOnly
         };
-        imports.push(importTemplate);
+        currModuleImports.push(importTemplate);
       }
-
-      moduleDoc.imports = imports;
     },
-
-    packageLinkPhase({customElementsManifest, context}){
-      /**
-       * Delete `imports` from the moduleDoc, since they are not specced in the schema
-       * and we only need them during AST stuff.
-       */
-      customElementsManifest.modules.forEach(moduleDoc => {
-        delete moduleDoc.imports;
-      });
+    analyzePhase({ts, node, context}) {
+      if(node.kind === ts.SyntaxKind.SourceFile) {
+        
+        /** Makes the imports available on the context object for a given module */
+        context.imports = files[node.fileName];
+      }
     },
+    packageLinkPhase({context}) {
+      /** Reset */
+      context.imports = [];
+    }
   }
 }
 

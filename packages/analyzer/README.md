@@ -11,6 +11,7 @@ Custom Elements Manifest is a file format that describes custom elements. This f
 - [JSDoc Support](#supported-jsdoc)
 - [Advanced configuration](#advanced-configuration)
 - [Plugins](#plugins)
+- [Authoring Plugins Handbook](docs/plugins.md)
 - [Browser](#usage-in-the-browser)
 
 ## Install
@@ -33,16 +34,18 @@ cem analyze
 
 ### Options
 
-| Command/option   | Type       | Description                                          | Example               |
-| ---------------- | ---------- | ---------------------------------------------------- | --------------------- |
-| analyze          |            | Analyze your components                              |                       |
-| --globs          | string[]   | Globs to analyze                                     | `--globs "foo.js"`    |
-| --exclude        | string[]   | Globs to exclude                                     | `--exclude "foo.js"`  |
-| --dev            | boolean    | Enables extra logging for debugging                  | `--dev`               |
-| --litelement     | boolean    | Enable special handling for LitElement syntax        | `--litelement`        |
-| --fast           | boolean    | Enable special handling for FASTElement syntax       | `--fast`              |
-| --stencil        | boolean    | Enable special handling for Stencil syntax           | `--stencil`           |
-| --catalyst       | boolean    | Enable special handling for Catalyst syntax          | `--catalyst`          |
+| Command/option   | Type       | Description                                                 | Example               |
+| ---------------- | ---------- | ----------------------------------------------------------- | --------------------- |
+| analyze          |            | Analyze your components                                     |                       |
+| --globs          | string[]   | Globs to analyze                                            | `--globs "foo.js"`    |
+| --exclude        | string[]   | Globs to exclude                                            | `--exclude "foo.js"`  |
+| --outdir         | string     | Directory to output the Manifest to                         | `--outdir dist`       |
+| --watch          | boolean    | Enables watch mode, generates a new manifest on file change | `--watch`             |
+| --dev            | boolean    | Enables extra logging for debugging                         | `--dev`               |
+| --litelement     | boolean    | Enable special handling for LitElement syntax               | `--litelement`        |
+| --fast           | boolean    | Enable special handling for FASTElement syntax              | `--fast`              |
+| --stencil        | boolean    | Enable special handling for Stencil syntax                  | `--stencil`           |
+| --catalyst       | boolean    | Enable special handling for Catalyst syntax                 | `--catalyst`          |
 
 ## Demo
 
@@ -73,7 +76,7 @@ customElements.define('my-element', MyElement);
 
 ```JSON
 {
-  "schemaVersion": "0.1.0",
+  "schemaVersion": "1.0.0",
   "readme": "",
   "modules": [
     {
@@ -135,10 +138,11 @@ customElements.define('my-element', MyElement);
 **TL;DR:** 
 - JavaScript 
 - TypeScript
-- LitElement (opt-in via CLI flag) 
-- FASTElement (opt-in via CLI flag) 
-- Stencil (opt-in via CLI flag)
-- Catalyst (opt-in via CLI flag)
+- [LitElement](https://lit.dev) (opt-in via CLI flag) 
+- [FASTElement](https://www.fast.design/docs/fast-element/getting-started/) (opt-in via CLI flag) 
+- [Stencil](https://stenciljs.com/) (opt-in via CLI flag)
+- [Catalyst](https://github.github.io/catalyst/) (opt-in via CLI flag)
+- [Atomico](https://atomicojs.github.io/) (opt-in via [community plugin](https://github.com/atomicojs/custom-elements-manifest))
 
 Support for other web component libraries can be done via custom [plugins](#plugins), feel free to create your own for your favourite libraries.
 
@@ -209,7 +213,7 @@ customElements.define('my-element', MyElement);
 
 ```json
 {
-  "schemaVersion": "0.1.0",
+  "schemaVersion": "1.0.0",
   "readme": "",
   "modules": [
     {
@@ -322,6 +326,7 @@ customElements.define('my-element', MyElement);
  *
  * @csspart bar - Styles the color of bar
  *
+ * @slot - This is a default/unnamed slot
  * @slot container - You can put some elements here
  *
  * @cssprop --text-color - Controls the color of foo
@@ -353,7 +358,9 @@ import myAwesomePlugin from 'awesome-plugin';
 export default {
   globs: ['src/**/*.js'], 
   exclude: ['src/foo.js'],
+  outdir: 'dist',
   dev: true,
+  watch: true,
   plugins: [
     myAwesomePlugin()
   ],
@@ -374,7 +381,9 @@ Config types:
 interface userConfigOptions {
   globs: string[],
   exclude: string[],
+  outdir: string,
   dev: boolean,
+  watch: boolean,
   plugins: Array<() => Plugin>,
   overrideModuleCreation: ({ts: TypeScript, globs: string[]}) => SourceFile[]
 }
@@ -385,62 +394,30 @@ interface userConfigOptions {
 
 You can also write custom plugins to extend the functionality to fit what your project needs. You can extract custom JSDoc tags for example, or implement support for a new Web Component library.
 
-> You can use the [online playground](https://custom-elements-manifest.netlify.app/) for quickly prototyping plugin ideas, right in the browser
+> ✨ **TIP:** You can use the [online playground](https://custom-elements-manifest.netlify.app/) for quickly prototyping plugin ideas, right in the browser
 
-A plugin is a function that returns an object. There are several hooks you can opt in to:
+A plugin is a function that returns an object. You can read about plugins in more detail in the [authoring plugins documentation](docs/plugins.md). There are several hooks you can opt in to:
 
 - **collectPhase**: First passthrough through the AST of all modules in a project, before continuing to the `analyzePhase`. Runs for each module, and gives access to a Context object that you can use for sharing data between phases, and gives access to the AST nodes of your source code. This is useful for collecting information you may need access to in a later phase.
 - **analyzePhase**: Runs for each module, and gives access to the current Module's moduleDoc, and gives access to the AST nodes of your source code. This is generally used for AST stuff.
 - **moduleLinkPhase**: Runs after a module is done analyzing, all information about your module should now be available. You can use this hook to stitch pieces of information together.
 - **packageLinkPhase**: Runs after all modules are done analyzing, and after post-processing. All information should now be available and linked together.
 
-> **TIP:** When writing custom plugins, [ASTExplorer](https://astexplorer.net/#/gist/f99a9fba2c21e015d0a8590d291523e5/cce02565e487b584c943d317241991f19b105f94) is your friend 🙂
+> ✨ **TIP:** When writing custom plugins, [ASTExplorer](https://astexplorer.net/#/gist/f99a9fba2c21e015d0a8590d291523e5/cce02565e487b584c943d317241991f19b105f94) is your friend 🙂
 
-For a reference implementation of a plugin, you can take a look at the [Stencil plugin](/plugins/stencil.js), here's an example of a simpler plugin, that adds a custom JSDoc tag to a members doc:
-
-Example source code:
-```js
-
-export class MyElement extends HTMLElement {
-  /**
-   * @foo Some custom information!
-   */ 
-  message = ''
-}
-```
+To get started developing custom plugins, take a look at the [cem-plugin-template](https://github.com/open-wc/cem-plugin-template) repository to quickly get you up and running.  Also take a look at the [authoring plugins documentation](docs/plugins.md).
 
 `custom-elements-manifest.config.mjs`:
 ```js
 export default {
   plugins: [
     {
+      // Make sure to always give your plugins a name, this helps when debugging
+      name: 'my-plugin',
       // Runs for all modules in a project, before continuing to the `analyzePhase`
       collectPhase({ts, node, context}){},
       // Runs for each module
-      analyzePhase({ts, node, moduleDoc, context}){
-        // You can use this phase to access a module's AST nodes and mutate the custom-elements-manifest
-        switch (node.kind) {
-          case ts.SyntaxKind.ClassDeclaration:
-            const className = node.name.getText();
-
-            node.members?.forEach(member => {
-              const memberName = member.name.getText();
-
-              member.jsDoc?.forEach(jsDoc => {
-                jsDoc.tags?.forEach(tag => {
-                  if(tag.tagName.getText() === 'foo') {
-                    const description = tag.comment;
-
-                    const classDeclaration = moduleDoc.declarations.find(declaration => declaration.name === className);
-                    const messageField = classDeclaration.members.find(member => member.name === memberName);
-                    
-                    messageField.foo = description
-                  }
-                });
-              });
-            });
-        }
-      },
+      analyzePhase({ts, node, moduleDoc, context}){},
       // Runs for each module, after analyzing, all information about your module should now be available
       moduleLinkPhase({moduleDoc, context}){},
       // Runs after modules have been parsed and after post-processing
@@ -450,31 +427,7 @@ export default {
 }
 ```
 
-You can also use plugins to output custom documentation:
-
-```js
-import path from 'path';
-import fs from 'fs';
-
-function generateReadme() {
-  const components = ['my-component-a', 'my-component-b'];
-
-  return {
-    packageLinkPhase({customElementsManifest, context}) {
-      customElementsManifest.modules.forEach(mod => {
-        mod.declarations.forEach(declaration => {
-          if(components.includes(declaration.tagName)) {
-            fs.writeFileSync(
-              `${path.dirname(mod.path)}/README.md`, 
-              renderClassdocAsMarkdown(declaration)
-            );
-          }
-        });
-      });
-    }
-  }
-}
-```
+> ✨ **TIP:** Make sure to check out the [cem-plugin-template](https://github.com/open-wc/cem-plugin-template) repository if you're interested in authoring custom plugins, and check the [authoring plugins documentation](docs/plugins.md) for more information.
 
 ## How it works
 
@@ -499,78 +452,35 @@ During the package link phase, we'll have all the information we need about a pa
 - Finding a CustomElement's tagname by finding its `customElements.define()` call, if present
 - Applying inheritance to classes (adding inherited members/attributes/events etc)
 
-### Can I bring my own instance of TS?
-
-No! Or well, you can. But that might break things. TypeScript doesn't follow semver, which means that there may be breaking changes in between minor or even patch versions of TypeScript. This means that if you use a different version of TypeScript than the analyzer's version of TypeScript, things will almost definitely break. As a convenience, plugin functions get passed the analyzer's version of TS to ensure there are no version incompatibilities, and everything works as expected.
-
-## Overriding sourceFile creation
-
-By default, `@custom-elements-manifest/analyzer` does _not_ compile any code with TS. It just uses the TS compiler API to create an AST of your source code. This means that there is no `typeChecker` available in plugins.
-
-If you _do_ want to use the `typeChecker`, you can override the creation of modules in your `custom-elements-manifest.config.js`:
-
-```js
-import { defaultCompilerOptions } from './compilerOptions.js';
-import { myPlugin } from './my-plugin.js';
-
-let typeChecker;
-
-export default {
-  globs: ['fixtures/-default/package/**/*.js'], 
-  exclude: [],
-  dev: true,
-  overrideModuleCreation: ({ts, globs}) => {
-    const program = ts.createProgram(globs, defaultCompilerOptions);
-    typeChecker = program.getTypeChecker();
-
-    return program.getSourceFiles().filter(sf => globs.find(glob => sf.fileName.includes(glob)));
-  },
-  plugins: [
-    /** You can now pass the typeChecker to your plugins */
-    myPlugin(typeChecker)
-  ],
-}
-
-```
-
-`my-plugin.js`:
-```js
-export function myPlugin(typeChecker) {
-  return {
-    analyzePhase({ts, moduleDoc, context}) {
-      // do something with typeChecker
-    }
-  }
-}
-
-```
-
 ## Usage in the browser
 
 You can also run the analyzer in the browser. You can import it like so:
 
 ```html
 <html>
-  <head>
-    <!-- For reasons, you need to load typescript separately. Make sure to load version ~4.3.0, otherwise things might break -->
-    <script src="https://unpkg.com/typescript@4.3.2/lib/typescript.js"></script>
-
-    <!-- Import the code for the analyzer -->
-    <script src="https://unpkg.com/@custom-element-manifest/analyzer@1.0.0/browser/create.js"></script>
-  </head>
   <body>
-    <script>
-      const code = `export function foo() {}`;
+    <script type="module">
+      import { ts, create, litPlugin } from '@custom-element-manifest/analyzer/browser/index.js';
+      // or
+      import { ts, create, litPlugin } from 'https://unpkg.com/@custom-element-manifest/analyzer/browser/index.js';
 
       const modules = [ts.createSourceFile(
-        '',
-        code,
+        'src/my-element.js',
+        'export function foo() {}',
         ts.ScriptTarget.ES2015,
         true,
       )];
 
-      console.log(analyzer.create({modules}));
+      const manifest = create({
+        modules,
+        plugins: [litPlugin()],
+        dev: false
+      });
+
+      console.log(manifest);
     </script>
   </body>
 </html>
 ```
+
+Because typescript doesn't follow semver, and may do breaking changes on minor or patch versions, typescript is bundled with the analyzer to avoid any typescript version mismatches.

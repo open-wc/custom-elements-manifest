@@ -7,7 +7,9 @@ this [GitHub issue](https://github.com/w3c/webcomponents/issues/776) on the web 
 
 Developers tend to have many differing opinions, and standardization tends to... take time. More than 3 years later, we are happy to finally be able to share with you: _Custom Elements Manifest_ 🎉
 
-Custom Elements Manifest is a file format that describes the custom elements in your project. This format will allow tooling and IDEs to give rich information about the custom elements in a given project. A `custom-elements.json` contains metadata about the custom elements in your project; their properties, methods, attributes, inheritance, slots, CSS Shadow Parts, CSS custom properties, and a modules exports.
+Custom Elements Manifest is a file format that describes the custom elements in your project. This format will allow tooling and IDEs to give rich information about the custom elements in a given project. A `custom-elements.json` contains metadata about the custom elements in your project; their properties, methods, attributes, inheritance, slots, CSS Shadow Parts, CSS custom properties, and a modules exports. If you're interested in following the specification of the schema, or contributing to it, you can find the repository here: [webcomponents/custom-elements-manifest](https://github.com/webcomponents/custom-elements-manifest).
+
+> It's important to note that the Custom Elements Manifest schema is a _community standard_, [discussion takes place in the open](https://github.com/webcomponents/custom-elements-manifest) and is accessible to anyone. Discussions about the schema have included engineers from a wide variety of stakeholders like: Adobe, Stencil, Google, Open Web Components, ING, and more.
 
 ## Example
 
@@ -44,7 +46,7 @@ Will result in the following `custom-elements.json`:
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "fixtures/-default/package/my-element.js",
+      "path": "src/my-element.js",
       "declarations": [
         {
           "kind": "class",
@@ -85,7 +87,7 @@ Will result in the following `custom-elements.json`:
           "name": "my-element",
           "declaration": {
             "name": "MyElement",
-            "module": "fixtures/-default/package/my-element.js"
+            "module": "src/my-element.js"
           }
         }
       ]
@@ -94,7 +96,7 @@ Will result in the following `custom-elements.json`:
 }
 ```
 
-## Usecases
+## Potential Usecases
 
 Why Custom Elements Manifest?
 
@@ -107,6 +109,12 @@ Documentation viewers should be able to display all the relevant information abo
 > [`api-viewer-element`](https://github.com/web-padawan/api-viewer-element) by [Serhii Kulykov](https://twitter.com/serhiikulykov)
 
 Using a `custom-elements.json` file, it would be easy to generate or display demos for your component using tools such as [api-viewer-element](https://github.com/web-padawan/api-viewer-element), or automatically generate [Storybook](https://storybook.js.org/) knobs for your components. [11ty](https://www.11ty.dev/) plugins could be created to automatically create your documentation sites for you.
+
+Another great example is [Apollo Elements](https://apolloelements.dev/) by [Benny Powers](https://twitter.com/PowersBenny), which uses a Custom Elements Manifest to generate their documentation:
+
+![apollo](./apollo.png)
+
+At the time of writing, we are also working on adding support for Custom Elements Manifest version 1.0.0 to [Storybook](https://storybook.js.org/). You can track the progress here: [feat: support Custom Elements Manifest v1](https://github.com/storybookjs/storybook/pull/15138).
 
 ### Framework Integration
 
@@ -130,15 +138,27 @@ A major usecase of `custom-elements.json` is that it allows us to reliably detec
 
 ### Much, much more!
 
-We believe `custom-elements.json` will open the door for a lot, lot more new exciting ideas and tooling. Which usecases can _you_ come up with? Do you have an idea, but are unsure where to start? Feel free to reach out to us on the [Lit and Friends](https://lit.dev/slack-invite), we're always happy to have a chat and help you get started.
+We believe `custom-elements.json` will open the door for a lot, lot more new exciting ideas and tooling. Which usecases can _you_ come up with? Do you have an idea, but are unsure where to start? Feel free to reach out to us on the [Lit and Friends](https://lit.dev/slack-invite) slack in the #open-wc channel, we're always happy to have a chat and help you get started.
+
+## How should I use a Custom Elements Manifest?
+
+If you're publishing a component, or a library of components, we recommend people to create a Custom Elements Manifest and publish it alongside your components to NPM.
+
+We recommend authors of components to add a `"customElements": "./custom-elements.json"` to your project's `package.json`. This allows tools to easily find whether or not a package contains a Custom Elements Manifest, and read its contents.
+
+If your package makes use of [Export Maps](https://nodejs.org/api/packages.html#packages_exports), make sure to also add your Custom Elements Manifest there under the `"customElements"` key. This will allow consumers of your manifest to easily import it like so:
+
+```js
+import cem from '@my-element/customElements' assert { type: 'json' };
+```
 
 ## 🛠 The Tools
 
-It's unlikely that developers will write their `custom-elements.json` file by hand. So at [open-wc](http://open-wc.org/), we worked hard on a tool that does it for you!
+It's unlikely that developers will write their `custom-elements.json` file by hand. So at [Open Web Components](http://open-wc.org/), we worked hard on a tool that does it for you!
 
-## `@custom-elements-json/analyzer`
+## `@custom-elements-manifest/analyzer`
 
-[`@custom-elements-json/analyzer`](TODO) will scan the source files in your project, and generate a `custom-elements.json` for you.
+[`@custom-elements-manifest/analyzer`](https://www.npmjs.com/package/@custom-elements-manifest/analyzer) will scan the source files in your project, and generate a `custom-elements.json` for you.
 
 Here's how you can use it today:
 
@@ -149,17 +169,18 @@ npx custom-elements-json analyze
 > ✨ Or try it out in the [online playground](https://custom-elements-manifest.netlify.app/)! ✨
 
 
-`@custom-elements-manifest/analyzer` by default supports standard JavaScript, and _vanilla_ web components. Dedicated web component libraries can be supported through the use of plugins. Currently, support for LitElement, Stencil and Catalyst is provided in this project via plugins. You can enable them by using the CLI flags `--litelement`, `--fast`, `--stencil` and `--catalyst` respectively, or loading the plugin via your `custom-elements-manifest.config.js`.
+`@custom-elements-manifest/analyzer` by default supports standard JavaScript, and _vanilla_ web components. Dedicated web component libraries can be supported through the use of plugins. Currently, support for LitElement, Fast, Stencil and Catalyst is provided in this project via plugins. You can enable them by using the CLI flags `--litelement`, `--fast`, `--stencil` and `--catalyst` respectively, or loading the plugin via your `custom-elements-manifest.config.js`.
 
 **TL;DR:** 
 - JavaScript 
 - TypeScript
-- LitElement (opt-in via CLI flag) 
-- FASTElement (opt-in via CLI flag) 
-- Stencil (opt-in via CLI flag)
-- Catalyst (opt-in via CLI flag)
+- [LitElement](https://lit.dev) (opt-in via CLI flag) 
+- [FASTElement](https://www.fast.design/docs/fast-element/getting-started/) (opt-in via CLI flag) 
+- [Stencil](https://stenciljs.com/) (opt-in via CLI flag)
+- [Catalyst](https://github.github.io/catalyst/) (opt-in via CLI flag)
+- [Atomico](https://atomicojs.github.io/) (opt-in via [community plugin](https://github.com/atomicojs/custom-elements-manifest))
 
-Support for other web component libraries can be done via custom [plugins](#plugins), feel free to create your own for your favourite libraries.
+Support for other web component libraries can be done via custom [plugins](https://github.com/open-wc/custom-elements-manifest/blob/master/packages/analyzer/docs/plugins.md), feel free to create your own for your favourite libraries.
 
 ### Plugins
 
@@ -195,37 +216,37 @@ In a custom plugin, we have full access to our source code's AST, and we can eas
 export default {
   plugins: [
     {
-      // Runs for all modules in a project, before continuing to the `analyzePhase`
-      collectPhase({ts, node, context}){},
-      // Runs for each module
+      name: 'foo-plugin',
       analyzePhase({ts, node, moduleDoc, context}){
-        // You can use this phase to access a module's AST nodes and mutate the custom-elements-manifest
         switch (node.kind) {
           case ts.SyntaxKind.ClassDeclaration:
+            /* If the current AST node is a class, get the class's name */
             const className = node.name.getText();
 
+            /* We loop through all the members of the class */
             node.members?.forEach(member => {
               const memberName = member.name.getText();
 
-              member.jsDoc?.forEach(jsDoc => {
-                jsDoc.tags?.forEach(tag => {
+              /* If a member has JSDoc notations, we loop through them */
+              member?.jsDoc?.forEach(jsDoc => {
+                jsDoc?.tags?.forEach(tag => {
+                  /* If we find a `@foo` JSDoc tag, we want to extract the comment */
                   if(tag.tagName.getText() === 'foo') {
                     const description = tag.comment;
 
+                    /* We then find the current class from the `moduleDoc` */
                     const classDeclaration = moduleDoc.declarations.find(declaration => declaration.name === className);
+                    /* And then we find the current field from the class */
                     const messageField = classDeclaration.members.find(member => member.name === memberName);
                     
+                    /* And we mutate the field with the information we got from the `@foo` JSDoc annotation */
                     messageField.foo = description
                   }
                 });
               });
             });
         }
-      },
-      // Runs for each module, after analyzing, all information about your module should now be available
-      moduleLinkPhase({moduleDoc, context}){},
-      // Runs after modules have been parsed and after post-processing
-      packageLinkPhase({customElementsManifest, context}){},
+      }
     }
   ]  
 }
@@ -234,12 +255,12 @@ export default {
 And the output `custom-elements.json` will look like this:
 ```diff
 {
-  "schemaVersion": "0.1.0",
+  "schemaVersion": "1.0.0",
   "readme": "",
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "fixtures/-default/package/bar.js",
+      "path": "src/bar.js",
       "declarations": [
         {
           "kind": "class",
@@ -265,7 +286,7 @@ And the output `custom-elements.json` will look like this:
           "name": "MyElement",
           "declaration": {
             "name": "MyElement",
-            "module": "fixtures/-default/package/bar.js"
+            "module": "src/bar.js"
           }
         }
       ]
@@ -274,6 +295,8 @@ And the output `custom-elements.json` will look like this:
 }
 ```
 
+To get started developing custom plugins, take a look at the [cem-plugin-template](https://github.com/open-wc/cem-plugin-template) repository to quickly get you up and running, and take a look at the [Authoring Plugins](https://github.com/open-wc/custom-elements-manifest/blob/master/packages/analyzer/docs/plugins.md) documentation for more in depth information.
+
 ## Concluding
 
-We're excited and look forward to see what sorts of tooling you'll build with the Custom Elements Manifest. Do you have a cool idea, but are you unsure how to get started? Drop by the [Lit and Friends](https://lit.dev/slack-invite) slack!
+We're excited and look forward to see what sorts of tooling you'll build with the Custom Elements Manifest. Do you have a cool idea for tooling, or do you want to add support for your library, but are you unsure how to get started? Drop by the [Lit and Friends](https://lit.dev/slack-invite) slack in the #open-wc channel!

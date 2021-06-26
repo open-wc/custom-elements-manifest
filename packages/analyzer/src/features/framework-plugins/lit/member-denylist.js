@@ -7,6 +7,7 @@ export function memberDenyListPlugin() {
   const MEMBER_DENY_LIST = ['properties', 'styles'];
 
   return {
+    name: 'CORE - LIT-MEMBER-DENYLIST',
     moduleLinkPhase({moduleDoc}){
       const classes = moduleDoc?.declarations?.filter(declaration => declaration.kind === 'class');
 

@@ -8,6 +8,7 @@ import { resolveModuleOrPackageSpecifier } from '../../utils/index.js';
  */
 export function applyInheritancePlugin() {
   return {
+    name: 'CORE - APPLY-INHERITANCE',
     packageLinkPhase({customElementsManifest, context}){
       const classes = getAllDeclarationsOfKind(customElementsManifest, 'class');
       const mixins = getAllDeclarationsOfKind(customElementsManifest, 'mixin');
@@ -45,7 +46,7 @@ export function applyInheritancePlugin() {
 
               newItem.inheritedFrom = {
                 name: klass.name,
-                ...resolveModuleOrPackageSpecifier(containingModule, klass.name)
+                ...resolveModuleOrPackageSpecifier(containingModule, context, klass.name)
               }
 
               customElement[type] = [...(customElement[type] || []), newItem];

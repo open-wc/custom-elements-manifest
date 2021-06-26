@@ -8,7 +8,8 @@ import { createMixin } from './creators/createMixin.js';
  */
 export function mixinPlugin() {
   return {
-    analyzePhase({ts, node, moduleDoc}){
+    name: 'CORE - MIXINS',
+    analyzePhase({ts, node, moduleDoc, context}){
       switch(node.kind) {
         case ts.SyntaxKind.VariableStatement:
         case ts.SyntaxKind.FunctionDeclaration:
@@ -17,7 +18,7 @@ export function mixinPlugin() {
            */
           if(isMixin(node)) {
             const { mixinFunction, mixinClass } = extractMixinNodes(node);
-            let mixin = createMixin(mixinFunction, mixinClass, moduleDoc);
+            let mixin = createMixin(mixinFunction, mixinClass, moduleDoc, context);
             moduleDoc.declarations.push(mixin);
           }
           break;

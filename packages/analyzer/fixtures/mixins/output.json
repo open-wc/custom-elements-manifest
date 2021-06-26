@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.1.0",
+  "schemaVersion": "1.0.0",
   "readme": "",
   "modules": [
     {
@@ -62,6 +62,16 @@
         {
           "kind": "mixin",
           "description": "",
+          "name": "ReturnValArrowMixin",
+          "parameters": [
+            {
+              "name": "klass"
+            }
+          ]
+        },
+        {
+          "kind": "mixin",
+          "description": "",
           "name": "ReexportedWrappedMixin",
           "mixins": [
             {
@@ -108,6 +118,14 @@
           "name": "ReturnValMixin",
           "declaration": {
             "name": "ReturnValMixin",
+            "module": "fixtures/mixins/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ReturnValArrowMixin",
+          "declaration": {
+            "name": "ReturnValArrowMixin",
             "module": "fixtures/mixins/package/my-element.js"
           }
         },

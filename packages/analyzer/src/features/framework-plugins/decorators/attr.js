@@ -4,10 +4,12 @@ import { createAttributeFromField } from '../../analyse-phase/creators/createAtt
 
 export function attrDecoratorPlugin() {
   return {
+    name: 'CORE - ATTR-DECORATOR',
     analyzePhase({ts, node, moduleDoc}){
       switch(node.kind) {
         case ts.SyntaxKind.ClassDeclaration:
-          const className = node?.name?.text;
+          const hasDefaultModifier = node?.modifiers?.some(mod => ts.SyntaxKind.DefaultKeyword === mod.kind);
+          const className = hasDefaultModifier ? 'default' : node?.name?.getText();
           const classDoc = moduleDoc?.declarations?.find(declaration => declaration.name === className);
 
           /**

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.1.0",
+  "schemaVersion": "1.0.0",
   "readme": "",
   "modules": [
     {
@@ -88,6 +88,11 @@
               "kind": "field",
               "name": "prop11",
               "privacy": "protected"
+            },
+            {
+              "kind": "field",
+              "name": "prop11",
+              "static": true
             },
             {
               "kind": "field",

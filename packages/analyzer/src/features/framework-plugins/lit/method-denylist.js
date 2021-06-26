@@ -7,6 +7,7 @@ export function methodDenyListPlugin() {
   const METHOD_DENY_LIST = ['requestUpdate', 'performUpdate', 'shouldUpdate', 'update', 'render', 'firstUpdated', 'updated', 'willUpdate'];
 
   return {
+    name: 'CORE - LIT-METHOD-DENYLIST',
     moduleLinkPhase({moduleDoc}){
       const classes = moduleDoc?.declarations?.filter(declaration => declaration.kind === 'class');
 

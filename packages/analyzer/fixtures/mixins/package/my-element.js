@@ -18,6 +18,11 @@ export function ReturnValMixin(klass) {
   return Foo;
 }
 
+export const ReturnValArrowMixin = klass => { 
+  class Bar extends klass {}
+  return Bar;
+}
+
 /**
  * @type {Element}
  * @param {string} klass

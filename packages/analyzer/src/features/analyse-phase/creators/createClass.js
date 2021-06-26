@@ -2,15 +2,15 @@ import ts from 'typescript';
 import { createFunctionLike } from './createFunctionLike.js';
 import { createAttribute, createAttributeFromField } from './createAttribute.js';
 import { createField } from './createClassField.js';
-import { handleHeritage, handleJsDoc } from './handlers.js';
+import { handleHeritage, handleJsDoc, handleAttrJsDoc } from './handlers.js';
 import { hasDefaultModifier } from '../../../utils/exports.js';
-import { isProperty, isDispatchEvent, hasAttrAnnotation, isReturnStatement, isPrimitive } from '../../../utils/ast-helpers.js';
+import { hasAttrAnnotation, isDispatchEvent, isPrimitive, isProperty, isReturnStatement, isStaticMember } from '../../../utils/ast-helpers.js';
 
 
 /**
  * Creates a classDoc
  */
-export function createClass(node, moduleDoc) {
+export function createClass(node, moduleDoc, context) {
   const isDefault = hasDefaultModifier(node);
   
   let classTemplate = {
@@ -79,10 +79,16 @@ export function createClass(node, moduleDoc) {
      * Handle fields
      */
     if (isProperty(member)) {
-      if (gettersAndSetters.includes(member?.name?.getText())) {
-        return;
-      } else {
-        gettersAndSetters.push(member?.name?.getText());
+      /**
+       * A  class can have a static prop and an instance prop with the same name,
+       * both should be output in the CEM
+       */
+      if (!isStaticMember(member)) {
+        if (gettersAndSetters.includes(member?.name?.getText())) {
+          return;
+        } else {
+          gettersAndSetters.push(member?.name?.getText());
+        }
       }
 
       const field = createField(member);
@@ -93,7 +99,8 @@ export function createClass(node, moduleDoc) {
        * If a field has a @attr annotation, also create an attribute for it
        */
       if(hasAttrAnnotation(member)) {
-        const attribute = createAttributeFromField(field);
+        let attribute = createAttributeFromField(field);
+        attribute = handleAttrJsDoc(member, attribute);
 
         /**
          * If the attribute already exists, merge it together with the extra
@@ -128,7 +135,7 @@ export function createClass(node, moduleDoc) {
   /**
    * Inheritance
    */
-  classTemplate = handleHeritage(classTemplate, moduleDoc, node);
+  classTemplate = handleHeritage(classTemplate, moduleDoc, context, node);
 
   return classTemplate;
 }
@@ -144,8 +151,8 @@ function eventsVisitor(source, classTemplate) {
         if (isDispatchEvent(node)) {
           node?.arguments?.forEach((arg) => {
             if (arg.kind === ts.SyntaxKind.NewExpression) {
-              const eventName = arg.arguments[0].text;
-
+              /** e.g. `selected-changed` */
+              const eventName = arg?.arguments?.[0]?.text;
               /**
                * Check if event already exists
                */
@@ -153,7 +160,7 @@ function eventsVisitor(source, classTemplate) {
 
               if(!eventExists) {
                 let eventDoc = {
-                  name: eventName,
+                  ...(eventName ? {name: eventName} : {}),
                   type: {
                     text: arg.expression.text,
                   },

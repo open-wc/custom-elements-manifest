@@ -9,10 +9,12 @@ import { safe } from '../../utils/index.js';
  */
 export function classJsDocPlugin() {
   return {
+    name: 'CORE - CLASS-JSDOC',
     analyzePhase({ts, node, moduleDoc}){
       switch (node.kind) {
         case ts.SyntaxKind.ClassDeclaration:
-          const className = node?.name?.text;
+          const hasDefaultModifier = node?.modifiers?.some(mod => ts.SyntaxKind.DefaultKeyword === mod.kind);
+          const className = hasDefaultModifier ? 'default' : node?.name?.getText();
           const classDoc = moduleDoc?.declarations?.find(declaration => declaration.name === className);
 
           /**
@@ -127,7 +129,7 @@ function handleClassJsDoc(doc, tag) {
   }
 
   if(tag?.name) {
-    doc.name = tag.name;
+    doc.name = tag.name === '-' ? '' : tag.name;
   }
 
   if(tag?.default) {

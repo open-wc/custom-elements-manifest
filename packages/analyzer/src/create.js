@@ -1,10 +1,6 @@
 import ts from 'typescript';
 import { FEATURES } from './features/index.js';
-
-/**
- * 🚨 TODO
- * - Lightning web components
- */
+import { withErrorHandling } from './utils/index.js';
 
 /**
  * CORE
@@ -14,7 +10,7 @@ import { FEATURES } from './features/index.js';
  */
 export function create({modules, plugins = [], dev = false}) {
   const customElementsManifest = {
-    schemaVersion: '0.1.0',
+    schemaVersion: '1.0.0',
     readme: '',
     modules: [],
   };
@@ -24,7 +20,7 @@ export function create({modules, plugins = [], dev = false}) {
     ...plugins,
   ];
 
-  const context = {};
+  const context = { dev };
 
   modules.forEach(currModule => {
     if(dev) console.log('[COLLECT PHASE]: ', currModule.fileName);
@@ -61,8 +57,10 @@ export function create({modules, plugins = [], dev = false}) {
      * - Finding a CustomElement's tagname by finding its customElements.define() call (or 'export')
      * - Applying inheritance to classes (adding `inheritedFrom` properties/attrs/events/methods)
      */
-    mergedPlugins.forEach(({moduleLinkPhase}) => {
-      moduleLinkPhase && moduleLinkPhase({ts, moduleDoc, context});
+    mergedPlugins.forEach(({name, moduleLinkPhase}) => {
+      withErrorHandling(name, () => {
+        moduleLinkPhase?.({ts, moduleDoc, context});
+      });
     });
   });
 
@@ -74,8 +72,10 @@ export function create({modules, plugins = [], dev = false}) {
    * - Match tagNames for classDocs
    * - Apply inheritance
    */
-  mergedPlugins.forEach(({packageLinkPhase}) => {
-    packageLinkPhase && packageLinkPhase({customElementsManifest, context});
+  mergedPlugins.forEach(({name, packageLinkPhase}) => {
+    withErrorHandling(name, () => {
+      packageLinkPhase?.({customElementsManifest, context});
+    });
   });
 
   return customElementsManifest;
@@ -85,8 +85,10 @@ function collect(source, context, mergedPlugins) {
   visitNode(source);
 
   function visitNode(node) {
-    mergedPlugins.forEach(({collectPhase}) => {
-      collectPhase && collectPhase({ts, node, context});
+    mergedPlugins.forEach(({name, collectPhase}) => {
+      withErrorHandling(name, () => {
+        collectPhase?.({ts, node, context});
+      });
     });
 
     ts.forEachChild(node, visitNode);
@@ -97,8 +99,10 @@ function analyze(source, moduleDoc, context, mergedPlugins) {
   visitNode(source);
 
   function visitNode(node) {
-    mergedPlugins.forEach(({analyzePhase}) => {
-      analyzePhase && analyzePhase({ts, node, moduleDoc, context});
+    mergedPlugins.forEach(({name, analyzePhase}) => {
+      withErrorHandling(name, () => {
+        analyzePhase?.({ts, node, moduleDoc, context});
+      });
     });
 
     ts.forEachChild(node, visitNode);

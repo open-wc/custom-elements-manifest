@@ -10,7 +10,8 @@ import { resolveModuleOrPackageSpecifier } from '../../utils/index.js';
  */
 export function customElementsDefineCallsPlugin() {
   return {
-    analyzePhase({node, moduleDoc}){    
+    name: 'CORE - CUSTOM-ELEMENTS-DEFINE-CALLS',
+    analyzePhase({node, moduleDoc, context}){    
 
       /** 
        * @example customElements.define('my-el', MyEl); 
@@ -25,7 +26,7 @@ export function customElementsDefineCallsPlugin() {
           name: elementTag,
           declaration: {
             name: elementClass,
-            ...resolveModuleOrPackageSpecifier(moduleDoc, elementClass)
+            ...resolveModuleOrPackageSpecifier(moduleDoc, context, elementClass)
           },
         };
     

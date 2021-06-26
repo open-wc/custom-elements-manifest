@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.1.0",
+  "schemaVersion": "1.0.0",
   "readme": "",
   "modules": [
     {
@@ -28,6 +28,10 @@
             }
           ],
           "slots": [
+            {
+              "description": "This is the default slot",
+              "name": ""
+            },
             {
               "description": "- You can put some elements here",
               "name": "container"

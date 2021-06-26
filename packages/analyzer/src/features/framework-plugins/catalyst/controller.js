@@ -2,7 +2,8 @@ import { toKebabCase, resolveModuleOrPackageSpecifier, decorator } from '../../.
 
 export function controllerPlugin() {
   return {
-    analyzePhase({ts, node, moduleDoc}){
+    name: 'CORE - CONTROLLER',
+    analyzePhase({ts, node, moduleDoc, context}){
       switch(node.kind) {
         case ts.SyntaxKind.ClassDeclaration:
           /**
@@ -18,7 +19,7 @@ export function controllerPlugin() {
               name: toKebabCase(className).replace('-element', ''),
               declaration: {
                 name: className,
-                ...resolveModuleOrPackageSpecifier(moduleDoc, className)
+                ...resolveModuleOrPackageSpecifier(moduleDoc, context, className)
               },
             };
 

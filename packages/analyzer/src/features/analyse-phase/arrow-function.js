@@ -10,6 +10,7 @@ import { createArrowFunction } from './creators/createArrowFunction.js';
  */
 export function arrowFunctionPlugin() {
   return {
+    name: 'CORE - ARROW-FUNCTION',
     analyzePhase({ts, node, moduleDoc}){
       switch(node.kind) {
         case ts.SyntaxKind.VariableStatement:

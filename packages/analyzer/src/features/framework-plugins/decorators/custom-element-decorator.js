@@ -9,7 +9,8 @@ import { has, decorator, resolveModuleOrPackageSpecifier } from '../../../utils/
  */
 export function customElementDecoratorPlugin() {
   return {
-    analyzePhase({node, moduleDoc}){
+    name: 'CORE - CUSTOM-ELEMENT-DECORATOR',
+    analyzePhase({node, moduleDoc, context}){
       if(has(node.decorators)) {
         const customElementDecorator = node.decorators?.find(decorator('customElement'));
 
@@ -22,7 +23,7 @@ export function customElementDecoratorPlugin() {
             name: tagName,
             declaration: {
               name: className,
-              ...resolveModuleOrPackageSpecifier(moduleDoc, className)
+              ...resolveModuleOrPackageSpecifier(moduleDoc, context, className)
             },
           };
 

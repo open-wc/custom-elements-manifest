@@ -1,11 +1,16 @@
 <html>
   <head>
-    <script src="https://unpkg.com/typescript@4.3.2/lib/typescript.js"></script>
-    <script src="../../browser/create.js"></script>
   </head>
   <body>
-    <script>
-      const code = `export function foo() {}`;
+    <script type="module">
+      import {ts, create} from '../../browser/index.js';
+
+      const code = `export class MyEl extends HTMLElement {
+        /**
+         * @attr
+         */
+        foo; 
+      }`;
 
       const modules = [ts.createSourceFile(
         '',
@@ -14,7 +19,7 @@
         true,
       )];
 
-      console.log(analyzer.create({modules}));
+      console.log(create({modules}));
     </script>
   </body>
 </html>
