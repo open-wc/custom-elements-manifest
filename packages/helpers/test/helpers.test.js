@@ -11,6 +11,8 @@ import {
   hasEvents,
   hasSlots,
   hasMethods,
+  hasCssParts,
+  hasCssProperties,
   hasFields,
   hasMixins,
   isField,
@@ -109,6 +111,8 @@ const fixtureF = {
   attributes: [{ name: 'foo' }],
   events: [{ name: 'foo', description: '', type: { text: '' } }],
   slots: [{ name: '' }],
+  cssParts: [{}],
+  cssProperties: [{}],
   members: [
     { kind: 'field', name: '' },
     { kind: 'method', name: '' },
@@ -130,6 +134,14 @@ helpers('hasEvents - true', () => {
 
 helpers('hasEvents - false', () => {
   expect(hasEvents({ ...fixtureF, events: [] })).to.equal(false);
+});
+
+helpers('hasCssParts - true', () => {
+  expect(hasCssParts(fixtureF)).to.equal(true);
+});
+
+helpers('hasCssProperties - true', () => {
+  expect(hasCssProperties(fixtureF)).to.equal(true);
 });
 
 helpers('hasSlots - true', () => {

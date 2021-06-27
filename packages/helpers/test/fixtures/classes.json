@@ -19,6 +19,11 @@
         {
           "kind": "class",
           "description": "",
+          "name": "Foo"
+        },
+        {
+          "kind": "class",
+          "description": "",
           "name": "MyElement2",
           "superclass": {
             "name": "HTMLElement"

@@ -1,26 +1,19 @@
 import * as h from './helpers.js';
 
 export class CustomElementsJson {
-  schemaVersion;
-  readme;
-  modules;
-  
+  _functions = new Map();
+  _variables = new Map();
   _classes = new Map();
   _tagNames = new Map();
   _definitions = new Map();
   _mixins = new Map();
   _classLikes = new Map();
+  _customElements = new Map();
 
-  constructor(
-    { schemaVersion, readme, modules } = {
-      schemaVersion: '0.1.0',
-      readme: '',
-      modules: [],
-    },
-  ) {
-    this.schemaVersion = schemaVersion;
-    this.readme = readme;
-    this.modules = modules;
+  constructor(cem) {
+    for (const [key, value] of Object.entries(cem)) {
+      this[key] = value;
+    }
     this.init();
   }
 
@@ -29,6 +22,18 @@ export class CustomElementsJson {
       if (h.isClass(item)) {
         this._classes.set(item.name, item);
         this._classLikes.set(item.name, item);
+      }
+
+      if(h.isFunction(item)) {
+        this._functions.set(item.name, item);
+      }
+
+      if(h.isVariable(item)) {
+        this._variables.set(item.name, item);
+      }
+
+      if(h.isCustomElement(item)) {
+        this._customElements.set(item.name, item);
       }
 
       if (h.isMixin(item)) {
@@ -73,21 +78,30 @@ export class CustomElementsJson {
     return this._mixins.get(mixinName);
   }
 
+  /** Gets all customElements from declarations */
+  getCustomElements() {
+    return [...this._customElements.values()];
+  }
+
+  /** Gets all functions from declarations */
+  getFunctions() {
+    return [...this._functions.values()];
+  }
+
+  /** Gets all functions from declarations */
+  getVariables() {
+    return [...this._variables.values()];
+  }
+
   /** Gets all classes from declarations */
   getClasses() {
     return [...this._classes.values()];
-  }
-
-  /** Gets registered custom elements, so elements that have customElements.define called, returns class including tagName */
-  getTagNames() {
-    return [...this._tagNames.values()];
   }
 
   /** Gets all CustomElementDefinitions */
   getDefinitions() {
     return [...this._definitions.values()];
   }
-
 
   getMixins() {
     return [...this._mixins.values()];

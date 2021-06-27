@@ -36,6 +36,10 @@ export function isMixin(item) {
   return item.kind === 'mixin';
 }
 
+export function isCustomElement(item) {
+  return item.customElement;
+}
+
 export function isFunction(item) {
   return item.kind === 'function';
 }
@@ -47,6 +51,14 @@ export function isVariable(item) {
 /** CustomElement */
 export function hasAttributes(customElement) {
   return has(customElement?.attributes)
+}
+
+export function hasCssParts(customElement) {
+  return has(customElement?.cssParts)
+}
+
+export function hasCssProperties(customElement) {
+  return has(customElement?.cssProperties)
 }
 
 export function hasEvents(customElement) {

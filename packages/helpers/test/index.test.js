@@ -26,7 +26,7 @@ test('getByClassName', () => {
 
 test('getClasses - gets all classes', () => {
   const customElementsJson = new CustomElementsJson(classes);
-  expect(customElementsJson.getClasses().length).to.equal(2);
+  expect(customElementsJson.getClasses().length).to.equal(3);
 });
 
 test('getDefinitions - gets all definitions', () => {
@@ -34,6 +34,10 @@ test('getDefinitions - gets all definitions', () => {
   expect(customElementsJson.getDefinitions().length).to.equal(2);
 });
 
+test('getCustomElements - gets all custom elements', () => {
+  const customElementsJson = new CustomElementsJson(classes);
+  expect(customElementsJson.getCustomElements().length).to.equal(2);
+});
 
 test('getMixins - gets all mixins', () => {
   const customElementsJson = new CustomElementsJson(inheritanceMixinsSuperclass);
