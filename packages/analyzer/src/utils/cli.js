@@ -13,10 +13,10 @@ const IGNORE = [
 ];
 
 export function mergeGlobsAndExcludes(userConfig, cliConfig) {
-  const hasProvidedCliGlobs = cliConfig?.globs?.[0] !== '**/*.{js,ts}' || has(userConfig?.globs);
+  const hasProvidedCliGlobs = cliConfig?.globs?.[0] !== '**/*.{js,ts,tsx}' || has(userConfig?.globs);
 
   if(hasProvidedCliGlobs) {
-    cliConfig.globs = cliConfig?.globs?.filter(glob => glob !== '**/*.{js,ts}');
+    cliConfig.globs = cliConfig?.globs?.filter(glob => glob !== '**/*.{js,ts,tsx}');
   }
 
   const merged = [
@@ -47,7 +47,7 @@ export async function getUserConfig() {
 
 export function getCliConfig(argv) {
   const optionDefinitions = [
-    { name: 'globs', type: String, multiple: true, defaultValue: ['**/*.{js,ts}'] },
+    { name: 'globs', type: String, multiple: true, defaultValue: ['**/*.{js,ts,tsx}'] },
     { name: 'exclude', type: String, multiple: true },
     { name: 'outdir', type: String, defaultValue: '' },
     { name: 'dev', type: Boolean, defaultValue: false },
