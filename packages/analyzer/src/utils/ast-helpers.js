@@ -40,7 +40,9 @@ export function isPrimitive(node) {
   ts.isStringLiteral(node) ||
   node?.kind === ts.SyntaxKind.NullKeyword ||
   node?.kind === ts.SyntaxKind.TrueKeyword ||
-  node?.kind === ts.SyntaxKind.FalseKeyword)
+  node?.kind === ts.SyntaxKind.FalseKeyword) ||
+  // Handle only empty arrays for now
+  (node?.kind === ts.SyntaxKind.ArrayLiteralExpression && node?.elements?.length === 0)
 }
 
 /**
