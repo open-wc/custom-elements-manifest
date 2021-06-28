@@ -15,17 +15,17 @@ const render = (item, properties) => {
     }
 
     if(prop === 'parameters') {
-      md += `${item?.parameters?.map(param => `${param.name} ${param?.type?.text || ''}`).join(', ') || ''} |`
+      md += `${item?.parameters?.map(param => `${param.name} ${param?.type?.text?.replace(/\|/g, '\\|') || ''}`).join(', ') || ''} |`
       return `${md}\n`;
     }
 
     if(prop === 'type') {
-      md += `${item?.type?.text || ''} |`
+      md += `${item?.type?.text?.replace(/\|/g, '\\|') || ''} |`
       return `${md}\n`;
     }
     
     if(prop === 'return') {
-      md += `${item?.return?.type?.text || ''} |`
+      md += `${item?.return?.type?.text?.replace(/\|/g, '\\|') || ''} |`
       return `${md}\n`;
     }
 
