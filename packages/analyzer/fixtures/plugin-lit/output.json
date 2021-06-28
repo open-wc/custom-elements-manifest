@@ -13,15 +13,18 @@
           "members": [
             {
               "kind": "field",
-              "name": "decoratedProperty"
+              "name": "decoratedProperty",
+              "default": "[]"
             },
             {
               "kind": "field",
-              "name": "decoratedPropertyAlsoAttr"
+              "name": "decoratedPropertyAlsoAttr",
+              "default": "[]"
             },
             {
               "kind": "field",
-              "name": "decoratedPropertyNoAttr"
+              "name": "decoratedPropertyNoAttr",
+              "default": "[]"
             },
             {
               "type": {
@@ -52,10 +55,12 @@
           "attributes": [
             {
               "name": "decoratedProperty",
+              "default": "[]",
               "fieldName": "decoratedProperty"
             },
             {
               "name": "my-attr2",
+              "default": "[]",
               "fieldName": "decoratedPropertyAlsoAttr"
             },
             {
