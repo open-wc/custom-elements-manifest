@@ -10,6 +10,7 @@ Custom Elements Manifest is a file format that describes custom elements. This f
 - [Libraries Support](#support)
 - [JSDoc Support](#supported-jsdoc)
 - [Advanced configuration](#advanced-configuration)
+- [Community Plugins](#community-plugins)
 - [Plugins](#plugins)
 - [Authoring Plugins Handbook](docs/plugins.md)
 - [Browser](#usage-in-the-browser)
@@ -389,6 +390,12 @@ interface userConfigOptions {
 }
 
 ```
+
+## Community Plugins
+
+- [cem-plugin-reactify](https://www.npmjs.com/package/cem-plugin-reactify) - plugin to automatically create React wrappers for your custom elements
+
+> Want your plugin listed here? Please create a PR!
 
 ## Plugins
 
