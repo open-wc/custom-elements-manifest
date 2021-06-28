@@ -33,7 +33,7 @@ export function createField(node) {
 
 function handleDefaultValue(fieldTemplate, node) {
   if(isPrimitive(node.initializer)) {
-    fieldTemplate.default = node.initializer.text;
+    fieldTemplate.default = node?.initializer?.getText?.();
   }
 
   return fieldTemplate;

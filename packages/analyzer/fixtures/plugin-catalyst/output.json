@@ -14,7 +14,7 @@
             {
               "kind": "field",
               "name": "foo",
-              "default": "hello"
+              "default": "'hello'"
             },
             {
               "kind": "field",
@@ -24,7 +24,7 @@
           "attributes": [
             {
               "name": "foo",
-              "default": "hello",
+              "default": "'hello'",
               "fieldName": "foo"
             }
           ],
