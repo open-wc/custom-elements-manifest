@@ -64,7 +64,7 @@
               "type": {
                 "text": "string"
               },
-              "default": ""
+              "default": "''"
             },
             {
               "kind": "field",
@@ -83,7 +83,7 @@
               "type": {
                 "text": "string"
               },
-              "default": "",
+              "default": "''",
               "fieldName": "foo"
             }
           ],

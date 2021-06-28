@@ -10,14 +10,40 @@
           "kind": "class",
           "description": "",
           "name": "MyElement",
-          "slots": [
+          "members": [
             {
-              "description": "- foo slot",
-              "name": "foo"
+              "kind": "field",
+              "name": "a",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
             },
             {
-              "description": "description is this",
-              "name": ""
+              "kind": "field",
+              "name": "b",
+              "type": {
+                "text": "string"
+              },
+              "default": "''"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "a",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "a"
+            },
+            {
+              "name": "b",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "b"
             }
           ],
           "superclass": {

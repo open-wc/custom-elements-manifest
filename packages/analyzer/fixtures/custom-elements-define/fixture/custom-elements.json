@@ -14,7 +14,7 @@
             {
               "kind": "field",
               "name": "foo",
-              "default": "bar"
+              "default": "'bar'"
             }
           ],
           "superclass": {

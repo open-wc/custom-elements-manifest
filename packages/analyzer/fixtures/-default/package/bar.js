@@ -1,7 +1,7 @@
 
-/**
- * @slot foo - foo slot
- * @slot - description is this
- */
+import { LitElement } from 'lit-element';
+
 export class MyElement extends LitElement {
+  @property({ type: Boolean }) a: boolean = false;
+  @property({ type: Boolean }) b: string = '';
 }

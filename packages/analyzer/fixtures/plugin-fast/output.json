@@ -17,7 +17,7 @@
               "type": {
                 "text": "string"
               },
-              "default": "Hello"
+              "default": "'Hello'"
             },
             {
               "kind": "field",
@@ -30,7 +30,7 @@
               "type": {
                 "text": "string"
               },
-              "default": "Hello",
+              "default": "'Hello'",
               "fieldName": "greeting"
             },
             {

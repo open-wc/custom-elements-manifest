@@ -14,7 +14,7 @@
             {
               "kind": "field",
               "name": "prop1",
-              "default": ""
+              "default": "''"
             },
             {
               "kind": "field",

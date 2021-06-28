@@ -35,7 +35,7 @@
             {
               "kind": "field",
               "name": "message",
-              "default": "Hello"
+              "default": "'Hello'"
             },
             {
               "kind": "method",
