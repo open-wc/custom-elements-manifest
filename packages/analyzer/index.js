@@ -33,7 +33,7 @@ import {
      * Merged config options
      * Command line options override userConfig options
      */
-    const mergedOptions = { ...userConfig, ...cliConfig };
+    const mergedOptions = { outdir: '', ...userConfig, ...cliConfig };
 
     const merged = mergeGlobsAndExcludes(userConfig, cliConfig);
     const globs = await globby(merged);

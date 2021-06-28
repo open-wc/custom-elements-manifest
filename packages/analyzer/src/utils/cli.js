@@ -49,7 +49,7 @@ export function getCliConfig(argv) {
   const optionDefinitions = [
     { name: 'globs', type: String, multiple: true, defaultValue: ['**/*.{js,ts,tsx}'] },
     { name: 'exclude', type: String, multiple: true },
-    { name: 'outdir', type: String, defaultValue: '' },
+    { name: 'outdir', type: String },
     { name: 'dev', type: Boolean, defaultValue: false },
     { name: 'watch', type: Boolean, defaultValue: false },
     { name: 'litelement', type: Boolean, defaultValue: false },
