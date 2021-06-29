@@ -24,6 +24,7 @@
             {
               "kind": "field",
               "name": "prop3",
+              "description": "prop3 description",
               "type": {
                 "text": "SomeType"
               },

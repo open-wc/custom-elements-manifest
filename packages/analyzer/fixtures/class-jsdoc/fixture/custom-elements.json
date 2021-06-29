@@ -12,18 +12,18 @@
           "name": "MyElement",
           "cssProperties": [
             {
-              "description": "- Controls the color of foo",
+              "description": "Controls the color of foo",
               "name": "--text-color"
             },
             {
-              "description": "- Controls the color of bar",
+              "description": "Controls the color of bar",
               "name": "--background-color",
               "default": "red"
             }
           ],
           "cssParts": [
             {
-              "description": "- Styles the color of bar",
+              "description": "Styles the color of bar",
               "name": "bar"
             }
           ],
@@ -33,7 +33,7 @@
               "name": ""
             },
             {
-              "description": "- You can put some elements here",
+              "description": "You can put some elements here",
               "name": "container"
             }
           ],
@@ -42,7 +42,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "- some description",
+              "description": "some description",
               "name": "prop1",
               "kind": "field"
             },
@@ -50,28 +50,28 @@
               "type": {
                 "text": "number"
               },
-              "description": "- some description",
+              "description": "some description",
               "name": "prop2",
               "kind": "field"
             }
           ],
           "events": [
             {
-              "description": "- some description for custom-event",
+              "description": "some description for custom-event",
               "name": "custom-event"
             },
             {
               "type": {
                 "text": "Event"
               },
-              "description": "- some description for typed-event",
+              "description": "some description for typed-event",
               "name": "typed-event"
             },
             {
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "- some description for typed-custom-event",
+              "description": "some description for typed-custom-event",
               "name": "typed-custom-event"
             }
           ],
@@ -80,14 +80,14 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "- disables the element",
+              "description": "disables the element",
               "name": "disabled"
             },
             {
               "type": {
                 "text": "string"
               },
-              "description": "- description for foo",
+              "description": "description for foo",
               "name": "foo"
             }
           ],

@@ -23,6 +23,7 @@
             },
             {
               "kind": "field",
+              "description": "prop3 description",
               "name": "prop3",
               "type": {
                 "text": "SomeType"
