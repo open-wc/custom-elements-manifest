@@ -20,7 +20,14 @@ const render = (item, properties) => {
     }
 
     if(prop === 'type') {
-      md += `${item?.type?.text?.replace(/\|/g, '\\|') || ''} |`
+      let type;
+
+      if(item?.type?.text) {
+        type = `\`${item?.type?.text}\``
+      } else {
+        type = ''
+      }
+      md += `${type} |`
       return `${md}\n`;
     }
     
@@ -30,9 +37,20 @@ const render = (item, properties) => {
     }
 
     if(prop === 'description') {
-      md += `${item?.[prop]?.replace(/(\r\n|\n|\r)/gm, '<br/><br/>') || ''} |`
+      md += `${item?.[prop]?.trim()?.replace(/(\r\n|\n|\r)/gm, '<br/>') || ''} |`
       return `${md}\n`;
     } 
+    
+    if(prop === 'default') {
+      let defaultVal;
+      if(item?.[prop] !== undefined) {
+        defaultVal = `\`${item[prop]}\``
+      } else {
+        defaultVal = '';
+      }
+      md += `${defaultVal} |`
+      return `${md}\n`;
+    }
 
     md += `${item?.[prop] || ''} |`
   });
@@ -116,11 +134,11 @@ function customElementsManifestToMarkdown(cem) {
 
 ### Fields
 
-| name | type | privacy | default | description | inheritedFrom |
-|------|------|---------|---------|-------------|---------------|
+| name | privacy | type | default | description | inheritedFrom |
+|------|---------|------|---------|-------------|---------------|
 `
           fields?.forEach(member => {
-            md += render(member, ['name', 'type', 'privacy', 'default', 'description', 'inheritedFrom']);
+            md += render(member, ['name', 'privacy', 'type', 'default', 'description', 'inheritedFrom']);
           });
         }
 
