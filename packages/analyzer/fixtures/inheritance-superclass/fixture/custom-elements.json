@@ -119,7 +119,8 @@
             }
           ],
           "superclass": {
-            "name": "BatchingElement"
+            "name": "BatchingElement",
+            "module": "/fixtures/inheritance-superclass/package/BatchingElement"
           }
         }
       ],
@@ -199,7 +200,8 @@
             }
           ],
           "superclass": {
-            "name": "BatchingElement"
+            "name": "BatchingElement",
+            "module": "/fixtures/inheritance-superclass/package/BatchingElement.js"
           }
         }
       ],

@@ -77,7 +77,8 @@
             }
           ],
           "superclass": {
-            "name": "LitElement"
+            "name": "LitElement",
+            "package": "lit-element"
           },
           "tagName": "my-element",
           "customElement": true

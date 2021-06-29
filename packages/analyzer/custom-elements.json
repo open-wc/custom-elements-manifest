@@ -28,8 +28,27 @@
               "default": "''"
             }
           ],
+          "attributes": [
+            {
+              "name": "a",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "a"
+            },
+            {
+              "name": "b",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "b"
+            }
+          ],
           "superclass": {
-            "name": "LitElement"
+            "name": "LitElement",
+            "package": "lit-element"
           },
           "customElement": true
         }
