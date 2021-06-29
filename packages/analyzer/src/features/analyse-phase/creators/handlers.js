@@ -2,7 +2,7 @@ import ts from 'typescript';
 import parse from 'comment-parser';
 
 import { has, resolveModuleOrPackageSpecifier, safe } from '../../../utils/index.js';
-import { handleJsDocType } from '../../../utils/jsdoc.js';
+import { handleJsDocType, normalizeDescription } from '../../../utils/jsdoc.js';
 
 /**
  * @example static foo;
@@ -41,7 +41,7 @@ export function handleJsDoc(doc, node) {
       if(has(jsDocComment?.comment)) {
         doc.description = jsDocComment.comment.map(com => `${safe(() => com?.name?.getText()) ?? ''}${com.text}`).join('');
       } else {
-        doc.description = jsDocComment.comment;
+        doc.description = normalizeDescription(jsDocComment.comment);
       }
     }
 
@@ -53,7 +53,7 @@ export function handleJsDoc(doc, node) {
         const parameterTemplate = parameter || {};
 
         if(tag?.comment) {
-          parameterTemplate.description = tag.comment;
+          parameterTemplate.description = normalizeDescription(tag.comment);
         }
 
         if(tag?.name) {
@@ -91,7 +91,7 @@ export function handleJsDoc(doc, node) {
       /** @type */
       if(tag.kind === ts.SyntaxKind.JSDocTypeTag) {
         if(tag?.comment) {
-          doc.description = tag.comment;
+          doc.description = normalizeDescription(tag.comment);
         }
 
         doc.type = {
@@ -200,7 +200,7 @@ export function handleAttrJsDoc(node, doc) {
     }
 
     if(attrTag?.description) {
-      doc.description = attrTag.description;
+      doc.description = normalizeDescription(attrTag.description);
     }
   });
 

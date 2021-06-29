@@ -40,7 +40,7 @@ class MyEl extends HTMLElement {
   constructor() {
     super();
     this.prop2 = 'default';
-    /** @type {SomeType} */
+    /** @type {SomeType} - prop3 description */
     this.prop3 = 'default';
     /** @type {import('foo').Some.Type} */
     this.prop4 = 'default';
