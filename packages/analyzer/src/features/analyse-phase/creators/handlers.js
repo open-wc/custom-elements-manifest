@@ -174,6 +174,7 @@ export function handleHeritage(classTemplate, moduleDoc, context, node) {
 
       classTemplate.superclass = {
         name: superClass,
+        ...resolveModuleOrPackageSpecifier(moduleDoc, context, superClass)
       };
 
       if(superClass === 'HTMLElement') {

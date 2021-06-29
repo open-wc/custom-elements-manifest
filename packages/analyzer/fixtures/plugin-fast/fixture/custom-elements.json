@@ -39,7 +39,8 @@
             }
           ],
           "superclass": {
-            "name": "FASTElement"
+            "name": "FASTElement",
+            "package": "@microsoft/fast-element"
           },
           "tagName": "name-tag",
           "customElement": true
