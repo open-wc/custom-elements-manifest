@@ -140,3 +140,25 @@ export function getModuleForClassLike(cem, className) {
   return result;
 }
 
+/**
+ * Given a manifest module, a class name, and a class member name, gets the 
+ * manifest doc for the module's class' member.
+ *
+ * @param  {Partial<import('custom-elements-manifest/schema').Module>} moduleDoc Manifest module
+ * @param  {string} className Class to get member of
+ * @param  {string} memberName Class member to get
+ * @return {import('custom-elements-manifest/schema').ClassMember|void} the requested class member
+ */
+export function getClassMemberDoc(moduleDoc, className, memberName) {
+  /** @type {import('custom-elements-manifest/schema').ClassDeclaration} */
+  const classDoc = (moduleDoc.declarations.find(x => x.name === className));
+
+  if (!classDoc)
+    return console.warn(`Could not find class ${className}`);
+  if (!Array.isArray(classDoc.members))
+    return console.warn(`Could not find member ${memberName} of ${className}`);
+
+  const memberDoc = classDoc.members.find(x => x.name === memberName);
+
+  return memberDoc;
+}
