@@ -14,12 +14,18 @@
             {
               "kind": "field",
               "name": "prop1",
-              "default": "''"
+              "default": "''",
+              "type": {
+                "text": "string"
+              }
             },
             {
               "kind": "field",
               "name": "prop2",
-              "default": "'default'"
+              "default": "'default'",
+              "type": {
+                "text": "string"
+              }
             },
             {
               "kind": "field",
@@ -99,6 +105,61 @@
               "kind": "field",
               "name": "prop12",
               "static": true
+            },
+            {
+              "kind": "field",
+              "name": "bool",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "str",
+              "type": {
+                "text": "string"
+              },
+              "default": "''"
+            },
+            {
+              "kind": "field",
+              "name": "num",
+              "type": {
+                "text": "number"
+              },
+              "default": "1"
+            },
+            {
+              "kind": "field",
+              "name": "arr",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "obj",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "nu",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "strOverwritten",
+              "type": {
+                "text": "Foo"
+              },
+              "default": "''"
             },
             {
               "kind": "field",

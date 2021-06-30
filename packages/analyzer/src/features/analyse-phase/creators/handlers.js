@@ -206,3 +206,28 @@ export function handleAttrJsDoc(node, doc) {
 
   return doc;
 }
+
+export function handleTypeInference(doc, node) {
+  switch(node?.initializer?.kind || node?.kind) {
+    case ts.SyntaxKind.TrueKeyword:
+    case ts.SyntaxKind.FalseKeyword:
+      doc.type = { text: "boolean" }
+      break;
+    case ts.SyntaxKind.StringLiteral:
+      doc.type = { text: "string" }
+      break;
+    case ts.SyntaxKind.NumericLiteral:
+      doc.type = { text: "number" }
+      break;
+    case ts.SyntaxKind.NullKeyword:
+      doc.type = { text: "null" }
+      break;
+    case ts.SyntaxKind.ArrayLiteralExpression:
+      doc.type = { text: "array" }
+      break;
+    case ts.SyntaxKind.ObjectLiteralExpression:
+      doc.type = { text: "object" }
+      break;
+  }
+  return doc;
+}

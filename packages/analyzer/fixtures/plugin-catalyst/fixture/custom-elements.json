@@ -14,7 +14,10 @@
             {
               "kind": "field",
               "name": "foo",
-              "default": "'hello'"
+              "default": "'hello'",
+              "type": {
+                "text": "string"
+              }
             },
             {
               "kind": "field",
@@ -25,7 +28,10 @@
             {
               "name": "foo",
               "default": "'hello'",
-              "fieldName": "foo"
+              "fieldName": "foo",
+              "type": {
+                "text": "string"
+              }
             }
           ],
           "superclass": {

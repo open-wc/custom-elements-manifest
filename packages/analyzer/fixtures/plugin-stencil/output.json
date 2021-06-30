@@ -35,6 +35,9 @@
             {
               "kind": "field",
               "name": "message",
+              "type": {
+                "text": "string"
+              },
               "default": "'Hello'"
             },
             {

@@ -2,7 +2,7 @@ import ts from 'typescript';
 import { createFunctionLike } from './createFunctionLike.js';
 import { createAttribute, createAttributeFromField } from './createAttribute.js';
 import { createField } from './createClassField.js';
-import { handleHeritage, handleJsDoc, handleAttrJsDoc } from './handlers.js';
+import { handleHeritage, handleJsDoc, handleAttrJsDoc, handleTypeInference } from './handlers.js';
 import { hasDefaultModifier } from '../../../utils/exports.js';
 import { hasAttrAnnotation, isDispatchEvent, isPrimitive, isProperty, isReturnStatement, isStaticMember } from '../../../utils/ast-helpers.js';
 
@@ -196,6 +196,7 @@ export function getDefaultValuesFromConstructorVisitor(source, member) {
               statement.expression?.left?.name?.getText() === member.name &&
               member.kind === 'field'
             ) {
+              member = handleTypeInference(member, statement?.expression?.right);
               member = handleJsDoc(member, statement);
 
               /** Only add defaults for primitives for now */

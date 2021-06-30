@@ -14,17 +14,26 @@
             {
               "kind": "field",
               "name": "decoratedProperty",
-              "default": "[]"
+              "default": "[]",
+              "type": {
+                "text": "array"
+              }
             },
             {
               "kind": "field",
               "name": "decoratedPropertyAlsoAttr",
-              "default": "[]"
+              "default": "[]",
+              "type": {
+                "text": "array"
+              }
             },
             {
               "kind": "field",
               "name": "decoratedPropertyNoAttr",
-              "default": "[]"
+              "default": "[]",
+              "type": {
+                "text": "array"
+              }
             },
             {
               "kind": "field",
@@ -56,12 +65,18 @@
             {
               "name": "decoratedProperty",
               "fieldName": "decoratedProperty",
-              "default": "[]"
+              "default": "[]",
+              "type": {
+                "text": "array"
+              }
             },
             {
               "name": "my-attr2",
               "fieldName": "decoratedPropertyAlsoAttr",
-              "default": "[]"
+              "default": "[]",
+              "type": {
+                "text": "array"
+              }
             },
             {
               "name": "prop1",
