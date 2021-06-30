@@ -7,19 +7,30 @@
       "path": "fixtures/-default/package/bar.js",
       "declarations": [
         {
-          "kind": "variable",
-          "name": "a",
-          "type": {
-            "text": "string"
-          }
+          "kind": "class",
+          "description": "",
+          "name": "default",
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "my-el",
+          "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "a",
+          "name": "default",
           "declaration": {
-            "name": "a",
+            "name": "default",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "my-el",
+          "declaration": {
+            "name": "MyEl",
             "module": "fixtures/-default/package/bar.js"
           }
         }

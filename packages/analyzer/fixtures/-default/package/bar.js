@@ -1,23 +1,3 @@
-// class MyEl extends HTMLElement {
-//   prop2;
-  
-//   bool = false;
-//   str = '';
-//   num = 1;
-//   arr = [];
-//   obj = {};
-//   nu = null;
+export default class MyEl extends HTMLElement {}
 
-//   /** @type {Foo} */
-//   strOverwritten = '';
-
-//   constructor() {
-//     super();
-//     this.prop2 = 'default';
-//   }
-// }
-
-// customElements.define('my-el', MyEl);
-
-
-export const a = '';
+customElements.define('my-el', MyEl);
