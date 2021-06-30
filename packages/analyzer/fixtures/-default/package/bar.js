@@ -1,7 +1,23 @@
+// class MyEl extends HTMLElement {
+//   prop2;
+  
+//   bool = false;
+//   str = '';
+//   num = 1;
+//   arr = [];
+//   obj = {};
+//   nu = null;
 
-import { LitElement } from 'lit-element';
+//   /** @type {Foo} */
+//   strOverwritten = '';
 
-export class MyElement extends LitElement {
-  @property({ type: Boolean }) a: boolean = false;
-  @property({ type: Boolean }) b: string = '';
-}
+//   constructor() {
+//     super();
+//     this.prop2 = 'default';
+//   }
+// }
+
+// customElements.define('my-el', MyEl);
+
+
+export const a = '';

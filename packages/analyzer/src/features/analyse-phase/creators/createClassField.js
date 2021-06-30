@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import { isPrimitive } from '../../../utils/ast-helpers.js';
-import { handleModifiers, handleJsDoc } from './handlers.js';
+import { handleModifiers, handleJsDoc, handleTypeInference } from './handlers.js';
 
 export function createField(node) {
   let fieldTemplate = {
@@ -15,6 +15,8 @@ export function createField(node) {
   if (ts.isPrivateIdentifier(node.name)) {
     fieldTemplate.privacy = 'private';
   }
+
+  fieldTemplate = handleTypeInference(fieldTemplate, node);
 
   /**
    * Add TS type
