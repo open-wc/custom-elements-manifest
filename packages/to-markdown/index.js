@@ -48,7 +48,7 @@ const render = (item, properties) => {
       } else {
         defaultVal = '';
       }
-      md += `${defaultVal} |`
+      md += `${defaultVal.replace(/\n|\r/g, "")} |`
       return `${md}\n`;
     }
 
