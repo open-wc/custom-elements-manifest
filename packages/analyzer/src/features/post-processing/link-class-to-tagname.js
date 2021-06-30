@@ -11,7 +11,6 @@ export function linkClassToTagnamePlugin() {
     packageLinkPhase({customElementsManifest, context}){
       /* Get all class declarations and custom element definitions in the manifest */
       const classes = getAllDeclarationsOfKind(customElementsManifest, 'class');
-      const mixins = getAllDeclarationsOfKind(customElementsManifest, 'mixin');
       const definitions = getAllExportsOfKind(customElementsManifest, 'custom-element-definition');
 
       /* Loop through all classes, and try to find their corresponding custom element definition */
@@ -24,8 +23,12 @@ export function linkClassToTagnamePlugin() {
         }
       });
 
-      [...classes, ...mixins].forEach(classLike => {
-        delete classLike?._tempName;
+      customElementsManifest?.modules?.forEach(mod => {
+        mod?.declarations?.forEach(dec => {
+          if('_tempName' in dec) {
+            delete dec._tempName
+          }
+        });
       });
     }
   }
