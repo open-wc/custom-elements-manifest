@@ -200,9 +200,9 @@ export function getDefaultValuesFromConstructorVisitor(source, member) {
               member = handleTypeInference(member, statement?.expression?.right);
               member = handleJsDoc(member, statement);
 
-              /** Only add defaults for primitives for now */
-              if(isPrimitive(statement.expression.right)) {
-                member.default = statement.expression.right.getText();
+              const defaultValue = statement?.expression?.right?.getText?.();
+              if(defaultValue) {
+                member.default = defaultValue;
               }
             }
           });

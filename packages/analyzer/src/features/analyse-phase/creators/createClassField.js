@@ -34,9 +34,9 @@ export function createField(node) {
 }
 
 function handleDefaultValue(fieldTemplate, node) {
-  if(isPrimitive(node.initializer)) {
-    fieldTemplate.default = node?.initializer?.getText?.();
+  const defaultValue = node?.initializer?.getText?.();
+  if(defaultValue) {
+    fieldTemplate.default = defaultValue;
   }
-
   return fieldTemplate;
 }

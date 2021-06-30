@@ -39,8 +39,8 @@ class MyEl extends HTMLElement {
   bool = false;
   str = '';
   num = 1;
-  arr = [];
-  obj = {};
+  arr = [{a: "a", b: 'b', c: `c`}, 1, "a", 'b', `c`];
+  obj = {a: "a", b: 'b', c: `c`};
   nu = null;
 
   /** @type {Foo} */

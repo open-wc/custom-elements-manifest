@@ -4,12 +4,30 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "fixtures/-default/package/bar.js",
+      "path": "fixtures/-default/package/bar.ts",
       "declarations": [
         {
           "kind": "class",
           "description": "",
           "name": "default",
+          "members": [
+            {
+              "kind": "field",
+              "name": "foo",
+              "type": {
+                "text": "object"
+              },
+              "default": "{a: \"a\", b: 'b', c: `c`}"
+            },
+            {
+              "kind": "field",
+              "name": "bar",
+              "type": {
+                "text": "array"
+              },
+              "default": "[new SomeClass()]"
+            }
+          ],
           "superclass": {
             "name": "HTMLElement"
           },
@@ -23,7 +41,7 @@
           "name": "default",
           "declaration": {
             "name": "default",
-            "module": "fixtures/-default/package/bar.js"
+            "module": "fixtures/-default/package/bar.ts"
           }
         },
         {
@@ -31,7 +49,7 @@
           "name": "my-el",
           "declaration": {
             "name": "MyEl",
-            "module": "fixtures/-default/package/bar.js"
+            "module": "fixtures/-default/package/bar.ts"
           }
         }
       ]
