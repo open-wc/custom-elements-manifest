@@ -20,7 +20,10 @@
         },
         {
           "kind": "variable",
-          "name": "var4"
+          "name": "var4",
+          "type": {
+            "text": "boolean"
+          }
         },
         {
           "kind": "variable",
@@ -42,6 +45,13 @@
           "kind": "class",
           "description": "",
           "name": "Class1"
+        },
+        {
+          "kind": "variable",
+          "name": "typeinferrence",
+          "type": {
+            "text": "string"
+          }
         }
       ],
       "exports": [
@@ -114,6 +124,14 @@
           "name": "Class1",
           "declaration": {
             "name": "Class1",
+            "module": "fixtures/variables/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "typeinferrence",
+          "declaration": {
+            "name": "typeinferrence",
             "module": "fixtures/variables/package/my-element.js"
           }
         }

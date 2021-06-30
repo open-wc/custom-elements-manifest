@@ -35,6 +35,17 @@ class MyEl extends HTMLElement {
   static prop11;
   static prop12;
 
+  // type inference
+  bool = false;
+  str = '';
+  num = 1;
+  arr = [];
+  obj = {};
+  nu = null;
+
+  /** @type {Foo} */
+  strOverwritten = '';
+
   #prop13;
   
   constructor() {
