@@ -1,3 +1,9 @@
-export default class MyEl extends HTMLElement {}
 
-customElements.define('my-el', MyEl);
+export class MyElement extends HTMLElement {
+  foo = 'hello';
+
+  /**
+   * @bar this is custom information
+   */
+  message;
+}
