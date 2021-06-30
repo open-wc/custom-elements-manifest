@@ -16,6 +16,7 @@ import {
   addCustomElementsPropertyToPackageJson,
   mergeGlobsAndExcludes,
   timestamp,
+  DEFAULTS,
   MENU
 } from './src/utils/cli.js';
 
@@ -33,7 +34,7 @@ import {
      * Merged config options
      * Command line options override userConfig options
      */
-    const mergedOptions = { outdir: '', ...userConfig, ...cliConfig };
+    const mergedOptions = { ...DEFAULTS, ...userConfig, ...cliConfig };
 
     const merged = mergeGlobsAndExcludes(userConfig, cliConfig);
     const globs = await globby(merged);
