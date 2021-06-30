@@ -1,7 +1,3 @@
+export default class MyEl extends HTMLElement {}
 
-import { LitElement } from 'lit-element';
-
-export class MyElement extends LitElement {
-  @property({ type: Boolean }) a: boolean = false;
-  @property({ type: Boolean }) b: string = '';
-}
+customElements.define('my-el', MyEl);

@@ -17,6 +17,7 @@ export function createClass(node, moduleDoc, context) {
     kind: 'class',
     description: '',
     name: isDefault ? 'default' : node?.name?.getText() || node?.parent?.parent?.name?.getText() || '',
+    _tempName: node?.name?.getText() || node?.parent?.parent?.name?.getText() || '',
     cssProperties: [],
     cssParts: [],
     slots: [],

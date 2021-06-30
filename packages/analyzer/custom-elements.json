@@ -9,56 +9,28 @@
         {
           "kind": "class",
           "description": "",
-          "name": "MyElement",
-          "members": [
-            {
-              "kind": "field",
-              "name": "a",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false"
-            },
-            {
-              "kind": "field",
-              "name": "b",
-              "type": {
-                "text": "string"
-              },
-              "default": "''"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "a",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "a"
-            },
-            {
-              "name": "b",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "b"
-            }
-          ],
+          "name": "default",
           "superclass": {
-            "name": "LitElement",
-            "package": "lit-element"
+            "name": "HTMLElement"
           },
+          "tagName": "my-el",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "MyElement",
+          "name": "default",
           "declaration": {
-            "name": "MyElement",
+            "name": "default",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "my-el",
+          "declaration": {
+            "name": "MyEl",
             "module": "fixtures/-default/package/bar.js"
           }
         }

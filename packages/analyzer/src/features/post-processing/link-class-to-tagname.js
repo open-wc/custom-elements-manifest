@@ -11,16 +11,21 @@ export function linkClassToTagnamePlugin() {
     packageLinkPhase({customElementsManifest, context}){
       /* Get all class declarations and custom element definitions in the manifest */
       const classes = getAllDeclarationsOfKind(customElementsManifest, 'class');
+      const mixins = getAllDeclarationsOfKind(customElementsManifest, 'mixin');
       const definitions = getAllExportsOfKind(customElementsManifest, 'custom-element-definition');
 
       /* Loop through all classes, and try to find their corresponding custom element definition */
       classes?.forEach((klass) => {
-        const tagName = definitions?.find(def => def?.declaration?.name === klass?.name)?.name;
+        const tagName = definitions?.find(def => def?.declaration?.name === klass?.name || def?.declaration?.name === klass?._tempName)?.name;
 
         /* If there's a match, we can link the custom element definition to the class */
         if (tagName && !klass.tagName) {
           klass.tagName = tagName;
         }
+      });
+
+      [...classes, ...mixins].forEach(classLike => {
+        delete classLike?._tempName;
       });
     }
   }
