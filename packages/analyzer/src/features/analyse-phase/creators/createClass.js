@@ -197,7 +197,11 @@ export function getDefaultValuesFromConstructorVisitor(source, member) {
               statement.expression?.left?.name?.getText() === member.name &&
               member.kind === 'field'
             ) {
-              member = handleTypeInference(member, statement?.expression?.right);
+              
+              if(!member?.type) {
+                member = handleTypeInference(member, statement?.expression?.right);
+              }
+
               member = handleJsDoc(member, statement);
 
               /** Only add defaults for primitives for now */
