@@ -8,34 +8,45 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "",
-          "name": "MyElement",
+          "description": "My component",
+          "name": "MyComponent",
           "members": [
             {
               "kind": "field",
-              "name": "foo",
-              "type": {
-                "text": "string"
-              },
-              "default": "'hello'"
+              "name": "properties",
+              "static": true
             },
             {
-              "kind": "field",
-              "name": "message"
+              "type": {
+                "text": "String"
+              },
+              "description": "one desc",
+              "name": "one",
+              "kind": "field"
             }
           ],
           "superclass": {
-            "name": "HTMLElement"
+            "name": "LitElement",
+            "package": "lit-element"
           },
+          "tagName": "cc-addon-option",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "MyElement",
+          "name": "MyComponent",
           "declaration": {
-            "name": "MyElement",
+            "name": "MyComponent",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "cc-addon-option",
+          "declaration": {
+            "name": "MyComponent",
             "module": "fixtures/-default/package/bar.js"
           }
         }
