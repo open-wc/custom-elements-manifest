@@ -1,5 +1,6 @@
 import { createAttributeFromField } from '../../analyse-phase/creators/createAttribute.js';
 import { getDefaultValuesFromConstructorVisitor } from '../../analyse-phase/creators/createClass.js';
+import { handleJsDoc } from '../../analyse-phase/creators/handlers.js';
 import { isAlsoAttribute, hasStaticKeyword, getPropertiesObject, getAttributeName } from './utils.js';
 
 /**
@@ -23,11 +24,13 @@ export function staticPropertiesPlugin() {
 
               propertiesObject?.properties?.forEach(property => {
 
-                const classMember = {
+                let classMember = {
                   kind: 'field',
                   name: property?.name?.getText() || '',
                   privacy: 'public',
                 };
+
+                classMember = handleJsDoc(classMember, property);
 
                 if (isAlsoAttribute(property)) {
                   const attribute = createAttributeFromField(classMember);
