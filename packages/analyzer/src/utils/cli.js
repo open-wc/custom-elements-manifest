@@ -12,14 +12,15 @@ const IGNORE = [
   '!**/*.config.{js,ts}'
 ];
 
-export function mergeGlobsAndExcludes(userConfig, cliConfig) {
-  const hasProvidedCliGlobs = cliConfig?.globs?.[0] !== '**/*.{js,ts,tsx}' || has(userConfig?.globs);
+export function mergeGlobsAndExcludes(defaults, userConfig, cliConfig) {
+  const hasProvidedCliGlobs = has(cliConfig?.globs) || has(userConfig?.globs);
 
   if(hasProvidedCliGlobs) {
-    cliConfig.globs = cliConfig?.globs?.filter(glob => glob !== '**/*.{js,ts,tsx}');
+    defaults.globs = defaults.globs.filter(glob => glob !== '**/*.{js,ts,tsx}');
   }
 
   const merged = [
+    ...defaults.globs,
     ...(userConfig?.globs || []),
     ...(cliConfig?.globs || []),
     ...(userConfig?.exclude?.map((i) => `!${i}`) || []),

@@ -35,8 +35,7 @@ import {
      * Command line options override userConfig options
      */
     const mergedOptions = { ...DEFAULTS, ...userConfig, ...cliConfig };
-
-    const merged = mergeGlobsAndExcludes(userConfig, cliConfig);
+    const merged = mergeGlobsAndExcludes(DEFAULTS, userConfig, cliConfig);
     const globs = await globby(merged);
 
     async function run() {
@@ -77,6 +76,9 @@ import {
       });
 
       const outdir = path.join(process.cwd(), mergedOptions.outdir);
+      if (!fs.existsSync(outdir)){
+        fs.mkdirSync(outdir, { recursive: true });
+      }
       fs.writeFileSync(path.join(outdir, 'custom-elements.json'), `${JSON.stringify(customElementsManifest, null, 2)}\n`);
       if(mergedOptions.dev) {
         console.log(JSON.stringify(customElementsManifest, null, 2));
