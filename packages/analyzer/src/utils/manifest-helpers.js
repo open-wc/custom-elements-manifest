@@ -19,7 +19,7 @@ function loopThroughExports(manifest, predicate) {
 
 /**
  * Loops through all modules' exports, and returns the kind provided by the users
- * 
+ *
  * @example getKind('class');
  * @example getKind('custom-element-definition');
  */
@@ -36,7 +36,7 @@ export function getAllExportsOfKind(manifest, kind) {
 
 /**
  * Loops through all modules' declarations, and returns the kind provided by the users
- * 
+ *
  * @example getKind('class');
  * @example getKind('custom-element-definition');
  */
@@ -61,7 +61,7 @@ export function getInheritanceTree(cem, className) {
 
   const _classes = getAllDeclarationsOfKind(cem, 'class');
   const _mixins = getAllDeclarationsOfKind(cem, 'mixin');
-  
+
   [..._mixins, ..._classes].forEach(klass => {
     allClassLikes.set(klass.name, klass);
   });
@@ -86,15 +86,15 @@ export function getInheritanceTree(cem, className) {
         }
       }
     });
-    
+
     while(allClassLikes.has(klass.superclass?.name)) {
       const newKlass = allClassLikes.get(klass.superclass.name);
-      
+
       klass?.mixins?.forEach(mixin => {
         let foundMixin = _mixins.find(m => m.name === mixin.name);
         if(foundMixin) {
           tree.push(foundMixin);
-  
+
           while(has(foundMixin?.mixins)) {
             foundMixin?.mixins?.forEach(mixin => {
               foundMixin =  _mixins.find(m => m.name === mixin.name);
@@ -110,7 +110,7 @@ export function getInheritanceTree(cem, className) {
       klass = newKlass;
     }
     return tree;
-  } 
+  }
   return [];
 }
 
@@ -136,7 +136,29 @@ export function getModuleForClassLike(cem, className) {
       }
     });
   });
-  
+
   return result;
 }
 
+/**
+ * Given a manifest module, a class name, and a class member name, gets the
+ * manifest doc for the module's class' member.
+ *
+ * @param  {Partial<import('custom-elements-manifest/schema').Module>} moduleDoc Manifest module
+ * @param  {string} className Class to get member of
+ * @param  {string} memberName Class member to get
+ * @return {import('custom-elements-manifest/schema').ClassMember|void} the requested class member
+ */
+export function getClassMemberDoc(moduleDoc, className, memberName) {
+  /** @type {import('custom-elements-manifest/schema').ClassDeclaration} */
+  const classDoc = (moduleDoc.declarations.find(x => x.name === className));
+
+  if (!classDoc)
+    return console.warn(`Could not find class ${className}`);
+  if (!has(classDoc.members))
+    return console.warn(`Could not find member ${memberName} of ${className}`);
+
+  const memberDoc = classDoc.members.find(x => x.name === memberName);
+
+  return memberDoc;
+}
