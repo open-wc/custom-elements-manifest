@@ -45,17 +45,28 @@ export async function getUserConfig() {
   return userConfig || {};
 }
 
+export const DEFAULTS = {
+  outdir: '',
+  globs: ['**/*.{js,ts,tsx}'],
+  dev: false,
+  watch: false,
+  litelement: false,
+  stencil: false,
+  fast: false,
+  catalyst: false
+}
+
 export function getCliConfig(argv) {
   const optionDefinitions = [
-    { name: 'globs', type: String, multiple: true, defaultValue: ['**/*.{js,ts,tsx}'] },
+    { name: 'globs', type: String, multiple: true },
     { name: 'exclude', type: String, multiple: true },
     { name: 'outdir', type: String },
-    { name: 'dev', type: Boolean, defaultValue: false },
-    { name: 'watch', type: Boolean, defaultValue: false },
-    { name: 'litelement', type: Boolean, defaultValue: false },
-    { name: 'stencil', type: Boolean, defaultValue: false },
-    { name: 'fast', type: Boolean, defaultValue: false },
-    { name: 'catalyst', type: Boolean, defaultValue: false },
+    { name: 'dev', type: Boolean },
+    { name: 'watch', type: Boolean },
+    { name: 'litelement', type: Boolean },
+    { name: 'stencil', type: Boolean },
+    { name: 'fast', type: Boolean },
+    { name: 'catalyst', type: Boolean },
   ];
   
   return commandLineArgs(optionDefinitions, { argv });

@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "fixtures/-default/package/bar.ts",
+      "path": "fixtures/-default/package/bar.js",
       "declarations": [
         {
           "kind": "class",
@@ -41,7 +41,7 @@
           "name": "default",
           "declaration": {
             "name": "default",
-            "module": "fixtures/-default/package/bar.ts"
+            "module": "fixtures/-default/package/bar.js"
           }
         },
         {
@@ -49,7 +49,7 @@
           "name": "my-el",
           "declaration": {
             "name": "MyEl",
-            "module": "fixtures/-default/package/bar.ts"
+            "module": "fixtures/-default/package/bar.js"
           }
         }
       ]
