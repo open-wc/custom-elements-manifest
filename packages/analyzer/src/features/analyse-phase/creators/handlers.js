@@ -3,6 +3,7 @@ import parse from 'comment-parser';
 
 import { has, resolveModuleOrPackageSpecifier, safe } from '../../../utils/index.js';
 import { handleJsDocType, normalizeDescription } from '../../../utils/jsdoc.js';
+import { isPrimitive, isWellKnownType } from '../../../utils/ast-helpers.js';
 
 /**
  * @example static foo;
@@ -228,6 +229,53 @@ export function handleTypeInference(doc, node) {
     case ts.SyntaxKind.ObjectLiteralExpression:
       doc.type = { text: "object" }
       break;
+  }
+  return doc;
+}
+
+/**
+ * For `as const` and namespace/enum types
+ * @example class A { b = 'b' as const }
+ * @example class A { b = B.b }
+ */
+export function handleWellKnownTypes(doc, node) {
+  if (!!node.initializer?.expression) {
+    const text = node.initializer.expression.getText();
+    if (isWellKnownType(node))
+      doc.type = { text };
+
+    if (doc.kind === 'field')
+      doc.default = text;
+  }
+  return doc;
+}
+
+export function handleDefaultValue(doc, node) {
+  if(isPrimitive(node.initializer)) {
+    doc.default = node?.initializer?.getText?.();
+  }
+
+  return doc;
+}
+
+/**
+ * Add TS type
+ * @example class Foo { bar: string = ''; }
+ */
+export function handleExplicitType(doc, node) {
+  if(node.type) {
+    doc.type = { text: node.type.getText() }
+  }
+  return doc;
+}
+
+/**
+ * if is private field
+ * @example class Foo { #bar = ''; }
+ */
+export function handlePrivateMember(doc, node) {
+  if (ts.isPrivateIdentifier(node.name)) {
+    doc.privacy = 'private';
   }
   return doc;
 }

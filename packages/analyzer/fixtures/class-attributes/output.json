@@ -63,8 +63,8 @@
               "type": {
                 "text": "string"
               },
-              "description": "this is the field description",
-              "default": "''"
+              "default": "''",
+              "description": "this is the field description"
             },
             {
               "kind": "field",
@@ -82,8 +82,8 @@
               "type": {
                 "text": "string"
               },
-              "description": "this is the attr description",
               "default": "''",
+              "description": "this is the attr description",
               "fieldName": "foo"
             }
           ],
