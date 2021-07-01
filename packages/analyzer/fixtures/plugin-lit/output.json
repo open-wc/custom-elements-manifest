@@ -59,6 +59,14 @@
               "kind": "field",
               "name": "noAttr",
               "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "_privateProp",
+              "privacy": "private",
+              "type": {
+                "text": "Boolean"
+              }
             }
           ],
           "attributes": [
@@ -89,6 +97,13 @@
             {
               "name": "my-attr",
               "fieldName": "attr"
+            },
+            {
+              "name": "_privateProp",
+              "type": {
+                "text": "Boolean"
+              },
+              "fieldName": "_privateProp"
             }
           ],
           "superclass": {

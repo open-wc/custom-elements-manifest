@@ -8,28 +8,31 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "My component",
+          "description": "",
           "name": "MyComponent",
           "members": [
             {
               "kind": "field",
-              "name": "properties",
-              "static": true
-            },
-            {
+              "name": "_privateProp",
+              "privacy": "private",
               "type": {
-                "text": "String"
+                "text": "Boolean"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "_privateProp",
+              "type": {
+                "text": "Boolean"
               },
-              "description": "one desc",
-              "name": "one",
-              "kind": "field"
+              "fieldName": "_privateProp"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit-element"
           },
-          "tagName": "cc-addon-option",
           "customElement": true
         }
       ],
@@ -37,14 +40,6 @@
         {
           "kind": "js",
           "name": "MyComponent",
-          "declaration": {
-            "name": "MyComponent",
-            "module": "fixtures/-default/package/bar.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "cc-addon-option",
           "declaration": {
             "name": "MyComponent",
             "module": "fixtures/-default/package/bar.js"
