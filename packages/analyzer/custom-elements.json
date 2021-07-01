@@ -13,20 +13,8 @@
           "members": [
             {
               "kind": "field",
-              "name": "_privateProp",
-              "privacy": "private",
-              "type": {
-                "text": "Boolean"
-              }
-            }
-          ],
-          "attributes": [
-            {
-              "name": "_privateProp",
-              "type": {
-                "text": "Boolean"
-              },
-              "fieldName": "_privateProp"
+              "name": "properties",
+              "static": true
             }
           ],
           "superclass": {
