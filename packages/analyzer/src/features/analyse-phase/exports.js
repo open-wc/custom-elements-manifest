@@ -119,7 +119,7 @@ export function exportsPlugin() {
             kind: 'js',
             name: isDefault ? 'default' : node.name?.getText() || '',
             declaration: {
-              name: isDefault ? 'default' : node.name?.getText() || '',
+              name: node.name?.getText() || '',
               module: moduleDoc.path,
             },
           };
@@ -138,7 +138,7 @@ export function exportsPlugin() {
             kind: 'js',
             name: isDefault ? 'default' : node?.name?.text || '',
             declaration: {
-              name: isDefault ? 'default' : node?.name?.text || '',
+              name: node?.name?.text || '',
               module: moduleDoc.path,
             },
           };

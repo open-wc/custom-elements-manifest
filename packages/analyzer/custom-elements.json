@@ -9,27 +9,28 @@
         {
           "kind": "class",
           "description": "",
-          "name": "MyComponent",
-          "members": [
-            {
-              "kind": "field",
-              "name": "properties",
-              "static": true
-            }
-          ],
+          "name": "MyElement",
           "superclass": {
-            "name": "LitElement",
-            "package": "lit-element"
+            "name": "HTMLElement"
           },
+          "tagName": "my-el",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "MyComponent",
+          "name": "default",
           "declaration": {
-            "name": "MyComponent",
+            "name": "MyElement",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "my-el",
+          "declaration": {
+            "name": "MyElement",
             "module": "fixtures/-default/package/bar.js"
           }
         }

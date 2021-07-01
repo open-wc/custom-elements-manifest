@@ -1,15 +1,3 @@
-import { LitElement } from 'lit-element';
+export default class MyElement extends HTMLElement {}
 
-export class MyComponent extends LitElement {
-
-  static get properties () {
-    return {
-      /** 
-       * @private 
-       * @type {Boolean}
-       */
-      _privateProp: { type: String },
-    };
-  }
-
-}
+customElements.define('my-el', MyElement);
