@@ -155,9 +155,9 @@ export function getClassMemberDoc(moduleDoc, className, memberName, isStatic = f
   const classDoc = (moduleDoc.declarations.find(x => x.name === className));
 
   if (!classDoc)
-    return console.warn(`Could not find class ${className}`);
+    return;
   if (!has(classDoc.members))
-    return console.warn(`Could not find member ${memberName} of ${className}`);
+    return;
 
   const memberDoc = classDoc.members.find(x =>
     x.name === memberName &&
