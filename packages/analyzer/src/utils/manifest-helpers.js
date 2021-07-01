@@ -147,9 +147,10 @@ export function getModuleForClassLike(cem, className) {
  * @param  {Partial<import('custom-elements-manifest/schema').Module>} moduleDoc Manifest module
  * @param  {string} className Class to get member of
  * @param  {string} memberName Class member to get
+ * @param  {boolean} isStatic Is it a static member?
  * @return {import('custom-elements-manifest/schema').ClassMember|void} the requested class member
  */
-export function getClassMemberDoc(moduleDoc, className, memberName) {
+export function getClassMemberDoc(moduleDoc, className, memberName, isStatic = false) {
   /** @type {import('custom-elements-manifest/schema').ClassDeclaration} */
   const classDoc = (moduleDoc.declarations.find(x => x.name === className));
 
@@ -158,7 +159,10 @@ export function getClassMemberDoc(moduleDoc, className, memberName) {
   if (!has(classDoc.members))
     return console.warn(`Could not find member ${memberName} of ${className}`);
 
-  const memberDoc = classDoc.members.find(x => x.name === memberName);
+  const memberDoc = classDoc.members.find(x =>
+    x.name === memberName &&
+    (x.static ?? false) === isStatic
+  );
 
   return memberDoc;
 }
