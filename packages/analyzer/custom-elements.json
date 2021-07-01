@@ -26,6 +26,11 @@
                 "text": "array"
               },
               "default": "[new SomeClass()]"
+            },
+            {
+              "kind": "field",
+              "name": "baz",
+              "default": "bazVal"
             }
           ],
           "superclass": {

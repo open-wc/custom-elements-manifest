@@ -36,6 +36,7 @@ export function createField(node) {
 function handleDefaultValue(fieldTemplate, node) {
   const defaultValue = node?.initializer?.getText?.();
   if(defaultValue) {
+    // @TODO handle if default val is identifier
     fieldTemplate.default = defaultValue;
   }
   return fieldTemplate;
