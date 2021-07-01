@@ -154,9 +154,7 @@ export function getClassMemberDoc(moduleDoc, className, memberName, isStatic = f
   /** @type {import('custom-elements-manifest/schema').ClassDeclaration} */
   const classDoc = (moduleDoc.declarations.find(x => x.name === className));
 
-  if (!classDoc)
-    return;
-  if (!has(classDoc.members))
+  if (!classDoc || !has(classDoc.members))
     return;
 
   const memberDoc = classDoc.members.find(x =>
