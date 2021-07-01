@@ -1,4 +1,3 @@
-import * as TS from 'typescript'
 import { Module, Package } from 'custom-elements-manifest/schema';
 
 /** Plugin execution context. Pass arbitrary data here. */
@@ -8,12 +7,12 @@ export interface CollectPhaseParams {
   /**
    * TypeScript API
    */
-  ts: TS;
+  ts: typeof import('typescript');
 
   /**
    * The current TypeScript AST Node
    */
-  node: TS.Node;
+  node: import('typescript').Node;
 
   /**
    * Plugin execution context. Pass arbitrary data here.
@@ -25,12 +24,12 @@ export interface AnalyzePhaseParams {
   /**
    * TypeScript API
    */
-  ts: TS;
+  ts: typeof import('typescript');
 
   /**
    * The current TypeScript AST Node
    */
-  node: TS.Node;
+  node: import('typescript').Node;
 
   /**
    * The current state of the current module's manifest
