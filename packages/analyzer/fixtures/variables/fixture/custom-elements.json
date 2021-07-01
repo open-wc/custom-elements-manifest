@@ -52,6 +52,20 @@
           "type": {
             "text": "string"
           }
+        },
+        {
+          "kind": "variable",
+          "name": "asConst",
+          "type": {
+            "text": "'const'"
+          }
+        },
+        {
+          "kind": "variable",
+          "name": "asConstRef",
+          "type": {
+            "text": "{foo:'bar'}"
+          }
         }
       ],
       "exports": [
@@ -132,6 +146,22 @@
           "name": "typeinferrence",
           "declaration": {
             "name": "typeinferrence",
+            "module": "fixtures/variables/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "asConst",
+          "declaration": {
+            "name": "asConst",
+            "module": "fixtures/variables/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "asConstRef",
+          "declaration": {
+            "name": "asConstRef",
             "module": "fixtures/variables/package/my-element.js"
           }
         }

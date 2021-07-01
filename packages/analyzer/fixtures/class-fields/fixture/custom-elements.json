@@ -155,6 +155,22 @@
             },
             {
               "kind": "field",
+              "name": "asConst",
+              "type": {
+                "text": "'const'"
+              },
+              "default": "'const'"
+            },
+            {
+              "kind": "field",
+              "name": "asConstRef",
+              "type": {
+                "text": "{foo:'bar'}"
+              },
+              "default": "{foo:'bar'}"
+            },
+            {
+              "kind": "field",
               "name": "strOverwritten",
               "type": {
                 "text": "Foo"

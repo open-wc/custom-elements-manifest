@@ -42,12 +42,14 @@ class MyEl extends HTMLElement {
   arr = [];
   obj = {};
   nu = null;
+  asConst = 'const' as const;
+  asConstRef = {foo:'bar'} as const;
 
   /** @type {Foo} */
   strOverwritten = '';
 
   #prop13;
-  
+
   constructor() {
     super();
     this.prop2 = 'default';

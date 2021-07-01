@@ -11,3 +11,5 @@ export class Class1 {}
 
 // type inference
 export const typeinferrence = '';
+export const asConst = 'const' as const;
+export const asConstRef = {foo:'bar'} as const;

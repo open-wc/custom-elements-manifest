@@ -28,7 +28,7 @@ export function hasAttrAnnotation(member) {
 }
 
 
-/** 
+/**
  * Whether or not node is:
  * - Number
  * - String
@@ -101,3 +101,32 @@ export const getReturnValue = returnStatement => (
  */
 export const isStaticMember = member =>
   member?.modifiers?.some?.(x => x.kind === ts.SyntaxKind.StaticKeyword);
+
+/**
+ * @param  {import('typescript').Expression}  initializer
+ * @return {initializer is import('typescript').AsExpression & { type: import("typescript").TypeReference }}
+ */
+function isAsConst(initializer) {
+  return (
+    initializer &&
+    initializer.kind &&
+    ts.isAsExpression(initializer) &&
+    ts.isTypeReferenceNode(initializer.type) &&
+    initializer.type.typeName.getText() === 'const'
+  );
+}
+
+
+/**
+ * Does the name have an initializer with `as const`?
+ * @param  {import('typescript').Node}  node
+ * @return {Boolean}
+ */
+export function isWellKnownType(node) {
+  return (
+    node.initializer && (
+      isAsConst(node.initializer) ||
+      ts.isPropertyAccessExpression(node.initializer)
+    )
+  );
+}
