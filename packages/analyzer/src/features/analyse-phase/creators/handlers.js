@@ -250,7 +250,7 @@ export function handleWellKnownTypes(doc, node) {
   return doc;
 }
 
-export function handleDefaultValue(fieldTemplate, node) {
+export function handleDefaultValue(doc, node) {
   /**
    * In case of a class field node?.initializer?.getText?.()
    * In case of a property assignment in constructor node?.expression?.right?.getText?.()
@@ -258,9 +258,9 @@ export function handleDefaultValue(fieldTemplate, node) {
   const defaultValue = node?.initializer?.getText?.() || node?.expression?.right?.getText?.();
   // If there is a defaultValue, and the defaultValue is not a variable
   if(defaultValue && node?.initializer?.kind !== ts.SyntaxKind.Identifier) {
-    fieldTemplate.default = defaultValue;
+    doc.default = defaultValue;
   }
-  return fieldTemplate;
+  return doc;
 }
 
 /**

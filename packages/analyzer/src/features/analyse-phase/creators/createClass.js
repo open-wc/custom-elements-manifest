@@ -200,11 +200,6 @@ export function getDefaultValuesFromConstructorVisitor(source, member) {
 
               member = handleJsDoc(member, statement);
               member = handleDefaultValue(member, statement);
-
-              // const defaultValue = statement?.expression?.right?.getText?.();
-              // if(defaultValue) {
-              //   member.default = defaultValue;
-              // }
             }
           });
         break;
