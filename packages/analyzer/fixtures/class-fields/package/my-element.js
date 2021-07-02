@@ -1,3 +1,5 @@
+const bar = 'bar';
+
 /**
  * @property {string} prop5
  */
@@ -41,13 +43,16 @@ class MyEl extends HTMLElement {
   num = 1;
   arr = [{a: "a", b: 'b', c: `c`}, 1, "a", 'b', `c`];
   obj = {a: "a", b: 'b', c: `c`};
+  asVariable = bar;
   nu = null;
+  asConst = 'const' as const;
+  asConstRef = {foo:'bar'} as const;
 
   /** @type {Foo} */
   strOverwritten = '';
 
   #prop13;
-  
+
   constructor() {
     super();
     this.prop2 = 'default';

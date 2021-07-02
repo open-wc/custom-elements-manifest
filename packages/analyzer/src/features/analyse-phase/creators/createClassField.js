@@ -1,6 +1,12 @@
-import ts from 'typescript';
-import { isPrimitive } from '../../../utils/ast-helpers.js';
-import { handleModifiers, handleJsDoc, handleTypeInference } from './handlers.js';
+import {
+  handleDefaultValue,
+  handleExplicitType,
+  handleJsDoc,
+  handleModifiers,
+  handlePrivateMember,
+  handleTypeInference,
+  handleWellKnownTypes
+} from './handlers.js';
 
 export function createField(node) {
   let fieldTemplate = {
@@ -8,36 +14,13 @@ export function createField(node) {
     name: node?.name?.getText() || '',
   }
 
-  /** 
-   * if is private field
-   * @example class Foo { #bar = ''; }
-   */ 
-  if (ts.isPrivateIdentifier(node.name)) {
-    fieldTemplate.privacy = 'private';
-  }
-
+  fieldTemplate = handlePrivateMember(fieldTemplate, node);
   fieldTemplate = handleTypeInference(fieldTemplate, node);
-
-  /**
-   * Add TS type
-   * @example class Foo { bar: string = ''; }
-   */ 
-  if(node.type) {
-    fieldTemplate.type = { text: node.type.getText() }
-  }
-
+  fieldTemplate = handleExplicitType(fieldTemplate, node);
   fieldTemplate = handleModifiers(fieldTemplate, node);
-  fieldTemplate = handleJsDoc(fieldTemplate, node);
   fieldTemplate = handleDefaultValue(fieldTemplate, node);
+  fieldTemplate = handleWellKnownTypes(fieldTemplate, node);
+  fieldTemplate = handleJsDoc(fieldTemplate, node);
 
-  return fieldTemplate;
-}
-
-function handleDefaultValue(fieldTemplate, node) {
-  const defaultValue = node?.initializer?.getText?.();
-  if(defaultValue) {
-    // @TODO handle if default val is identifier
-    fieldTemplate.default = defaultValue;
-  }
   return fieldTemplate;
 }

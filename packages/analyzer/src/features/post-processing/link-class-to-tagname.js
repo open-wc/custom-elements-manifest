@@ -15,20 +15,12 @@ export function linkClassToTagnamePlugin() {
 
       /* Loop through all classes, and try to find their corresponding custom element definition */
       classes?.forEach((klass) => {
-        const tagName = definitions?.find(def => def?.declaration?.name === klass?.name || def?.declaration?.name === klass?._tempName)?.name;
+        const tagName = definitions?.find(def => def?.declaration?.name === klass?.name)?.name;
 
         /* If there's a match, we can link the custom element definition to the class */
         if (tagName && !klass.tagName) {
           klass.tagName = tagName;
         }
-      });
-
-      customElementsManifest?.modules?.forEach(mod => {
-        mod?.declarations?.forEach(dec => {
-          if('_tempName' in dec) {
-            delete dec._tempName
-          }
-        });
       });
     }
   }

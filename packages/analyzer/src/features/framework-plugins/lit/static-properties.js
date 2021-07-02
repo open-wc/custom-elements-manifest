@@ -1,5 +1,6 @@
 import { createAttributeFromField } from '../../analyse-phase/creators/createAttribute.js';
 import { getDefaultValuesFromConstructorVisitor } from '../../analyse-phase/creators/createClass.js';
+import { handleJsDoc } from '../../analyse-phase/creators/handlers.js';
 import { isAlsoAttribute, hasStaticKeyword, getPropertiesObject, getAttributeName } from './utils.js';
 
 /**
@@ -13,8 +14,7 @@ export function staticPropertiesPlugin() {
     analyzePhase({ts, node, moduleDoc}){
       switch (node.kind) {
         case ts.SyntaxKind.ClassDeclaration:    
-          const hasDefaultModifier = node?.modifiers?.some(mod => ts.SyntaxKind.DefaultKeyword === mod.kind);
-          const className = hasDefaultModifier ? 'default' : node?.name?.getText();
+          const className = node?.name?.getText();
           const currClass = moduleDoc?.declarations?.find(declaration => declaration.name === className);
     
           node?.members?.forEach(member => {
@@ -23,11 +23,13 @@ export function staticPropertiesPlugin() {
 
               propertiesObject?.properties?.forEach(property => {
 
-                const classMember = {
+                let classMember = {
                   kind: 'field',
                   name: property?.name?.getText() || '',
                   privacy: 'public',
                 };
+
+                classMember = handleJsDoc(classMember, property);
 
                 if (isAlsoAttribute(property)) {
                   const attribute = createAttributeFromField(classMember);

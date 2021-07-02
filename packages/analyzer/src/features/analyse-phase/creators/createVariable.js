@@ -1,4 +1,9 @@
-import { handleJsDoc, handleTypeInference } from './handlers.js';
+import {
+  handleExplicitType,
+  handleJsDoc,
+  handleTypeInference,
+  handleWellKnownTypes
+} from './handlers.js';
 
 export function createVariable(variableStatementNode, declarationNode) {
   let variableTemplate = {
@@ -7,11 +12,8 @@ export function createVariable(variableStatementNode, declarationNode) {
   };
 
   variableTemplate = handleTypeInference(variableTemplate, declarationNode);
-
-  if(declarationNode?.type) {
-    variableTemplate.type = { text: declarationNode?.type?.getText() }
-  }
-
+  variableTemplate = handleExplicitType(variableTemplate, declarationNode);
+  variableTemplate = handleWellKnownTypes(variableTemplate, declarationNode);
   variableTemplate = handleJsDoc(variableTemplate, variableStatementNode);
 
   return variableTemplate;

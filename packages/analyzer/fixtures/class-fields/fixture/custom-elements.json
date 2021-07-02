@@ -148,11 +148,31 @@
             },
             {
               "kind": "field",
+              "name": "asVariable"
+            },
+            {
+              "kind": "field",
               "name": "nu",
               "type": {
                 "text": "null"
               },
               "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "asConst",
+              "type": {
+                "text": "'const'"
+              },
+              "default": "'const'"
+            },
+            {
+              "kind": "field",
+              "name": "asConstRef",
+              "type": {
+                "text": "{foo:'bar'}"
+              },
+              "default": "{foo:'bar'}"
             },
             {
               "kind": "field",

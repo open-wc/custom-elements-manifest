@@ -2,8 +2,7 @@ import ts from 'typescript';
 import { createFunctionLike } from './createFunctionLike.js';
 import { createAttribute, createAttributeFromField } from './createAttribute.js';
 import { createField } from './createClassField.js';
-import { handleHeritage, handleJsDoc, handleAttrJsDoc, handleTypeInference } from './handlers.js';
-import { hasDefaultModifier } from '../../../utils/exports.js';
+import { handleHeritage, handleJsDoc, handleAttrJsDoc, handleTypeInference, handleDefaultValue } from './handlers.js';
 import { hasAttrAnnotation, isDispatchEvent, isPrimitive, isProperty, isReturnStatement, isStaticMember } from '../../../utils/ast-helpers.js';
 
 
@@ -11,13 +10,10 @@ import { hasAttrAnnotation, isDispatchEvent, isPrimitive, isProperty, isReturnSt
  * Creates a classDoc
  */
 export function createClass(node, moduleDoc, context) {
-  const isDefault = hasDefaultModifier(node);
-  
   let classTemplate = {
     kind: 'class',
     description: '',
-    name: isDefault ? 'default' : node?.name?.getText() || node?.parent?.parent?.name?.getText() || '',
-    _tempName: node?.name?.getText() || node?.parent?.parent?.name?.getText() || '',
+    name: node?.name?.getText() || node?.parent?.parent?.name?.getText() || '',
     cssProperties: [],
     cssParts: [],
     slots: [],
@@ -203,11 +199,12 @@ export function getDefaultValuesFromConstructorVisitor(source, member) {
               }
 
               member = handleJsDoc(member, statement);
+              member = handleDefaultValue(member, statement);
 
-              const defaultValue = statement?.expression?.right?.getText?.();
-              if(defaultValue) {
-                member.default = defaultValue;
-              }
+              // const defaultValue = statement?.expression?.right?.getText?.();
+              // if(defaultValue) {
+              //   member.default = defaultValue;
+              // }
             }
           });
         break;

@@ -9,7 +9,7 @@
         {
           "kind": "class",
           "description": "",
-          "name": "default",
+          "name": "MyEl",
           "members": [
             {
               "kind": "field",
@@ -29,8 +29,7 @@
             },
             {
               "kind": "field",
-              "name": "baz",
-              "default": "bazVal"
+              "name": "baz"
             }
           ],
           "superclass": {
@@ -45,7 +44,7 @@
           "kind": "js",
           "name": "default",
           "declaration": {
-            "name": "default",
+            "name": "MyEl",
             "module": "fixtures/-default/package/bar.js"
           }
         },

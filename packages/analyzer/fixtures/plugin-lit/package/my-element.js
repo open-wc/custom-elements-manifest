@@ -11,6 +11,11 @@ class MyElement extends LitElement {
       prop2: { type: Boolean },
       attr: { type: String, attribute: 'my-attr' }, // attr output as 'my-attr'
       noAttr: { type: String, attribute: false }, // no attr output
+      /** 
+       * @private 
+       * @type {Boolean}
+       */
+      _privateProp: { type: String },
     }
   }
 
