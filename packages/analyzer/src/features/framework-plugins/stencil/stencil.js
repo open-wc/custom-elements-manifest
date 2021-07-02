@@ -22,8 +22,7 @@ export function stencilPlugin() {
             return prop?.name?.getText() === 'tag'
           })?.initializer?.text;
 
-          const hasDefaultModifier = node?.modifiers?.some(mod => ts.SyntaxKind.DefaultKeyword === mod.kind);
-          const className = hasDefaultModifier ? 'default' : node?.name?.getText();
+          const className = node?.name?.getText();
           const currClass = moduleDoc?.declarations?.find(declaration => declaration.name === className);
           if(tagName) {
             currClass.tagName = tagName;

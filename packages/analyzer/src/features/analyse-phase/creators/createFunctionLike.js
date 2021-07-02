@@ -1,5 +1,4 @@
 import ts from 'typescript';
-import { hasDefaultModifier } from '../../../utils/exports.js';
 import { has } from '../../../utils/index.js';
 import { handleModifiers, handleJsDoc } from './handlers.js';
 
@@ -7,11 +6,9 @@ import { handleModifiers, handleJsDoc } from './handlers.js';
  * Creates a functionLike, does _not_ handle arrow functions
  */
 export function createFunctionLike(node) {
-  const isDefault = hasDefaultModifier(node);
-
   let functionLikeTemplate = {
     kind: '',
-    name: isDefault ? 'default' : node?.name?.getText() || ''
+    name: node?.name?.getText() || ''
   };
   
   functionLikeTemplate = handleKind(functionLikeTemplate, node);
