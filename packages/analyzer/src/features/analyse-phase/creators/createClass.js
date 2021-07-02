@@ -13,6 +13,10 @@ export function createClass(node, moduleDoc, context) {
   let classTemplate = {
     kind: 'class',
     description: '',
+    /**
+     * In case of a class node?.name?.getText()
+     * In case of a mixin node?.parent?.parent?.name?.getText()
+     */
     name: node?.name?.getText() || node?.parent?.parent?.name?.getText() || '',
     cssProperties: [],
     cssParts: [],
