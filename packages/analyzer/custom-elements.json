@@ -20,6 +20,7 @@
           "superclass": {
             "name": "HTMLElement"
           },
+          "events": [],
           "customElement": true
         }
       ],
