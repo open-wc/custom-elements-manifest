@@ -1,3 +1,7 @@
+import { buu } from 'buu';
+const bar = 'bar';
+const foo = 'foo';
+
 /**
  * @property {string} prop5
  */
@@ -39,8 +43,11 @@ class MyEl extends HTMLElement {
   bool = false;
   str = '';
   num = 1;
-  arr = [];
-  obj = {};
+  arr = [{a: "a", b: 'b', c: `c`}, 1, "a", 'b', `c`];
+  obj = {a: "a", b: 'b', c: `c`};
+  asVariable = bar;
+  asVariableAssignedInConstructor;
+  asVariableThirdParty = buu;
   nu = null;
   asConst = 'const' as const;
   asConstRef = {foo:'bar'} as const;
@@ -57,6 +64,8 @@ class MyEl extends HTMLElement {
     this.prop3 = 'default';
     /** @type {import('foo').Some.Type} */
     this.prop4 = 'default';
+
+    this.asVariableAssignedInConstructor = foo;
   }
 }
 customElements.define('my-el', MyEl);

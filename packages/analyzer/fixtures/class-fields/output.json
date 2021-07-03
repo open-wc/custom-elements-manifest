@@ -136,14 +136,36 @@
               "type": {
                 "text": "array"
               },
-              "default": "[]"
+              "default": "[{a: \"a\", b: 'b', c: `c`}, 1, \"a\", 'b', `c`]"
             },
             {
               "kind": "field",
               "name": "obj",
               "type": {
                 "text": "object"
+              },
+              "default": "{a: \"a\", b: 'b', c: `c`}"
+            },
+            {
+              "kind": "field",
+              "name": "asVariable",
+              "default": "'bar'",
+              "type": {
+                "text": "string"
               }
+            },
+            {
+              "kind": "field",
+              "name": "asVariableAssignedInConstructor",
+              "default": "'foo'",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "asVariableThirdParty",
+              "default": "buu"
             },
             {
               "kind": "field",
@@ -156,18 +178,18 @@
             {
               "kind": "field",
               "name": "asConst",
+              "default": "'const'",
               "type": {
                 "text": "'const'"
-              },
-              "default": "'const'"
+              }
             },
             {
               "kind": "field",
               "name": "asConstRef",
+              "default": "{foo:'bar'}",
               "type": {
                 "text": "{foo:'bar'}"
-              },
-              "default": "{foo:'bar'}"
+              }
             },
             {
               "kind": "field",

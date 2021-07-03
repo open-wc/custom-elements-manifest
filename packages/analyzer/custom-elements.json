@@ -9,32 +9,36 @@
         {
           "kind": "class",
           "description": "",
-          "name": "MyElement",
+          "name": "MyEl",
+          "members": [
+            {
+              "kind": "field",
+              "name": "baz",
+              "default": "bazVal"
+            }
+          ],
           "superclass": {
             "name": "HTMLElement"
           },
-          "tagName": "my-el",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "default",
+          "name": "MyEl",
           "declaration": {
-            "name": "MyElement",
-            "module": "fixtures/-default/package/bar.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "my-el",
-          "declaration": {
-            "name": "MyElement",
+            "name": "MyEl",
             "module": "fixtures/-default/package/bar.js"
           }
         }
       ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/-default/package/buu.js",
+      "declarations": [],
+      "exports": []
     }
   ]
 }
