@@ -1,3 +1,4 @@
+import { buu } from 'buu';
 const bar = 'bar';
 const foo = 'foo';
 
@@ -46,6 +47,7 @@ class MyEl extends HTMLElement {
   obj = {a: "a", b: 'b', c: `c`};
   asVariable = bar;
   asVariableAssignedInConstructor;
+  asVariableThirdParty = buu;
   nu = null;
   asConst = 'const' as const;
   asConstRef = {foo:'bar'} as const;

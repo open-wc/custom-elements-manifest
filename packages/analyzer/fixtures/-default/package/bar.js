@@ -7,9 +7,9 @@
 export class MyEl extends HTMLElement {
   // foo = {a: "a", b: 'b', c: `c`};
   // bar = [new SomeClass()]
-  // baz = bazVal;
+  baz = bazVal;
   // fuu;
-  bar = this.bar();
+  // bar = this.bar();
   // buu = true;
   // bar = this.buu()
 

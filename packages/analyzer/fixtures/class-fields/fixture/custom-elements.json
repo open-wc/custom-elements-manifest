@@ -164,6 +164,11 @@
             },
             {
               "kind": "field",
+              "name": "asVariableThirdParty",
+              "default": "buu"
+            },
+            {
+              "kind": "field",
               "name": "nu",
               "type": {
                 "text": "null"

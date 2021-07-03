@@ -13,7 +13,8 @@
           "members": [
             {
               "kind": "field",
-              "name": "bar"
+              "name": "baz",
+              "default": "bazVal"
             }
           ],
           "superclass": {
