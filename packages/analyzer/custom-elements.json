@@ -9,50 +9,110 @@
         {
           "kind": "class",
           "description": "",
-          "name": "MyElement",
+          "name": "TodoList",
           "members": [
             {
               "kind": "field",
-              "name": "foo",
+              "name": "color",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "isValid",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "controller",
+              "type": {
+                "text": "MyController"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "message",
               "type": {
                 "text": "string"
               },
-              "default": "'asd'",
-              "reflect": true,
-              "attribute": "my-foo"
+              "default": "'Hello'",
+              "reflects": true,
+              "attribute": "message"
+            },
+            {
+              "kind": "method",
+              "name": "someMethod"
             }
           ],
           "attributes": [
             {
-              "name": "my-foo",
+              "name": "color",
+              "fieldName": "color",
               "type": {
                 "text": "string"
-              },
-              "default": "'asd'",
-              "fieldName": "foo"
+              }
+            },
+            {
+              "name": "is-valid",
+              "fieldName": "isValid",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "controller",
+              "fieldName": "controller",
+              "type": {
+                "text": "MyController"
+              }
+            },
+            {
+              "name": "valid",
+              "fieldName": "isValid",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "message",
+              "fieldName": "message"
             }
           ],
-          "superclass": {
-            "name": "HTMLElement"
-          },
-          "tagName": "my-el",
+          "tagName": "todo-list",
+          "events": [
+            {
+              "name": "todoCompleted",
+              "type": {
+                "text": "EventEmitter<Todo>"
+              }
+            },
+            {
+              "name": "foo",
+              "type": {
+                "text": "EventEmitter<Todo>"
+              }
+            }
+          ],
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "default",
+          "name": "TodoList",
           "declaration": {
-            "name": "MyElement",
+            "name": "TodoList",
             "module": "fixtures/-default/package/bar.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "my-el",
+          "name": "todo-list",
           "declaration": {
-            "name": "MyElement",
+            "name": "TodoList",
             "module": "fixtures/-default/package/bar.js"
           }
         }

@@ -38,7 +38,10 @@
               "default": "'Hello'",
               "type": {
                 "text": "string"
-              }
+              },
+              "reflects": true,
+              "attribute": "message"
+
             },
             {
               "kind": "method",
@@ -61,11 +64,22 @@
               }
             },
             {
+              "name": "controller",
+              "fieldName": "controller",
+              "type": {
+                "text": "MyController"
+              }
+            },
+            {
               "name": "valid",
               "fieldName": "isValid",
               "type": {
                 "text": "boolean"
               }
+            },
+            {
+              "name": "message",
+              "fieldName": "message"
             }
           ],
           "tagName": "todo-list",
