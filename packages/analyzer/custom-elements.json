@@ -13,8 +13,7 @@
           "members": [
             {
               "kind": "field",
-              "name": "buu",
-              "default": "buu"
+              "name": "bar"
             }
           ],
           "superclass": {
@@ -37,26 +36,8 @@
     {
       "kind": "javascript-module",
       "path": "fixtures/-default/package/buu.js",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "buu",
-          "type": {
-            "text": "string"
-          },
-          "default": "'buu'"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "buu",
-          "declaration": {
-            "name": "buu",
-            "module": "fixtures/-default/package/buu.js"
-          }
-        }
-      ]
+      "declarations": [],
+      "exports": []
     }
   ]
 }

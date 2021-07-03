@@ -1,4 +1,4 @@
-import { buu } from 'buu';
+// import { buu } from 'buu';
 
 // /** @type {String} - and desc */
 // const bazVal = 'adfs';
@@ -9,7 +9,9 @@ export class MyEl extends HTMLElement {
   // bar = [new SomeClass()]
   // baz = bazVal;
   // fuu;
-  buu = buu;
+  bar = this.bar();
+  // buu = true;
+  // bar = this.buu()
 
   // asd = true ? 'yes' : 'no';
 

@@ -240,12 +240,10 @@ export function handleTypeInference(doc, node) {
  */
 export function handleWellKnownTypes(doc, node) {
   if (!!node.initializer?.expression) {
-    const text = node.initializer.expression.getText();
-    if (isWellKnownType(node))
+    const text = node?.initializer?.expression?.getText();
+    if (isWellKnownType(node)) {
       doc.type = { text };
-
-    if (doc.kind === 'field')
-      doc.default = text;
+    }
   }
   return doc;
 }
@@ -260,6 +258,8 @@ export function handleDefaultValue(doc, node) {
   /** Ignore the following */
   if(initializer?.kind === ts.SyntaxKind.BinaryExpression) return doc;
   if(initializer?.kind === ts.SyntaxKind.ConditionalExpression) return doc;
+  if(initializer?.kind === ts.SyntaxKind.PropertyAccessExpression) return doc;
+  if(initializer?.kind === ts.SyntaxKind.CallExpression) return doc;
   
   let defaultValue;
   /** 
