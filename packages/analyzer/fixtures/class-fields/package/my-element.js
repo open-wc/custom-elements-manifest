@@ -14,7 +14,8 @@ class MyEl extends HTMLElement {
 
   /**
    * This is also an attribute
-   * @attr
+   * @attr also-attr
+   * @reflect
    * @type {string}
    */
   alsoAttr;

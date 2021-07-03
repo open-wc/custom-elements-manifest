@@ -10,6 +10,28 @@
           "kind": "class",
           "description": "",
           "name": "MyElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "foo",
+              "type": {
+                "text": "string"
+              },
+              "default": "'asd'",
+              "reflect": true,
+              "attribute": "my-foo"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "my-foo",
+              "type": {
+                "text": "string"
+              },
+              "default": "'asd'",
+              "fieldName": "foo"
+            }
+          ],
           "superclass": {
             "name": "HTMLElement"
           },

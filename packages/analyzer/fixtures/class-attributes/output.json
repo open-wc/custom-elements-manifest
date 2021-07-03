@@ -13,7 +13,9 @@
           "members": [
             {
               "kind": "field",
-              "name": "myField"
+              "name": "myField",
+              "reflect": true,
+              "attribute": "myField"
             }
           ],
           "attributes": [
@@ -64,7 +66,8 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "this is the field description"
+              "description": "this is the field description",
+              "attribute": "my-attr"
             },
             {
               "kind": "field",
