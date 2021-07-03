@@ -4,6 +4,7 @@ import { createAttribute, createAttributeFromField } from './createAttribute.js'
 import { createField } from './createClassField.js';
 import { handleHeritage, handleJsDoc, handleAttrJsDoc, handleTypeInference, handleDefaultValue } from './handlers.js';
 import { hasAttrAnnotation, isDispatchEvent, isPrimitive, isProperty, isReturnStatement, isStaticMember } from '../../../utils/ast-helpers.js';
+import { resolveModuleOrPackageSpecifier } from '../../../utils/index.js';
 
 
 /**
@@ -93,6 +94,14 @@ export function createClass(node, moduleDoc, context) {
       }
 
       const field = createField(member);
+
+      /** Flag class fields that get assigned a variable, so we can resolve it later (in the RESOLVE-INITIALIZERS plugin) */
+      if(member?.initializer?.kind === ts.SyntaxKind.Identifier) {
+        field.resolveInitializer = { 
+          ...resolveModuleOrPackageSpecifier(moduleDoc, context, member?.initializer?.getText()),
+        }
+      }
+
       classTemplate.members.push(field);
 
       /**
@@ -130,7 +139,7 @@ export function createClass(node, moduleDoc, context) {
   });
 
   classTemplate?.members?.forEach(member => {
-    getDefaultValuesFromConstructorVisitor(node, member);
+    getDefaultValuesFromConstructorVisitor(node, member, context);
   });
 
   /**
@@ -180,7 +189,7 @@ function eventsVisitor(source, classTemplate) {
   }
 }
 
-export function getDefaultValuesFromConstructorVisitor(source, member) {
+export function getDefaultValuesFromConstructorVisitor(source, member, context) {
   visitNode(source);
 
   function visitNode(node) {
@@ -204,6 +213,13 @@ export function getDefaultValuesFromConstructorVisitor(source, member) {
 
               member = handleJsDoc(member, statement);
               member = handleDefaultValue(member, statement);
+              
+              /** Flag class fields that get assigned a variable, so we can resolve it later (in the RESOLVE-INITIALIZERS plugin) */
+              if(statement?.expression?.right?.kind === ts.SyntaxKind.Identifier) {
+                member.resolveInitializer = { 
+                  ...resolveModuleOrPackageSpecifier({path: source.getSourceFile().fileName}, context, node?.initializer?.getText()),
+                }
+              }
             }
           });
         break;

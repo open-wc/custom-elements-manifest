@@ -148,7 +148,19 @@
             },
             {
               "kind": "field",
-              "name": "asVariable"
+              "name": "asVariable",
+              "default": "'bar'",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "asVariableAssignedInConstructor",
+              "default": "'foo'",
+              "type": {
+                "text": "string"
+              }
             },
             {
               "kind": "field",

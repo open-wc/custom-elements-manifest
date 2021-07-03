@@ -1,10 +1,22 @@
-/** @type {'adfs'} - and desc */
-const bazVal = 'adfs';
+import { buu } from './buu.js';
 
-export default class MyEl extends HTMLElement {
+/** @type {String} - and desc */
+const bazVal = 'adfs';
+const fuuVal = 'fuuValue'
+
+export class MyEl extends HTMLElement {
   foo = {a: "a", b: 'b', c: `c`};
   bar = [new SomeClass()]
   baz = bazVal;
+  fuu;
+  buu = buu;
+
+  asd = true ? 'yes' : 'no';
+
+  constructor() {
+    super();
+    this.fuu = fuuVal;
+  }
 }
 
-customElements.define('my-el', MyEl);
+// customElements.define('my-el', MyEl);

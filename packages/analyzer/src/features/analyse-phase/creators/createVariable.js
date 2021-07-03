@@ -1,4 +1,5 @@
 import {
+  handleDefaultValue,
   handleExplicitType,
   handleJsDoc,
   handleTypeInference,
@@ -14,6 +15,7 @@ export function createVariable(variableStatementNode, declarationNode) {
   variableTemplate = handleTypeInference(variableTemplate, declarationNode);
   variableTemplate = handleExplicitType(variableTemplate, declarationNode);
   variableTemplate = handleWellKnownTypes(variableTemplate, declarationNode);
+  variableTemplate = handleDefaultValue(variableTemplate, declarationNode);
   variableTemplate = handleJsDoc(variableTemplate, variableStatementNode);
 
   return variableTemplate;

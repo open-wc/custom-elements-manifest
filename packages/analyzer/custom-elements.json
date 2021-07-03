@@ -29,31 +29,70 @@
             },
             {
               "kind": "field",
-              "name": "baz"
+              "name": "baz",
+              "default": "'adfs'",
+              "type": {
+                "text": "String"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "fuu",
+              "default": "'fuuValue'",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "buu",
+              "default": "'buu'",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "asd"
             }
           ],
           "superclass": {
             "name": "HTMLElement"
           },
-          "tagName": "my-el",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "default",
+          "name": "MyEl",
           "declaration": {
             "name": "MyEl",
             "module": "fixtures/-default/package/bar.js"
           }
-        },
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/-default/package/buu.js",
+      "declarations": [
         {
-          "kind": "custom-element-definition",
-          "name": "my-el",
+          "kind": "variable",
+          "name": "buu",
+          "type": {
+            "text": "string"
+          },
+          "default": "'buu'"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "buu",
           "declaration": {
-            "name": "MyEl",
-            "module": "fixtures/-default/package/bar.js"
+            "name": "buu",
+            "module": "fixtures/-default/package/buu.js"
           }
         }
       ]

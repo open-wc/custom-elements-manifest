@@ -13,6 +13,8 @@ export function isBareModuleSpecifier(specifier) {
   return !!specifier?.replace(/'/g, '')[0].match(/[@a-zA-Z]/g);
 }
 
+export const url = path => new URL('', `file:///${path}`)?.pathname;
+
 export function resolveModuleOrPackageSpecifier(moduleDoc, context, name) {
   const foundImport = context?.imports?.find(_import => _import.name === name);
 
