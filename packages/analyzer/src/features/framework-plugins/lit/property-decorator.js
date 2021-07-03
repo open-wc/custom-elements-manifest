@@ -1,6 +1,6 @@
 import { decorator } from '../../../utils/index.js';
 import { createAttributeFromField } from '../../analyse-phase/creators/createAttribute.js';
-import { hasPropertyDecorator, isAlsoAttribute, getAttributeName } from './utils.js';
+import { hasPropertyDecorator, isAlsoAttribute, getAttributeName, reflects } from './utils.js';
 
 /**
  * PROPERTY
@@ -39,6 +39,11 @@ export function propertyDecoratorPlugin() {
                 const attributeName = getAttributeName(propertyOptions);
                 if(attributeName) {
                   attribute.name = attributeName;
+                }
+
+                if(reflects(propertyOptions)) {
+                  field.attribute = attribute.name;
+                  field.reflect = true;
                 }
 
                 const existingAttribute = currClass?.attributes?.find(attr => attr.name === attribute.name);

@@ -37,6 +37,18 @@
             },
             {
               "kind": "field",
+              "name": "decoratedReflect",
+              "attribute": "decoratedReflect",
+              "reflect": true
+            },
+            {
+              "kind": "field",
+              "name": "decoratedReflect2",
+              "attribute": "decorated-reflect",
+              "reflect": true
+            },
+            {
+              "kind": "field",
               "name": "prop1",
               "type": {
                 "text": "string"
@@ -67,6 +79,20 @@
               "type": {
                 "text": "Boolean"
               }
+            },
+            {
+              "kind": "field",
+              "name": "reflect",
+              "privacy": "public",
+              "attribute": "reflect",
+              "reflect": true
+            },
+            {
+              "kind": "field",
+              "name": "reflect2",
+              "privacy": "public",
+              "attribute": "reflect-2",
+              "reflect": true
             }
           ],
           "attributes": [
@@ -87,6 +113,14 @@
               }
             },
             {
+              "name": "decoratedReflect",
+              "fieldName": "decoratedReflect"
+            },
+            {
+              "name": "decorated-reflect",
+              "fieldName": "decoratedReflect2"
+            },
+            {
               "name": "prop1",
               "fieldName": "prop1"
             },
@@ -104,6 +138,14 @@
                 "text": "Boolean"
               },
               "fieldName": "_privateProp"
+            },
+            {
+              "name": "reflect",
+              "fieldName": "reflect"
+            },
+            {
+              "name": "reflect-2",
+              "fieldName": "reflect2"
             }
           ],
           "superclass": {

@@ -16,6 +16,8 @@ class MyElement extends LitElement {
        * @type {Boolean}
        */
       _privateProp: { type: String },
+      reflect: {type: Boolean, reflect: true},
+      reflect2: {type: Boolean, reflect: true, attribute: 'reflect-2'},
     }
   }
 
@@ -30,6 +32,12 @@ class MyElement extends LitElement {
   // no attr output
   @property({attribute: false})
   decoratedPropertyNoAttr = [];
+
+  @property({reflect: true})
+  decoratedReflect;
+
+  @property({reflect: true, attribute: 'decorated-reflect'})
+  decoratedReflect2;
 
   constructor() {
     super();

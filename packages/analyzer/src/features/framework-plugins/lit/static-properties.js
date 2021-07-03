@@ -1,7 +1,7 @@
 import { createAttributeFromField } from '../../analyse-phase/creators/createAttribute.js';
 import { getDefaultValuesFromConstructorVisitor } from '../../analyse-phase/creators/createClass.js';
 import { handleJsDoc } from '../../analyse-phase/creators/handlers.js';
-import { isAlsoAttribute, hasStaticKeyword, getPropertiesObject, getAttributeName } from './utils.js';
+import { isAlsoAttribute, hasStaticKeyword, getPropertiesObject, getAttributeName, reflects } from './utils.js';
 
 /**
  * STATIC-PROPERTIES
@@ -41,6 +41,11 @@ export function staticPropertiesPlugin() {
                   const attributeName = getAttributeName(property);
                   if(attributeName) {
                     attribute.name = attributeName;
+                  }
+
+                  if(reflects(property)) {
+                    classMember.attribute = attribute.name;
+                    classMember.reflect = true;
                   }
 
                   currClass.attributes = [...(currClass?.attributes || []), attribute]

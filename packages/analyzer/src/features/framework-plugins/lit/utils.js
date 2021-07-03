@@ -13,6 +13,19 @@ export function isAlsoAttribute(node) {
   return result;
 }
 
+export function reflects(node) {
+  let result = false;
+  (node?.initializer || node)?.properties?.forEach((property) => {
+    if (
+      property.name.text === 'reflect' &&
+      property.initializer.kind === ts.SyntaxKind.TrueKeyword
+    ) {
+      result = true;
+    }
+  });
+  return result;
+}
+
 export function getAttributeName(node) {
   let result = false;
   (node?.initializer || node)?.properties?.forEach((property) => {
