@@ -1,4 +1,4 @@
-import { has, url } from "../../utils/index.js";
+import { url } from "../../utils/index.js";
 
 export function resolveInitializersPlugin() {
   return {
@@ -9,33 +9,34 @@ export function resolveInitializersPlugin() {
     packageLinkPhase({customElementsManifest}) {
       customElementsManifest?.modules?.forEach(mod => {
         mod?.declarations?.forEach(declaration => {
-          if(has(declaration?.members)) {
-            declaration?.members
-              ?.filter(({resolveInitializer}) => resolveInitializer)
-              ?.forEach(member => {
-                /** We ignore variables imported from a third party package */
-                if('package' in member.resolveInitializer) return;
-  
-                /** Find the module */
-                const foundModule = customElementsManifest?.modules?.find(({path}) => url(path) === url(member?.resolveInitializer?.module));
-  
-                if(foundModule) {
-                  /** Find the declaration */
-                  const foundReference = foundModule?.declarations?.find(declaration => declaration?.name === member?.default);
-                  /** Overwrite the type with the type of the reference we found */
-                  if(foundReference?.type && !member?.type) {
-                    member.type = foundReference.type;
-                  }
-  
-                  if(foundReference?.default) {
-                    member.default = foundReference?.default;
-                  }
-  
-                }
-                
+          declaration?.members
+            ?.filter(({resolveInitializer}) => resolveInitializer)
+            ?.forEach(member => {
+              /** We ignore variables imported from a third party package */
+              if('package' in member.resolveInitializer) {
                 delete member.resolveInitializer;
-              });
-          }
+                return;
+              };
+
+              /** Find the module */
+              const foundModule = customElementsManifest?.modules?.find(({path}) => url(path) === url(member?.resolveInitializer?.module));
+
+              if(foundModule) {
+                /** Find the declaration */
+                const foundReference = foundModule?.declarations?.find(declaration => declaration?.name === member?.default);
+                /** Overwrite the type with the type of the reference we found */
+                if(foundReference?.type && !member?.type) {
+                  member.type = foundReference.type;
+                }
+
+                if(foundReference?.default) {
+                  member.default = foundReference?.default;
+                }
+
+              }
+
+              delete member.resolveInitializer;
+            });
         });
       });
     }

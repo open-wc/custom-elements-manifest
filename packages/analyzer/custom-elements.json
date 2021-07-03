@@ -13,47 +13,8 @@
           "members": [
             {
               "kind": "field",
-              "name": "foo",
-              "type": {
-                "text": "object"
-              },
-              "default": "{a: \"a\", b: 'b', c: `c`}"
-            },
-            {
-              "kind": "field",
-              "name": "bar",
-              "type": {
-                "text": "array"
-              },
-              "default": "[new SomeClass()]"
-            },
-            {
-              "kind": "field",
-              "name": "baz",
-              "default": "'adfs'",
-              "type": {
-                "text": "String"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "fuu",
-              "default": "'fuuValue'",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
-              "kind": "field",
               "name": "buu",
-              "default": "'buu'",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "asd"
+              "default": "buu"
             }
           ],
           "superclass": {
