@@ -1,13 +1,10 @@
-export class A extends HTMLElement {
-  constructor() {
-    super();
-    this.foo = 'hello'
+export class MyEl extends LitElement {
+  static get properties() {
+    return {
+      foo: {type: String}
+    }
   }
-}
 
-export class B extends A {
-  constructor() {
-    super();
-    this.foo = 'bye'
-  }
+  @property()
+  bar;
 }

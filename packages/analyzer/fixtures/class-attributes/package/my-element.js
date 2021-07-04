@@ -5,6 +5,7 @@
 class MyEl extends HTMLElement {
   /**
    * @attr
+   * @reflect
    */
   myField;
 

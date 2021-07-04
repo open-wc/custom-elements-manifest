@@ -64,7 +64,9 @@
               "description": "This is also an attribute",
               "type": {
                 "text": "string"
-              }
+              },
+              "attribute": "also-attr",
+              "reflects": true
             },
             {
               "kind": "field",
@@ -207,7 +209,7 @@
           ],
           "attributes": [
             {
-              "name": "alsoAttr",
+              "name": "also-attr",
               "description": "This is also an attribute",
               "type": {
                 "text": "string"

@@ -100,6 +100,10 @@ export function handleJsDoc(doc, node) {
         }
       }
 
+      /** @reflect */
+      if(safe(() => tag?.tagName?.getText()) === 'reflect' && doc?.kind === 'field') {
+        doc.reflects = true;
+      }
 
       /** @summary */
       if(safe(() => tag?.tagName?.getText()) === 'summary') {

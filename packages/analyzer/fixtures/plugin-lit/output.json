@@ -17,7 +17,8 @@
               "type": {
                 "text": "array"
               },
-              "default": "[]"
+              "default": "[]",
+              "attribute": "decoratedProperty"
             },
             {
               "kind": "field",
@@ -25,7 +26,8 @@
               "type": {
                 "text": "array"
               },
-              "default": "[]"
+              "default": "[]",
+              "attribute": "my-attr2"
             },
             {
               "kind": "field",
@@ -37,23 +39,38 @@
             },
             {
               "kind": "field",
+              "name": "decoratedReflect",
+              "attribute": "decoratedReflect",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "decoratedReflect2",
+              "attribute": "decorated-reflect",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "prop1",
               "type": {
                 "text": "string"
               },
               "default": "'foo'",
               "description": "this is the description",
-              "privacy": "public"
+              "privacy": "public",
+              "attribute": "prop1"
             },
             {
               "kind": "field",
               "name": "prop2",
-              "privacy": "public"
+              "privacy": "public",
+              "attribute": "prop2"
             },
             {
               "kind": "field",
               "name": "attr",
-              "privacy": "public"
+              "privacy": "public",
+              "attribute": "my-attr"
             },
             {
               "kind": "field",
@@ -66,7 +83,22 @@
               "privacy": "private",
               "type": {
                 "text": "Boolean"
-              }
+              },
+              "attribute": "_privateProp"
+            },
+            {
+              "kind": "field",
+              "name": "reflect",
+              "privacy": "public",
+              "attribute": "reflect",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "reflect2",
+              "privacy": "public",
+              "attribute": "reflect-2",
+              "reflects": true
             }
           ],
           "attributes": [
@@ -87,6 +119,14 @@
               "fieldName": "decoratedPropertyAlsoAttr"
             },
             {
+              "name": "decoratedReflect",
+              "fieldName": "decoratedReflect"
+            },
+            {
+              "name": "decorated-reflect",
+              "fieldName": "decoratedReflect2"
+            },
+            {
               "name": "prop1",
               "fieldName": "prop1"
             },
@@ -104,6 +144,14 @@
                 "text": "Boolean"
               },
               "fieldName": "_privateProp"
+            },
+            {
+              "name": "reflect",
+              "fieldName": "reflect"
+            },
+            {
+              "name": "reflect-2",
+              "fieldName": "reflect2"
             }
           ],
           "superclass": {

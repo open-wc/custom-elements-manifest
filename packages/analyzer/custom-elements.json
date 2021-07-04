@@ -9,60 +9,43 @@
         {
           "kind": "class",
           "description": "",
-          "name": "A",
+          "name": "MyEl",
           "members": [
             {
               "kind": "field",
+              "name": "bar",
+              "attribute": "bar"
+            },
+            {
+              "kind": "field",
               "name": "foo",
-              "type": {
-                "text": "string"
-              },
-              "default": "'hello'"
+              "privacy": "public",
+              "attribute": "foo"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "bar",
+              "fieldName": "bar"
+            },
+            {
+              "name": "foo",
+              "fieldName": "foo"
             }
           ],
           "superclass": {
-            "name": "HTMLElement"
+            "name": "LitElement",
+            "module": "fixtures/-default/package/bar.js"
           },
           "customElement": true
-        },
-        {
-          "kind": "class",
-          "description": "",
-          "name": "B",
-          "members": [
-            {
-              "kind": "field",
-              "name": "foo",
-              "type": {
-                "text": "string"
-              },
-              "default": "'bye'",
-              "inheritedFrom": {
-                "name": "A",
-                "module": "fixtures/-default/package/bar.js"
-              }
-            }
-          ],
-          "superclass": {
-            "name": "A",
-            "module": "fixtures/-default/package/bar.js"
-          }
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "A",
+          "name": "MyEl",
           "declaration": {
-            "name": "A",
-            "module": "fixtures/-default/package/bar.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "B",
-          "declaration": {
-            "name": "B",
+            "name": "MyEl",
             "module": "fixtures/-default/package/bar.js"
           }
         }

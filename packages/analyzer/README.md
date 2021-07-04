@@ -175,6 +175,12 @@ class MyElement extends LitElement {
     `;
   }
 
+  /**
+   * @attr
+   * @reflect
+   */
+  foo = 'foo';
+
   constructor() {
     super();
     /** @type {boolean} - disabled state */

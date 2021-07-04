@@ -8,12 +8,12 @@ export class TodoList {
   @Prop() color: string;
   // shows up as `is-valid` attr (camelcase to kebab)
   @Prop() isValid: boolean;
-  // doesnt show up as attr! (complex type)
+
   @Prop() controller: MyController;
   // shows up as attr `valid`
   @Prop({ attribute: 'valid' }) isValid: boolean;
   // shows up as attr `message` (probably doesnt even need special handling, but just incase)
-  @Prop({ reflect: true }) message = 'Hello';
+  @Prop({ reflects: true }) message = 'Hello';
 
   // shows up as event `todoCompleted`
   // `todoCompleted` should not be present in the class's members array

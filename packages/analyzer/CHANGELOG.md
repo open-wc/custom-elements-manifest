@@ -1,5 +1,6 @@
 ## Release 0.4.9
 - Fixed bug to correctly apply default values on overridden inherited fields
+- Added support for `reflect` and `attribute` on class members, according to new addition to schema https://github.com/webcomponents/custom-elements-manifest/pull/75
 
 ## Release 0.4.8
 - Add support for non-primitive default values

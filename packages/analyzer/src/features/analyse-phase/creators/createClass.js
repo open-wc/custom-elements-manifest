@@ -111,6 +111,7 @@ export function createClass(node, moduleDoc, context) {
       if(hasAttrAnnotation(member)) {
         let attribute = createAttributeFromField(field);
         attribute = handleAttrJsDoc(member, attribute);
+        field.attribute = attribute.name;
 
         /**
          * If the attribute already exists, merge it together with the extra

@@ -3,7 +3,6 @@ import { decorator, toKebabCase } from '../../../utils/index.js'
 export function stencilPlugin() {
   let events = [];
 
-  const ATTR_PRIMITIVES = ['number', 'string', 'boolean'];
   const METHOD_DENYLIST = ['componentWillLoad', 'componentDidLoad', 'componentShouldUpdate', 'componentWillRender', 'componentDidRender', 'componentWillUpdate', 'componentDidUpdate'];
 
   return {
@@ -62,20 +61,26 @@ export function stencilPlugin() {
             ?.filter(member => member?.decorators?.find(decorator('Prop')))
             ?.forEach(property => {
               const fieldName = property?.name?.text;
-              const isPrimitiveType = ATTR_PRIMITIVES.includes(property?.type?.getText());
               const attrNameFromDecorator = property?.decorators?.[0]?.expression?.arguments?.[0]?.properties?.find(prop => prop?.name?.getText() === 'attribute')?.initializer?.text;
               const attrName = attrNameFromDecorator || toKebabCase(property?.name?.text);
               
-              if(isPrimitiveType) {
-                if(!currClass.attributes) currClass.attributes = [];
-                currClass.attributes.push({
-                  name: attrName,
-                  fieldName,
-                  type: {
-                    text: property?.type?.getText()
-                  }
-                })
+              const reflects = property?.decorators?.[0]?.expression?.arguments?.[0]?.properties?.find(prop => prop?.name?.getText() === 'reflects')?.initializer?.getText?.() === 'true';
+              const member = currClass?.members?.find(mem => mem?.name === fieldName);
+              if(reflects) {
+                member.reflects = true;
+                member.attribute = attrName;
               }
+
+              if(!currClass.attributes) currClass.attributes = [];
+              const hasType = !!property?.type?.getText?.();
+
+              currClass.attributes.push({
+                name: attrName,
+                fieldName,
+                ...(hasType ? {
+                  type: { text: property?.type?.getText?.() }
+                } : {})
+              })
             });
 
           break;
