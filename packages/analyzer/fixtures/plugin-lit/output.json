@@ -36,14 +36,14 @@
               "default": "[]"
             },
             {
+              "kind": "field",
+              "name": "prop1",
               "type": {
                 "text": "string"
               },
+              "default": "'foo'",
               "description": "this is the description",
-              "name": "prop1",
-              "kind": "field",
-              "privacy": "public",
-              "default": "'foo'"
+              "privacy": "public"
             },
             {
               "kind": "field",

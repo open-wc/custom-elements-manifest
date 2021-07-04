@@ -9,37 +9,64 @@
         {
           "kind": "class",
           "description": "",
-          "name": "MyEl",
+          "name": "A",
           "members": [
             {
               "kind": "field",
-              "name": "baz",
-              "default": "bazVal"
+              "name": "foo",
+              "type": {
+                "text": "string"
+              },
+              "default": "'hello'"
             }
           ],
           "superclass": {
             "name": "HTMLElement"
           },
-          "events": [],
           "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "B",
+          "members": [
+            {
+              "kind": "field",
+              "name": "foo",
+              "type": {
+                "text": "string"
+              },
+              "default": "'bye'",
+              "inheritedFrom": {
+                "name": "A",
+                "module": "fixtures/-default/package/bar.js"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "A",
+            "module": "fixtures/-default/package/bar.js"
+          }
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "MyEl",
+          "name": "A",
           "declaration": {
-            "name": "MyEl",
+            "name": "A",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "B",
+          "declaration": {
+            "name": "B",
             "module": "fixtures/-default/package/bar.js"
           }
         }
       ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "fixtures/-default/package/buu.js",
-      "declarations": [],
-      "exports": []
     }
   ]
 }

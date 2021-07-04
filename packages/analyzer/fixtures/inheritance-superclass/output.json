@@ -18,6 +18,14 @@
             {
               "kind": "method",
               "name": "superClassMethod"
+            },
+            {
+              "kind": "field",
+              "name": "overriddenField",
+              "type": {
+                "text": "string"
+              },
+              "default": "'hello'"
             }
           ],
           "events": [
@@ -82,6 +90,18 @@
             {
               "kind": "method",
               "name": "superClassMethod",
+              "inheritedFrom": {
+                "name": "BatchingElement",
+                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "overriddenField",
+              "type": {
+                "text": "string"
+              },
+              "default": "'hello'",
               "inheritedFrom": {
                 "name": "BatchingElement",
                 "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
@@ -151,6 +171,18 @@
             {
               "kind": "method",
               "name": "classMethod"
+            },
+            {
+              "kind": "field",
+              "name": "overriddenField",
+              "type": {
+                "text": "string"
+              },
+              "default": "'bye'",
+              "inheritedFrom": {
+                "name": "BatchingElement",
+                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+              }
             },
             {
               "kind": "field",
