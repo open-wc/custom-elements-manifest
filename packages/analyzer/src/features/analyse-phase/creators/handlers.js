@@ -222,6 +222,7 @@ export function handleTypeInference(doc, node) {
       doc.type = { text: "string" }
       break;
     case ts.SyntaxKind.NumericLiteral:
+    case ts.SyntaxKind.PrefixUnaryExpression:
       doc.type = { text: "number" }
       break;
     case ts.SyntaxKind.NullKeyword:

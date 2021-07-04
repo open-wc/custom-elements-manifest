@@ -1,3 +1,6 @@
+## Release 0.4.10
+- Recognize `PrefixUnaryExpression` as being `number` when handling type inferrence
+
 ## Release 0.4.9
 - Fixed bug to correctly apply default values on overridden inherited fields
 - Added support for `reflect` and `attribute` on class members, according to new addition to schema https://github.com/webcomponents/custom-elements-manifest/pull/75

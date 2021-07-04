@@ -1,10 +1,5 @@
-export class MyEl extends LitElement {
-  static get properties() {
-    return {
-      foo: {type: String}
-    }
-  }
 
-  @property()
-  bar;
+export class MyElement extends LitElement {
+  @property({ type: Number })
+  maxlength = -1;
 }

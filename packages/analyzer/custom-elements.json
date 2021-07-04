@@ -9,28 +9,26 @@
         {
           "kind": "class",
           "description": "",
-          "name": "MyEl",
+          "name": "MyElement",
           "members": [
             {
               "kind": "field",
-              "name": "bar",
-              "attribute": "bar"
-            },
-            {
-              "kind": "field",
-              "name": "foo",
-              "privacy": "public",
-              "attribute": "foo"
+              "name": "maxlength",
+              "type": {
+                "text": "number"
+              },
+              "default": "-1",
+              "attribute": "maxlength"
             }
           ],
           "attributes": [
             {
-              "name": "bar",
-              "fieldName": "bar"
-            },
-            {
-              "name": "foo",
-              "fieldName": "foo"
+              "name": "maxlength",
+              "type": {
+                "text": "number"
+              },
+              "default": "-1",
+              "fieldName": "maxlength"
             }
           ],
           "superclass": {
@@ -43,9 +41,9 @@
       "exports": [
         {
           "kind": "js",
-          "name": "MyEl",
+          "name": "MyElement",
           "declaration": {
-            "name": "MyEl",
+            "name": "MyElement",
             "module": "fixtures/-default/package/bar.js"
           }
         }
