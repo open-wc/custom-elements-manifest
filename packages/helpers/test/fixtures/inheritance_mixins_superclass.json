@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "0.1.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/-default/package/bar.js",
+      "declarations": [
+        {
+          "kind": "mixin",
+          "description": "",
+          "name": "DedupeMixin",
+          "parameters": [
+            {
+              "name": "klass"
+            }
+          ]
+        },
+        {
+          "kind": "mixin",
+          "description": "",
+          "name": "LocalizeMixin",
+          "mixins": [
+            {
+              "name": "DedupeMixin",
+              "module": "fixtures/-default/package/bar.js"
+            }
+          ],
+          "parameters": [
+            {
+              "name": "klass"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "LitElement",
+          "superclass": {
+            "name": "UpdatingElement"
+          }
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyComponent",
+          "mixins": [
+            {
+              "name": "LocalizeMixin",
+              "module": "fixtures/-default/package/bar.js"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement"
+          },
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DedupeMixin",
+          "declaration": {
+            "name": "DedupeMixin",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalizeMixin",
+          "declaration": {
+            "name": "LocalizeMixin",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LitElement",
+          "declaration": {
+            "name": "LitElement",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "MyComponent",
+          "declaration": {
+            "name": "MyComponent",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        }
+      ]
+    }
+  ]
+}

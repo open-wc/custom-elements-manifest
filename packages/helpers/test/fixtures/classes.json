@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "0.1.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/-default/package/bar.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyElement",
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "customElement": true,
+          "tagName": "my-element"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Foo"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyElement2",
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "customElement": true,
+          "tagName": "my-element2"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "my-element",
+          "declaration": {
+            "name": "MyElement",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "my-element2",
+          "declaration": {
+            "name": "MyElement2",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        }
+      ]
+    }
+  ]
+}

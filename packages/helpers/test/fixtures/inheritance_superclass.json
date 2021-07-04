@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "0.1.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/-default/package/bar.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "UpdatingElement",
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "LitElement",
+          "superclass": {
+            "name": "UpdatingElement"
+          }
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyComponent",
+          "superclass": {
+            "name": "LitElement"
+          },
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UpdatingElement",
+          "declaration": {
+            "name": "UpdatingElement",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LitElement",
+          "declaration": {
+            "name": "LitElement",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "MyComponent",
+          "declaration": {
+            "name": "MyComponent",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        }
+      ]
+    }
+  ]
+}
