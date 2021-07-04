@@ -7,45 +7,74 @@
       "path": "fixtures/-default/package/bar.js",
       "declarations": [
         {
-          "kind": "class",
-          "description": "",
-          "name": "MyEl",
+          "kind": "interface",
+          "name": "MyInterface",
+          "supertypes": [
+            {
+              "name": "Foo",
+              "module": "fixtures/-default/package/bar.js"
+            },
+            {
+              "name": "Bar",
+              "package": "bar"
+            },
+            {
+              "name": "Baz",
+              "module": "fixtures/-default/package/bar.js"
+            }
+          ],
           "members": [
             {
               "kind": "field",
-              "name": "bar",
-              "attribute": "bar"
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "the name of the class",
+              "summary": "this is the summary"
             },
             {
               "kind": "field",
-              "name": "foo",
-              "privacy": "public",
-              "attribute": "foo"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "bar",
-              "fieldName": "bar"
+              "name": "superClasses",
+              "type": {
+                "text": "SuperClass[]"
+              },
+              "description": "super classes and mixins"
             },
             {
-              "name": "foo",
-              "fieldName": "foo"
+              "kind": "field",
+              "name": "member",
+              "type": {
+                "text": "ClassMember"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "baz",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "a",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
             }
           ],
-          "superclass": {
-            "name": "LitElement",
-            "module": "fixtures/-default/package/bar.js"
-          },
-          "customElement": true
+          "description": "Description of the interface"
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "MyEl",
+          "name": "MyInterface",
           "declaration": {
-            "name": "MyEl",
+            "name": "MyInterface",
             "module": "fixtures/-default/package/bar.js"
           }
         }
