@@ -140,6 +140,20 @@ export function getModuleForClassLike(cem, className) {
   return result;
 }
 
+export function getModuleForInterface(cem, intName) {
+  let result = undefined;
+
+  cem?.modules?.forEach(_module => {
+    _module?.declarations?.forEach(declaration => {
+      if((declaration.kind === 'interface') && declaration.name === intName) {
+        result = _module.path;
+      }
+    });
+  });
+
+  return result;
+}
+
 /**
  * Given a manifest module, a class name, and a class member name, gets the
  * manifest doc for the module's class' member.

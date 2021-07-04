@@ -28,6 +28,7 @@ export function handleKind(functionLike, node) {
       functionLike.kind = 'function';
       break;
     case ts.SyntaxKind.MethodDeclaration:
+    case ts.SyntaxKind.MethodSignature:
       functionLike.kind = 'method';
       break;
   }

@@ -1,5 +1,5 @@
-import { getAllDeclarationsOfKind, getModuleForClassLike, getModuleFromManifest, getInheritanceTree } from '../../utils/manifest-helpers.js';
-import { resolveModuleOrPackageSpecifier } from '../../utils/index.js';
+import { getAllDeclarationsOfKind, getModuleForClassLike, getModuleFromManifest, getInheritanceTree, getModuleForInterface } from '../../utils/manifest-helpers.js';
+import { has, resolveModuleOrPackageSpecifier } from '../../utils/index.js';
 
 /**
  * APPLY-INHERITANCE-PLUGIN
@@ -12,6 +12,7 @@ export function applyInheritancePlugin() {
     packageLinkPhase({customElementsManifest, context}){
       const classes = getAllDeclarationsOfKind(customElementsManifest, 'class');
       const mixins = getAllDeclarationsOfKind(customElementsManifest, 'mixin');
+      const interfaces = getAllDeclarationsOfKind(customElementsManifest, 'interface');
 
       [...classes, ...mixins].forEach((customElement) => {
         const inheritanceChain = getInheritanceTree(customElementsManifest, customElement.name);
@@ -61,6 +62,69 @@ export function applyInheritancePlugin() {
           });
         });
       });
+
+      interfaces?.forEach(int => {
+        const tree = getInterfaceInheritanceChain(customElementsManifest, int.name)
+        tree.forEach(supertype => {
+          /** Ignore the current interface itself */
+          if(int.name === supertype.name) return;
+
+          supertype?.members?.forEach(member => {
+            const containingModulePath = getModuleForInterface(customElementsManifest, supertype.name);
+            const containingModule = getModuleFromManifest(customElementsManifest, containingModulePath);
+
+            const newItem = {...member};
+            const existing = int?.members?.find(item => newItem.name === item.name);
+
+            if (existing) {
+              existing.inheritedFrom = {
+                name: supertype.name,
+                ...resolveModuleOrPackageSpecifier(containingModule, context, supertype.name)
+              }
+            } else {
+              newItem.inheritedFrom = {
+                name: supertype.name,
+                ...resolveModuleOrPackageSpecifier(containingModule, context, supertype.name)
+              }
+              int.members = [...(int.members || []), newItem];
+            }
+          });
+        });
+      });
     } 
   }
+}
+
+
+function getInterfaceInheritanceChain(customElementsManifest, name) {  
+  const tree = [];
+  const interfacesMap = new Map();
+  const interfaces = getAllDeclarationsOfKind(customElementsManifest, 'interface');
+  interfaces.forEach(int => {
+    interfacesMap.set(int.name, int);
+  });
+
+  let currentInterface = interfacesMap.get(name);
+
+  if(currentInterface) {
+    tree.push(currentInterface);
+
+    currentInterface?.supertypes?.forEach(supertype => {
+      let foundSupertype = interfacesMap.get(supertype.name);
+
+      if(foundSupertype) {
+        tree.push(foundSupertype)
+        while(has(foundSupertype?.supertypes)) {
+          foundSupertype.supertypes.forEach(supertype => {
+            foundSupertype = interfacesMap.get(supertype.name);
+            if(foundSupertype) {
+              tree.push(foundSupertype);
+            }
+          })
+        }
+      }
+    });
+  }
+
+  return tree;
 }

@@ -34,6 +34,21 @@ export function exportsPlugin() {
       }
 
       /**
+       * @example export interface Foo {}
+       */
+      if(node.kind === ts.SyntaxKind.InterfaceDeclaration) {
+        const _export = {
+          kind: 'js',
+          name: node?.name?.getText() || '',
+          declaration: {
+            name: node?.name?.getText() || '',
+            module: moduleDoc.path,
+          }
+        }
+        moduleDoc.exports = [...(moduleDoc.exports || []), _export];
+      }
+
+      /**
        * @example export default var1;
        */
       if (node.kind === ts.SyntaxKind.ExportAssignment) {

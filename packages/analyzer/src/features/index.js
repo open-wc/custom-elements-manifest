@@ -6,6 +6,7 @@ import { collectImportsPlugin } from './collect-phase/collect-imports.js';
 /**
  * ANALYSE
  */
+import { interfacesPlugin } from './analyse-phase/interfaces.js';
 import { exportsPlugin } from './analyse-phase/exports.js';
 import { customElementsDefineCallsPlugin } from './analyse-phase/custom-elements-define-calls.js';
 import { functionLikePlugin } from './analyse-phase/function-like.js';
@@ -48,6 +49,7 @@ export const FEATURES = [
   collectImportsPlugin(),
   
   /** ANALYSE */
+  interfacesPlugin(),
   exportsPlugin(),
   customElementsDefineCallsPlugin(),
   functionLikePlugin(),
