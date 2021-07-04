@@ -70,7 +70,7 @@ export function applyInheritancePlugin() {
           if(int.name === supertype.name) return;
 
           supertype?.members?.forEach(member => {
-            const containingModulePath = getModuleForInterface(customElementsManifest, int.name);
+            const containingModulePath = getModuleForInterface(customElementsManifest, supertype.name);
             const containingModule = getModuleFromManifest(customElementsManifest, containingModulePath);
 
             const newItem = {...member};
@@ -86,7 +86,6 @@ export function applyInheritancePlugin() {
                 name: supertype.name,
                 ...resolveModuleOrPackageSpecifier(containingModule, context, supertype.name)
               }
-
               int.members = [...(int.members || []), newItem];
             }
           });

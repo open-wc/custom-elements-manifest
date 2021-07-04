@@ -77,7 +77,7 @@
               },
               "inheritedFrom": {
                 "name": "F",
-                "module": "fixtures/-default/package/bar.js"
+                "module": "fixtures/-default/package/b.js"
               }
             },
             {
@@ -137,7 +137,7 @@
               },
               "inheritedFrom": {
                 "name": "F",
-                "module": "fixtures/-default/package/bar.js"
+                "module": "fixtures/-default/package/b.js"
               }
             },
             {
