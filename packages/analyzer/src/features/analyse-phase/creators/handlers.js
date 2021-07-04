@@ -102,7 +102,7 @@ export function handleJsDoc(doc, node) {
 
       /** @reflect */
       if(safe(() => tag?.tagName?.getText()) === 'reflect' && doc?.kind === 'field') {
-        doc.reflect = true;
+        doc.reflects = true;
       }
 
       /** @summary */

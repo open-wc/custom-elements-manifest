@@ -48,7 +48,7 @@ export function staticPropertiesPlugin() {
 
                   if(reflects(property)) {
                     classMember.attribute = attribute.name;
-                    classMember.reflect = true;
+                    classMember.reflects = true;
                   }
 
                   currClass.attributes = [...(currClass?.attributes || []), attribute]

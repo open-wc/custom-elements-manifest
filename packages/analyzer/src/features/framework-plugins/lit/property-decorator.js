@@ -47,7 +47,7 @@ export function propertyDecoratorPlugin() {
                 
                 if(reflects(propertyOptions)) {
                   field.attribute = attribute.name;
-                  field.reflect = true;
+                  field.reflects = true;
                 }
 
                 const existingAttribute = currClass?.attributes?.find(attr => attr.name === attribute.name);

@@ -15,7 +15,7 @@
               "kind": "field",
               "name": "myField",
               "attribute": "myField",
-              "reflect": true
+              "reflects": true
             }
           ],
           "attributes": [

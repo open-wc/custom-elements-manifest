@@ -17,7 +17,7 @@ export function createAttributeFromField(field) {
   delete attribute.kind;
   delete attribute.static;
   delete attribute.privacy;
-  delete attribute.reflect;
+  delete attribute.reflects;
 
   return attribute;
 }

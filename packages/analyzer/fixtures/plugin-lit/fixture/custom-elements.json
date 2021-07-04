@@ -41,13 +41,13 @@
               "kind": "field",
               "name": "decoratedReflect",
               "attribute": "decoratedReflect",
-              "reflect": true
+              "reflects": true
             },
             {
               "kind": "field",
               "name": "decoratedReflect2",
               "attribute": "decorated-reflect",
-              "reflect": true
+              "reflects": true
             },
             {
               "kind": "field",
@@ -91,14 +91,14 @@
               "name": "reflect",
               "privacy": "public",
               "attribute": "reflect",
-              "reflect": true
+              "reflects": true
             },
             {
               "kind": "field",
               "name": "reflect2",
               "privacy": "public",
               "attribute": "reflect-2",
-              "reflect": true
+              "reflects": true
             }
           ],
           "attributes": [
