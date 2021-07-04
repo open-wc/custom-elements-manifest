@@ -4,66 +4,152 @@
   "modules": [
     {
       "kind": "javascript-module",
+      "path": "fixtures/-default/package/b.js",
+      "declarations": [
+        {
+          "kind": "interface",
+          "name": "F",
+          "members": [
+            {
+              "kind": "field",
+              "name": "f",
+              "type": {
+                "text": "string"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "F",
+          "declaration": {
+            "name": "F",
+            "module": "fixtures/-default/package/b.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "fixtures/-default/package/bar.js",
       "declarations": [
         {
           "kind": "interface",
-          "name": "MyInterface",
+          "name": "G",
+          "members": [
+            {
+              "kind": "field",
+              "name": "g",
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "interface",
+          "name": "B",
           "supertypes": [
             {
-              "name": "Foo",
-              "module": "fixtures/-default/package/bar.js"
+              "name": "F",
+              "package": "b.js"
             },
             {
-              "name": "Bar",
-              "package": "bar"
-            },
-            {
-              "name": "Baz",
+              "name": "G",
               "module": "fixtures/-default/package/bar.js"
             }
           ],
           "members": [
             {
               "kind": "field",
-              "name": "name",
+              "name": "b",
               "type": {
                 "text": "string"
-              },
-              "description": "the name of the class",
-              "summary": "this is the summary"
-            },
-            {
-              "kind": "field",
-              "name": "superClasses",
-              "type": {
-                "text": "SuperClass[]"
-              },
-              "description": "super classes and mixins"
-            },
-            {
-              "kind": "field",
-              "name": "member",
-              "type": {
-                "text": "ClassMember"
               }
             },
             {
-              "kind": "method",
-              "name": "baz",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
+              "kind": "field",
+              "name": "f",
+              "type": {
+                "text": "string"
               },
-              "parameters": [
-                {
-                  "name": "a",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
+              "inheritedFrom": {
+                "name": "F",
+                "module": "fixtures/-default/package/bar.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "g",
+              "type": {
+                "text": "boolean"
+              },
+              "inheritedFrom": {
+                "name": "G",
+                "module": "fixtures/-default/package/bar.js"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "interface",
+          "name": "A",
+          "supertypes": [
+            {
+              "name": "B",
+              "module": "fixtures/-default/package/bar.js"
+            },
+            {
+              "name": "C",
+              "package": "bar"
+            },
+            {
+              "name": "D",
+              "module": "fixtures/-default/package/bar.js"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "a",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "b",
+              "type": {
+                "text": "string"
+              },
+              "inheritedFrom": {
+                "name": "B",
+                "module": "fixtures/-default/package/bar.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "f",
+              "type": {
+                "text": "string"
+              },
+              "inheritedFrom": {
+                "name": "F",
+                "module": "fixtures/-default/package/bar.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "g",
+              "type": {
+                "text": "boolean"
+              },
+              "inheritedFrom": {
+                "name": "G",
+                "module": "fixtures/-default/package/bar.js"
+              }
             }
           ],
           "description": "Description of the interface"
@@ -72,9 +158,25 @@
       "exports": [
         {
           "kind": "js",
-          "name": "MyInterface",
+          "name": "G",
           "declaration": {
-            "name": "MyInterface",
+            "name": "G",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "B",
+          "declaration": {
+            "name": "B",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "A",
+          "declaration": {
+            "name": "A",
             "module": "fixtures/-default/package/bar.js"
           }
         }
