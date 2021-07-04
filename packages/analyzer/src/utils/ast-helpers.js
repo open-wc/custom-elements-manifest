@@ -124,9 +124,8 @@ function isAsConst(initializer) {
  */
 export function isWellKnownType(node) {
   return (
-    node.initializer && (
-      isAsConst(node.initializer) ||
-      ts.isPropertyAccessExpression(node.initializer)
+    node?.initializer && (
+      isAsConst(node?.initializer)
     )
   );
 }

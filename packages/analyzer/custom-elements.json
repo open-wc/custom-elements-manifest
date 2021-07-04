@@ -9,110 +9,43 @@
         {
           "kind": "class",
           "description": "",
-          "name": "TodoList",
+          "name": "MyEl",
           "members": [
             {
               "kind": "field",
-              "name": "color",
-              "type": {
-                "text": "string"
-              }
+              "name": "bar",
+              "attribute": "bar"
             },
             {
               "kind": "field",
-              "name": "isValid",
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "controller",
-              "type": {
-                "text": "MyController"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "message",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Hello'",
-              "reflects": true,
-              "attribute": "message"
-            },
-            {
-              "kind": "method",
-              "name": "someMethod"
+              "name": "foo",
+              "privacy": "public",
+              "attribute": "foo"
             }
           ],
           "attributes": [
             {
-              "name": "color",
-              "fieldName": "color",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
-              "name": "is-valid",
-              "fieldName": "isValid",
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
-              "name": "controller",
-              "fieldName": "controller",
-              "type": {
-                "text": "MyController"
-              }
-            },
-            {
-              "name": "valid",
-              "fieldName": "isValid",
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
-              "name": "message",
-              "fieldName": "message"
-            }
-          ],
-          "tagName": "todo-list",
-          "events": [
-            {
-              "name": "todoCompleted",
-              "type": {
-                "text": "EventEmitter<Todo>"
-              }
+              "name": "bar",
+              "fieldName": "bar"
             },
             {
               "name": "foo",
-              "type": {
-                "text": "EventEmitter<Todo>"
-              }
+              "fieldName": "foo"
             }
           ],
+          "superclass": {
+            "name": "LitElement",
+            "module": "fixtures/-default/package/bar.js"
+          },
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "TodoList",
+          "name": "MyEl",
           "declaration": {
-            "name": "TodoList",
-            "module": "fixtures/-default/package/bar.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "todo-list",
-          "declaration": {
-            "name": "TodoList",
+            "name": "MyEl",
             "module": "fixtures/-default/package/bar.js"
           }
         }

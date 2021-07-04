@@ -2,8 +2,9 @@ import ts from 'typescript';
 import { createFunctionLike } from './createFunctionLike.js';
 import { createAttribute, createAttributeFromField } from './createAttribute.js';
 import { createField } from './createClassField.js';
-import { handleHeritage, handleJsDoc, handleAttrJsDoc, handleTypeInference } from './handlers.js';
+import { handleHeritage, handleJsDoc, handleAttrJsDoc, handleTypeInference, handleDefaultValue } from './handlers.js';
 import { hasAttrAnnotation, isDispatchEvent, isPrimitive, isProperty, isReturnStatement, isStaticMember } from '../../../utils/ast-helpers.js';
+import { resolveModuleOrPackageSpecifier } from '../../../utils/index.js';
 
 
 /**
@@ -13,6 +14,10 @@ export function createClass(node, moduleDoc, context) {
   let classTemplate = {
     kind: 'class',
     description: '',
+    /**
+     * In case of a class node?.name?.getText()
+     * In case of a mixin node?.parent?.parent?.name?.getText()
+     */
     name: node?.name?.getText() || node?.parent?.parent?.name?.getText() || '',
     cssProperties: [],
     cssParts: [],
@@ -89,6 +94,14 @@ export function createClass(node, moduleDoc, context) {
       }
 
       const field = createField(member);
+
+      /** Flag class fields that get assigned a variable, so we can resolve it later (in the RESOLVE-INITIALIZERS plugin) */
+      if(member?.initializer?.kind === ts.SyntaxKind.Identifier) {
+        field.resolveInitializer = { 
+          ...resolveModuleOrPackageSpecifier(moduleDoc, context, member?.initializer?.getText()),
+        }
+      }
+
       classTemplate.members.push(field);
 
       /**
@@ -126,9 +139,11 @@ export function createClass(node, moduleDoc, context) {
     }
   });
 
-  classTemplate?.members?.forEach(member => {
-    getDefaultValuesFromConstructorVisitor(node, member);
-  });
+  // classTemplate?.members?.forEach(member => {
+  //   getDefaultValuesFromConstructorVisitor(node, member, context);
+  // });
+
+  getDefaultValuesFromConstructorVisitor(node, classTemplate, context);
 
   /**
    * Inheritance
@@ -177,7 +192,7 @@ function eventsVisitor(source, classTemplate) {
   }
 }
 
-export function getDefaultValuesFromConstructorVisitor(source, member) {
+export function getDefaultValuesFromConstructorVisitor(source, classTemplate, context) {
   visitNode(source);
 
   function visitNode(node) {
@@ -190,20 +205,29 @@ export function getDefaultValuesFromConstructorVisitor(source, member) {
         node.body?.statements?.filter((statement) => statement.kind === ts.SyntaxKind.ExpressionStatement)
           .filter((statement) => statement.expression.kind === ts.SyntaxKind.BinaryExpression)
           .forEach((statement) => {
-            if (
-              statement.expression?.left?.name?.getText() === member.name &&
-              member.kind === 'field'
-            ) {
-              
-              if(!member?.type) {
-                member = handleTypeInference(member, statement?.expression?.right);
+            let existingMember = classTemplate?.members?.find(member => statement.expression?.left?.name?.getText() === member.name && member.kind === 'field');
+
+            if(!existingMember) {
+              existingMember = {
+                kind: 'field',
+                name: statement.expression?.left?.name?.getText(),
+              }
+              classTemplate.members.push(existingMember);
+            }
+
+            if(existingMember) {
+              if(!existingMember?.type) {
+                existingMember = handleTypeInference(existingMember, statement?.expression?.right);
               }
 
-              member = handleJsDoc(member, statement);
-
-              /** Only add defaults for primitives for now */
-              if(isPrimitive(statement.expression.right)) {
-                member.default = statement.expression.right.getText();
+              existingMember = handleJsDoc(existingMember, statement);
+              existingMember = handleDefaultValue(existingMember, statement);
+              
+              /** Flag class fields that get assigned a variable, so we can resolve it later (in the RESOLVE-INITIALIZERS plugin) */
+              if(statement?.expression?.right?.kind === ts.SyntaxKind.Identifier) {
+                existingMember.resolveInitializer = { 
+                  ...resolveModuleOrPackageSpecifier({path: source.getSourceFile().fileName}, context, node?.initializer?.getText()),
+                }
               }
             }
           });

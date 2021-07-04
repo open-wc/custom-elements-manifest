@@ -39,8 +39,12 @@ export function propertyDecoratorPlugin() {
                 const attributeName = getAttributeName(propertyOptions);
                 if(attributeName) {
                   attribute.name = attributeName;
+                  field.attribute = attributeName;
+                } else {
+                  field.attribute = field.name;
                 }
 
+                
                 if(reflects(propertyOptions)) {
                   field.attribute = attribute.name;
                   field.reflect = true;

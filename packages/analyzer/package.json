@@ -1,6 +1,6 @@
 {
   "name": "@custom-elements-manifest/analyzer",
-  "version": "0.4.7",
+  "version": "0.4.9",
   "description": "",
   "license": "MIT",
   "type": "module",
@@ -21,7 +21,7 @@
   "main": "index.js",
   "scripts": {
     "prepublishOnly": "npm test && npm run build:browser",
-    "start": "nodemon --ignore './custom-elements.json' index.js analyze --dev --stencil",
+    "start": "nodemon --ignore './custom-elements.json' index.js analyze --dev --litelement",
     "test": "uvu test",
     "build:browser": "rollup -c rollup.browser.config.js",
     "test:watch": "watchexec -w src -w test npm test",

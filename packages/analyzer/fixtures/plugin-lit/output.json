@@ -17,7 +17,8 @@
               "type": {
                 "text": "array"
               },
-              "default": "[]"
+              "default": "[]",
+              "attribute": "decoratedProperty"
             },
             {
               "kind": "field",
@@ -25,7 +26,8 @@
               "type": {
                 "text": "array"
               },
-              "default": "[]"
+              "default": "[]",
+              "attribute": "my-attr2"
             },
             {
               "kind": "field",
@@ -48,24 +50,27 @@
               "reflect": true
             },
             {
+              "kind": "field",
+              "name": "prop1",
               "type": {
                 "text": "string"
               },
+              "default": "'foo'",
               "description": "this is the description",
-              "name": "prop1",
-              "kind": "field",
               "privacy": "public",
-              "default": "'foo'"
+              "attribute": "prop1"
             },
             {
               "kind": "field",
               "name": "prop2",
-              "privacy": "public"
+              "privacy": "public",
+              "attribute": "prop2"
             },
             {
               "kind": "field",
               "name": "attr",
-              "privacy": "public"
+              "privacy": "public",
+              "attribute": "my-attr"
             },
             {
               "kind": "field",
@@ -78,7 +83,8 @@
               "privacy": "private",
               "type": {
                 "text": "Boolean"
-              }
+              },
+              "attribute": "_privateProp"
             },
             {
               "kind": "field",

@@ -6,4 +6,8 @@ export class MyElement extends BatchingElement {
   classMethod() {
     this.dispatchEvent(new Event('class-event'))
   }
+  constructor() {
+    super();
+    this.overriddenField = 'bye';
+  }
 }

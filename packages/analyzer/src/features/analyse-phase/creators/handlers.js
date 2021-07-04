@@ -244,21 +244,41 @@ export function handleTypeInference(doc, node) {
  */
 export function handleWellKnownTypes(doc, node) {
   if (!!node.initializer?.expression) {
-    const text = node.initializer.expression.getText();
-    if (isWellKnownType(node))
+    const text = node?.initializer?.expression?.getText();
+    if (isWellKnownType(node)) {
       doc.type = { text };
-
-    if (doc.kind === 'field')
-      doc.default = text;
+    }
   }
   return doc;
 }
 
 export function handleDefaultValue(doc, node) {
-  if(isPrimitive(node.initializer)) {
-    doc.default = node?.initializer?.getText?.();
-  }
+  /**
+   * In case of a class field node?.initializer
+   * In case of a property assignment in constructor node?.expression?.right
+   */
+  const initializer = node?.initializer || node?.expression?.right;
 
+  /** Ignore the following */
+  if(initializer?.kind === ts.SyntaxKind.BinaryExpression) return doc;
+  if(initializer?.kind === ts.SyntaxKind.ConditionalExpression) return doc;
+  if(initializer?.kind === ts.SyntaxKind.PropertyAccessExpression) return doc;
+  if(initializer?.kind === ts.SyntaxKind.CallExpression) return doc;
+  
+  let defaultValue;
+  /** 
+   * Check if value has `as const`
+   * @example const foo = 'foo' as const;
+   */
+  if(initializer?.kind === ts.SyntaxKind.AsExpression) {
+    defaultValue = initializer?.expression?.getText()
+  } else {
+    defaultValue = initializer?.getText()
+  }
+  
+  if(defaultValue) {
+    doc.default = defaultValue;
+  }
   return doc;
 }
 

@@ -23,7 +23,8 @@
           "name": "var4",
           "type": {
             "text": "boolean"
-          }
+          },
+          "default": "true"
         },
         {
           "kind": "variable",
@@ -51,21 +52,24 @@
           "name": "typeinferrence",
           "type": {
             "text": "string"
-          }
+          },
+          "default": "''"
         },
         {
           "kind": "variable",
           "name": "asConst",
           "type": {
             "text": "'const'"
-          }
+          },
+          "default": "'const'"
         },
         {
           "kind": "variable",
           "name": "asConstRef",
           "type": {
             "text": "{foo:'bar'}"
-          }
+          },
+          "default": "{foo:'bar'}"
         }
       ],
       "exports": [
