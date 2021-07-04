@@ -4,4 +4,9 @@ export class BatchingElement extends HTMLElement {
   superClassMethod() {
     this.dispatchEvent(new Event('superClass-event'))
   }
+
+  constructor() {
+    super();
+    this.overriddenField = 'hello';
+  }
 }

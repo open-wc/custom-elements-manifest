@@ -11,7 +11,7 @@ import { isAlsoAttribute, hasStaticKeyword, getPropertiesObject, getAttributeNam
 export function staticPropertiesPlugin() {
   return {
     name: 'CORE - LIT-STATIC-PROPERTIES',
-    analyzePhase({ts, node, moduleDoc}){
+    analyzePhase({ts, node, moduleDoc, context}){
       switch (node.kind) {
         case ts.SyntaxKind.ClassDeclaration:    
           const className = node?.name?.getText();
@@ -60,9 +60,7 @@ export function staticPropertiesPlugin() {
           });
 
           /** Get default values */
-          currClass?.members?.forEach(member => {
-            getDefaultValuesFromConstructorVisitor(node, member);
-          });
+          getDefaultValuesFromConstructorVisitor(node, currClass, context);
           break;
         }
       }

@@ -1,3 +1,6 @@
+## Release 0.4.9
+- Fixed bug to correctly apply default values on overridden inherited fields
+
 ## Release 0.4.8
 - Add support for non-primitive default values
 - Resolve values/types of variables when being assigned to class fields

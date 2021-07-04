@@ -39,17 +39,24 @@ export function applyInheritancePlugin() {
 
               /**
                 * If an attr or member is already present in the base class, but we encounter it here,
-                * it means that the base has overridden that method from the super class, so we bail
+                * it means that the base has overridden that method from the super class
+                * So we either add the data to the overridden method, or we add it to the array as a new item
                 */
-              const itemIsOverridden = customElement?.[type]?.some(item => newItem.name === item.name);
-              if (itemIsOverridden) return;
+              const existing = customElement?.[type]?.find(item => newItem.name === item.name);
 
-              newItem.inheritedFrom = {
-                name: klass.name,
-                ...resolveModuleOrPackageSpecifier(containingModule, context, klass.name)
-              }
-
-              customElement[type] = [...(customElement[type] || []), newItem];
+              if (existing) {
+                existing.inheritedFrom = {
+                  name: klass.name,
+                  ...resolveModuleOrPackageSpecifier(containingModule, context, klass.name)
+                }
+              } else {
+                newItem.inheritedFrom = {
+                  name: klass.name,
+                  ...resolveModuleOrPackageSpecifier(containingModule, context, klass.name)
+                }
+  
+                customElement[type] = [...(customElement[type] || []), newItem];
+              };
             });
           });
         });
