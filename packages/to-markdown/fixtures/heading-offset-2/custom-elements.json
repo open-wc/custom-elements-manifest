@@ -238,10 +238,6 @@
         {
           "kind": "mixin",
           "name": "Mixin",
-          "superclass": {
-            "name": "klass",
-            "module": "./fixtures/-TEST/package/my-element.js"
-          },
           "parameters": [
             {
               "name": "klass",
