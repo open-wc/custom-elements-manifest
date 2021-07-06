@@ -1,9 +1,9 @@
 # `./fixtures/-TEST/package/my-element.js`:
 
 ## class: `SuperClass` 
-  
+
   ### Superclass
-  
+
   | name | module | package |
   |------|--------|---------|
   |LitElement | |lit-element |
@@ -20,15 +20,15 @@
 
 | name | type | description | inheritedFrom |
 |------|------|-------------|---------------|
-|custom-event |SuperCustomEvent |this is custom | | |
+|custom-event |`SuperCustomEvent` |this is custom | | |
 
 
 <hr></hr>
 
 ## class: `MyElement`, `my-element` 
-  
+
   ### Superclass
-  
+
   | name | module | package |
   |------|--------|---------|
   |SuperClass |./fixtures/-TEST/package/my-element.js | |
@@ -44,13 +44,13 @@
 
 ### Fields
 
-| name | type | privacy | default | description | inheritedFrom |
-|------|------|---------|---------|-------------|---------------|
-|prop1 | |public | | | | |
-|prop2 | |public | | | | |
-|prop3 |boolean |public |true | | | |
-|foo |string |private |'bar' |description goes here | | |
-|mixinProp |number |protected |1 | |Mixin |[object Object] |
+| name | privacy | type | default | description | inheritedFrom |
+|------|---------|------|---------|-------------|---------------|
+|prop1 |public | | | | | |
+|prop2 |public | | | | | |
+|prop3 |public |`boolean` |`true` | | | |
+|foo |private |`string` |`'bar'` |description goes here | | |
+|mixinProp |protected |`number` |`1` | |Mixin |[object Object] |
 
 
 ### Methods
@@ -65,8 +65,8 @@
 
 | name | type | description | inheritedFrom |
 |------|------|-------------|---------------|
-|my-event |Event | | | |
-|custom-event |SuperCustomEvent |this is custom |SuperClass |[object Object] |
+|my-event |`Event` | | | |
+|custom-event |`SuperCustomEvent` |this is custom |SuperClass |[object Object] |
 
 
 ### Attributes
@@ -98,8 +98,8 @@
 
 | name | type | default | description |
 |------|------|---------|-------------|
-|klass |* | |This is the description |
-|foo |string | |Description goes here |
+|klass |`*` | |This is the description |
+|foo |`string` | |Description goes here |
 
 
 <hr></hr>
@@ -109,33 +109,33 @@
 
 | name | type | default | description |
 |------|------|---------|-------------|
-|klass |* | |This is the description |
+|klass |`*` | |This is the description |
 
 
 ### Fields
 
-| name | type | privacy | default | description | inheritedFrom |
-|------|------|---------|---------|-------------|---------------|
-|mixinProp |number |protected |1 | | | |
+| name | privacy | type | default | description | inheritedFrom |
+|------|---------|------|---------|-------------|---------------|
+|mixinProp |protected |`number` |`1` | | | |
 
 
 <hr></hr>
 
 ## Variables
-  
+
   | name | description | type |
   |------|-------------|------|
-  |variableExport |this is a var export |boolean |
-|stringVariableExport |this is a string var export |string |
+  |variableExport |this is a var export |`boolean` |
+|stringVariableExport |this is a string var export |`string` |
 <hr/>
 
 ## Functions
-      
+
   | name | description | parameters | return |
   |------|-------------|------------|--------|
   |functionExport |This is a function export |a string, b boolean |boolean |
 <hr/>
-  
+
 ## Exports
 
 | kind | name      | declaration | module | package |

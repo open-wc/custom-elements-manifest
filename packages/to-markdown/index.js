@@ -30,7 +30,7 @@ const render = (item, properties) => {
       md += `${type} |`
       return `${md}\n`;
     }
-    
+
     if(prop === 'return') {
       md += `${item?.return?.type?.text?.replace(/\|/g, '\\|') || ''} |`
       return `${md}\n`;
@@ -39,8 +39,8 @@ const render = (item, properties) => {
     if(prop === 'description') {
       md += `${item?.[prop]?.trim()?.replace(/(\r\n|\n|\r)/gm, '<br/>') || ''} |`
       return `${md}\n`;
-    } 
-    
+    }
+
     if(prop === 'default') {
       let defaultVal;
       if(item?.[prop] !== undefined) {
@@ -57,7 +57,7 @@ const render = (item, properties) => {
   return `${md}\n`;
 }
 
-function customElementsManifestToMarkdown(cem) {
+export function customElementsManifestToMarkdown(cem) {
   let md = '';
   cem?.modules.forEach(mod => {
     if(!has(mod?.declarations) && !has(mod?.exports)) {
@@ -84,7 +84,7 @@ function customElementsManifestToMarkdown(cem) {
         name,
         parameters
       } = declaration;
-      
+
       if(declaration.kind === 'mixin' || declaration.kind === 'class') {
 
         md += `\n\n## ${kind}: \`${name}\`${tagName ? `, \`${tagName}\`` : ''} `;
@@ -92,9 +92,9 @@ function customElementsManifestToMarkdown(cem) {
         if(declaration.kind === 'class') {
           if(superclass) {
             md += `
-  
+
   ### Superclass
-  
+
   | name | module | package |
   |------|--------|---------|
   ${render(superclass, ['name', 'module', 'package'])}`
@@ -116,7 +116,7 @@ function customElementsManifestToMarkdown(cem) {
 
         const fields = members?.filter(({kind}) => kind === 'field');
         const methods = members?.filter(({kind}) => kind === 'method');
-        
+
         if(has(parameters)) {
           md += `
 ### Parameters
@@ -155,7 +155,7 @@ function customElementsManifestToMarkdown(cem) {
           });
         }
 
-        // @TODO: 
+        // @TODO:
         if(has(events)) {
           md += `
 
@@ -227,36 +227,36 @@ function customElementsManifestToMarkdown(cem) {
 
     if(has(variables)) {
       md += `\n\n## Variables
-  
+
   | name | description | type |
   |------|-------------|------|
   `
-  
+
       variables?.forEach(variable => {
         md += render(variable, ['name', 'description', 'type']);
       });
-  
+
       md += `<hr/>`
     }
 
     if(has(functions)) {
       md += `\n\n## Functions
-      
+
   | name | description | parameters | return |
   |------|-------------|------------|--------|
   `
-  
+
       functions?.forEach(fun => {
         md += render(fun, ['name', 'description', 'parameters', 'return']);
       });
-  
+
       md += `<hr/>`
     }
 
 
     if(has(mod?.exports)) {
       md += `
-  
+
 ## Exports
 
 | kind | name      | declaration | module | package |
@@ -271,7 +271,3 @@ function customElementsManifestToMarkdown(cem) {
 
   return md;
 }
-
-module.exports = { 
-  customElementsManifestToMarkdown 
-}; 
