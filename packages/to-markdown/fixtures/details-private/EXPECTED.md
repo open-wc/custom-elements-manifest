@@ -39,12 +39,11 @@
 
 ### Fields
 
-| Name      | Privacy   | Type      | Default | Description | Inherited From |
-| --------- | --------- | --------- | ------- | ----------- | -------------- |
-| prop1     | public    |           |         |             |                |
-| prop2     | public    |           |         |             |                |
-| prop3     | public    | `boolean` | `true`  |             |                |
-| mixinProp | protected | `number`  | `1`     |             | Mixin          |
+| Name  | Privacy | Type      | Default | Description | Inherited From |
+| ----- | ------- | --------- | ------- | ----------- | -------------- |
+| prop1 | public  |           |         |             |                |
+| prop2 | public  |           |         |             |                |
+| prop3 | public  | `boolean` | `true`  |             |                |
 
 ### Methods
 
@@ -79,40 +78,20 @@
 | --------- | ------------------------------ |
 | container | You can put some elements here |
 
-<hr/>
+<details><summary>Private API</summary>
 
-### Superclass
+### Fields
 
-| Name | Module | Package |
-| ---- | ------ | ------- |
-|      |        |         |
+| Name      | Privacy   | Type     | Default | Description           | Inherited From |
+| --------- | --------- | -------- | ------- | --------------------- | -------------- |
+| foo       | private   | `string` | `'bar'` | description goes here |                |
+| mixinProp | protected | `number` | `1`     |                       | Mixin          |
 
-<hr/>
-
-### Superclass
-
-| Name | Module | Package |
-| ---- | ------ | ------- |
-|      |        |         |
-
-<hr/>
-
-### Superclass
-
-| Name | Module | Package |
-| ---- | ------ | ------- |
-|      |        |         |
+</details>
 
 <hr/>
 
 ## mixin: `MyMixin4`
-
-### Superclass
-
-| Name | Module | Package |
-| ---- | ------ | ------- |
-|      |        |         |
-
 ### Parameters
 
 | Name  | Type     | Default | Description             |
@@ -123,24 +102,21 @@
 <hr/>
 
 ## mixin: `Mixin`
-
-### Superclass
-
-| Name | Module | Package |
-| ---- | ------ | ------- |
-|      |        |         |
-
 ### Parameters
 
 | Name  | Type | Default | Description             |
 | ----- | ---- | ------- | ----------------------- |
 | klass | `*`  |         | This is the description |
 
+<details><summary>Private API</summary>
+
 ### Fields
 
 | Name      | Privacy   | Type     | Default | Description | Inherited From |
 | --------- | --------- | -------- | ------- | ----------- | -------------- |
 | mixinProp | protected | `number` | `1`     |             |                |
+
+</details>
 
 <hr/>
 

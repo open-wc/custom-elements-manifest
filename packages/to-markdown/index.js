@@ -1,5 +1,13 @@
 import { html, heading, inlineCode, root, table, tableCell, tableRow, text } from 'mdast-builder';
-import { capital, compose, identity, isPrivate, kindIs, not, repeat } from './lib/fp.js';
+import {
+  capital, repeat,
+  compose, identity,
+  isPrivate, isProtected,
+  isClassLike, isMixin, isLengthy,
+  kindIs,
+  not, or,
+  trace,
+} from './lib/fp.js';
 import { serialize } from './lib/serialize.js';
 
 const line = html('<hr/>');
@@ -31,16 +39,16 @@ const declarationHeading = options =>
 
 /** String -> Descriptor */
 const defaultDescriptor = name =>
-  ({ heading: capital(name), get: x => x[name] });
+  ({ heading: capital(name), get: x => x?.[name] });
 
 /** String|Descriptor -> Descriptor */
 const getDescriptor = x =>
   typeof x === 'string' ? defaultDescriptor(x) : x;
 
-/** ([Declaration], (Declaration -> boolean)) -> Descriptor -> Column */
-const getColumn = (decls, filter) =>
+/** [Declaration] -> Descriptor -> Column */
+const getColumn = (decls) =>
   ({ heading, get, cellType = text }) =>
-    ({ heading, cellType, values: decls.filter(filter).map(x => get(x)) })
+    ({ heading, cellType, values: decls.map(x => get(x)) })
 
 /** Column -> Cell */
 const getHeading = x =>
@@ -64,19 +72,22 @@ const tableWithTitle = options =>
    * @param  {(keyof T)|{ heading: string; get: (x: T[keyof T] => string)}[]} names
    * @param  {T[]} decls
    */
-  (title, names, decls, { headingLevel = 3 } = { }) => {
-    if (!(decls ?? []).filter(identity).length) return [];
-
-    const filter = (
-        options?.private === 'hidden' ? not(isPrivate)
-      : options?.private === 'details' ? not(isPrivate)
-      : x => x
+  (title, names, _decls, { headingLevel = 3, filter } = { }) => {
+    const by = (
+        typeof filter === 'function' ? filter
+      : options?.private === 'hidden' ? not(isPrivate)
+      : options?.private === 'details' ? not(or(isPrivate, isProtected))
+      : identity
     );
 
-    // xs.map(compose(g, f)) === xs.map(f).map(g)
-    const columns = names.map(compose(getColumn(decls, filter), getDescriptor))
+    const decls = (_decls ?? []).filter(by).filter(identity);
 
-    const contentRows = decls.filter(filter).map(getRows(columns));
+    if (!isLengthy(decls)) return [];
+
+    // xs.map(compose(g, f)) === xs.map(f).map(g)
+    const columns = names.map(compose(getColumn(decls), getDescriptor))
+
+    const contentRows = decls.map(getRows(columns));
 
     return [
       heading(headingLevel + (options?.headingOffset ?? 0), text(title)),
@@ -129,6 +140,19 @@ function makeModuleDoc(mod, options) {
         ...makeTable('Parts', ['name', 'description'], decl.parts),
         ...makeTable('Slots', ['name', 'description'], decl.slots),
       ].filter(identity);
+
+      if (
+        options?.private === 'details'
+        && ( isLengthy(fields.filter(or(isPrivate, isProtected)))
+          || isLengthy(methods.filter(or(isPrivate, isProtected))) )
+      ) {
+        nodes.push(
+          html('<details><summary>Private API</summary>'),
+          ...makeTable('Fields', ['name', 'privacy', TYPE, DEFAULT, 'description', INHERITANCE], fields.filter(or(isPrivate, isProtected)), { filter: identity }),
+          ...makeTable('Methods', ['name', 'privacy', 'description', PARAMETERS, RETURN, INHERITANCE], methods.filter(or(isPrivate, isProtected)), { filter: identity }),
+          html('</details>')
+        );
+      }
 
       if (nodes.length)
         nodes.push(line);
