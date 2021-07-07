@@ -1,3 +1,10 @@
+---
+published: true
+generateSocialImage: true
+date: 2021-06-17
+updated: Last Modified
+---
+
 # Introducing Custom Elements Manifest
 
 The idea for a `web-components.json` was first suggested in
@@ -171,11 +178,11 @@ npx custom-elements-json analyze
 
 `@custom-elements-manifest/analyzer` by default supports standard JavaScript, and _vanilla_ web components. Dedicated web component libraries can be supported through the use of plugins. Currently, support for LitElement, Fast, Stencil and Catalyst is provided in this project via plugins. You can enable them by using the CLI flags `--litelement`, `--fast`, `--stencil` and `--catalyst` respectively, or loading the plugin via your `custom-elements-manifest.config.js`.
 
-**TL;DR:** 
-- JavaScript 
+**TL;DR:**
+- JavaScript
 - TypeScript
-- [LitElement](https://lit.dev) (opt-in via CLI flag) 
-- [FASTElement](https://www.fast.design/docs/fast-element/getting-started/) (opt-in via CLI flag) 
+- [LitElement](https://lit.dev) (opt-in via CLI flag)
+- [FASTElement](https://www.fast.design/docs/fast-element/getting-started/) (opt-in via CLI flag)
 - [Stencil](https://stenciljs.com/) (opt-in via CLI flag)
 - [Catalyst](https://github.github.io/catalyst/) (opt-in via CLI flag)
 - [Atomico](https://atomicojs.github.io/) (opt-in via [community plugin](https://github.com/atomicojs/custom-elements-manifest))
@@ -204,7 +211,7 @@ Imagine we have some sourcecode, with a custom `@foo` JSDoc annotation and some 
 export class MyElement extends HTMLElement {
   /**
    * @foo Some custom information!
-   */ 
+   */
   message = ''
 }
 ```
@@ -238,7 +245,7 @@ export default {
                     const classDeclaration = moduleDoc.declarations.find(declaration => declaration.name === className);
                     /* And then we find the current field from the class */
                     const messageField = classDeclaration.members.find(member => member.name === memberName);
-                    
+
                     /* And we mutate the field with the information we got from the `@foo` JSDoc annotation */
                     messageField.foo = description
                   }
@@ -248,7 +255,7 @@ export default {
         }
       }
     }
-  ]  
+  ]
 }
 ```
 
