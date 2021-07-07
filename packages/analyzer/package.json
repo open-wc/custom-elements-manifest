@@ -44,11 +44,10 @@
     "comment-parser": "^1.1.5",
     "custom-elements-manifest": "^1.0.0",
     "debounce": "^1.2.1",
-    "globby": "^11.0.1",
+    "globby": "^11.0.4",
     "typescript": "^4.3.2"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "contributors": [
     "Pascal Schilp <pascalschilp@gmail.com>",
     "Benny Powers <web@bennypowers.com>"

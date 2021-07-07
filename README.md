@@ -5,5 +5,6 @@ Custom Elements Manifest is a file format that describes custom elements. This f
 > ✨ Try it out in the [online playground](https://custom-elements-manifest.netlify.app/)! ✨
 ## Packages
 
-- [`@custom-elements-manifest/analyzer`](./packages/analyzer)
-- [`@custom-elements-manifest/to-markdown`](./packages/to-markdown)
+- [`@custom-elements-manifest/analyzer`](./packages/analyzer) Generate manifests from source
+- [`@custom-elements-manifest/to-markdown`](./packages/to-markdown) Generate markdown from manifests
+- [`cem-plugin-readme`](./packages/cem-plugin-readme) Generate README files

@@ -54,8 +54,8 @@
   "dependencies": {
     "mdast-builder": "^1.1.1",
     "mdast-util-from-markdown": "^1.0.0",
-    "mdast-util-gfm": "^0.1.2",
-    "mdast-util-to-markdown": "^0.6.5",
+    "mdast-util-gfm": "^1.0.0",
+    "mdast-util-to-markdown": "^1.0.1",
     "remark-gfm": "^1.0.0",
     "remark-stringify": "^9.0.1",
     "unified": "^9.2.1"
