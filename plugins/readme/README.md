@@ -8,10 +8,9 @@ Generates a `README.md` file for a custom element package
 | ------------- | ------- | ------------------------------------------------------ | ----------------------- |
 | from          | string  | absolute path to package root                          | 2 dirs above the plugin |
 | to            | string  | relative path from package root                        | `'README.md'`           |
-| quiet         | boolean | suppress logs                                          | `false`                 |
-| header        | string  | path to header file                                    | `undefined`             |
-| footer        | string  | path to footer file                                    | `undefined`             |
 | headingOffset | integer | number of levels to offset generated markdown headings | `1`                     |
+| header        | string  | relative path to header file                           | `undefined`             |
+| footer        | string  | relative path to footer file                           | `undefined`             |
 
 ## Example
 

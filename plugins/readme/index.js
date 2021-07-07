@@ -1,18 +1,16 @@
-import chalk from 'chalk';
-import hirestime from 'hirestime';
-import mkdirp from 'mkdirp';
-
 import { customElementsManifestToMarkdown } from '@custom-elements-manifest/to-markdown';
 
-import { readFileSync, writeFileSync } from 'fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
-import { dirname, join, relative } from 'path';
+import { dirname, join } from 'path';
 
 /**
  * @typedef {object} Options
  * @property {string} [from] absolute path to package root
  * @property {string} [to="README.md"] relative path from package root to output file
- * @property {boolean} quiet suppress logs
+ * @property {number} [headingOffset=1] offset for markdown heading level
+ * @property {string} [header] relative path to header file
+ * @property {string} [footer] relative path to footer file
  */
 
 /**
@@ -21,18 +19,15 @@ import { dirname, join, relative } from 'path';
  */
 export function readmePlugin(options) {
   const {
-    footer,
     from = join(dirname(fileURLToPath(import.meta.url)), '..', '..'),
-    header,
-    headingOffset = 1,
-    quiet = false,
     to = 'README.md',
+    headingOffset = 1,
+    header,
+    footer,
   } = options ?? {};
   return {
     name: 'readme',
     packageLinkPhase({ customElementsManifest }) {
-      const time = hirestime.default();
-
       const outPath = join(from, to);
 
       try {
@@ -46,16 +41,13 @@ export function readmePlugin(options) {
 
         const content = `${head ? head + '\n\n' : ''}${markdown}${foot ? '\n\n' + foot : ''}`;
 
-        mkdirp(dirname(outPath));
+        mkdirSync(dirname(outPath), { recursive: true });
 
         writeFileSync(outPath, content);
       } catch (e) {
         console.error(e);
         process.exit(1);
       }
-
-      if (!quiet)
-        console.log(chalk.yellow`[cem-plugin-readme] ` + chalk.green`Wrote ${chalk.bold(relative(from, to))} in ${time.seconds()}s`);
     },
   };
 }
