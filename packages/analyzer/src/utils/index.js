@@ -64,6 +64,6 @@ export function withErrorHandling(name, cb) {
       errorMessage = name.startsWith('CORE') ? coreError : externalError;
     }
 
-    throw new Error(`[${name ?? 'unnamed-plugin'}]: ${e}\n\n${errorMessage}\n`);
+    throw new Error(`\n\n[${name ?? 'unnamed-plugin'}]: ${errorMessage}\n\n ${e.stack}\n`);
   }
 }

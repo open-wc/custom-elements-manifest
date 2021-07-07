@@ -16,6 +16,12 @@ class MyEl extends HTMLElement {
   set setter() {}
   get setter() {}
 
+  set getter2(){}
+  /** @type {string} */
+  get getter2(){}
+
+  static getter2;
+
   /**
    * This is also an attribute
    * @attr also-attr
