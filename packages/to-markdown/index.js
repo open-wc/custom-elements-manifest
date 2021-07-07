@@ -13,7 +13,7 @@ import { serialize } from './lib/serialize.js';
 const line = html('<hr/>');
 
 const formatParameters = x =>
-  x?.parameters?.map(param => `${param?.name}: ${param?.type?.text?.replace(/\|/g, '\\|') || ''}`).join(', ');
+  x?.parameters?.map(param => `${param?.name}${param?.type?.text ? `: ${param.type.text}` : ''}`).join(', ');
 
 const DECLARATION = { heading: 'Declaration',     get: x => x.declaration?.name ?? '' };
 const DEFAULT =     { heading: 'Default',         get: x => x.default, cellType: inlineCode };

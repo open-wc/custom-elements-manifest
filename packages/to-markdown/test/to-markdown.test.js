@@ -17,9 +17,6 @@ testCases.forEach(testCase => {
     const outputPath = path.join(fixturesDir, `${testCase}/README.md`);
     const expectPath = path.join(fixturesDir, `${testCase}/EXPECTED.md`);
 
-    if (testCase !== 'details-private')
-      return;
-
     let options;
     switch (testCase) {
       case 'heading-offset-2':

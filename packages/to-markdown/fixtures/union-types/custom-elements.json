@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "union.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "union",
+          "type": {
+            "text": "'a'|'b'|'c'"
+          }
+        },
+        {
+          "kind": "function",
+          "name": "unionParam",
+          "return": {
+            "type": {
+              "text": "boolean"
+            }
+          },
+          "parameters": [
+            {
+              "name": "aOrBOrC",
+              "type": {
+                "text": "'a'|'b'|'c'"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "union",
+          "declaration": {
+            "name": "union",
+            "module": "./fixtures/-TEST/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "unionParam",
+          "declaration": {
+            "name": "unionParam",
+            "module": "./fixtures/-TEST/package/my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

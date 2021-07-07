@@ -119,7 +119,7 @@
 
 | Name           | Description               | Parameters              | Return    |
 | -------------- | ------------------------- | ----------------------- | --------- |
-| functionExport | This is a function export | `a: string, b: boolean`     | `boolean` |
+| functionExport | This is a function export | `a: string, b: boolean` | `boolean` |
 
 <hr/>
 
