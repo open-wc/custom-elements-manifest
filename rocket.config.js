@@ -28,5 +28,6 @@ export default {
 
   eleventy(eleventyConfig) {
     eleventyConfig.addPassthroughCopy('docs/_merged_assets/brand-logos/*.*');
+    eleventyConfig.addWatchTarget('docs/_assets/**/*.css');
   }
 }

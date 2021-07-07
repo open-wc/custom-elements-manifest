@@ -4,7 +4,7 @@ title: Custom Elements Manifest
 slogan: Codegen for Web Components
 callToActionItems:
   - text: Analyzer
-    href: /analyzer/
+    href: /analyzer/getting-started/
   - text: Plugins
     href: /analyzer/plugins/
 

@@ -1,4 +1,4 @@
-# Getting Started
+# Getting Started || 10
 
 Custom Elements Manifest is a file format that describes custom elements. This format will allow tooling and IDEs to give rich information about the custom elements in a given project. You can find the repository for the specification of the schema [here](https://github.com/webcomponents/custom-elements-manifest).
 
