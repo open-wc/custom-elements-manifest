@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MyElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "pub",
+              "privacy": "public",
+              "type": {
+                "text": "'public'"
+              },
+              "default": "'public'"
+            },
+            {
+              "kind": "field",
+              "name": "prot",
+              "privacy": "protected",
+              "type": {
+                "text": "'protected'"
+              },
+              "default": "'protected'"
+            },
+            {
+              "kind": "field",
+              "name": "priv",
+              "privacy": "private",
+              "type": {
+                "text": "'private'"
+              },
+              "default": "'private'"
+            },
+            {
+              "kind": "method",
+              "name": "publicMethod",
+              "privacy": "public",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "protectedMethod",
+              "privacy": "protected",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "privateMethod",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            }
+          ],
+          "tagName": "my-element"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "my-element",
+          "declaration": {
+            "name": "MyElement",
+            "module": "./my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

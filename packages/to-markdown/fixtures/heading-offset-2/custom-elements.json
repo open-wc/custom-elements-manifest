@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "experimental",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MyElement",
+          "cssProperties": [
+            {
+              "name": "--background-color",
+              "description": "Controls the color of bar"
+            }
+          ],
+          "events": [
+            {
+              "name": "my-event",
+              "type": {
+                "text": "Event"
+              }
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "prop1",
+              "privacy": "public"
+            },
+            {
+              "kind": "method",
+              "name": "instanceMethod",
+              "privacy": "public",
+              "description": "Some description of the method here",
+              "return": {
+                "type": {
+                  "text": ""
+                }
+              },
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                },
+                {
+                  "name": "a",
+                  "type": {
+                    "text": "string"
+                  },
+                  "description": "some description"
+                }
+              ]
+            }
+          ],
+          "tagName": "my-element"
+        },
+        {
+          "kind": "function",
+          "name": "functionExport",
+          "description": "This is a function export",
+          "return": {
+            "type": {
+              "text": "boolean"
+            }
+          },
+          "parameters": [
+            {
+              "name": "a",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "b",
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "my-element",
+          "declaration": {
+            "name": "MyElement",
+            "module": "./my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "functionExport",
+          "declaration": {
+            "name": "functionExport",
+            "module": "./my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}
