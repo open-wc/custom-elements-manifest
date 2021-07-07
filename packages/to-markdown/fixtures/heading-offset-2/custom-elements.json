@@ -144,7 +144,7 @@
                 {
                   "name": "a",
                   "type": {
-                    "text": "String"
+                    "text": "string"
                   },
                   "description": "some description"
                 }

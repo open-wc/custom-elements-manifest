@@ -48,10 +48,10 @@
 
 ### Methods
 
-| Name             | Privacy | Description                         | Parameters        | Return | Inherited From |
-| ---------------- | ------- | ----------------------------------- | ----------------- | ------ | -------------- |
-| instanceMethod   | public  | Some description of the method here | e Event, a String |        |                |
-| superClassMethod | public  |                                     |                   |        | SuperClass     |
+| Name             | Privacy | Description                         | Parameters            | Return | Inherited From |
+| ---------------- | ------- | ----------------------------------- | --------------------- | ------ | -------------- |
+| instanceMethod   | public  | Some description of the method here | `e: Event, a: string` |        |                |
+| superClassMethod | public  |                                     |                       |        | SuperClass     |
 
 ### Events
 
@@ -117,9 +117,9 @@
 
 ## Functions
 
-| Name           | Description               | Parameters          | Return    |
-| -------------- | ------------------------- | ------------------- | --------- |
-| functionExport | This is a function export | a string, b boolean | `boolean` |
+| Name           | Description               | Parameters              | Return    |
+| -------------- | ------------------------- | ----------------------- | --------- |
+| functionExport | This is a function export | `a: string, b: boolean`     | `boolean` |
 
 <hr/>
 

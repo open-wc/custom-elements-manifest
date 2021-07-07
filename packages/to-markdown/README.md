@@ -193,7 +193,7 @@ customElementsManifestToMarkdown(manifest, {
                 {
                   "name": "a",
                   "type": {
-                    "text": "String"
+                    "text": "string"
                   },
                   "description": "some description"
                 }
@@ -360,155 +360,155 @@ customElementsManifestToMarkdown(manifest, {
 
 <details><summary>Result</summary>
 
-## `./fixtures/-TEST/package/my-element.js`:
+  ## `./fixtures/-TEST/package/my-element.js`:
 
-### class: `SuperClass`
+  ### class: `SuperClass`
 
-#### Superclass
+  #### Superclass
 
-| Name       | Module | Package     |
-| ---------- | ------ | ----------- |
-| LitElement |        | lit-element |
+  | Name       | Module | Package     |
+  | ---------- | ------ | ----------- |
+  | LitElement |        | lit-element |
 
-#### Methods
+  #### Methods
 
-| Name             | Privacy | Description | Parameters | Return | Inherited From |
-| ---------------- | ------- | ----------- | ---------- | ------ | -------------- |
-| superClassMethod | public  |             |            |        |                |
+  | Name             | Privacy | Description | Parameters | Return | Inherited From |
+  | ---------------- | ------- | ----------- | ---------- | ------ | -------------- |
+  | superClassMethod | public  |             |            |        |                |
 
-#### Events
+  #### Events
 
-| Name         | Type               | Description    | Inherited From |
-| ------------ | ------------------ | -------------- | -------------- |
-| custom-event | `SuperCustomEvent` | this is custom |                |
+  | Name         | Type               | Description    | Inherited From |
+  | ------------ | ------------------ | -------------- | -------------- |
+  | custom-event | `SuperCustomEvent` | this is custom |                |
 
-<hr/>
+  <hr/>
 
-### class: `MyElement`, `my-element`
+  ### class: `MyElement`, `my-element`
 
-#### Superclass
+  #### Superclass
 
-| Name       | Module                                 | Package |
-| ---------- | -------------------------------------- | ------- |
-| SuperClass | ./fixtures/-TEST/package/my-element.js |         |
+  | Name       | Module                                 | Package |
+  | ---------- | -------------------------------------- | ------- |
+  | SuperClass | ./fixtures/-TEST/package/my-element.js |         |
 
-#### Mixins
+  #### Mixins
 
-| Name          | Module                                 | Package |
-| ------------- | -------------------------------------- | ------- |
-| LocalizeMixin |                                        | lion    |
-| Mixin         | ./fixtures/-TEST/package/my-element.js |         |
+  | Name          | Module                                 | Package |
+  | ------------- | -------------------------------------- | ------- |
+  | LocalizeMixin |                                        | lion    |
+  | Mixin         | ./fixtures/-TEST/package/my-element.js |         |
 
-#### Fields
+  #### Fields
 
-| Name  | Privacy | Type      | Default | Description | Inherited From |
-| ----- | ------- | --------- | ------- | ----------- | -------------- |
-| prop1 | public  |           |         |             |                |
-| prop2 | public  |           |         |             |                |
-| prop3 | public  | `boolean` | `true`  |             |                |
+  | Name  | Privacy | Type      | Default | Description | Inherited From |
+  | ----- | ------- | --------- | ------- | ----------- | -------------- |
+  | prop1 | public  |           |         |             |                |
+  | prop2 | public  |           |         |             |                |
+  | prop3 | public  | `boolean` | `true`  |             |                |
 
-#### Methods
+  #### Methods
 
-| Name             | Privacy | Description                         | Parameters        | Return | Inherited From |
-| ---------------- | ------- | ----------------------------------- | ----------------- | ------ | -------------- |
-| instanceMethod   | public  | Some description of the method here | e Event, a String |        |                |
-| superClassMethod | public  |                                     |                   |        | SuperClass     |
+  | Name             | Privacy | Description                         | Parameters            | Return | Inherited From |
+  | ---------------- | ------- | ----------------------------------- | --------------------- | ------ | -------------- |
+  | instanceMethod   | public  | Some description of the method here | `e: Event, a: string` |        |                |
+  | superClassMethod | public  |                                     |                       |        | SuperClass     |
 
-#### Events
+  #### Events
 
-| Name         | Type               | Description    | Inherited From |
-| ------------ | ------------------ | -------------- | -------------- |
-| my-event     | `Event`            |                |                |
-| custom-event | `SuperCustomEvent` | this is custom | SuperClass     |
+  | Name         | Type               | Description    | Inherited From |
+  | ------------ | ------------------ | -------------- | -------------- |
+  | my-event     | `Event`            |                |                |
+  | custom-event | `SuperCustomEvent` | this is custom | SuperClass     |
 
-#### Attributes
+  #### Attributes
 
-| Name   | Field | Inherited From |
-| ------ | ----- | -------------- |
-| prop-1 | prop1 |                |
-| prop2  | prop2 |                |
+  | Name   | Field | Inherited From |
+  | ------ | ----- | -------------- |
+  | prop-1 | prop1 |                |
+  | prop2  | prop2 |                |
 
-#### CSS Properties
+  #### CSS Properties
 
-| Name               | Description               |
-| ------------------ | ------------------------- |
-| --background-color | Controls the color of bar |
+  | Name               | Description               |
+  | ------------------ | ------------------------- |
+  | --background-color | Controls the color of bar |
 
-#### Slots
+  #### Slots
 
-| Name      | Description                    |
-| --------- | ------------------------------ |
-| container | You can put some elements here |
+  | Name      | Description                    |
+  | --------- | ------------------------------ |
+  | container | You can put some elements here |
 
-<details><summary>Private API</summary>
+  <details><summary>Private API</summary>
 
-#### Fields
+  #### Fields
 
-| Name      | Privacy   | Type     | Default | Description           | Inherited From |
-| --------- | --------- | -------- | ------- | --------------------- | -------------- |
-| foo       | private   | `string` | `'bar'` | description goes here |                |
-| mixinProp | protected | `number` | `1`     |                       | Mixin          |
+  | Name      | Privacy   | Type     | Default | Description           | Inherited From |
+  | --------- | --------- | -------- | ------- | --------------------- | -------------- |
+  | foo       | private   | `string` | `'bar'` | description goes here |                |
+  | mixinProp | protected | `number` | `1`     |                       | Mixin          |
 
-</details>
+  </details>
 
-<hr/>
+  <hr/>
 
-### mixin: `MyMixin4`
+  ### mixin: `MyMixin4`
 
-#### Parameters
+  #### Parameters
 
-| Name  | Type     | Default | Description             |
-| ----- | -------- | ------- | ----------------------- |
-| klass | `*`      |         | This is the description |
-| foo   | `string` |         | Description goes here   |
+  | Name  | Type     | Default | Description             |
+  | ----- | -------- | ------- | ----------------------- |
+  | klass | `*`      |         | This is the description |
+  | foo   | `string` |         | Description goes here   |
 
-<hr/>
+  <hr/>
 
-### mixin: `Mixin`
+  ### mixin: `Mixin`
 
-#### Parameters
+  #### Parameters
 
-| Name  | Type | Default | Description             |
-| ----- | ---- | ------- | ----------------------- |
-| klass | `*`  |         | This is the description |
+  | Name  | Type | Default | Description             |
+  | ----- | ---- | ------- | ----------------------- |
+  | klass | `*`  |         | This is the description |
 
-<details><summary>Private API</summary>
+  <details><summary>Private API</summary>
 
-#### Fields
+  #### Fields
 
-| Name      | Privacy   | Type     | Default | Description | Inherited From |
-| --------- | --------- | -------- | ------- | ----------- | -------------- |
-| mixinProp | protected | `number` | `1`     |             |                |
+  | Name      | Privacy   | Type     | Default | Description | Inherited From |
+  | --------- | --------- | -------- | ------- | ----------- | -------------- |
+  | mixinProp | protected | `number` | `1`     |             |                |
 
-</details>
+  </details>
 
-<hr/>
+  <hr/>
 
-### Variables
+  ### Variables
 
-| Name                 | Description                 | Type      |
-| -------------------- | --------------------------- | --------- |
-| variableExport       | this is a var export        | `boolean` |
-| stringVariableExport | this is a string var export | `string`  |
+  | Name                 | Description                 | Type      |
+  | -------------------- | --------------------------- | --------- |
+  | variableExport       | this is a var export        | `boolean` |
+  | stringVariableExport | this is a string var export | `string`  |
 
-<hr/>
+  <hr/>
 
-### Functions
+  ### Functions
 
-| Name           | Description               | Parameters          | Return    |
-| -------------- | ------------------------- | ------------------- | --------- |
-| functionExport | This is a function export | a string, b boolean | `boolean` |
+  | Name           | Description               | Parameters              | Return    |
+  | -------------- | ------------------------- | ----------------------- | --------- |
+  | functionExport | This is a function export | `a: string, b: boolean` | `boolean` |
 
-<hr/>
+  <hr/>
 
-### Exports
+  ### Exports
 
-| Kind                      | Name                 | Declaration          | Module                                 | Package |
-| ------------------------- | -------------------- | -------------------- | -------------------------------------- | ------- |
-| js                        | SuperClass           | SuperClass           | ./fixtures/-TEST/package/my-element.js |         |
-| custom-element-definition | my-element           | MyElement            | ./fixtures/-TEST/package/my-element.js |         |
-| js                        | variableExport       | variableExport       | ./fixtures/-TEST/package/my-element.js |         |
-| js                        | stringVariableExport | stringVariableExport | ./fixtures/-TEST/package/my-element.js |         |
-| js                        | functionExport       | functionExport       | ./fixtures/-TEST/package/my-element.js |         |
+  | Kind                      | Name                 | Declaration          | Module                                 | Package |
+  | ------------------------- | -------------------- | -------------------- | -------------------------------------- | ------- |
+  | js                        | SuperClass           | SuperClass           | ./fixtures/-TEST/package/my-element.js |         |
+  | custom-element-definition | my-element           | MyElement            | ./fixtures/-TEST/package/my-element.js |         |
+  | js                        | variableExport       | variableExport       | ./fixtures/-TEST/package/my-element.js |         |
+  | js                        | stringVariableExport | stringVariableExport | ./fixtures/-TEST/package/my-element.js |         |
+  | js                        | functionExport       | functionExport       | ./fixtures/-TEST/package/my-element.js |         |
 
 </details>

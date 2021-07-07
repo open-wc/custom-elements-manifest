@@ -12,13 +12,16 @@ import { serialize } from './lib/serialize.js';
 
 const line = html('<hr/>');
 
+const formatParameters = x =>
+  x?.parameters?.map(param => `${param?.name}: ${param?.type?.text?.replace(/\|/g, '\\|') || ''}`).join(', ');
+
 const DECLARATION = { heading: 'Declaration',     get: x => x.declaration?.name ?? '' };
 const DEFAULT =     { heading: 'Default',         get: x => x.default, cellType: inlineCode };
 const ATTR_FIELD =  { heading: 'Field',           get: x => x.fieldName };
 const INHERITANCE = { heading: 'Inherited From',  get: x => x.inheritedFrom?.name ?? '' };
 const MODULE =      { heading: 'Module',          get: x => x.declaration?.module ?? '' };
 const PACKAGE =     { heading: 'Package',         get: x => x.declaration?.package ?? '' };
-const PARAMETERS =  { heading: 'Parameters',      get: x => `${x?.parameters?.map(param => `${param?.name} ${param?.type?.text?.replace(/\|/g, '\\|') || ''}`).join(', ') || ''}` };
+const PARAMETERS =  { heading: 'Parameters',      get: formatParameters, cellType: inlineCode };
 const RETURN =      { heading: 'Return',          get: x => x.return?.type?.text ?? x.return, cellType: inlineCode };
 const TYPE =        { heading: 'Type',            get: x => x.type?.text ?? '', cellType: inlineCode };
 
