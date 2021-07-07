@@ -17,10 +17,15 @@ testCases.forEach(testCase => {
     const outputPath = path.join(fixturesDir, `${testCase}/README.md`);
     const expectPath = path.join(fixturesDir, `${testCase}/EXPECTED.md`);
 
-    // TODO: do this bettere
-    const options =
-        testCase === 'heading-offset-2' ? { headingOffset: 2 }
-      : undefined;
+    let options;
+    switch (testCase) {
+      case 'heading-offset-2':
+        options = { headingOffset: 2 }; break;
+      case 'hide-private':
+        options = { private: 'hidden' }; break;
+      case 'details-private':
+        options = { private: 'details' }; break;
+    }
 
     const output = customElementsManifestToMarkdown(manifest, options);
 

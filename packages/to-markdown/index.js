@@ -1,12 +1,8 @@
 import { html, heading, inlineCode, root, table, tableCell, tableRow, text } from 'mdast-builder';
+import { capital, compose, identity, isPrivate, kindIs, not, repeat } from './lib/fp.js';
 import { serialize } from './lib/serialize.js';
 
 const line = html('<hr/>');
-
-const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)));
-const kindIs = test => ({ kind }) => kind === test;
-const repeat = (length, x) => Array.from({ length }, () => x);
-const capital = x => typeof x !== 'string' ? x : x.trim().replace(/^\w/, c => c.toUpperCase());
 
 const DECLARATION = { heading: 'Declaration',     get: x => x.declaration?.name ?? '' };
 const DEFAULT =     { heading: 'Default',         get: x => x.default, cellType: inlineCode };
@@ -41,10 +37,10 @@ const defaultDescriptor = name =>
 const getDescriptor = x =>
   typeof x === 'string' ? defaultDescriptor(x) : x;
 
-/** [Declaration] -> Descriptor -> Column */
-const getColumn = decls =>
+/** ([Declaration], (Declaration -> boolean)) -> Descriptor -> Column */
+const getColumn = (decls, filter) =>
   ({ heading, get, cellType = text }) =>
-    ({ heading, cellType, values: decls.map(x => get(x)) })
+    ({ heading, cellType, values: decls.filter(filter).map(x => get(x)) })
 
 /** Column -> Cell */
 const getHeading = x =>
@@ -69,12 +65,18 @@ const tableWithTitle = options =>
    * @param  {T[]} decls
    */
   (title, names, decls, { headingLevel = 3 } = { }) => {
-    if (!(decls ?? []).filter(Boolean).length) return [];
+    if (!(decls ?? []).filter(identity).length) return [];
+
+    const filter = (
+        options?.private === 'hidden' ? not(isPrivate)
+      : options?.private === 'details' ? not(isPrivate)
+      : x => x
+    );
 
     // xs.map(compose(g, f)) === xs.map(f).map(g)
-    const columns = names.map(compose(getColumn(decls), getDescriptor))
+    const columns = names.map(compose(getColumn(decls, filter), getDescriptor))
 
-    const contentRows = decls.map(getRows(columns));
+    const contentRows = decls.filter(filter).map(getRows(columns));
 
     return [
       heading(headingLevel + (options?.headingOffset ?? 0), text(title)),
@@ -126,7 +128,7 @@ function makeModuleDoc(mod, options) {
         ...makeTable('CSS Properties', ['name', 'description'], decl.cssProperties),
         ...makeTable('Parts', ['name', 'description'], decl.parts),
         ...makeTable('Slots', ['name', 'description'], decl.slots),
-      ].filter(Boolean);
+      ].filter(identity);
 
       if (nodes.length)
         nodes.push(line);
@@ -139,7 +141,7 @@ function makeModuleDoc(mod, options) {
     ...makeTable('Functions', ['name', 'description', PARAMETERS, RETURN], functions, { headingLevel: 2} ),
     ...functions.length ? [line] : [],
     ...makeTable('Exports', ['kind', 'name', DECLARATION, MODULE, PACKAGE], mod.exports, { headingLevel: 2} ),
-  ].filter(Boolean)
+  ].filter(identity)
 
 
 }
@@ -153,7 +155,7 @@ export function customElementsManifestToMarkdown(manifest, options) {
   const tree =
     root(manifest.modules
       .flatMap(x => makeModuleDoc(x, options))
-      .filter(Boolean))
+      .filter(identity))
 
   return serialize(tree);
 }
