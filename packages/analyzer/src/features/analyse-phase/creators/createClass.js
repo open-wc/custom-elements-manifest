@@ -67,7 +67,6 @@ export function createClass(node, moduleDoc, context) {
    * We do this in two passes, because we need to know whether or not a class has any 
    * attributes, so we handle those first.
    */
-  const gettersAndSetters = [];
   node?.members?.forEach(member => {
     /**
      * Handle class methods
@@ -81,18 +80,6 @@ export function createClass(node, moduleDoc, context) {
      * Handle fields
      */
     if (isProperty(member)) {
-      /**
-       * A  class can have a static prop and an instance prop with the same name,
-       * both should be output in the CEM
-       */
-      if (!isStaticMember(member)) {
-        if (gettersAndSetters.includes(member?.name?.getText())) {
-          return;
-        } else {
-          gettersAndSetters.push(member?.name?.getText());
-        }
-      }
-
       const field = createField(member);
 
       /** Flag class fields that get assigned a variable, so we can resolve it later (in the RESOLVE-INITIALIZERS plugin) */
@@ -101,8 +88,6 @@ export function createClass(node, moduleDoc, context) {
           ...resolveModuleOrPackageSpecifier(moduleDoc, context, member?.initializer?.getText()),
         }
       }
-
-      classTemplate.members.push(field);
 
       /**
        * Handle @attr
@@ -127,6 +112,26 @@ export function createClass(node, moduleDoc, context) {
           classTemplate.attributes.push(attribute);
         }
       }
+
+      /**
+       * A class can have a static prop and an instance prop with the same name,
+       * both should be output in the CEM
+       * 
+       * If not a static prop, we merge getter and setter pairs here
+       */
+      if(field?.static) {
+        classTemplate.members.push(field);
+      } else {
+        const fieldExists = classTemplate.members
+          .filter(mem => !mem?.static)
+          .find(mem => mem?.name === member?.name?.getText());
+
+        if(fieldExists) {
+          classTemplate.members = classTemplate.members.map(mem => mem?.name === member?.name?.getText() && !mem?.static ? {...mem, ...field} : mem);
+        } else {
+          classTemplate.members.push(field);
+        }
+      }
     }
 
     /**
@@ -138,10 +143,6 @@ export function createClass(node, moduleDoc, context) {
       eventsVisitor(member, classTemplate);
     }
   });
-
-  // classTemplate?.members?.forEach(member => {
-  //   getDefaultValuesFromConstructorVisitor(node, member, context);
-  // });
 
   getDefaultValuesFromConstructorVisitor(node, classTemplate, context);
 

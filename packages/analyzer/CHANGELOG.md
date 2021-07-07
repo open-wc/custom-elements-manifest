@@ -1,3 +1,8 @@
+## Release 0.4.11
+- Merge together getter/setter pairs when possible
+- Fix inheritance default/type bug
+- Improved error logging
+
 ## Release 0.4.10
 - Recognize `PrefixUnaryExpression` as being `number` when handling type inferrence
 

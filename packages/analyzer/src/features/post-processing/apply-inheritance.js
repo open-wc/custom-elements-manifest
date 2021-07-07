@@ -45,10 +45,22 @@ export function applyInheritancePlugin() {
               const existing = customElement?.[type]?.find(item => newItem.name === item.name);
 
               if (existing) {
+                
                 existing.inheritedFrom = {
                   name: klass.name,
                   ...resolveModuleOrPackageSpecifier(containingModule, context, klass.name)
                 }
+
+                customElement[type] = customElement?.[type]?.map(item => item.name === existing.name 
+                  ? {
+                      ...newItem, 
+                      ...existing,
+                      ...{ 
+                        ...(newItem.type ? { type: newItem.type } : {}),
+                        ...(newItem.privacy ? { privacy: newItem.privacy } : {})
+                      }
+                    } 
+                  : item);
               } else {
                 newItem.inheritedFrom = {
                   name: klass.name,

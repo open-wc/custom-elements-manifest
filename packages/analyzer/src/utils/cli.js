@@ -100,7 +100,7 @@ export async function addFrameworkPlugins(mergedOptions) {
 
 export function timestamp() {
   const date = new Date();
-  return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds() }`;
+  return date.toLocaleTimeString();
 }
 
 export function addCustomElementsPropertyToPackageJson(outdir) {

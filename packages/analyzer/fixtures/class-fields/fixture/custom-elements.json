@@ -60,6 +60,18 @@
             },
             {
               "kind": "field",
+              "name": "getter2",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "getter2",
+              "static": true
+            },
+            {
+              "kind": "field",
               "name": "alsoAttr",
               "description": "This is also an attribute",
               "type": {

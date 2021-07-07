@@ -13,27 +13,19 @@
           "members": [
             {
               "kind": "field",
-              "name": "maxlength",
+              "name": "foo",
               "type": {
-                "text": "number"
-              },
-              "default": "-1",
-              "attribute": "maxlength"
-            }
-          ],
-          "attributes": [
+                "text": "string"
+              }
+            },
             {
-              "name": "maxlength",
-              "type": {
-                "text": "number"
-              },
-              "default": "-1",
-              "fieldName": "maxlength"
+              "kind": "field",
+              "name": "foo",
+              "static": true
             }
           ],
           "superclass": {
-            "name": "LitElement",
-            "module": "fixtures/-default/package/bar.js"
+            "name": "HTMLElement"
           },
           "customElement": true
         }
