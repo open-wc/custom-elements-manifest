@@ -6,7 +6,7 @@ callToActionItems:
   - text: Analyzer
     href: /analyzer/getting-started/
   - text: Plugins
-    href: /analyzer/plugins/
+    href: /analyzer/plugins/intro/
 
 reasons:
   - header: CLI
