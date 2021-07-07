@@ -131,7 +131,7 @@ cem analyze
 - [Catalyst](https://github.github.io/catalyst/) (opt-in via CLI flag)
 - [Atomico](https://atomicojs.github.io/) (opt-in via [community plugin](https://github.com/atomicojs/custom-elements-manifest))
 
-Support for other web component libraries can be done via custom [plugins](../analyzer/plugins/), feel free to create your own for your favourite libraries.
+Support for other web component libraries can be done via custom [plugins](../plugins/), feel free to create your own for your favourite libraries.
 
 
 ### Documenting your components

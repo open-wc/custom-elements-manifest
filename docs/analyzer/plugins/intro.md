@@ -4,7 +4,7 @@ You can also write custom plugins to extend the functionality to fit what your p
 
 > ✨ **TIP:** You can use the [online playground](https://custom-elements-manifest.netlify.app/) for quickly prototyping plugin ideas, right in the browser
 
-A plugin is a function that returns an object. You can read about plugins in more detail in the [authoring plugins documentation](./authoring/). There are several hooks you can opt in to:
+A plugin is a function that returns an object. You can read about plugins in more detail in the [authoring plugins documentation](../authoring/). There are several hooks you can opt in to:
 
 - **collectPhase**: First passthrough through the AST of all modules in a project, before continuing to the `analyzePhase`. Runs for each module, and gives access to a Context object that you can use for sharing data between phases, and gives access to the AST nodes of your source code. This is useful for collecting information you may need access to in a later phase.
 - **analyzePhase**: Runs for each module, and gives access to the current Module's moduleDoc, and gives access to the AST nodes of your source code. This is generally used for AST stuff.
@@ -13,7 +13,7 @@ A plugin is a function that returns an object. You can read about plugins in mor
 
 > ✨ **TIP:** When writing custom plugins, [ASTExplorer](https://astexplorer.net/#/gist/f99a9fba2c21e015d0a8590d291523e5/cce02565e487b584c943d317241991f19b105f94) is your friend 🙂
 
-To get started developing custom plugins, take a look at the [cem-plugin-template](https://github.com/open-wc/cem-plugin-template) repository to quickly get you up and running.  Also take a look at the [authoring plugins documentation](./authoring/).
+To get started developing custom plugins, take a look at the [cem-plugin-template](https://github.com/open-wc/cem-plugin-template) repository to quickly get you up and running.  Also take a look at the [authoring plugins documentation](../authoring/).
 
 `custom-elements-manifest.config.mjs`:
 ```js
@@ -35,7 +35,7 @@ export default {
 }
 ```
 
-> ✨ **TIP:** Make sure to check out the [cem-plugin-template](https://github.com/open-wc/cem-plugin-template) repository if you're interested in authoring custom plugins, and check the [authoring plugins documentation](./authoring/) for more information.
+> ✨ **TIP:** Make sure to check out the [cem-plugin-template](https://github.com/open-wc/cem-plugin-template) repository if you're interested in authoring custom plugins, and check the [authoring plugins documentation](../authoring/) for more information.
 
 ## Community Plugins
 

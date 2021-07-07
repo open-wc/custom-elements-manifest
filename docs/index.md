@@ -11,7 +11,7 @@ callToActionItems:
 reasons:
   - header: CLI
     text: Generate manifests from source code.
-    image: _assets/cli.png
+    image: /_assets/cli.png
     alt: |
       npm i -D \
         @custom-elements-manifest/analyzer
@@ -19,7 +19,7 @@ reasons:
       npx cem analyze --litelement
   - header: Plugins
     text: Plugin-based architecture to customize all the things.
-    image: _assets/plugins.png
+    image: /_assets/plugins.png
     alt: |
       export default {
         plugins: [
@@ -28,7 +28,7 @@ reasons:
       }
   - header: Ecosystem
     text: Active community contributions.
-    image: _assets/ecosystem.png
+    image: /_assets/ecosystem.png
     alt: |
       npm i -D \
         cem-plugin-readonly \
