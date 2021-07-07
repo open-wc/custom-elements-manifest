@@ -26,4 +26,7 @@ export default {
     }),
   ],
 
+  eleventy(eleventyConfig) {
+    eleventyConfig.addPassthroughCopy('docs/_merged_assets/brand-logos/*.*');
+  }
 }
