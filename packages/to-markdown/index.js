@@ -3,10 +3,9 @@ import {
   capital, repeat,
   compose, identity,
   isPrivate, isProtected,
-  isClassLike, isMixin, isLengthy,
+  isLengthy,
   kindIs,
   not, or,
-  trace,
 } from './lib/fp.js';
 import { serialize } from './lib/serialize.js';
 
