@@ -24,7 +24,9 @@
   },
   "files": [
     "*.d.ts",
-    "*.js"
+    "*.js",
+    "lib/**/*",
+    "dist/**/*"
   ],
   "keywords": [
     "custom-elements",
