@@ -14,9 +14,9 @@ export default {
     codeTabs({
       collections: {
         packageManagers: {
-          npm: { label: 'NPM', iconHref: '/_merged_assets/brand-logos/npm.svg' },
-          yarn: { label: 'Yarn', iconHref: '/_merged_assets/brand-logos/yarn.svg' },
-          pnpm: { label: 'PNPM', iconHref: '/_merged_assets/brand-logos/pnpm.svg' },
+          npm: { label: 'NPM', iconHref: '/_merged_assets/_static/logos/npm.svg' },
+          yarn: { label: 'Yarn', iconHref: '/_merged_assets/_static/logos/yarn.svg' },
+          pnpm: { label: 'PNPM', iconHref: '/_merged_assets/_static/logos/pnpm.svg' },
         },
         demo: {
           input: { label: 'Input' },
@@ -27,7 +27,6 @@ export default {
   ],
 
   eleventy(eleventyConfig) {
-    eleventyConfig.addPassthroughCopy('docs/_merged_assets/brand-logos/*.*');
     eleventyConfig.addWatchTarget('docs/_assets/**/*.css');
   }
 }
