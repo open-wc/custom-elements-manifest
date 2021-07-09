@@ -24,7 +24,7 @@
     "readme"
   ],
   "dependencies": {
-    "@custom-elements-manifest/to-markdown": "^0.0.8"
+    "@custom-elements-manifest/to-markdown": "^0.0.9"
   },
   "peerDependencies": {
     "@custom-elements-manifest/analyzer": "^0.4.10"
