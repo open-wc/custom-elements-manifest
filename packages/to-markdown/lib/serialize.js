@@ -1,6 +1,6 @@
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { fromMarkdown } from 'mdast-util-from-markdown';
-import * as gfm from 'mdast-util-gfm'
+import { gfmFromMarkdown, gfmToMarkdown } from 'mdast-util-gfm'
 
 /**
  * Renders a custom elements manifest as Markdown
@@ -9,13 +9,13 @@ import * as gfm from 'mdast-util-gfm'
  */
 export function serialize(tree) {
   return toMarkdown(tree, {
-    extensions: [gfm.gfmToMarkdown()]
+    extensions: [gfmToMarkdown()]
   })
 }
 
 export function parse(markdown) {
   return fromMarkdown(markdown, {
-    extentions: [gfm.fromMarkdown],
+    extentions: [gfmFromMarkdown],
   });
 }
 
