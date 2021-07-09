@@ -22,9 +22,9 @@
 
 ##### CSS Properties
 
-| Name               | Description               |
-| ------------------ | ------------------------- |
-| --background-color | Controls the color of bar |
+| Name               | Default         | Description               |
+| ------------------ | --------------- | ------------------------- |
+| --background-color | `rebeccapurple` | Controls the color of bar |
 
 <hr/>
 

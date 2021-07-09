@@ -138,7 +138,7 @@ function makeModuleDoc(mod, options) {
         ...makeTable('Methods', ['name', 'privacy', 'description', PARAMETERS, RETURN, INHERITANCE], methods),
         ...makeTable('Events', ['name', TYPE, 'description', INHERITANCE], decl.events),
         ...makeTable('Attributes', ['name', ATTR_FIELD, INHERITANCE], decl.attributes),
-        ...makeTable('CSS Properties', ['name', 'description'], decl.cssProperties),
+        ...makeTable('CSS Properties', ['name', DEFAULT, 'description'], decl.cssProperties),
         ...makeTable('Parts', ['name', 'description'], decl.parts),
         ...makeTable('Slots', ['name', 'description'], decl.slots),
       ].filter(identity);

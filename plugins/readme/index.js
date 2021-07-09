@@ -31,8 +31,8 @@ export function readmePlugin(options) {
       const outPath = join(from, to);
 
       try {
-        const head = readFileSync(join(from, header));
-        const foot = readFileSync(join(from, footer));
+        const head = header && readFileSync(join(from, header));
+        const foot = footer && readFileSync(join(from, footer));
 
         const markdown = customElementsManifestToMarkdown(customElementsManifest, {
           headingOffset,
