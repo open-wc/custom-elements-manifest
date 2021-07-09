@@ -1,0 +1,32 @@
+{
+  "name": "cem-plugin-readme",
+  "version": "0.1.0",
+  "description": "Generate README.md from custom elements sources",
+  "author": "open-wc",
+  "contributors": [
+    "Benny Powers <web@bennypowers.com>"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "test": "uvu test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-wc/custom-elements-manifest.git",
+    "directory": "plugins/readme"
+  },
+  "type": "module",
+  "main": "index.js",
+  "keywords": [
+    "custom-elements-manifest",
+    "markdown",
+    "plugin",
+    "readme"
+  ],
+  "dependencies": {
+    "@custom-elements-manifest/to-markdown": "^0.0.8"
+  },
+  "peerDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.4.10"
+  }
+}
