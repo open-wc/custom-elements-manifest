@@ -36,6 +36,7 @@
           "cssProperties": [
             {
               "name": "--background-color",
+              "default": "rebeccapurple",
               "description": "Controls the color of bar"
             }
           ],

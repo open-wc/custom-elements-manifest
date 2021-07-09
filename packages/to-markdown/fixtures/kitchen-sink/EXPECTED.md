@@ -70,9 +70,9 @@
 
 ### CSS Properties
 
-| Name               | Description               |
-| ------------------ | ------------------------- |
-| --background-color | Controls the color of bar |
+| Name               | Default         | Description               |
+| ------------------ | --------------- | ------------------------- |
+| --background-color | `rebeccapurple` | Controls the color of bar |
 
 ### Slots
 
@@ -83,6 +83,7 @@
 <hr/>
 
 ## mixin: `MyMixin4`
+
 ### Parameters
 
 | Name  | Type     | Default | Description             |
@@ -93,6 +94,7 @@
 <hr/>
 
 ## mixin: `Mixin`
+
 ### Parameters
 
 | Name  | Type | Default | Description             |
