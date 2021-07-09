@@ -8,8 +8,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "test": "uvu test",
-    "test:watch": "uvu -w test"
+    "test": "uvu test"
   },
   "repository": {
     "type": "git",
@@ -22,7 +21,7 @@
     "custom-elements-manifest",
     "markdown",
     "plugin",
-    "copy"
+    "readme"
   ],
   "dependencies": {
     "@custom-elements-manifest/to-markdown": "^0.0.8"
