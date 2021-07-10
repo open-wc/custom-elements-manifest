@@ -9,7 +9,7 @@ import ts from 'typescript';
 import { create } from '../src/create.js';
 
 const fixturesDir = path.join(process.cwd(), 'fixtures');
-let testCases = fs.readdirSync(fixturesDir);
+let testCases = fs.readdirSync(fixturesDir).filter(x => !x.startsWith('cli-'));
 
 const runSingle = testCases.find(_case => _case.startsWith('+'));
 if (runSingle) {
@@ -37,7 +37,7 @@ testCases.forEach(testCase => {
       .map(glob => {
         const relativeModulePath = `.${path.sep}${path.relative(process.cwd(), glob)}`;
         const source = fs.readFileSync(relativeModulePath).toString();
-    
+
         return ts.createSourceFile(
           relativeModulePath,
           source,
@@ -52,12 +52,19 @@ testCases.forEach(testCase => {
       const config = await import(manifestPathFileURL);
       plugins = [...config.default.plugins];
     } catch {}
-    
+
     const result = create({modules, plugins});
 
     fs.writeFileSync(outputPath, JSON.stringify(result, null, 2));
 
     assert.equal(result, fixture);
+
+    if (testCase === 'readme-flag')
+      assert.equal(
+        fs.readFileSync(path.join(path.dirname(outputPath), 'README.md')),
+        fs.readFileSync(path.join(path.dirname(fixturePath), 'README.md')),
+        '--readme flag'
+      )
   });
 });
 
