@@ -1,25 +1,25 @@
 html {
-  --page-background: white;
-  --footer-background: rgba(0, 0, 0, 0.02);
-  --primary-color: rgb(44, 62, 80);
-  --primary-color-lighter: #449ad7;
-  --primary-color-darker: #1a5285;
-  --primary-color-accent: #cee5f6;
-  --contrast-color-light: #fff;
+  --button-one-hover: #436eff;
+  --button-one: #2758ff;
+  --button-two-hover: #444;
+  --button-two: black;
+  --code-button-background: var(--markdown-table-row-odd-background-color);
+  --code-button-focus-background: var(--markdown-syntax-background-color);
+  --code-tabs-tabs-background: var(--page-background);
   --contrast-color-dark: #1d3557;
-  --primary-text-color: #2c3e50;
-  --primary-lines-color: #ccc;
-  --markdown-link-color: #2758ff;
+  --contrast-color-light: #fff;
+  --footer-background: rgba(0, 0, 0, 0.02);
   --header-color: white;
+  --markdown-link-color: #2758ff;
   --owc-active-color: #2758ff;
   --owc-hover-color: #436eff;
-  --button-one: #2758ff;
-  --button-one-hover: #436eff;
-  --button-two: black;
-  --button-two-hover: #444;
-  --code-tabs-tabs-background: var(--page-background);
-  --code-button-focus-background: var(--markdown-syntax-background-color);
-  --code-button: var(--markdown-table-row-odd-background-color);
+  --page-background: white;
+  --primary-color-accent: #cee5f6;
+  --primary-color-darker: #1a5285;
+  --primary-color-lighter: #449ad7;
+  --primary-color: rgb(44, 62, 80);
+  --primary-lines-color: #ccc;
+  --primary-text-color: #2c3e50;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -58,9 +58,9 @@ html {
     --markdown-kbd-border-bottom-color: #959da5;
     --markdown-kbd-color: #444d56;
     --markdown-heading-color-6: #6a737d;
-    --markdown-table-background-color: #fff;
     --markdown-table-border-color: #c6cbd1;
-    --markdown-table-row-odd-background-color: #f6f8fa;
+    --markdown-table-background-color: #212121;
+    --markdown-table-row-odd-background-color: var(--markdown-syntax-background-color);
     --markdown-code-background-color: rgba(27, 31, 35, 0.05);
     --markdown-pre-background-color: rgb(49, 49, 49);
 
@@ -130,44 +130,4 @@ html {
   .language-css {
     --markdown-syntax-string-color: #81a1c1;
   }
-}
-
-body[layout='home'] .markdown-body .call-to-action:nth-of-type(2) {
-  --primary-color: #222;
-  --primary-color-lighter: #333;
-  --primary-color-darker: #000;
-}
-
-.call-to-action {
-  background: var(--button-one) !important;
-  text-shadow: none !important;
-  border-radius: 5px !important;
-  padding-top: 15px !important;
-  padding-bottom: 15px !important;
-  border: none !important;
-}
-
-.call-to-action:hover,
-.call-to-action:focus,
-.call-to-action:active {
-  background: var(--button-one-hover) !important;
-}
-
-.call-to-action:nth-child(2) {
-  background: var(--button-two) !important;
-}
-
-.call-to-action:nth-child(2):hover,
-.call-to-action:nth-child(2):focus,
-.call-to-action:nth-child(2):active {
-  background: var(--button-two-hover) !important;
-}
-
-code-tabs[collection="package-managers"] {
-  --code-tabs-icon-height: 18px;
-  --code-tabs-justify-tabs: end;
-}
-
-:not(rocket-navigation):not(:defined) {
-  opacity: 0;
 }
