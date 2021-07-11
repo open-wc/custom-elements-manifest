@@ -3078,7 +3078,7 @@ es-to-primitive@^1.2.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
-esbuild-plugin-lit-css@^1.0.0:
+esbuild-plugin-lit-css@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/esbuild-plugin-lit-css/-/esbuild-plugin-lit-css-1.0.2.tgz#d7bd763cdb8ad1f35a2fc8596ad4857faa5f6c23"
   integrity sha512-mVTY8GyqIdwXdkYQ9dU88dMRQ0vvL9Ywro2M81+sn5a3MQXhi4HHJ9U+ORyIhlZMsOtHQvI45QRAll67x4XBeA==
@@ -6358,20 +6358,20 @@ rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
-rocket-preset-code-tabs@^0.1.3:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/rocket-preset-code-tabs/-/rocket-preset-code-tabs-0.1.4.tgz#d3814a1d1ebd5a987e1365cdf817cf23258c04a3"
-  integrity sha512-eW9jqz+aN8eJqokqZFdCPvd5GtVqsheqmcqwlPu0N7z+jzLM+x4my+Eqi7ri8H7x1/IcsMZZ8XNtO8eSHoaBPA==
+rocket-preset-code-tabs@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/rocket-preset-code-tabs/-/rocket-preset-code-tabs-0.2.2.tgz#de2892d31fbe9fa0368e6015de181e94558cffac"
+  integrity sha512-GLgdblYomQIwlMS0uYOCFugHoYaVFKwGzwcWA+d34TKMPciRz10Hcj9Y4nyViIp6XodW6blWNvH+aE6oN2EA9Q==
   dependencies:
     "@pwrs/mixins" "^0.2.0"
     eleventy-plugin-add-web-component-definitions "^2.0.3"
     esbuild "^0.12.15"
-    esbuild-plugin-lit-css "^1.0.0"
+    esbuild-plugin-lit-css "^1.0.2"
     hirestime "^6.1.0"
     lit "^2.0.0-rc.2"
-    rocket-preset-markdown-directives "^0.1.1"
+    rocket-preset-markdown-directives "^0.1.3"
 
-rocket-preset-markdown-directives@^0.1.1:
+rocket-preset-markdown-directives@^0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/rocket-preset-markdown-directives/-/rocket-preset-markdown-directives-0.1.3.tgz#d1b8eb3dab1e6842b56c7d3d2e9e468950c3584b"
   integrity sha512-N0npyQjJkPgKBeDeQBXK2/61Sb4gRCoG5VQRw7v3M3by3bv1JaFd1+x37SyvtEk6b/XYmP74A+Nfg8obJ1I4EQ==
