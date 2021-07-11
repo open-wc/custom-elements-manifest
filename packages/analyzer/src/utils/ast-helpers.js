@@ -129,3 +129,34 @@ export function isWellKnownType(node) {
     )
   );
 }
+
+/**
+ * Whether or not a node has an `@ignore` jsdoc annotation
+ */
+ export const hasIgnoreJSDoc = node => node?.jsDoc?.some(doc => doc?.tags?.some(tag => safe(() => tag?.tagName?.getText()) === 'ignore' || safe(() => tag?.tagName?.getText()) === 'internal'));
+
+/**
+ * Does the variable have an `@ignore` or `@internal` JSDoc tag?
+ * @param  {import('typescript').Node|string} nodeOrName
+ * @param  {import('typescript').SourceFile}  sourceFile
+ * @return {import('typescript').Node}
+ */
+export function getDeclarationInFile(nodeOrName, sourceFile) {
+  let name = nodeOrName;
+  if (typeof nodeOrName === 'string') {
+    if (!sourceFile)
+      throw new Error('must provide sourceFile when first argument is a string');
+  } else {
+    sourceFile = nodeOrName.getSourceFile();
+    name = nodeOrName.name?.getText();
+  }
+  if (!name)
+    return undefined;
+  const sourceFileStatements = sourceFile.statements ?? [];
+  return sourceFileStatements.find(statement => {
+    if (ts.isVariableStatement(statement))
+      return statement.declarationList.declarations.find(declaration => declaration.name.getText() === name)
+    else if (statement.name?.getText)
+      return statement.name.getText() === name;
+  });
+}

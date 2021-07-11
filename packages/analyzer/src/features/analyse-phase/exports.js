@@ -1,3 +1,4 @@
+import { getDeclarationInFile, hasIgnoreJSDoc } from '../../utils/ast-helpers.js';
 import {
   hasExportModifier,
   hasDefaultModifier,
@@ -15,6 +16,8 @@ export function exportsPlugin() {
   return {
     name: 'CORE - EXPORTS',
     analyzePhase({ts, node, moduleDoc}){
+      if(hasIgnoreJSDoc(node)) return;
+
       /**
        * @example export const foo = '';
        */
@@ -55,6 +58,9 @@ export function exportsPlugin() {
          */
         if (hasNamedExports(node) && !isReexport(node)) {
           node.exportClause?.elements?.forEach((element) => {
+            if (hasIgnoreJSDoc(element) || hasIgnoreJSDoc(getDeclarationInFile(element, node.getSourceFile())))
+              return;
+
             const _export = {
               kind: 'js',
               name: element.name.getText(),

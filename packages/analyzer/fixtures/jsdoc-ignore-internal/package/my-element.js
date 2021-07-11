@@ -17,16 +17,12 @@ export class IncludeMe extends HTMLElement {
   /** @ignore */
   sneaky = 'deaky';
 
-  ignoreThis2 = '';
 
   constructor() {
     super();
 
     /** @ignore */
     this.ignoreThisAlso = 'hidden';
-
-    /** @ignore */
-    this.ignoreThis2 = 'hidden';
   }
 
   /** @internal */
