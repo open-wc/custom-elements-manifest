@@ -106,15 +106,15 @@ export function timestamp() {
 export function addCustomElementsPropertyToPackageJson(outdir) {
   const packageJsonPath = `${process.cwd()}${path.sep}package.json`;
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath).toString());
-
+  const manifestPath = path.posix.join(outdir, 'custom-elements.json');
   if(packageJson?.customElements) {
-    if(packageJson?.customElements !== path.join(outdir, 'custom-elements.json')) {
-      packageJson.customElements = path.join(outdir, 'custom-elements.json');
+    if(packageJson?.customElements !== manifestPath) {
+      packageJson.customElements = manifestPath;
       fs.writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`);
     }
     return;
   } else {
-    packageJson.customElements = path.join(outdir, 'custom-elements.json');
+    packageJson.customElements = manifestPath;
     fs.writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`);
   }
 }
