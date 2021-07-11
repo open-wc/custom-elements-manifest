@@ -40,6 +40,13 @@ const OPTIONS = {
     description: 'Writes README using default options'
   },
 
+  'custom-kinds': {
+    description: 'Replaces export kinds with custom options',
+    exportKinds: {
+      'custom-element-definition': { url: 'https://raw.githubusercontent.com/webcomponents/webcomponents.org/master/client/assets/logo.svg' },
+      'js': 'JavaScript',
+    }
+  }
 };
 
 readdirSync(casesDir).forEach(testCase => {
@@ -55,7 +62,12 @@ readdirSync(casesDir).forEach(testCase => {
     const { description, ...options } = OPTIONS[testCase] ?? {};
 
     const customElementsManifest = create({
-      modules: [ts.createSourceFile(join('fixture', 'my-element.js'), source, ts.ScriptTarget.ES2015, true)],
+      modules: [ts.createSourceFile(
+        join('./fixture', 'my-element.js'),
+        source,
+        ts.ScriptTarget.ES2015,
+        true
+      )],
       plugins: [readmePlugin({ from, to, ...options })],
     });
 

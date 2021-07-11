@@ -1,6 +1,6 @@
 {
   "name": "@custom-elements-manifest/to-markdown",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "",
   "license": "MIT",
   "repository": {
@@ -10,6 +10,7 @@
   },
   "author": "open-wc",
   "homepage": "https://github.com/open-wc/custom-elements-manifest",
+  "types": "types/main.d.ts",
   "bugs": {
     "url": "https://github.com/open-wc/custom-elements-manifest"
   },

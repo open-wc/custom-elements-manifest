@@ -98,6 +98,19 @@
           "members": [
             {
               "kind": "field",
+              "name": "properties",
+              "type": {
+                "text": "object"
+              },
+              "static": true
+            },
+            {
+              "kind": "method",
+              "name": "staticMethod",
+              "static": true
+            },
+            {
+              "kind": "field",
               "name": "prop1",
               "privacy": "public"
             },

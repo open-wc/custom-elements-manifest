@@ -9,17 +9,17 @@ A sweet lil' custom el.
 
 #### Fields
 
-| Name  | Privacy | Type     | Default | Description | Inherited From |
-| ----- | ------- | -------- | ------- | ----------- | -------------- |
-| sweet |         | `string` | `'🥭'`  |             |                |
+| Name    | Privacy | Type     | Default | Description | Inherited From |
+| ------- | ------- | -------- | ------- | ----------- | -------------- |
+| `sweet` |         | `string` | `'🥭'`  |             |                |
 
 <details><summary>Private API</summary>
 
 #### Fields
 
-| Name   | Privacy | Type     | Default | Description | Inherited From |
-| ------ | ------- | -------- | ------- | ----------- | -------------- |
-| bitter | private | `string` | `'🍎'`  |             |                |
+| Name     | Privacy | Type     | Default | Description | Inherited From |
+| -------- | ------- | -------- | ------- | ----------- | -------------- |
+| `bitter` | private | `string` | `'🍎'`  |             |                |
 
 </details>
 
@@ -29,7 +29,7 @@ A sweet lil' custom el.
 
 | Kind | Name | Declaration | Module                | Package |
 | ---- | ---- | ----------- | --------------------- | ------- |
-| js   | XL   | XL          | fixture/my-element.js |         |
+| `js` | `XL` | XL          | fixture/my-element.js |         |
 
 
 Brought to you by the letter 'qu'

@@ -15,6 +15,7 @@ export const kind = x => x?.kind;
 
 // predicates
 export const isSame = test => x => x === test;
+export const isStatic = x => x?.static ?? false;
 export const isPrivate = compose(isSame('private'), privacy);
 export const isProtected = compose(isSame('protected'), privacy);
 export const isClass = compose(isSame('class'), privacy);
