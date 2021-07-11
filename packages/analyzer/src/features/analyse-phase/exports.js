@@ -5,22 +5,30 @@ import {
   isReexport,
 } from '../../utils/exports.js';
 import { isBareModuleSpecifier } from '../../utils/index.js';
+import { getDeclarationInFile, hasIgnoreJsDoc } from '../../utils/ast-helpers.js';
 
 /**
  * EXPORTS
- * 
+ *
  * Analyzes a modules exports and adds them to the moduleDoc
  */
 export function exportsPlugin() {
   return {
     name: 'CORE - EXPORTS',
     analyzePhase({ts, node, moduleDoc}){
+      if (hasIgnoreJsDoc(node))
+        return;
+
       /**
        * @example export const foo = '';
        */
       if(hasExportModifier(node) && ts.isVariableStatement(node)) {
         node?.declarationList?.declarations?.forEach(declaration => {
-          const _export = {          
+
+          if (hasIgnoreJsDoc(node))
+            return;
+
+          const _export = {
             kind: 'js',
             name: declaration.name.getText(),
             declaration: {
@@ -55,6 +63,10 @@ export function exportsPlugin() {
          */
         if (hasNamedExports(node) && !isReexport(node)) {
           node.exportClause?.elements?.forEach((element) => {
+
+            if (hasIgnoreJsDoc(element) || hasIgnoreJsDoc(getDeclarationInFile(element)))
+              return;
+
             const _export = {
               kind: 'js',
               name: element.name.getText(),
@@ -73,6 +85,10 @@ export function exportsPlugin() {
          * @example export * from './my-module.js';
          */
         if (isReexport(node) && !hasNamedExports(node)) {
+
+          if (hasIgnoreJsDoc(element))
+            return;
+
           const _export = {
             kind: 'js',
             name: '*',
@@ -90,6 +106,10 @@ export function exportsPlugin() {
          */
         if (isReexport(node) && hasNamedExports(node)) {
           node.exportClause?.elements?.forEach((element) => {
+
+            if (hasIgnoreJsDoc(element))
+              return;
+
             const _export = {
               kind: 'js',
               name: element.name.getText(),
@@ -145,6 +165,8 @@ export function exportsPlugin() {
           moduleDoc.exports = [...(moduleDoc.exports || []), _export];
         }
       }
+
+      moduleDoc.exports = moduleDoc.exports.filter(Boolean);
     }
   }
 }

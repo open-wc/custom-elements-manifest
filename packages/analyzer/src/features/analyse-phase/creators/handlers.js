@@ -3,7 +3,7 @@ import parse from 'comment-parser';
 
 import { has, resolveModuleOrPackageSpecifier, safe } from '../../../utils/index.js';
 import { handleJsDocType, normalizeDescription } from '../../../utils/jsdoc.js';
-import { isPrimitive, isWellKnownType } from '../../../utils/ast-helpers.js';
+import { hasIgnoreJsDoc, isWellKnownType } from '../../../utils/ast-helpers.js';
 
 /**
  * @example static foo;
@@ -37,6 +37,11 @@ export function handleModifiers(doc, node) {
  * Handles JsDoc
  */
 export function handleJsDoc(doc, node) {
+  // PERF: By re-using hasIgnoreJsDoc, we are forced to loop twice.
+  // We could avoid this using transducers if it becomes an issue.
+  if (hasIgnoreJsDoc(node))
+    return undefined;
+
   node?.jsDoc?.forEach(jsDocComment => {
     if(jsDocComment?.comment) {
       if(has(jsDocComment?.comment)) {
@@ -254,6 +259,9 @@ export function handleWellKnownTypes(doc, node) {
 }
 
 export function handleDefaultValue(doc, node) {
+  if (!doc)
+    return;
+
   /**
    * In case of a class field node?.initializer
    * In case of a property assignment in constructor node?.expression?.right
@@ -265,9 +273,9 @@ export function handleDefaultValue(doc, node) {
   if(initializer?.kind === ts.SyntaxKind.ConditionalExpression) return doc;
   if(initializer?.kind === ts.SyntaxKind.PropertyAccessExpression) return doc;
   if(initializer?.kind === ts.SyntaxKind.CallExpression) return doc;
-  
+
   let defaultValue;
-  /** 
+  /**
    * Check if value has `as const`
    * @example const foo = 'foo' as const;
    */
@@ -276,7 +284,7 @@ export function handleDefaultValue(doc, node) {
   } else {
     defaultValue = initializer?.getText()
   }
-  
+
   if(defaultValue) {
     doc.default = defaultValue;
   }

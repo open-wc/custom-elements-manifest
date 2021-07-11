@@ -3,7 +3,7 @@ import { createMixin } from './creators/createMixin.js';
 
 /**
  * mixinPlugin
- * 
+ *
  * handles mixins
  */
 export function mixinPlugin() {
@@ -19,11 +19,11 @@ export function mixinPlugin() {
           if(isMixin(node)) {
             const { mixinFunction, mixinClass } = extractMixinNodes(node);
             let mixin = createMixin(mixinFunction, mixinClass, moduleDoc, context);
-            moduleDoc.declarations.push(mixin);
+            if (mixin)
+              moduleDoc.declarations.push(mixin);
           }
           break;
       }
     }
   }
 }
-

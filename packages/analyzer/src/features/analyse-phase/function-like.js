@@ -3,7 +3,7 @@ import { isMixin } from '../../utils/mixins.js';
 
 /**
  * functionLikePlugin
- * 
+ *
  * handles functionLikes such as class methods and functions
  * does NOT handle arrow functions
  */
@@ -15,7 +15,8 @@ export function functionLikePlugin() {
         case ts.SyntaxKind.FunctionDeclaration:
           if(!isMixin(node)) {
             const functionLike = createFunctionLike(node);
-            moduleDoc.declarations.push(functionLike);
+            if (functionLike)
+              moduleDoc.declarations.push(functionLike);
           }
           break;
       }

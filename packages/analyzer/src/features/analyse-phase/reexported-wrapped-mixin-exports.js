@@ -4,17 +4,17 @@ import { createClassDeclarationMixin } from './creators/handlers.js';
 
 /**
  * REEXPORTED WRAPPED MIXIN EXPORTS
- * 
+ *
  * Handle exported mixins
  * @example ```
- * 
+ *
  * function FooMixinImpl(klass) {
  *   class FooMixin extends klass {}
  *   return FooMixin;
  * }
- * 
+ *
  * export const FooMixin = dedupeMixin(FooMixinImpl);
- * 
+ *
  * ```
  */
 export function reexportedWrappedMixinExportsPlugin() {
@@ -39,14 +39,14 @@ export function reexportedWrappedMixinExportsPlugin() {
                   mixins.push(mixinName);
 
                   let node = declaration?.initializer?.arguments[0];
-                  
-                  /** 
-                   * Handle nested Mixin calls 
+
+                  /**
+                   * Handle nested Mixin calls
                    */
                   while(node && ts.isCallExpression(node)) {
                     const mixinName = node.expression.getText();
                     mixins.push(mixinName);
-  
+
                     node = node?.arguments[0]
                   }
 
@@ -57,7 +57,7 @@ export function reexportedWrappedMixinExportsPlugin() {
                   const foundMixin = moduleMixinDeclarations?.find(mixin => mixin.name === node?.getText());
                   if(foundMixin) {
                     foundMixin.name = declaration?.name?.getText()
-      
+
                     /**
                      * Next, we need to add any other mixins found along the way to the exported mixin's `mixins` array
                      */

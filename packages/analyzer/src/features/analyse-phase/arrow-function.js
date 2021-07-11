@@ -5,7 +5,7 @@ import { createArrowFunction } from './creators/createArrowFunction.js';
 
 /**
  * arrowFunctionPlugin
- * 
+ *
  * handles arrow functions
  */
 export function arrowFunctionPlugin() {
@@ -16,11 +16,11 @@ export function arrowFunctionPlugin() {
         case ts.SyntaxKind.VariableStatement:
           if(!isMixin(node) && hasInitializer(node)) {
             const functionLike = createArrowFunction(node);
-            moduleDoc.declarations.push(functionLike);
+            if (functionLike)
+              moduleDoc.declarations.push(functionLike);
           }
           break;
       }
     }
   }
 }
-

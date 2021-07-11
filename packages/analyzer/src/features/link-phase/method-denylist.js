@@ -1,6 +1,6 @@
 /**
  * METHOD-DENY-LIST
- * 
+ *
  * Excludes methods from the manifest
  */
 export function methodDenyListPlugin() {
@@ -14,12 +14,13 @@ export function methodDenyListPlugin() {
   return {
     name: 'CORE - METHOD-DENYLIST',
     moduleLinkPhase({moduleDoc}){
-      const classes = moduleDoc?.declarations?.filter(declaration => declaration.kind === 'class' || declaration.kind === 'mixin');
+      const classes = moduleDoc?.declarations?.filter(declaration =>
+        declaration && declaration.kind === 'class' || declaration.kind === 'mixin');
 
       classes?.forEach(klass => {
-        klass.members = klass?.members?.filter(member => !METHOD_DENY_LIST.includes(member.name));
+        klass.members = klass?.members?.filter(member =>
+          member && !METHOD_DENY_LIST.includes(member.name));
       });
     },
   }
 }
-

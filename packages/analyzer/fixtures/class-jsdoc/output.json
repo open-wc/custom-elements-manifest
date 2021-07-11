@@ -94,8 +94,8 @@
           "superclass": {
             "name": "HTMLElement"
           },
-          "tagName": "my-element",
           "summary": "This is MyElement",
+          "tagName": "my-element",
           "customElement": true
         }
       ],

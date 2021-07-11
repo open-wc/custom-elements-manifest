@@ -2,7 +2,7 @@ import { createClass } from './creators/createClass.js';
 
 /**
  * classPlugin
- * 
+ *
  * handles classes
  */
 export function classPlugin() {
@@ -12,7 +12,8 @@ export function classPlugin() {
       switch(node.kind) {
         case ts.SyntaxKind.ClassDeclaration:
           const klass = createClass(node, moduleDoc, context);
-          moduleDoc.declarations.push(klass);
+          if (klass)
+            moduleDoc.declarations.push(klass);
           break;
       }
     }

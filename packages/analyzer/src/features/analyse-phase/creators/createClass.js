@@ -3,7 +3,7 @@ import { createFunctionLike } from './createFunctionLike.js';
 import { createAttribute, createAttributeFromField } from './createAttribute.js';
 import { createField } from './createClassField.js';
 import { handleHeritage, handleJsDoc, handleAttrJsDoc, handleTypeInference, handleDefaultValue } from './handlers.js';
-import { hasAttrAnnotation, isDispatchEvent, isPrimitive, isProperty, isReturnStatement, isStaticMember } from '../../../utils/ast-helpers.js';
+import { hasAttrAnnotation, isDispatchEvent, hasIgnoreJsDoc, isProperty, isReturnStatement } from '../../../utils/ast-helpers.js';
 import { resolveModuleOrPackageSpecifier } from '../../../utils/index.js';
 
 
@@ -33,7 +33,7 @@ export function createClass(node, moduleDoc, context) {
      */
     if (isProperty(member)) {
       if (member?.name?.getText() === 'observedAttributes') {
-        /** 
+        /**
          * @example static observedAttributes
          */
         if (ts.isPropertyDeclaration(member)) {
@@ -64,7 +64,7 @@ export function createClass(node, moduleDoc, context) {
 
   /**
    * Second pass through a class's members.
-   * We do this in two passes, because we need to know whether or not a class has any 
+   * We do this in two passes, because we need to know whether or not a class has any
    * attributes, so we handle those first.
    */
   node?.members?.forEach(member => {
@@ -84,7 +84,7 @@ export function createClass(node, moduleDoc, context) {
 
       /** Flag class fields that get assigned a variable, so we can resolve it later (in the RESOLVE-INITIALIZERS plugin) */
       if(member?.initializer?.kind === ts.SyntaxKind.Identifier) {
-        field.resolveInitializer = { 
+        field.resolveInitializer = {
           ...resolveModuleOrPackageSpecifier(moduleDoc, context, member?.initializer?.getText()),
         }
       }
@@ -103,7 +103,7 @@ export function createClass(node, moduleDoc, context) {
          * information we got from the field (like type, summary, description, etc)
          */
         let attrAlreadyExists = classTemplate.attributes.find(attr => attr.name === attribute.name);
-        
+
         if(attrAlreadyExists) {
           classTemplate.attributes = classTemplate.attributes.map(attr => {
             return attr.name === attribute.name ? { ...attrAlreadyExists, ...attribute } : attr;
@@ -116,7 +116,7 @@ export function createClass(node, moduleDoc, context) {
       /**
        * A class can have a static prop and an instance prop with the same name,
        * both should be output in the CEM
-       * 
+       *
        * If not a static prop, we merge getter and setter pairs here
        */
       if(field?.static) {
@@ -136,7 +136,7 @@ export function createClass(node, moduleDoc, context) {
 
     /**
      * Handle events
-     * 
+     *
      * In order to find `this.dispatchEvent` calls, we have to traverse a method's AST
      */
     if (ts.isMethodDeclaration(member)) {
@@ -150,6 +150,7 @@ export function createClass(node, moduleDoc, context) {
    * Inheritance
    */
   classTemplate = handleHeritage(classTemplate, moduleDoc, context, node);
+  classTemplate = handleJsDoc(classTemplate, node);
 
   return classTemplate;
 }
@@ -179,7 +180,7 @@ function eventsVisitor(source, classTemplate) {
                     text: arg.expression.text,
                   },
                 };
-  
+
                 eventDoc = handleJsDoc(eventDoc, node?.parent);
                 classTemplate.events.push(eventDoc);
               }
@@ -199,14 +200,17 @@ export function getDefaultValuesFromConstructorVisitor(source, classTemplate, co
   function visitNode(node) {
     switch (node.kind) {
       case ts.SyntaxKind.Constructor:
-        /** 
+        /**
          * For every member that was added in the classDoc, we want to add a default value if we can
          * To do this, we visit a class's constructor, and loop through the statements
          */
         node.body?.statements?.filter((statement) => statement.kind === ts.SyntaxKind.ExpressionStatement)
           .filter((statement) => statement.expression.kind === ts.SyntaxKind.BinaryExpression)
           .forEach((statement) => {
-            let existingMember = classTemplate?.members?.find(member => statement.expression?.left?.name?.getText() === member.name && member.kind === 'field');
+            if (hasIgnoreJsDoc(statement))
+              return;
+            let existingMember = classTemplate?.members?.find(member =>
+              member && statement.expression?.left?.name?.getText() === member.name && member.kind === 'field');
 
             if(!existingMember) {
               existingMember = {
@@ -223,10 +227,10 @@ export function getDefaultValuesFromConstructorVisitor(source, classTemplate, co
 
               existingMember = handleJsDoc(existingMember, statement);
               existingMember = handleDefaultValue(existingMember, statement);
-              
+
               /** Flag class fields that get assigned a variable, so we can resolve it later (in the RESOLVE-INITIALIZERS plugin) */
               if(statement?.expression?.right?.kind === ts.SyntaxKind.Identifier) {
-                existingMember.resolveInitializer = { 
+                existingMember.resolveInitializer = {
                   ...resolveModuleOrPackageSpecifier({path: source.getSourceFile().fileName}, context, node?.initializer?.getText()),
                 }
               }

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/jsdoc-ignore-internal/package/my-element.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "variable",
+          "type": {
+            "text": "string"
+          },
+          "default": "'var'"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "IncludeMe",
+          "members": [
+            {
+              "kind": "field",
+              "name": "included",
+              "type": {
+                "text": "string"
+              },
+              "default": "'hello world'"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "include-me",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "variable",
+          "declaration": {
+            "name": "variable",
+            "module": "fixtures/jsdoc-ignore-internal/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "IncludeMe",
+          "declaration": {
+            "name": "IncludeMe",
+            "module": "fixtures/jsdoc-ignore-internal/package/my-element.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "include-me",
+          "declaration": {
+            "name": "IncludeMe",
+            "module": "fixtures/jsdoc-ignore-internal/package/my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

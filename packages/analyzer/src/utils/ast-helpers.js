@@ -81,6 +81,31 @@ export function getElementNameFromDecorator(decorator) {
   }
 }
 
+/**
+ * Does the variable have an `@ignore` or `@internal` JSDoc tag?
+ * @param  {import('typescript').Node|string} nodeOrName
+ * @param  {import('typescript').SourceFile}  sourceFile
+ * @return {import('typescript').Node}
+ */
+export function getDeclarationInFile(nodeOrName, sourceFile) {
+  let name = nodeOrName;
+  if (typeof nodeOrName === 'string') {
+    if (!sourceFile)
+      throw new Error('must provide sourceFile when first argument is a string');
+  } else {
+    sourceFile = nodeOrName.getSourceFile();
+    name = nodeOrName.name?.getText();
+  }
+  if (!name)
+    return undefined;
+  const sourceFileStatements = sourceFile.statements ?? [];
+  return sourceFileStatements.find(statement => {
+    if (ts.isVariableStatement(statement))
+      return statement.declarationList.declarations.find(declaration => declaration.name.getText() === name)
+    else if (statement.name?.getText)
+      return statement.name.getText() === name;
+  });
+}
 
 /**
  * Gets the name of an attr from a decorators callExpression
@@ -128,4 +153,21 @@ export function isWellKnownType(node) {
       isAsConst(node?.initializer)
     )
   );
+}
+
+/**
+ * Does the variable have an `@ignore` or `@internal` JSDoc tag?
+ * @param  {import('typescript').Node}  node
+ * @return {Boolean}
+ */
+export function hasIgnoreJsDoc(node) {
+  for (const jsDocComment of node?.jsDoc ?? []) {
+    for (const tag of jsDocComment?.tags ?? []) {
+      // exclude members from the manifest if ignored or internal
+      const tagName = tag.tagName.getText();
+      if (tagName === 'ignore' || tagName === 'internal')
+        return true;
+      }
+    }
+  return false;
 }

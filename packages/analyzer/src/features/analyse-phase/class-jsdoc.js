@@ -4,7 +4,7 @@ import { safe } from '../../utils/index.js';
 
 /**
  * CLASS-JSDOC
- * 
+ *
  * Deals with any JSDoc above a class
  */
 export function classJsDocPlugin() {
@@ -18,10 +18,10 @@ export function classJsDocPlugin() {
 
           /**
            * Because we use a bunch of 'non-standard' JSDoc annotations, TS doesn't recognize most of them.
-           * Instead we use `comment-parser` to parse the JSDoc. 
-           * 
+           * Instead we use `comment-parser` to parse the JSDoc.
+           *
            * Loops through each JSDoc (yes, there can be multiple) above a class, and parses every JSDoc annotation
-           * 
+           *
            * Checks to see if the item is already in the classDoc, and if so merge and overwrite (JSDoc takes precedence)
            */
           node?.jsDoc?.forEach(jsDoc => {
@@ -41,7 +41,7 @@ export function classJsDocPlugin() {
                     const attributeAlreadyExists = classDoc?.attributes?.find(attr => attr.name === jsDoc.name);
                     let attributeDoc = attributeAlreadyExists || {};
                     attributeDoc = handleClassJsDoc(attributeDoc, jsDoc);
-                    if(!attributeAlreadyExists) {
+                    if(attributeDoc && !attributeAlreadyExists) {
                       classDoc.attributes.push(attributeDoc);
                     }
                     break;
@@ -51,7 +51,7 @@ export function classJsDocPlugin() {
                     let fieldDoc = fieldAlreadyExists || {};
                     fieldDoc = handleClassJsDoc(fieldDoc, jsDoc);
                     fieldDoc.kind = 'field';
-                    if(!fieldAlreadyExists) {
+                    if(fieldDoc && !fieldAlreadyExists) {
                       classDoc.members.push(fieldDoc);
                     }
                     break;
@@ -60,25 +60,28 @@ export function classJsDocPlugin() {
                     const eventAlreadyExists = classDoc?.events?.find(event => event.name === jsDoc.name);
                     let eventDoc = eventAlreadyExists || {};
                     eventDoc = handleClassJsDoc(eventDoc, jsDoc);
-                    if(!eventAlreadyExists) {
+                    if(eventDoc && !eventAlreadyExists) {
                       classDoc.events.push(eventDoc);
                     }
                     break;
                   case 'csspart':
                     let cssPartDoc = {};
                     cssPartDoc = handleClassJsDoc(cssPartDoc, jsDoc);
-                    classDoc.cssParts.push(cssPartDoc);
+                    if (cssPartDoc)
+                      classDoc.cssParts.push(cssPartDoc);
                     break;
                   case 'cssprop':
                   case 'cssproperty':
                     let cssPropertyDoc = {};
                     cssPropertyDoc = handleClassJsDoc(cssPropertyDoc, jsDoc);
-                    classDoc.cssProperties.push(cssPropertyDoc);
+                    if (cssPropertyDoc)
+                      classDoc.cssProperties.push(cssPropertyDoc);
                     break;
                   case 'slot':
                     let slotDoc = {};
                     slotDoc = handleClassJsDoc(slotDoc, jsDoc);
-                    classDoc.slots.push(slotDoc);
+                    if (slotDoc)
+                      classDoc.slots.push(slotDoc);
                     break;
                   case 'tag':
                   case 'tagname':
@@ -99,8 +102,8 @@ export function classJsDocPlugin() {
             /**
              * Comment-parse doesn't handle annotations with only a description correctly, for example:
              * @summary foo bar
-             * will output only 'bar' as the description. 
-             * 
+             * will output only 'bar' as the description.
+             *
              * Instead, we use TS for this JSDoc annotation.
              */
             jsDoc?.tags?.forEach(tag => {
