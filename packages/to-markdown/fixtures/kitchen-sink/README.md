@@ -74,6 +74,12 @@
 | ------------------ | --------------- | ------------------------- |
 | --background-color | `rebeccapurple` | Controls the color of bar |
 
+### CSS Parts
+
+| Name | Description             |
+| ---- | ----------------------- |
+| bar  | Styles the color of bar |
+
 ### Slots
 
 | Name      | Description                    |
