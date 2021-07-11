@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "fixtures/-default/package/bar.js",
+      "path": "fixtures/jsdoc-ignore-internal/package/my-element.js",
       "declarations": [
         {
           "kind": "variable",
@@ -41,7 +41,7 @@
           "name": "variable",
           "declaration": {
             "name": "variable",
-            "module": "fixtures/-default/package/bar.js"
+            "module": "fixtures/jsdoc-ignore-internal/package/my-element.js"
           }
         },
         {
@@ -49,7 +49,7 @@
           "name": "IncludeMe",
           "declaration": {
             "name": "IncludeMe",
-            "module": "fixtures/-default/package/bar.js"
+            "module": "fixtures/jsdoc-ignore-internal/package/my-element.js"
           }
         },
         {
@@ -57,7 +57,7 @@
           "name": "include-me",
           "declaration": {
             "name": "IncludeMe",
-            "module": "fixtures/-default/package/bar.js"
+            "module": "fixtures/jsdoc-ignore-internal/package/my-element.js"
           }
         }
       ]

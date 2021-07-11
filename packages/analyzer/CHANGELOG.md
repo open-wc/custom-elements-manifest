@@ -1,3 +1,6 @@
+## Release 0.4.12
+- Handle `@ignore` and `@internal` jsdoc
+
 ## Release 0.4.11
 - Merge together getter/setter pairs when possible
 - Fix inheritance default/type bug

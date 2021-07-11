@@ -3,7 +3,7 @@ import { createFunctionLike } from './createFunctionLike.js';
 import { createAttribute, createAttributeFromField } from './createAttribute.js';
 import { createField } from './createClassField.js';
 import { handleHeritage, handleJsDoc, handleAttrJsDoc, handleTypeInference, handleDefaultValue } from './handlers.js';
-import { hasAttrAnnotation, isDispatchEvent, isPrimitive, isProperty, isReturnStatement, isStaticMember } from '../../../utils/ast-helpers.js';
+import { hasAttrAnnotation, hasIgnoreJSDoc, isDispatchEvent, isPrimitive, isProperty, isReturnStatement, isStaticMember } from '../../../utils/ast-helpers.js';
 import { resolveModuleOrPackageSpecifier } from '../../../utils/index.js';
 
 
@@ -71,7 +71,7 @@ export function createClass(node, moduleDoc, context) {
     /**
      * Handle class methods
      */
-    if(ts.isMethodDeclaration(member)) {
+    if(ts.isMethodDeclaration(member) && !hasIgnoreJSDoc(member)) {
       const method = createFunctionLike(member);
       classTemplate.members.push(method);
     }
@@ -79,7 +79,7 @@ export function createClass(node, moduleDoc, context) {
     /**
      * Handle fields
      */
-    if (isProperty(member)) {
+    if (isProperty(member) &&  !hasIgnoreJSDoc(member)) {
       const field = createField(member);
 
       /** Flag class fields that get assigned a variable, so we can resolve it later (in the RESOLVE-INITIALIZERS plugin) */
@@ -146,6 +146,8 @@ export function createClass(node, moduleDoc, context) {
 
   getDefaultValuesFromConstructorVisitor(node, classTemplate, context);
 
+  classTemplate.members = classTemplate?.members?.filter(mem => !mem.ignore);
+
   /**
    * Inheritance
    */
@@ -209,6 +211,8 @@ export function getDefaultValuesFromConstructorVisitor(source, classTemplate, co
             let existingMember = classTemplate?.members?.find(member => statement.expression?.left?.name?.getText() === member.name && member.kind === 'field');
 
             if(!existingMember) {
+              if(hasIgnoreJSDoc(statement)) return;
+
               existingMember = {
                 kind: 'field',
                 name: statement.expression?.left?.name?.getText(),
@@ -217,6 +221,11 @@ export function getDefaultValuesFromConstructorVisitor(source, classTemplate, co
             }
 
             if(existingMember) {
+              if(hasIgnoreJSDoc(statement)) {
+                // schedule for deletion
+                existingMember.ignore = true;
+              }
+
               if(!existingMember?.type) {
                 existingMember = handleTypeInference(existingMember, statement?.expression?.right);
               }
