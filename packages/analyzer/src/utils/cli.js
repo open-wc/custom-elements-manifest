@@ -5,10 +5,10 @@ import commandLineArgs from 'command-line-args';
 import { has } from './index.js';
 
 const IGNORE = [
-  '!node_modules/**/*.*', 
-  '!bower_components/**/*.*', 
-  '!**/*.test.{js,ts}', 
-  '!**/*.suite.{js,ts}', 
+  '!node_modules/**/*.*',
+  '!bower_components/**/*.*',
+  '!**/*.test.{js,ts}',
+  '!**/*.suite.{js,ts}',
   '!**/*.config.{js,ts}'
 ];
 
@@ -54,7 +54,11 @@ export const DEFAULTS = {
   litelement: false,
   stencil: false,
   fast: false,
-  catalyst: false
+  catalyst: false,
+  readme: true,
+  header: '',
+  footer: '',
+  headingOffset: 0,
 }
 
 export function getCliConfig(argv) {
@@ -68,8 +72,12 @@ export function getCliConfig(argv) {
     { name: 'stencil', type: Boolean },
     { name: 'fast', type: Boolean },
     { name: 'catalyst', type: Boolean },
+    { name: 'readme', type: Boolean },
+    { name: 'header', type: String },
+    { name: 'footer', type: String },
+    { name: 'headingOffset', type: Number },
   ];
-  
+
   return commandLineArgs(optionDefinitions, { argv });
 }
 
@@ -103,6 +111,22 @@ export function timestamp() {
   return date.toLocaleTimeString();
 }
 
+export async function addReadmePlugin({ readme, ...options }) {
+  if (!readme)
+    return [];
+  else {
+    const { headingOffset, header, footer, outdir } = options;
+    return [
+      await import('cem-plugin-readme').then(m => m.readmePlugin({
+        footer,
+        from: outdir,
+        header,
+        headingOffset,
+      })),
+    ];
+  }
+}
+
 export function addCustomElementsPropertyToPackageJson(outdir) {
   const packageJsonPath = `${process.cwd()}${path.sep}package.json`;
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath).toString());
@@ -123,18 +147,22 @@ export const MENU = `
 @custom-elements-manifest/analyzer
 
 Available commands:
-    | Command/option   | Type       | Description                                                 | Example               |
-    | ---------------- | ---------- | ----------------------------------------------------------- | --------------------- |
-    | analyze          |            | Analyze your components                                     |                       |
-    | --globs          | string[]   | Globs to analyze                                            | \`--globs "foo.js"\`    |
-    | --exclude        | string[]   | Globs to exclude                                            | \`--exclude "foo.js"\`  |
-    | --outdir         | string     | Directory to output the Manifest to                         | \`--outdir dist\`       |
-    | --watch          | boolean    | Enables watch mode, generates a new manifest on file change | \`--watch\`             |
-    | --dev            | boolean    | Enables extra logging for debugging                         | \`--dev\`               |
-    | --litelement     | boolean    | Enable special handling for LitElement syntax               | \`--litelement\`        |
-    | --fast           | boolean    | Enable special handling for FASTElement syntax              | \`--fast\`              |
-    | --stencil        | boolean    | Enable special handling for Stencil syntax                  | \`--stencil\`           |
-    | --catalyst       | boolean    | Enable special handling for Catalyst syntax                 | \`--catalyst\`          |
+    | Command/option   | Type       | Description                                                 | Example                            |
+    | ---------------- | ---------- | ----------------------------------------------------------- | ---------------------------------- |
+    | analyze          |            | Analyze your components                                     |                                    |
+    | --globs          | string[]   | Globs to analyze                                            | \`--globs "foo.js"\`               |
+    | --exclude        | string[]   | Globs to exclude                                            | \`--exclude "foo.js"\`             |
+    | --outdir         | string     | Directory to output the Manifest to                         | \`--outdir dist\`                  |
+    | --watch          | boolean    | Enables watch mode, generates a new manifest on file change | \`--watch\`                        |
+    | --dev            | boolean    | Enables extra logging for debugging                         | \`--dev\`                          |
+    | --litelement     | boolean    | Enable special handling for LitElement syntax               | \`--litelement\`                   |
+    | --fast           | boolean    | Enable special handling for FASTElement syntax              | \`--fast\`                         |
+    | --stencil        | boolean    | Enable special handling for Stencil syntax                  | \`--stencil\`                      |
+    | --catalyst       | boolean    | Enable special handling for Catalyst syntax                 | \`--catalyst\`                     |
+    | --readme         | boolean    | Create a README.md file                                     | \`--readme\`                       |
+    | --header         | string     | Markdown header file for the README.md                      | \`--header README.head.md\`        |
+    | --footer         | string     | Markdown footer file for the README.md                      | \`--footer README.foot.md\`        |
+    | --headingOffset  | number     | Number of levels to offset headings in the README.md        | \`--headingOffset 1\`              |
 
 Example:
     custom-elements-manifest analyze --litelement --globs "**/*.js" --exclude "foo.js" "bar.js"

@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "foo",
+              "type": {
+                "text": "string"
+              },
+              "default": "'bar'"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "my-element",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyWindow",
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "my-window",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "my-foo",
+          "declaration": {
+            "name": "MyFoo",
+            "module": "/foo.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "my-bar",
+          "declaration": {
+            "name": "MyBar",
+            "package": "foo"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "my-element",
+          "declaration": {
+            "name": "MyElement",
+            "module": "my-element.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "my-window",
+          "declaration": {
+            "name": "MyWindow",
+            "module": "my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -298,6 +298,13 @@ ccount@^2.0.0:
   resolved "https://registry.yarnpkg.com/ccount/-/ccount-2.0.0.tgz#3d6fb55803832766a24c6f339abc507297eb5d25"
   integrity sha512-VOR0NWFYX65n9gELQdcpqsie5L5ihBXuZGAgaPEp/U7IOSjnPMEH6geE+2f6lcekaNEfWzAHS45mPvSo5bqsUA==
 
+cem-plugin-readme@0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/cem-plugin-readme/-/cem-plugin-readme-0.1.2.tgz#65a4d6c8973bb9c42e2a68fb3053a353e5475379"
+  integrity sha512-K28QXc6nG22p+aHzdPnQQi3uM02HLkbERCqDCwLT11mmQMr+WS5sbXwnR4YYUhPc/kUbASUu+OoFLlgmQ+7RgQ==
+  dependencies:
+    "@custom-elements-manifest/to-markdown" "^0.0.9"
+
 chalk@^2.0.0, chalk@^2.4.1:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
