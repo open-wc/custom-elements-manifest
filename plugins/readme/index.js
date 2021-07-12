@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
 /**
- * @typedef {object} Options
+ * @typedef {import('@custom-elements-manifest/to-markdown').Options} Options
  * @property {string} [from] absolute path to package root
  * @property {string} [to="README.md"] relative path from package root to output file
  * @property {number} [headingOffset=1] offset for markdown heading level
@@ -19,11 +19,12 @@ import { dirname, join } from 'path';
  */
 export function readmePlugin(options) {
   const {
+    header,
+    footer,
     from = join(dirname(fileURLToPath(import.meta.url)), '..', '..'),
     to = 'README.md',
     headingOffset = 1,
-    header,
-    footer,
+    exportKinds,
   } = options ?? {};
   return {
     name: 'readme',
@@ -35,6 +36,7 @@ export function readmePlugin(options) {
         const foot = footer && readFileSync(join(from, footer));
 
         const markdown = customElementsManifestToMarkdown(customElementsManifest, {
+          exportKinds,
           headingOffset,
           private: options?.private ?? 'details',
         });

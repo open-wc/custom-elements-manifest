@@ -4,9 +4,9 @@
 
 #### Fields
 
-| Name  | Privacy | Type     | Default | Description | Inherited From |
-| ----- | ------- | -------- | ------- | ----------- | -------------- |
-| sweet |         | `string` | `'🥭'`  |             |                |
+| Name    | Privacy | Type     | Default | Description | Inherited From |
+| ------- | ------- | -------- | ------- | ----------- | -------------- |
+| `sweet` |         | `string` | `'🥭'`  |             |                |
 
 <hr/>
 
@@ -14,7 +14,7 @@
 
 | Kind | Name | Declaration | Module                | Package |
 | ---- | ---- | ----------- | --------------------- | ------- |
-| js   | XL   | XL          | fixture/my-element.js |         |
+| `js` | `XL` | XL          | fixture/my-element.js |         |
 
 
 Brought to you by the letter 'qu'

@@ -1,6 +1,6 @@
 {
   "name": "cem-plugin-readme",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Generate README.md from custom elements sources",
   "author": "open-wc",
   "contributors": [
@@ -8,7 +8,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "test": "uvu test"
+    "test": "uvu test -i cases"
   },
   "repository": {
     "type": "git",
@@ -24,7 +24,7 @@
     "readme"
   ],
   "dependencies": {
-    "@custom-elements-manifest/to-markdown": "^0.0.12"
+    "@custom-elements-manifest/to-markdown": "^0.0.13"
   },
   "peerDependencies": {
     "@custom-elements-manifest/analyzer": "^0.4.12"

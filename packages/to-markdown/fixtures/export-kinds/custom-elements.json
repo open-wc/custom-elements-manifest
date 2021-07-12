@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "custom-kinds.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MyElement",
+          "tagName": "my-element"
+        },
+        {
+          "kind": "variable",
+          "name": "js",
+          "type": {
+            "text": "boolean"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "MyElement",
+          "declaration": {
+            "name": "MyElement",
+            "module": "./fixtures/-TEST/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "js",
+          "declaration": {
+            "name": "js",
+            "module": "./fixtures/-TEST/package/my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}
