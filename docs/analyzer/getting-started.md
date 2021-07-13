@@ -383,7 +383,7 @@ You can also run the analyzer in the browser. You can import it like so:
 
       const manifest = create({
         modules,
-        plugins: [litPlugin()],
+        plugins: [...litPlugin()],
         dev: false
       });
 
