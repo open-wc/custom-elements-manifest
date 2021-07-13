@@ -1,0 +1,33 @@
+[
+  {
+    "name": "Discover",
+    "children": [
+      {
+        "text": "Help and Feedback",
+        "href": "https://github.com/open-wc/custom-elements-manifest/issues"
+      }
+    ]
+  },
+  {
+    "name": "Follow",
+    "children": [
+      {
+        "text": "GitHub",
+        "href": "https://github.com/open-wc/custom-elements-manifest"
+      },
+      {
+        "text": "Twitter",
+        "href": "https://twitter.com/OpenWC"
+      }
+    ]
+  },
+  {
+    "name": "Support",
+    "children": [
+      {
+        "text": "Contribute",
+        "href": "https://github.com/open-wc/custom-elements-manifest/blob/master/CONTRIBUTING.md"
+      }
+    ]
+  }
+]

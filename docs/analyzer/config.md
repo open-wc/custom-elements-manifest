@@ -1,32 +1,6 @@
-# @custom-elements-manifest/analyzer
+# Configuration || 20
 
-<!-- [=> See Source <=](../../docs/analyzer/index.md) -->
-
-Custom Elements Manifest is a file format that describes custom elements. This format will allow tooling and IDEs to give rich information about the custom elements in a given project. You can find the repository for the specification of the schema [here](https://github.com/webcomponents/custom-elements-manifest).
-
-> ✨ Try it out in the [online playground](https://custom-elements-manifest.netlify.app/)! ✨
-
-[**Read the Docs**](https://custom-elements-manifest.open-wc.org/)
-
-## Install
-
-```bash
-npm i -D @custom-elements-manifest/analyzer
-```
-
-## Usage
-
-```bash
-custom-elements-manifest analyze
-```
-
-or
-
-```bash
-cem analyze
-```
-
-## Options
+## CLI Options
 
 | Command/option   | Type       | Description                                                 | Example               |
 | ---------------- | ---------- | ----------------------------------------------------------- | --------------------- |
@@ -40,3 +14,46 @@ cem analyze
 | --fast           | boolean    | Enable special handling for FASTElement syntax              | `--fast`              |
 | --stencil        | boolean    | Enable special handling for Stencil syntax                  | `--stencil`           |
 | --catalyst       | boolean    | Enable special handling for Catalyst syntax                 | `--catalyst`          |
+
+## Config File
+
+You can specify a custom `custom-elements-manifest.config.mjs` configuration file that allows the following properties:
+
+`custom-elements-manifest.config.mjs`:
+```js
+import { myAwesomePlugin } from 'awesome-plugin';
+
+export default {
+  globs: ['src/**/*.js'],
+  exclude: ['src/foo.js'],
+  outdir: 'dist',
+  dev: true,
+  watch: true,
+  plugins: [
+    myAwesomePlugin()
+  ],
+
+  /** Even more advanced usecases: */
+  overrideModuleCreation: ({ts, globs}) => {
+    const program = ts.createProgram(globs, defaultCompilerOptions);
+    const typeChecker = program.getTypeChecker();
+
+    return program.getSourceFiles().filter(sf => globs.find(glob => sf.fileName.includes(glob)));
+  },
+}
+```
+
+Config types:
+
+```ts
+interface userConfigOptions {
+  globs: string[],
+  exclude: string[],
+  outdir: string,
+  dev: boolean,
+  watch: boolean,
+  plugins: Array<() => Plugin>,
+  overrideModuleCreation: ({ts: TypeScript, globs: string[]}) => SourceFile[]
+}
+
+```

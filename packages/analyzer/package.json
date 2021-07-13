@@ -21,7 +21,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "prepublishOnly": "npm test && npm run build:browser",
+    "prepublishOnly": "npm test && npm run build:browser && publish-docs --github-url https://github.com/open-wc/custom-elements-manifest/ --git-root-dir ../../",
     "start": "nodemon --ignore './custom-elements.json' index.js analyze --dev --litelement",
     "test": "uvu test",
     "build:browser": "rollup -c rollup.browser.config.js",
