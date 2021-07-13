@@ -42,6 +42,7 @@ export default {
 - [cem-plugin-async-function](https://www.npmjs.com/package/cem-plugin-async-function) - plugin to add (non-standard) async flag to functions
 - [cem-plugin-copy](https://www.npmjs.com/package/cem-plugin-copy) - plugin to copy files when finished analyzing
 - [cem-plugin-jsdoc-example](https://www.npmjs.com/package/cem-plugin-jsdoc-example) - plugin to handle jsdoc `@example` tag
+- [cem-plugin-jsdoc-function](https://www.npmjs.com/package/cem-plugin-jsdoc-function) - plugin to handle jsdoc `@function` tag on variables
 - [cem-plugin-module-file-extensions](https://www.npmjs.com/package/cem-plugin-module-file-extensions) - plugin to rewrite file extensions (e.g. from `.js` to `.ts`)
 - [cem-plugin-reactify](https://www.npmjs.com/package/cem-plugin-reactify) - plugin to automatically create React wrappers for your custom elements
 - [cem-plugin-readonly](https://www.npmjs.com/package/cem-plugin-readonly) - plugin to handle read-only class members
