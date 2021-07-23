@@ -64,12 +64,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "fixtures/class-minified/output.json",
-      "declarations": [],
-      "exports": []
-    },
-    {
-      "kind": "javascript-module",
       "path": "fixtures/class-minified/fixture/custom-elements.json",
       "declarations": [],
       "exports": []
@@ -88,14 +82,16 @@
               "name": "testprop1",
               "type": {
                 "text": "number"
-              }
+              },
+              "default": "!0"
             },
             {
               "kind": "field",
               "name": "testprop2",
               "type": {
                 "text": "string"
-              }
+              },
+              "default": "\"FUFU\""
             }
           ],
           "superclass": {

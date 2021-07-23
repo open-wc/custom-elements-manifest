@@ -26,8 +26,7 @@
     "test": "uvu test",
     "build:browser": "rollup -c rollup.browser.config.js",
     "test:watch": "watchexec -w src -w test npm test",
-    "update-fixtures": "node scripts/update-version.js --version 1.0.0",
-    "test-minified": "nodemon --ignore '*/custom-elements.json' index.js analyze --dev --globs \"fixtures/class-minified/\" --outdir fixtures/class-minified/fixture"
+    "update-fixtures": "node scripts/update-version.js --version 1.0.0"
   },
   "keywords": [
     "custom-elements",
@@ -53,5 +52,5 @@
     "Pascal Schilp <pascalschilp@gmail.com>",
     "Benny Powers <web@bennypowers.com>"
   ],
-  "customElements": "fixtures/class-minified/fixture/custom-elements.json"
+  "customElements": "custom-elements.json"
 }

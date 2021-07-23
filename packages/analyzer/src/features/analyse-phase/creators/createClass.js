@@ -11,254 +11,254 @@ import { resolveModuleOrPackageSpecifier } from '../../../utils/index.js';
  * Creates a classDoc
  */
 export function createClass(node, moduleDoc, context) {
-    let classTemplate = {
-        kind: 'class',
-        description: '',
-        /**
-         * In case of a class node?.name?.getText()
-         * In case of a mixin node?.parent?.parent?.name?.getText()
+  let classTemplate = {
+    kind: 'class',
+    description: '',
+    /**
+     * In case of a class node?.name?.getText()
+     * In case of a mixin node?.parent?.parent?.name?.getText()
+     */
+    name: node?.name?.getText() || node?.parent?.parent?.name?.getText() || '',
+    cssProperties: [],
+    cssParts: [],
+    slots: [],
+    members: [],
+    events: [],
+    attributes: []
+  };
+
+
+  node?.members?.forEach(member => {
+    /**
+     * Handle attributes
+     */
+    if (isProperty(member)) {
+      if (member?.name?.getText() === 'observedAttributes') {
+        /** 
+         * @example static observedAttributes
          */
-        name: node?.name?.getText() || node?.parent?.parent?.name?.getText() || '',
-        cssProperties: [],
-        cssParts: [],
-        slots: [],
-        members: [],
-        events: [],
-        attributes: []
-    };
-
-
-    node?.members?.forEach(member => {
-        /**
-         * Handle attributes
-         */
-        if (isProperty(member)) {
-            if (member?.name?.getText() === 'observedAttributes') {
-                /** 
-                 * @example static observedAttributes
-                 */
-                if (ts.isPropertyDeclaration(member)) {
-                    member?.initializer?.elements?.forEach((element) => {
-                        if (ts.isStringLiteral(element)) {
-                            const attribute = createAttribute(element);
-                            classTemplate.attributes.push(attribute);
-                        }
-                    });
-                }
-
-                /**
-                 * @example static get observedAttributes() {}
-                 */
-                if (ts.isGetAccessor(member)) {
-                    const returnStatement = member?.body?.statements?.find(isReturnStatement);
-
-                    returnStatement?.expression?.elements?.forEach((element) => {
-                        if (ts.isStringLiteral(element)) {
-                            const attribute = createAttribute(element);
-                            classTemplate.attributes.push(attribute);
-                        }
-                    });
-                }
+        if (ts.isPropertyDeclaration(member)) {
+          member?.initializer?.elements?.forEach((element) => {
+            if (ts.isStringLiteral(element)) {
+              const attribute = createAttribute(element);
+              classTemplate.attributes.push(attribute);
             }
+          });
         }
-    });
+
+        /**
+         * @example static get observedAttributes() {}
+         */
+        if (ts.isGetAccessor(member)) {
+          const returnStatement = member?.body?.statements?.find(isReturnStatement);
+
+          returnStatement?.expression?.elements?.forEach((element) => {
+            if (ts.isStringLiteral(element)) {
+              const attribute = createAttribute(element);
+              classTemplate.attributes.push(attribute);
+            }
+          });
+        }
+      }
+    }
+  });
+
+  /**
+   * Second pass through a class's members.
+   * We do this in two passes, because we need to know whether or not a class has any 
+   * attributes, so we handle those first.
+   */
+  node?.members?.forEach(member => {
+    /**
+     * Handle class methods
+     */
+    if (ts.isMethodDeclaration(member) && !hasIgnoreJSDoc(member)) {
+      const method = createFunctionLike(member);
+      classTemplate.members.push(method);
+    }
 
     /**
-     * Second pass through a class's members.
-     * We do this in two passes, because we need to know whether or not a class has any 
-     * attributes, so we handle those first.
+     * Handle fields
      */
-    node?.members?.forEach(member => {
-        /**
-         * Handle class methods
-         */
-        if (ts.isMethodDeclaration(member) && !hasIgnoreJSDoc(member)) {
-            const method = createFunctionLike(member);
-            classTemplate.members.push(method);
+    if (isProperty(member) && !hasIgnoreJSDoc(member)) {
+      const field = createField(member);
+
+      /** Flag class fields that get assigned a variable, so we can resolve it later (in the RESOLVE-INITIALIZERS plugin) */
+      if (member?.initializer?.kind === ts.SyntaxKind.Identifier) {
+        field.resolveInitializer = {
+          ...resolveModuleOrPackageSpecifier(moduleDoc, context, member?.initializer?.getText()),
         }
+      }
 
-        /**
-         * Handle fields
-         */
-        if (isProperty(member) && !hasIgnoreJSDoc(member)) {
-            const field = createField(member);
-
-            /** Flag class fields that get assigned a variable, so we can resolve it later (in the RESOLVE-INITIALIZERS plugin) */
-            if (member?.initializer?.kind === ts.SyntaxKind.Identifier) {
-                field.resolveInitializer = {
-                    ...resolveModuleOrPackageSpecifier(moduleDoc, context, member?.initializer?.getText()),
-                }
-            }
-
-            /**
-             * Handle @attr
-             * If a field has a @attr annotation, also create an attribute for it
-             */
-            if (hasAttrAnnotation(member)) {
-                let attribute = createAttributeFromField(field);
-                attribute = handleAttrJsDoc(member, attribute);
-                field.attribute = attribute.name;
-
-                /**
-                 * If the attribute already exists, merge it together with the extra
-                 * information we got from the field (like type, summary, description, etc)
-                 */
-                let attrAlreadyExists = classTemplate.attributes.find(attr => attr.name === attribute.name);
-
-                if (attrAlreadyExists) {
-                    classTemplate.attributes = classTemplate.attributes.map(attr => {
-                        return attr.name === attribute.name ? { ...attrAlreadyExists, ...attribute } : attr;
-                    });
-                } else {
-                    classTemplate.attributes.push(attribute);
-                }
-            }
-
-            /**
-             * A class can have a static prop and an instance prop with the same name,
-             * both should be output in the CEM
-             * 
-             * If not a static prop, we merge getter and setter pairs here
-             */
-            if (field?.static) {
-                classTemplate.members.push(field);
-            } else {
-                const fieldExists = classTemplate.members
-                    .filter(mem => !mem?.static)
-                    .find(mem => mem?.name === member?.name?.getText());
-
-                if (fieldExists) {
-                    classTemplate.members = classTemplate.members.map(mem => mem?.name === member?.name?.getText() && !mem?.static ? { ...mem, ...field } : mem);
-                } else {
-                    classTemplate.members.push(field);
-                }
-            }
-        }
+      /**
+       * Handle @attr
+       * If a field has a @attr annotation, also create an attribute for it
+       */
+      if (hasAttrAnnotation(member)) {
+        let attribute = createAttributeFromField(field);
+        attribute = handleAttrJsDoc(member, attribute);
+        field.attribute = attribute.name;
 
         /**
-         * Handle events
-         * 
-         * In order to find `this.dispatchEvent` calls, we have to traverse a method's AST
+         * If the attribute already exists, merge it together with the extra
+         * information we got from the field (like type, summary, description, etc)
          */
-        if (ts.isMethodDeclaration(member)) {
-            eventsVisitor(member, classTemplate);
+        let attrAlreadyExists = classTemplate.attributes.find(attr => attr.name === attribute.name);
+
+        if (attrAlreadyExists) {
+          classTemplate.attributes = classTemplate.attributes.map(attr => {
+            return attr.name === attribute.name ? { ...attrAlreadyExists, ...attribute } : attr;
+          });
+        } else {
+          classTemplate.attributes.push(attribute);
         }
-    });
+      }
 
-    getDefaultValuesFromConstructorVisitor(node, classTemplate, context);
+      /**
+       * A class can have a static prop and an instance prop with the same name,
+       * both should be output in the CEM
+       * 
+       * If not a static prop, we merge getter and setter pairs here
+       */
+      if (field?.static) {
+        classTemplate.members.push(field);
+      } else {
+        const fieldExists = classTemplate.members
+          .filter(mem => !mem?.static)
+          .find(mem => mem?.name === member?.name?.getText());
 
-    classTemplate.members = classTemplate?.members?.filter(mem => !mem.ignore);
+        if (fieldExists) {
+          classTemplate.members = classTemplate.members.map(mem => mem?.name === member?.name?.getText() && !mem?.static ? { ...mem, ...field } : mem);
+        } else {
+          classTemplate.members.push(field);
+        }
+      }
+    }
 
     /**
-     * Inheritance
+     * Handle events
+     * 
+     * In order to find `this.dispatchEvent` calls, we have to traverse a method's AST
      */
-    classTemplate = handleHeritage(classTemplate, moduleDoc, context, node);
+    if (ts.isMethodDeclaration(member)) {
+      eventsVisitor(member, classTemplate);
+    }
+  });
 
-    return classTemplate;
+  getDefaultValuesFromConstructorVisitor(node, classTemplate, context);
+
+  classTemplate.members = classTemplate?.members?.filter(mem => !mem.ignore);
+
+  /**
+   * Inheritance
+   */
+  classTemplate = handleHeritage(classTemplate, moduleDoc, context, node);
+
+  return classTemplate;
 }
 
 function eventsVisitor(source, classTemplate) {
-    visitNode(source);
+  visitNode(source);
 
-    function visitNode(node) {
-        switch (node.kind) {
-            case ts.SyntaxKind.CallExpression:
+  function visitNode(node) {
+    switch (node.kind) {
+      case ts.SyntaxKind.CallExpression:
 
-                /** If callexpression is `this.dispatchEvent` */
-                if (isDispatchEvent(node)) {
-                    node?.arguments?.forEach((arg) => {
-                        if (arg.kind === ts.SyntaxKind.NewExpression) {
-                            /** e.g. `selected-changed` */
-                            const eventName = arg?.arguments?.[0]?.text;
-                            /**
-                             * Check if event already exists
-                             */
-                            const eventExists = classTemplate?.events?.some(event => event.name === eventName);
+        /** If callexpression is `this.dispatchEvent` */
+        if (isDispatchEvent(node)) {
+          node?.arguments?.forEach((arg) => {
+            if (arg.kind === ts.SyntaxKind.NewExpression) {
+              /** e.g. `selected-changed` */
+              const eventName = arg?.arguments?.[0]?.text;
+              /**
+               * Check if event already exists
+               */
+              const eventExists = classTemplate?.events?.some(event => event.name === eventName);
 
-                            if (!eventExists) {
-                                let eventDoc = {
-                                    ...(eventName ? { name: eventName } : {}),
-                                    type: {
-                                        text: arg.expression.text,
-                                    },
-                                };
+              if (!eventExists) {
+                let eventDoc = {
+                  ...(eventName ? { name: eventName } : {}),
+                  type: {
+                    text: arg.expression.text,
+                  },
+                };
 
-                                eventDoc = handleJsDoc(eventDoc, node?.parent);
-                                classTemplate.events.push(eventDoc);
-                            }
-                        }
-                    });
+                eventDoc = handleJsDoc(eventDoc, node?.parent);
+                classTemplate.events.push(eventDoc);
+              }
+            }
+          });
 
-                }
         }
-
-        ts.forEachChild(node, visitNode);
     }
+
+    ts.forEachChild(node, visitNode);
+  }
 }
 
 export function getDefaultValuesFromConstructorVisitor(source, classTemplate, context) {
-    visitNode(source);
+  visitNode(source);
 
-    function visitNode(node) {
-        switch (node.kind) {
-            case ts.SyntaxKind.Constructor:
-                /** 
-                 * For every member that was added in the classDoc, we want to add a default value if we can
-                 * To do this, we visit a class's constructor, and loop through the statements
-                 */
-                node.body?.statements?.filter((statement) => statement.kind === ts.SyntaxKind.ExpressionStatement)
-                    .filter((statement) => statement.expression.kind === ts.SyntaxKind.BinaryExpression)
-                    .forEach((statement) => mapBinaryExpression(source, classTemplate, context, statement, statement.expression));
-                break;
-        }
-
-        ts.forEachChild(node, visitNode);
+  function visitNode(node) {
+    switch (node.kind) {
+      case ts.SyntaxKind.Constructor:
+        /** 
+         * For every member that was added in the classDoc, we want to add a default value if we can
+         * To do this, we visit a class's constructor, and loop through the statements
+         */
+        node.body?.statements?.filter((statement) => statement.kind === ts.SyntaxKind.ExpressionStatement)
+          .filter((statement) => statement.expression.kind === ts.SyntaxKind.BinaryExpression)
+          .forEach((statement) => mapBinaryExpression(source, classTemplate, context, statement, statement.expression));
+        break;
     }
+
+    ts.forEachChild(node, visitNode);
+  }
 }
 
 function mapBinaryExpression(source, classTemplate, context, statement, expression) {
 
-    let existingMember = classTemplate?.members?.find(member => expression?.left?.name?.getText() === member.name && member.kind === 'field');
+  let existingMember = classTemplate?.members?.find(member => expression?.left?.name?.getText() === member.name && member.kind === 'field');
 
-    // If the source is minified, or otherwise has a comma separated prop initialization
-    if (expression.operatorToken.kind === ts.SyntaxKind.CommaToken) {
-        if (expression.left.kind === ts.SyntaxKind.BinaryExpression) {
-            mapBinaryExpression(source, classTemplate, context, statement, expression.left);
-        }
-        if (expression.right.kind === ts.SyntaxKind.BinaryExpression) {
-            mapBinaryExpression(source, classTemplate, context, statement, expression.right);
-        }
-        return;
+  // If the source is minified, or otherwise has a comma separated prop initialization
+  if (expression.operatorToken.kind === ts.SyntaxKind.CommaToken) {
+    if (expression.left.kind === ts.SyntaxKind.BinaryExpression) {
+      mapBinaryExpression(source, classTemplate, context, statement, expression.left);
+    }
+    if (expression.right.kind === ts.SyntaxKind.BinaryExpression) {
+      mapBinaryExpression(source, classTemplate, context, statement, expression.right);
+    }
+    return;
+  }
+
+  if (!existingMember) {
+    if (hasIgnoreJSDoc(statement)) return;
+
+    existingMember = {
+      kind: 'field',
+      name: expression?.left?.name?.getText(),
+    }
+    classTemplate.members.push(existingMember);
+  }
+
+  if (existingMember) {
+    if (hasIgnoreJSDoc(statement)) {
+      // schedule for deletion
+      existingMember.ignore = true;
     }
 
-    if (!existingMember) {
-        if (hasIgnoreJSDoc(statement)) return;
-
-        existingMember = {
-            kind: 'field',
-            name: expression?.left?.name?.getText(),
-        }
-        classTemplate.members.push(existingMember);
+    if (!existingMember?.type) {
+      existingMember = handleTypeInference(existingMember, expression?.right);
     }
 
-    if (existingMember) {
-        if (hasIgnoreJSDoc(statement)) {
-            // schedule for deletion
-            existingMember.ignore = true;
-        }
+    existingMember = handleJsDoc(existingMember, statement);
+    existingMember = handleDefaultValue(existingMember, statement, expression);
 
-        if (!existingMember?.type) {
-            existingMember = handleTypeInference(existingMember, expression?.right);
-        }
-
-        existingMember = handleJsDoc(existingMember, statement);
-        existingMember = handleDefaultValue(existingMember, statement);
-
-        /** Flag class fields that get assigned a variable, so we can resolve it later (in the RESOLVE-INITIALIZERS plugin) */
-        if (expression?.right?.kind === ts.SyntaxKind.Identifier) {
-            existingMember.resolveInitializer = {
-                ...resolveModuleOrPackageSpecifier({ path: source.getSourceFile().fileName }, context, node?.initializer?.getText()),
-            }
-        }
+    /** Flag class fields that get assigned a variable, so we can resolve it later (in the RESOLVE-INITIALIZERS plugin) */
+    if (expression?.right?.kind === ts.SyntaxKind.Identifier) {
+      existingMember.resolveInitializer = {
+        ...resolveModuleOrPackageSpecifier({ path: source.getSourceFile().fileName }, context, node?.initializer?.getText()),
+      }
     }
+  }
 }
