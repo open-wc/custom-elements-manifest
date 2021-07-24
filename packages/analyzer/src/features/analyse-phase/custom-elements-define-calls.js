@@ -1,5 +1,6 @@
 import { getDeclarationInFile, hasIgnoreJSDoc, isCustomElementsDefineCall } from '../../utils/ast-helpers.js';
 import { resolveModuleOrPackageSpecifier } from '../../utils/index.js';
+import { createClass } from './creators/createClass.js';
 
 /**
  * CUSTOM-ELEMENTS-DEFINE-CALLS
@@ -9,9 +10,14 @@ import { resolveModuleOrPackageSpecifier } from '../../utils/index.js';
  * @example window.customElements.define()
  */
 export function customElementsDefineCallsPlugin() {
+  let counter;
   return {
     name: 'CORE - CUSTOM-ELEMENTS-DEFINE-CALLS',
-    analyzePhase({node, moduleDoc, context}){    
+    analyzePhase({ts, node, moduleDoc, context}){    
+      if(node?.kind === ts.SyntaxKind.SourceFile) {
+        counter = 0;
+      }
+
       if (hasIgnoreJSDoc(node))
         return;
 
@@ -20,10 +26,49 @@ export function customElementsDefineCallsPlugin() {
        * @example window.customElements.define('my-el', MyEl);
        */
       if(isCustomElementsDefineCall(node)) {
-        const elementClass = node.parent.arguments[1].text;
+        const classArg = node.parent.arguments[1];
+        let isAnonymousClass = classArg?.kind === ts.SyntaxKind.ClassExpression;
+        let isUnnamed = classArg?.name === undefined;
+
+        if(isAnonymousClass) {
+          const klass = createClass(classArg, moduleDoc, context);
+
+          if(isUnnamed) {
+            klass.name = `anonymous_${counter}`;
+          }
+          moduleDoc.declarations.push(klass);
+        }
+
+        let elementClass;
+
+        /** 
+         * @example customElements.define('m-e', class extends HTMLElement{}) 
+         *                                            ^
+         */
+        if(isUnnamed) {
+          elementClass = `anonymous_${counter}`;
+          counter = counter + 1;
+        }
+
+        /** 
+         * @example customElements.define('m-e', MyElement) 
+         *                                       ^^^^^^^^^
+         */
+        if(node?.parent?.arguments?.[1]?.text) {
+          elementClass = node.parent.arguments[1].text;
+        }
+
+        /** 
+         * @example customElements.define('m-e', class MyElement extends HTMLElement{}) 
+         *                                             ^^^^^^^^^
+         */
+        if(classArg?.name) {
+          elementClass = classArg?.name?.getText();
+        }
+
         const elementTag = node.parent.arguments[0].text;
 
-        const klass = getDeclarationInFile(elementClass, node.getSourceFile());
+        const klass = getDeclarationInFile(elementClass, node?.getSourceFile());
 
         if (hasIgnoreJSDoc(klass))
           return;

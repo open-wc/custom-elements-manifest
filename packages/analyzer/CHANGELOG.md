@@ -1,3 +1,7 @@
+## Release 0.4.13
+- Add support for class expressions in `customElements.define` calls, e.g.: `customElements.define('m-e', class extends HTMLElement{})`
+- Fixed bug in lit-plugin to avoid duplicate attributes
+
 ## Release 0.4.12
 - Handle `@ignore` and `@internal` jsdoc
 

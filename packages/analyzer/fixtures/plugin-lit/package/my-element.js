@@ -1,6 +1,7 @@
 import { LitElement, property, customElement } from 'lit-element';
 
 /**
+ * @attr my-attr
  * @prop {string} prop1 this is the description
  */
 @customElement('my-element')

@@ -51,10 +51,14 @@ export function staticPropertiesPlugin() {
                     classMember.reflects = true;
                   }
 
-                  currClass.attributes = [...(currClass?.attributes || []), attribute]
+                  const existingAttr = currClass?.attributes?.find(attr => attr.name === attribute.name);
+                  if(!existingAttr) {
+                    currClass.attributes.push(attribute);
+                  } else {
+                    currClass.attributes = currClass?.attributes?.map(attr => attr.name === attribute.name ? ({...attr, ...attribute}) : attr);
+                  }
                 }
 
-                
                 const existingField = currClass?.members?.find(field => field.name === classMember.name);
 
                 if(!existingField) {

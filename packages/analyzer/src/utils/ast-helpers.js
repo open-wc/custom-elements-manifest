@@ -147,8 +147,8 @@ export function getDeclarationInFile(nodeOrName, sourceFile) {
     if (!sourceFile)
       throw new Error('must provide sourceFile when first argument is a string');
   } else {
-    sourceFile = nodeOrName.getSourceFile();
-    name = nodeOrName.name?.getText();
+    sourceFile = nodeOrName?.getSourceFile();
+    name = nodeOrName?.name?.getText();
   }
   if (!name)
     return undefined;

@@ -35,6 +35,26 @@
           },
           "tagName": "my-window",
           "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "anonymous_4",
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "anon-1",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyEl",
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "anon-2",
+          "customElement": true
         }
       ],
       "exports": [
@@ -67,6 +87,22 @@
           "name": "my-window",
           "declaration": {
             "name": "MyWindow",
+            "module": "fixtures/custom-elements-define/package/my-element.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "anon-1",
+          "declaration": {
+            "name": "anonymous_4",
+            "module": "fixtures/custom-elements-define/package/my-element.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "anon-2",
+          "declaration": {
+            "name": "MyEl",
             "module": "fixtures/custom-elements-define/package/my-element.js"
           }
         }
