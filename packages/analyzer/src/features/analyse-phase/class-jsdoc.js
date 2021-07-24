@@ -4,7 +4,7 @@ import { safe } from '../../utils/index.js';
 
 /**
  * CLASS-JSDOC
- * 
+ *
  * Deals with any JSDoc above a class
  */
 export function classJsDocPlugin() {
@@ -18,10 +18,10 @@ export function classJsDocPlugin() {
 
           /**
            * Because we use a bunch of 'non-standard' JSDoc annotations, TS doesn't recognize most of them.
-           * Instead we use `comment-parser` to parse the JSDoc. 
-           * 
+           * Instead we use `comment-parser` to parse the JSDoc.
+           *
            * Loops through each JSDoc (yes, there can be multiple) above a class, and parses every JSDoc annotation
-           * 
+           *
            * Checks to see if the item is already in the classDoc, and if so merge and overwrite (JSDoc takes precedence)
            */
           node?.jsDoc?.forEach(jsDoc => {
@@ -99,8 +99,8 @@ export function classJsDocPlugin() {
             /**
              * Comment-parse doesn't handle annotations with only a description correctly, for example:
              * @summary foo bar
-             * will output only 'bar' as the description. 
-             * 
+             * will output only 'bar' as the description.
+             *
              * Instead, we use TS for this JSDoc annotation.
              */
             jsDoc?.tags?.forEach(tag => {

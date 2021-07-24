@@ -37,7 +37,7 @@ testCases.forEach(testCase => {
       .map(glob => {
         const relativeModulePath = `.${path.sep}${path.relative(process.cwd(), glob)}`;
         const source = fs.readFileSync(relativeModulePath).toString();
-    
+
         return ts.createSourceFile(
           relativeModulePath,
           source,
@@ -52,10 +52,15 @@ testCases.forEach(testCase => {
       const config = await import(manifestPathFileURL);
       plugins = [...config.default.plugins];
     } catch {}
-    
+
     const result = create({modules, plugins});
 
-    fs.writeFileSync(outputPath, JSON.stringify(result, null, 2));
+    try {
+      fs.writeFileSync(outputPath, JSON.stringify(result, null, 2));
+    } catch(e) {
+      console.log('Could not write manifest. Result was:', result);
+      throw e;
+    }
 
     assert.equal(result, fixture);
   });
