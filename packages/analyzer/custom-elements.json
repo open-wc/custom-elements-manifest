@@ -7,56 +7,40 @@
       "path": "fixtures/-default/package/bar.js",
       "declarations": [
         {
-          "kind": "variable",
-          "name": "variable",
-          "type": {
-            "text": "string"
+          "kind": "class",
+          "description": "",
+          "name": "anonymous_0",
+          "superclass": {
+            "name": "HTMLElement"
           },
-          "default": "'var'"
+          "tagName": "my-element",
+          "customElement": true
         },
         {
           "kind": "class",
           "description": "",
-          "name": "IncludeMe",
-          "members": [
-            {
-              "kind": "field",
-              "name": "included",
-              "type": {
-                "text": "string"
-              },
-              "default": "'hello world'"
-            }
-          ],
+          "name": "MyEl",
           "superclass": {
             "name": "HTMLElement"
           },
-          "tagName": "include-me",
+          "tagName": "my-element",
           "customElement": true
         }
       ],
       "exports": [
         {
-          "kind": "js",
-          "name": "variable",
+          "kind": "custom-element-definition",
+          "name": "my-element",
           "declaration": {
-            "name": "variable",
-            "module": "fixtures/-default/package/bar.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "IncludeMe",
-          "declaration": {
-            "name": "IncludeMe",
+            "name": "anonymous_0",
             "module": "fixtures/-default/package/bar.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "include-me",
+          "name": "my-element",
           "declaration": {
-            "name": "IncludeMe",
+            "name": "MyEl",
             "module": "fixtures/-default/package/bar.js"
           }
         }

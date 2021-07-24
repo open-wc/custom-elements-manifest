@@ -103,6 +103,10 @@
           ],
           "attributes": [
             {
+              "name": "my-attr",
+              "fieldName": "attr"
+            },
+            {
               "name": "decoratedProperty",
               "type": {
                 "text": "array"
@@ -133,10 +137,6 @@
             {
               "name": "prop2",
               "fieldName": "prop2"
-            },
-            {
-              "name": "my-attr",
-              "fieldName": "attr"
             },
             {
               "name": "_privateProp",
