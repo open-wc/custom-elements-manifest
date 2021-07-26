@@ -72,6 +72,10 @@ class MyEl extends HTMLElement {
     /** @type {import('foo').Some.Type} */
     this.prop4 = 'default';
 
+    this.commaprop1 = 'default',
+    this.commaprop2 = true,
+    this.commaprop3 = 123;
+
     this.asVariableAssignedInConstructor = foo;
   }
 }
