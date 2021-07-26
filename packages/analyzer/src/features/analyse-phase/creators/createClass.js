@@ -221,7 +221,7 @@ function mapBinaryExpression(source, classTemplate, context, statement, expressi
   let existingMember = classTemplate?.members?.find(member => expression?.left?.name?.getText() === member.name && member.kind === 'field');
 
   // If the source is minified, or otherwise has a comma separated prop initialization
-  if (expression.operatorToken.kind === ts.SyntaxKind.CommaToken) {
+  if (expression?.operatorToken?.kind === ts.SyntaxKind.CommaToken) {
     if (expression.left.kind === ts.SyntaxKind.BinaryExpression) {
       mapBinaryExpression(source, classTemplate, context, statement, expression.left);
     }
