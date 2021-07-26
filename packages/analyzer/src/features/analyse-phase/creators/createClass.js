@@ -208,7 +208,7 @@ export function getDefaultValuesFromConstructorVisitor(source, classTemplate, co
          */
         node.body?.statements?.filter((statement) => statement.kind === ts.SyntaxKind.ExpressionStatement)
           .filter((statement) => statement.expression.kind === ts.SyntaxKind.BinaryExpression)
-          .forEach((statement) => mapBinaryExpression(source, classTemplate, context, statement, statement.expression));
+          .forEach((statement) => mapBinaryExpression(source, classTemplate, context, node, statement, statement.expression));
         break;
     }
 
@@ -216,17 +216,17 @@ export function getDefaultValuesFromConstructorVisitor(source, classTemplate, co
   }
 }
 
-function mapBinaryExpression(source, classTemplate, context, statement, expression) {
+function mapBinaryExpression(source, classTemplate, context, node, statement, expression) {
 
   let existingMember = classTemplate?.members?.find(member => expression?.left?.name?.getText() === member.name && member.kind === 'field');
 
   // If the source is minified, or otherwise has a comma separated prop initialization
   if (expression?.operatorToken?.kind === ts.SyntaxKind.CommaToken) {
     if (expression.left.kind === ts.SyntaxKind.BinaryExpression) {
-      mapBinaryExpression(source, classTemplate, context, statement, expression.left);
+      mapBinaryExpression(source, classTemplate, context, node, statement, expression.left);
     }
     if (expression.right.kind === ts.SyntaxKind.BinaryExpression) {
-      mapBinaryExpression(source, classTemplate, context, statement, expression.right);
+      mapBinaryExpression(source, classTemplate, context, node, statement, expression.right);
     }
     return;
   }
