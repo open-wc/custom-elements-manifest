@@ -133,7 +133,25 @@ export function isWellKnownType(node) {
 /**
  * Whether or not a node has an `@ignore` jsdoc annotation
  */
- export const hasIgnoreJSDoc = node => node?.jsDoc?.some(doc => doc?.tags?.some(tag => safe(() => tag?.tagName?.getText()) === 'ignore' || safe(() => tag?.tagName?.getText()) === 'internal'));
+export const hasIgnoreJSDoc = node => node?.jsDoc?.some(doc => doc?.tags?.some(tag => safe(() => tag?.tagName?.getText()) === 'ignore' || safe(() => tag?.tagName?.getText()) === 'internal'));
+
+
+/**
+ * @example this.__onClick = this.__onClick.bind(this);
+ */
+export function isBindCall(statement) {
+  const { expression } = statement;
+  if(expression) {
+    const leftName = expression?.left?.name?.getText();
+    const rightName = expression?.right?.expression?.expression?.name?.getText();
+    const isBind = expression?.right?.expression?.name?.getText() === 'bind';
+
+    if(leftName === rightName && isBind) {
+      return true;
+    }
+  }
+  return false;
+}
 
 /**
  * Does the variable have an `@ignore` or `@internal` JSDoc tag?

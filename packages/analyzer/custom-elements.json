@@ -9,38 +9,25 @@
         {
           "kind": "class",
           "description": "",
-          "name": "anonymous_0",
+          "name": "GenericSwitch",
+          "members": [
+            {
+              "kind": "method",
+              "name": "__onClick"
+            }
+          ],
           "superclass": {
             "name": "HTMLElement"
           },
-          "tagName": "my-element",
-          "customElement": true
-        },
-        {
-          "kind": "class",
-          "description": "",
-          "name": "MyEl",
-          "superclass": {
-            "name": "HTMLElement"
-          },
-          "tagName": "my-element",
           "customElement": true
         }
       ],
       "exports": [
         {
-          "kind": "custom-element-definition",
-          "name": "my-element",
+          "kind": "js",
+          "name": "GenericSwitch",
           "declaration": {
-            "name": "anonymous_0",
-            "module": "fixtures/-default/package/bar.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "my-element",
-          "declaration": {
-            "name": "MyEl",
+            "name": "GenericSwitch",
             "module": "fixtures/-default/package/bar.js"
           }
         }

@@ -1,3 +1,6 @@
+## Release 0.4.14
+- Avoid adding fields that are methods as `.bind` calls in class constructors
+
 ## Release 0.4.13
 - Add support for class expressions in `customElements.define` calls, e.g.: `customElements.define('m-e', class extends HTMLElement{})`
 - Fixed bug in lit-plugin to avoid duplicate attributes
