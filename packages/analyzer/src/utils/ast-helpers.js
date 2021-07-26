@@ -146,6 +146,8 @@ export function isBindCall(statement) {
     const rightName = expression?.right?.expression?.expression?.name?.getText();
     const isBind = expression?.right?.expression?.name?.getText() === 'bind';
 
+    if(leftName === undefined || rightName === undefined) return false;
+
     if(leftName === rightName && isBind) {
       return true;
     }
