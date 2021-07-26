@@ -4,6 +4,78 @@
   "modules": [
     {
       "kind": "javascript-module",
+      "path": "fixtures/-default/package/bar.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "variable",
+          "type": {
+            "text": "string"
+          },
+          "default": "'var'"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "IncludeMe",
+          "members": [
+            {
+              "kind": "field",
+              "name": "included",
+              "type": {
+                "text": "string"
+              },
+              "default": "'hello world'"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "include-me",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "variable",
+          "declaration": {
+            "name": "variable",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "IncludeMe",
+          "declaration": {
+            "name": "IncludeMe",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "include-me",
+          "declaration": {
+            "name": "IncludeMe",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/class-fields/output.json",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/class-fields/fixture/custom-elements.json",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
       "path": "fixtures/class-fields/package/my-element.js",
       "declarations": [
         {
@@ -14,26 +86,26 @@
             {
               "kind": "field",
               "name": "prop1",
-              "default": "''",
               "type": {
                 "text": "string"
-              }
+              },
+              "default": "''"
             },
             {
               "kind": "field",
               "name": "prop2",
-              "default": "'default'",
               "type": {
                 "text": "string"
-              }
+              },
+              "default": "'default'"
             },
             {
               "kind": "field",
-              "description": "prop3 description",
               "name": "prop3",
               "type": {
                 "text": "SomeType"
               },
+              "description": "prop3 description",
               "default": "'default'"
             },
             {
@@ -74,11 +146,11 @@
               "kind": "field",
               "name": "alsoAttr",
               "description": "This is also an attribute",
+              "reflects": true,
               "type": {
                 "text": "string"
               },
-              "attribute": "also-attr",
-              "reflects": true
+              "attribute": "also-attr"
             },
             {
               "kind": "field",
@@ -155,10 +227,10 @@
             {
               "kind": "field",
               "name": "obj",
-              "default": "{a: \"a\", b: 'b', c: `c`}",
               "type": {
                 "text": "object"
-              }
+              },
+              "default": "{a: \"a\", b: 'b', c: `c`}"
             },
             {
               "kind": "field",
@@ -192,18 +264,18 @@
             {
               "kind": "field",
               "name": "asConst",
+              "default": "'const'",
               "type": {
                 "text": "'const'"
-              },
-              "default": "'const'"
+              }
             },
             {
               "kind": "field",
               "name": "asConstRef",
+              "default": "{foo:'bar'}",
               "type": {
                 "text": "{foo:'bar'}"
-              },
-              "default": "{foo:'bar'}"
+              }
             },
             {
               "kind": "field",
@@ -217,6 +289,30 @@
               "kind": "field",
               "name": "#prop13",
               "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "commaprop1",
+              "type": {
+                "text": "string"
+              },
+              "default": "'default'"
+            },
+            {
+              "kind": "field",
+              "name": "commaprop2",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "kind": "field",
+              "name": "commaprop3",
+              "type": {
+                "text": "number"
+              },
+              "default": "123"
             }
           ],
           "attributes": [
