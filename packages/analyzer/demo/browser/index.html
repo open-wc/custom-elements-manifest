@@ -5,7 +5,11 @@
     <script type="module">
       import {ts, create} from '../../browser/index.js';
 
-      const code = `export class MyEl extends HTMLElement {
+      const code = `
+      /**
+       * @prop {string} name - The name of the person. 
+       */
+      export class MyEl extends HTMLElement {
         /**
          * @attr
          */
