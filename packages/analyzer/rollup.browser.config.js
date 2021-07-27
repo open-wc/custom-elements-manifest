@@ -1,7 +1,6 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import {terser} from 'rollup-plugin-terser';
-const commentParser = require.resolve('comment-parser');
 
 const IGNORE = [
   'perf_hooks',
@@ -25,16 +24,6 @@ export default [
       commonjs({
         ignore: (id) => IGNORE.includes(id),
       }),
-      {
-      load(id) {
-        if (id === commentParser) {
-          return `
-  import { parse } from 'comment-parser/es6/index.js'
-  export default { parse: parse };
-          `;
-          }
-        }  
-      },
       resolve(),
       terser()
     ],

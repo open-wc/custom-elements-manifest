@@ -3,7 +3,7 @@ import { createFunctionLike } from './createFunctionLike.js';
 import { createAttribute, createAttributeFromField } from './createAttribute.js';
 import { createField } from './createClassField.js';
 import { handleHeritage, handleJsDoc, handleAttrJsDoc, handleTypeInference, handleDefaultValue } from './handlers.js';
-import { hasAttrAnnotation, hasIgnoreJSDoc, isDispatchEvent, isPrimitive, isProperty, isReturnStatement, isStaticMember } from '../../../utils/ast-helpers.js';
+import { hasAttrAnnotation, hasIgnoreJSDoc, isDispatchEvent, isProperty, isReturnStatement } from '../../../utils/ast-helpers.js';
 import { resolveModuleOrPackageSpecifier } from '../../../utils/index.js';
 
 
