@@ -1,6 +1,6 @@
 import { parse } from 'comment-parser';
 import { handleJsDocType, normalizeDescription } from '../../utils/jsdoc.js';
-import { safe } from '../../utils/index.js';
+import { has, safe } from '../../utils/index.js';
 
 /**
  * CLASS-JSDOC
@@ -93,7 +93,11 @@ export function classJsDocPlugin() {
              * Description
              */
             if(jsDoc?.comment) {
-              classDoc.description = normalizeDescription(jsDoc?.comment);
+              if(has(jsDoc?.comment)) {
+                classDoc.description = jsDoc.comment.map(com => `${safe(() => com?.name?.getText()) ?? ''}${com.text}`).join('');
+              } else {
+                classDoc.description = normalizeDescription(jsDoc.comment);
+              }
             }
 
             /**
