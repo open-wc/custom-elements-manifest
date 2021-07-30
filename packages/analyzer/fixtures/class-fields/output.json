@@ -217,6 +217,13 @@
               "kind": "field",
               "name": "#prop13",
               "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "optional",
+              "type": {
+                "text": "string | undefined"
+              }
             }
           ],
           "attributes": [
