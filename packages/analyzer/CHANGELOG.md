@@ -1,4 +1,5 @@
 ## Release 0.4.15
+- Improve check on `customElements.define` calls
 - handle optional properties in TS, e.g. `foo?: string` becomes type `string | undefined`
 - Avoid adding fields that are methods as `.bind` calls in class constructors
 
