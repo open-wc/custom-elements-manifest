@@ -1,4 +1,4 @@
-import parse from 'comment-parser';
+import { parse } from 'comment-parser';
 import { handleJsDocType, normalizeDescription } from '../../utils/jsdoc.js';
 import { safe } from '../../utils/index.js';
 
@@ -25,7 +25,7 @@ export function classJsDocPlugin() {
            * Checks to see if the item is already in the classDoc, and if so merge and overwrite (JSDoc takes precedence)
            */
           node?.jsDoc?.forEach(jsDoc => {
-            const parsed = parse.parse(jsDoc?.getFullText());
+            const parsed = parse(jsDoc?.getFullText());
             parsed?.forEach(parsedJsDoc => {
 
               /**

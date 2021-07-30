@@ -1,9 +1,9 @@
 import ts from 'typescript';
-import parse from 'comment-parser';
+import { parse } from 'comment-parser';
 
 import { has, resolveModuleOrPackageSpecifier, safe } from '../../../utils/index.js';
 import { handleJsDocType, normalizeDescription } from '../../../utils/jsdoc.js';
-import { isPrimitive, isWellKnownType } from '../../../utils/ast-helpers.js';
+import { isWellKnownType } from '../../../utils/ast-helpers.js';
 
 /**
  * @example static foo;
@@ -197,7 +197,7 @@ export function handleHeritage(classTemplate, moduleDoc, context, node) {
  */
 export function handleAttrJsDoc(node, doc) {
   node?.jsDoc?.forEach(jsDoc => {
-    const docs = parse.parse(jsDoc?.getFullText())?.find(doc => doc?.tags?.some(({tag}) => tag === 'attr'));
+    const docs = parse(jsDoc?.getFullText())?.find(doc => doc?.tags?.some(({tag}) => tag === 'attr'));
     const attrTag = docs?.tags?.find(({tag}) => tag === 'attr');
 
     if(attrTag?.name) {
