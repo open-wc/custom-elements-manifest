@@ -227,6 +227,30 @@
             },
             {
               "kind": "field",
+              "name": "prefixUnary1",
+              "type": {
+                "text": "number"
+              },
+              "default": "+1"
+            },
+            {
+              "kind": "field",
+              "name": "prefixUnary2",
+              "type": {
+                "text": "number"
+              },
+              "default": "-1"
+            },
+            {
+              "kind": "field",
+              "name": "prefixUnary3",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "!1"
+            },
+            {
+              "kind": "field",
               "name": "commaprop1",
               "type": {
                 "text": "string"

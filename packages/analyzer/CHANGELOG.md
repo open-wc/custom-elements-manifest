@@ -1,4 +1,7 @@
 ## Release 0.4.16
+- Fixed resolving type from PrefixUnaryExpressions
+
+## Release 0.4.16
 - Added support for comma separated properties (handles minified code)
 
 ## Release 0.4.15
