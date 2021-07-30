@@ -1,6 +1,6 @@
 {
   "name": "@custom-elements-manifest/analyzer",
-  "version": "0.4.15",
+  "version": "0.4.16",
   "description": "",
   "license": "MIT",
   "type": "module",
@@ -50,7 +50,8 @@
   "devDependencies": {},
   "contributors": [
     "Pascal Schilp <pascalschilp@gmail.com>",
-    "Benny Powers <web@bennypowers.com>"
+    "Benny Powers <web@bennypowers.com>",
+    "Matias Huhta <huhta.matias@gmail.com>"
   ],
   "customElements": "custom-elements.json"
 }

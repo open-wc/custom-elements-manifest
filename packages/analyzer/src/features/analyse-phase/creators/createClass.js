@@ -71,7 +71,7 @@ export function createClass(node, moduleDoc, context) {
     /**
      * Handle class methods
      */
-    if(ts.isMethodDeclaration(member) && !hasIgnoreJSDoc(member)) {
+    if (ts.isMethodDeclaration(member) && !hasIgnoreJSDoc(member)) {
       const method = createFunctionLike(member);
       classTemplate.members.push(method);
     }
@@ -79,12 +79,12 @@ export function createClass(node, moduleDoc, context) {
     /**
      * Handle fields
      */
-    if (isProperty(member) &&  !hasIgnoreJSDoc(member)) {
+    if (isProperty(member) && !hasIgnoreJSDoc(member)) {
       const field = createField(member);
 
       /** Flag class fields that get assigned a variable, so we can resolve it later (in the RESOLVE-INITIALIZERS plugin) */
-      if(member?.initializer?.kind === ts.SyntaxKind.Identifier) {
-        field.resolveInitializer = { 
+      if (member?.initializer?.kind === ts.SyntaxKind.Identifier) {
+        field.resolveInitializer = {
           ...resolveModuleOrPackageSpecifier(moduleDoc, context, member?.initializer?.getText()),
         }
       }
@@ -93,7 +93,7 @@ export function createClass(node, moduleDoc, context) {
        * Handle @attr
        * If a field has a @attr annotation, also create an attribute for it
        */
-      if(hasAttrAnnotation(member)) {
+      if (hasAttrAnnotation(member)) {
         let attribute = createAttributeFromField(field);
         attribute = handleAttrJsDoc(member, attribute);
         field.attribute = attribute.name;
@@ -103,8 +103,8 @@ export function createClass(node, moduleDoc, context) {
          * information we got from the field (like type, summary, description, etc)
          */
         let attrAlreadyExists = classTemplate.attributes.find(attr => attr.name === attribute.name);
-        
-        if(attrAlreadyExists) {
+
+        if (attrAlreadyExists) {
           classTemplate.attributes = classTemplate.attributes.map(attr => {
             return attr.name === attribute.name ? { ...attrAlreadyExists, ...attribute } : attr;
           });
@@ -119,15 +119,15 @@ export function createClass(node, moduleDoc, context) {
        * 
        * If not a static prop, we merge getter and setter pairs here
        */
-      if(field?.static) {
+      if (field?.static) {
         classTemplate.members.push(field);
       } else {
         const fieldExists = classTemplate.members
           .filter(mem => !mem?.static)
           .find(mem => mem?.name === member?.name?.getText());
 
-        if(fieldExists) {
-          classTemplate.members = classTemplate.members.map(mem => mem?.name === member?.name?.getText() && !mem?.static ? {...mem, ...field} : mem);
+        if (fieldExists) {
+          classTemplate.members = classTemplate.members.map(mem => mem?.name === member?.name?.getText() && !mem?.static ? { ...mem, ...field } : mem);
         } else {
           classTemplate.members.push(field);
         }
@@ -174,14 +174,14 @@ function eventsVisitor(source, classTemplate) {
                */
               const eventExists = classTemplate?.events?.some(event => event.name === eventName);
 
-              if(!eventExists) {
+              if (!eventExists) {
                 let eventDoc = {
-                  ...(eventName ? {name: eventName} : {}),
+                  ...(eventName ? { name: eventName } : {}),
                   type: {
                     text: arg.expression.text,
                   },
                 };
-  
+
                 eventDoc = handleJsDoc(eventDoc, node?.parent);
                 classTemplate.events.push(eventDoc);
               }
@@ -207,44 +207,57 @@ export function getDefaultValuesFromConstructorVisitor(source, classTemplate, co
          */
         node.body?.statements?.filter((statement) => statement.kind === ts.SyntaxKind.ExpressionStatement)
           .filter((statement) => statement.expression.kind === ts.SyntaxKind.BinaryExpression)
-          .forEach((statement) => {
-            let existingMember = classTemplate?.members?.find(member => statement.expression?.left?.name?.getText() === member.name && member.kind === 'field');
+          .forEach((statement) => mapClassMember(source, classTemplate, context, node, statement, statement.expression));
 
-            if(!existingMember) {
-              if(hasIgnoreJSDoc(statement)) return;
-              if(isBindCall(statement)) return;
-
-              existingMember = {
-                kind: 'field',
-                name: statement.expression?.left?.name?.getText(),
-              }
-              classTemplate.members.push(existingMember);
-            }
-
-            if(existingMember) {
-              if(hasIgnoreJSDoc(statement)) {
-                // schedule for deletion
-                existingMember.ignore = true;
-              }
-
-              if(!existingMember?.type) {
-                existingMember = handleTypeInference(existingMember, statement?.expression?.right);
-              }
-
-              existingMember = handleJsDoc(existingMember, statement);
-              existingMember = handleDefaultValue(existingMember, statement);
-              
-              /** Flag class fields that get assigned a variable, so we can resolve it later (in the RESOLVE-INITIALIZERS plugin) */
-              if(statement?.expression?.right?.kind === ts.SyntaxKind.Identifier) {
-                existingMember.resolveInitializer = { 
-                  ...resolveModuleOrPackageSpecifier({path: source.getSourceFile().fileName}, context, node?.initializer?.getText()),
-                }
-              }
-            }
-          });
         break;
     }
 
     ts.forEachChild(node, visitNode);
+  }
+}
+
+function mapClassMember(source, classTemplate, context, node, statement, expression) {
+  let existingMember = classTemplate?.members?.find(member => expression?.left?.name?.getText() === member.name && member.kind === 'field');
+
+  // If the source is minified, or otherwise has a comma separated prop initialization
+  if (expression?.operatorToken?.kind === ts.SyntaxKind.CommaToken) {
+    if (expression.left.kind === ts.SyntaxKind.BinaryExpression) {
+      mapClassMember(source, classTemplate, context, node, statement, expression.left);
+    }
+    if (expression.right.kind === ts.SyntaxKind.BinaryExpression) {
+      mapClassMember(source, classTemplate, context, node, statement, expression.right);
+    }
+    return;
+  }
+
+  if (!existingMember) {
+    if (hasIgnoreJSDoc(statement)) return;
+
+    existingMember = {
+      kind: 'field',
+      name: expression?.left?.name?.getText(),
+    }
+    classTemplate.members.push(existingMember);
+  }
+
+  if (existingMember) {
+    if (hasIgnoreJSDoc(statement)) {
+      // schedule for deletion
+      existingMember.ignore = true;
+    }
+
+    if (!existingMember?.type) {
+      existingMember = handleTypeInference(existingMember, expression?.right);
+    }
+
+    existingMember = handleJsDoc(existingMember, statement);
+    existingMember = handleDefaultValue(existingMember, statement, expression);
+
+    /** Flag class fields that get assigned a variable, so we can resolve it later (in the RESOLVE-INITIALIZERS plugin) */
+    if (expression?.right?.kind === ts.SyntaxKind.Identifier) {
+      existingMember.resolveInitializer = {
+        ...resolveModuleOrPackageSpecifier({ path: source.getSourceFile().fileName }, context, node?.initializer?.getText()),
+      }
+    }
   }
 }

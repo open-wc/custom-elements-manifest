@@ -224,6 +224,30 @@
               "type": {
                 "text": "string | undefined"
               }
+            },
+            {
+              "kind": "field",
+              "name": "commaprop1",
+              "type": {
+                "text": "string"
+              },
+              "default": "'default'"
+            },
+            {
+              "kind": "field",
+              "name": "commaprop2",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "kind": "field",
+              "name": "commaprop3",
+              "type": {
+                "text": "number"
+              },
+              "default": "123"
             }
           ],
           "attributes": [
