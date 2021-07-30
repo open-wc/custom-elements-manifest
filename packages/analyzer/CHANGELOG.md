@@ -1,3 +1,6 @@
+## Release 0.4.16
+- Added support for comma separated properties (handles minified code)
+
 ## Release 0.4.15
 - Improve check on `customElements.define` calls
 - handle optional properties in TS, e.g. `foo?: string` becomes type `string | undefined`
