@@ -253,12 +253,12 @@ export function handleWellKnownTypes(doc, node) {
   return doc;
 }
 
-export function handleDefaultValue(doc, node) {
+export function handleDefaultValue(doc, node, expression) {
   /**
    * In case of a class field node?.initializer
    * In case of a property assignment in constructor node?.expression?.right
    */
-  const initializer = node?.initializer || node?.expression?.right;
+  const initializer = node?.initializer || expression?.right;
 
   /** Ignore the following */
   if(initializer?.kind === ts.SyntaxKind.BinaryExpression) return doc;

@@ -13,10 +13,27 @@
           "members": [
             {
               "kind": "field",
-              "name": "foo",
+              "name": "commaprop1",
               "type": {
-                "text": "string | undefined"
-              }
+                "text": "string"
+              },
+              "default": "'default'"
+            },
+            {
+              "kind": "field",
+              "name": "commaprop2",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "kind": "field",
+              "name": "commaprop3",
+              "type": {
+                "text": "number"
+              },
+              "default": "123"
             }
           ],
           "superclass": {
