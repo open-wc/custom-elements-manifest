@@ -290,7 +290,12 @@ export function handleDefaultValue(doc, node) {
 export function handleExplicitType(doc, node) {
   if(node.type) {
     doc.type = { text: node.type.getText() }
+
+    if(node?.questionToken) {
+      doc.type.text += ' | undefined';
+    }
   }
+
   return doc;
 }
 

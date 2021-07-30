@@ -64,6 +64,8 @@ class MyEl extends HTMLElement {
 
   #prop13;
 
+  optional?: string;
+
   constructor() {
     super();
     this.prop2 = 'default';

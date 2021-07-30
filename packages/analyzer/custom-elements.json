@@ -12,8 +12,11 @@
           "name": "GenericSwitch",
           "members": [
             {
-              "kind": "method",
-              "name": "__onClick"
+              "kind": "field",
+              "name": "foo",
+              "type": {
+                "text": "string | undefined"
+              }
             }
           ],
           "superclass": {
