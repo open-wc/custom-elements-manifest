@@ -18,7 +18,7 @@ export const isReturnStatement = statement => statement?.kind === ts.SyntaxKind.
  * @example customElements.define('my-el', MyEl);
  * @example window.customElements.define('my-el', MyEl);
  */
-export const isCustomElementsDefineCall = node => (node?.expression?.getText() === 'customElements' || node?.expression?.getText() === 'window.customElements') && node?.name?.getText() === 'define';
+export const isCustomElementsDefineCall = node => (node?.expression?.getText() === 'customElements' || node?.expression?.getText() === 'window.customElements') && node?.name?.getText() === 'define' && node?.parent?.kind === ts.SyntaxKind.CallExpression;
 
 /**
  * @example @attr
