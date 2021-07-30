@@ -34,6 +34,30 @@
                 "text": "number"
               },
               "default": "123"
+            },
+            {
+              "kind": "field",
+              "name": "commaprop4",
+              "type": {
+                "text": "number"
+              },
+              "default": "+1"
+            },
+            {
+              "kind": "field",
+              "name": "commaprop5",
+              "type": {
+                "text": "number"
+              },
+              "default": "-1"
+            },
+            {
+              "kind": "field",
+              "name": "commaprop6",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "!1"
             }
           ],
           "superclass": {
