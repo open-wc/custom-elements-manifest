@@ -1,12 +1,8 @@
-export class GenericSwitch extends HTMLElement {  
-  prefixUnary1 = +1;
-  prefixUnary2 = -1;
-  prefixUnary3 = !1;
-
+export class GenericSwitch extends HTMLElement {
   constructor() {
     super();
-    this.commaprop1 = 'default',
-    this.commaprop2 = true,
-    this.commaprop3 = 123;
+    this.__onClick = this.__onClick.bind(this);
   }
+
+  __onClick(){}
 }

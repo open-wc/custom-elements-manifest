@@ -232,6 +232,7 @@ function mapClassMember(source, classTemplate, context, node, statement, express
 
   if (!existingMember) {
     if (hasIgnoreJSDoc(statement)) return;
+    if (isBindCall(statement)) return;
 
     existingMember = {
       kind: 'field',

@@ -12,52 +12,8 @@
           "name": "GenericSwitch",
           "members": [
             {
-              "kind": "field",
-              "name": "prefixUnary1",
-              "type": {
-                "text": "number"
-              },
-              "default": "+1"
-            },
-            {
-              "kind": "field",
-              "name": "prefixUnary2",
-              "type": {
-                "text": "number"
-              },
-              "default": "-1"
-            },
-            {
-              "kind": "field",
-              "name": "prefixUnary3",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "!1"
-            },
-            {
-              "kind": "field",
-              "name": "commaprop1",
-              "type": {
-                "text": "string"
-              },
-              "default": "'default'"
-            },
-            {
-              "kind": "field",
-              "name": "commaprop2",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "true"
-            },
-            {
-              "kind": "field",
-              "name": "commaprop3",
-              "type": {
-                "text": "number"
-              },
-              "default": "123"
+              "kind": "method",
+              "name": "__onClick"
             }
           ],
           "superclass": {
