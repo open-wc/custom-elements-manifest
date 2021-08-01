@@ -213,7 +213,8 @@ export function handleAttrJsDoc(node, doc) {
 }
 
 export function handleTypeInference(doc, node) {
-  switch(node?.initializer?.kind || node?.kind) {
+  const n = node?.initializer || node;
+  switch(n?.kind) {
     case ts.SyntaxKind.TrueKeyword:
     case ts.SyntaxKind.FalseKeyword:
       doc.type = { text: "boolean" }
@@ -221,8 +222,10 @@ export function handleTypeInference(doc, node) {
     case ts.SyntaxKind.StringLiteral:
       doc.type = { text: "string" }
       break;
-    case ts.SyntaxKind.NumericLiteral:
     case ts.SyntaxKind.PrefixUnaryExpression:
+      doc.type = n?.operator === ts.SyntaxKind.ExclamationToken ? { text: "boolean" } : { text: "number" };
+      break;
+    case ts.SyntaxKind.NumericLiteral:
       doc.type = { text: "number" }
       break;
     case ts.SyntaxKind.NullKeyword:

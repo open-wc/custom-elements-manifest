@@ -32,9 +32,7 @@ export function resolveInitializersPlugin() {
 
               if(foundModule) {
                 /** Find the declaration */
-                const foundReference = foundModule?.declarations?.find(declaration => {
-                  return declaration?.name === member?.default
-                });
+                const foundReference = foundModule?.declarations?.find(declaration => declaration?.name === member?.default);
                 /** Overwrite the type with the type of the reference we found */
                 if(foundReference?.type && !member?.type) {
                   member.type = foundReference.type;
