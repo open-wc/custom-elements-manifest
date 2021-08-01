@@ -1,4 +1,7 @@
 ## Release 0.4.16
+- Fix some bugs in resolving of variable assignments of class properties
+  - when assigned in constructor
+  - improve handling for imports from `.ts` files
 - Added support for comma separated properties (handles minified code)
 
 ## Release 0.4.15

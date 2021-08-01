@@ -19,20 +19,30 @@ export function resolveInitializersPlugin() {
               };
 
               /** Find the module */
-              const foundModule = customElementsManifest?.modules?.find(({path}) => url(path) === url(member?.resolveInitializer?.module));
+              const foundModule = customElementsManifest?.modules?.find(({path}) => {
+                let toResolve = url(member?.resolveInitializer?.module);
+                const modulePath = url(path);
+
+                if(!toResolve.endsWith('.js') && !toResolve.endsWith('.ts')) {
+                  toResolve += '.ts';
+                }
+
+                return toResolve === modulePath;
+              });
 
               if(foundModule) {
                 /** Find the declaration */
-                const foundReference = foundModule?.declarations?.find(declaration => declaration?.name === member?.default);
+                const foundReference = foundModule?.declarations?.find(declaration => {
+                  return declaration?.name === member?.default
+                });
                 /** Overwrite the type with the type of the reference we found */
                 if(foundReference?.type && !member?.type) {
                   member.type = foundReference.type;
                 }
-
+                
                 if(foundReference?.default) {
                   member.default = foundReference?.default;
                 }
-
               }
 
               delete member.resolveInitializer;

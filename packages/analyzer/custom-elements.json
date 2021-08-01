@@ -4,36 +4,44 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "fixtures/-default/package/bar.js",
+      "path": "fixtures/-default/package/bar.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "bar",
+          "type": {
+            "text": "string"
+          },
+          "default": "'bar'"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "bar",
+          "declaration": {
+            "name": "bar",
+            "module": "fixtures/-default/package/bar.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/-default/package/foo.ts",
       "declarations": [
         {
           "kind": "class",
           "description": "",
-          "name": "GenericSwitch",
+          "name": "MyEl",
           "members": [
             {
               "kind": "field",
-              "name": "commaprop1",
+              "name": "foo",
+              "default": "'bar'",
               "type": {
                 "text": "string"
-              },
-              "default": "'default'"
-            },
-            {
-              "kind": "field",
-              "name": "commaprop2",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "true"
-            },
-            {
-              "kind": "field",
-              "name": "commaprop3",
-              "type": {
-                "text": "number"
-              },
-              "default": "123"
+              }
             }
           ],
           "superclass": {
@@ -45,10 +53,10 @@
       "exports": [
         {
           "kind": "js",
-          "name": "GenericSwitch",
+          "name": "MyEl",
           "declaration": {
-            "name": "GenericSwitch",
-            "module": "fixtures/-default/package/bar.js"
+            "name": "MyEl",
+            "module": "fixtures/-default/package/foo.ts"
           }
         }
       ]
