@@ -1,4 +1,8 @@
-## Release 0.4.16
+## Release 0.4.17
+- Fix bug wrt to `.bind` calls in class constructors
+- Fix some bugs in resolving of variable assignments of class properties
+  - when assigned in constructor
+  - improve handling for imports from `.ts` files
 - Fixed resolving type from PrefixUnaryExpressions
 
 ## Release 0.4.16

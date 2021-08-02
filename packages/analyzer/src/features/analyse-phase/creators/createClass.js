@@ -232,6 +232,7 @@ function mapClassMember(source, classTemplate, context, node, statement, express
 
   if (!existingMember) {
     if (hasIgnoreJSDoc(statement)) return;
+    if (isBindCall(statement)) return;
 
     existingMember = {
       kind: 'field',
@@ -256,7 +257,7 @@ function mapClassMember(source, classTemplate, context, node, statement, express
     /** Flag class fields that get assigned a variable, so we can resolve it later (in the RESOLVE-INITIALIZERS plugin) */
     if (expression?.right?.kind === ts.SyntaxKind.Identifier) {
       existingMember.resolveInitializer = {
-        ...resolveModuleOrPackageSpecifier({ path: source.getSourceFile().fileName }, context, node?.initializer?.getText()),
+        ...resolveModuleOrPackageSpecifier({ path: source.getSourceFile().fileName }, context, expression?.right?.getText()),
       }
     }
   }
