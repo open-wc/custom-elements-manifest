@@ -55,12 +55,7 @@ testCases.forEach(testCase => {
 
     const result = create({modules, plugins});
 
-    try {
-      fs.writeFileSync(outputPath, JSON.stringify(result, null, 2));
-    } catch(e) {
-      console.log('Could not write manifest. Result was:', result);
-      throw e;
-    }
+    fs.writeFileSync(outputPath, JSON.stringify(result, null, 2));
 
     assert.equal(result, fixture);
   });

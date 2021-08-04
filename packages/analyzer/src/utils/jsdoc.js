@@ -7,8 +7,8 @@ export function handleJsDocType(type) {
 }
 
 export function normalizeDescription(desc) {
-  if (desc.startsWith?.('- ')) {
+  if (desc.startsWith('- ')) {
     desc = desc.slice(2);
   }
-  return typeof desc === 'string' ? desc : '';
+  return desc;
 }
