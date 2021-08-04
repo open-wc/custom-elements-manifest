@@ -7,6 +7,11 @@
  */
 
 /**
+ * {@link https://a.b}
+ * [CD]{@link https://e.f}
+ * {@link g|HIJ}
+ * {@link klm En? Oh Pee}
+ *
  * @attr {boolean} disabled - disables the element
  * @attribute {string} foo - description for foo
  *
@@ -24,9 +29,9 @@
  * @fires custom-event - some description for custom-event
  * @fires {Event} typed-event - some description for typed-event
  * @event {CustomEvent} typed-custom-event - some description for typed-custom-event
- * 
+ *
  * @summary This is MyElement
- * 
+ *
  * @tag my-element
  * @tagname my-element
  */
