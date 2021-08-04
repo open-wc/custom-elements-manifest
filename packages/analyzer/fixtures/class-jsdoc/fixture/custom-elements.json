@@ -8,7 +8,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "",
+          "description": "https://a.b\n[CD]https://e.f\ng|HIJ\nklmEn? Oh Pee",
           "name": "MyElement",
           "cssProperties": [
             {
