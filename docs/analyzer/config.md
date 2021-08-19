@@ -2,18 +2,19 @@
 
 ## CLI Options
 
-| Command/option   | Type       | Description                                                 | Example               |
-| ---------------- | ---------- | ----------------------------------------------------------- | --------------------- |
-| analyze          |            | Analyze your components                                     |                       |
-| --globs          | string[]   | Globs to analyze                                            | `--globs "foo.js"`    |
-| --exclude        | string[]   | Globs to exclude                                            | `--exclude "foo.js"`  |
-| --outdir         | string     | Directory to output the Manifest to                         | `--outdir dist`       |
-| --watch          | boolean    | Enables watch mode, generates a new manifest on file change | `--watch`             |
-| --dev            | boolean    | Enables extra logging for debugging                         | `--dev`               |
-| --litelement     | boolean    | Enable special handling for LitElement syntax               | `--litelement`        |
-| --fast           | boolean    | Enable special handling for FASTElement syntax              | `--fast`              |
-| --stencil        | boolean    | Enable special handling for Stencil syntax                  | `--stencil`           |
-| --catalyst       | boolean    | Enable special handling for Catalyst syntax                 | `--catalyst`          |
+| Command/option   | Type       | Description                                                 | Example                                                 |
+| ---------------- | ---------- | ----------------------------------------------------------- | ------------------------------------------------------- |
+| analyze          |            | Analyze your components                                     |                                                         |
+| --config         | string     | Path to custom config location                              | \`--config "../custom-elements-manifest.config.js"\`    |
+| --globs          | string[]   | Globs to analyze                                            | \`--globs "foo.js"\`                                    |
+| --exclude        | string[]   | Globs to exclude                                            | \`--exclude "foo.js"\`                                  |
+| --outdir         | string     | Directory to output the Manifest to                         | \`--outdir dist\`                                       |
+| --watch          | boolean    | Enables watch mode, generates a new manifest on file change | \`--watch\`                                             |
+| --dev            | boolean    | Enables extra logging for debugging                         | \`--dev\`                                               |
+| --litelement     | boolean    | Enable special handling for LitElement syntax               | \`--litelement\`                                        |
+| --fast           | boolean    | Enable special handling for FASTElement syntax              | \`--fast\`                                              |
+| --stencil        | boolean    | Enable special handling for Stencil syntax                  | \`--stencil\`                                           |
+| --catalyst       | boolean    | Enable special handling for Catalyst syntax                 | \`--catalyst\`                                          |
 
 ## Config File
 
@@ -56,4 +57,12 @@ interface userConfigOptions {
   overrideModuleCreation: ({ts: TypeScript, globs: string[]}) => SourceFile[]
 }
 
+```
+
+### Custom config location
+
+Using the `--config` flag in the CLI you can supply a custom path to your configuration file as follows:
+
+```bash
+cem analyze --config "./configs/custom-elements-manifest.js"
 ```
