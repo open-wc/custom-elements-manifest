@@ -1,3 +1,6 @@
+## Release 0.5.2
+- Events dont have privacy
+
 ## Release 0.5.1
 - Fix parsing bug in functions with an expressionless return
 
