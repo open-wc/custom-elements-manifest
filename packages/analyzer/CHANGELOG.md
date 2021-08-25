@@ -1,3 +1,6 @@
+## Release 0.5.0
+- Allow passing config paths in CLI/config file
+
 ## Release 0.4.17
 - Fix bug wrt to `.bind` calls in class constructors
 - Fix some bugs in resolving of variable assignments of class properties
