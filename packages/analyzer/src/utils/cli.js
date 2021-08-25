@@ -140,5 +140,4 @@ Available commands:
 
 Examples:
     custom-elements-manifest analyze --litelement --globs "**/*.js" --exclude "foo.js" "bar.js"
-    cem analyze --config "./configs/custom-elements-manifest.js"
 `

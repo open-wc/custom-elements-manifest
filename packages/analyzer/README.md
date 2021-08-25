@@ -31,6 +31,7 @@ cem analyze
 | Command/option   | Type       | Description                                                 | Example               |
 | ---------------- | ---------- | ----------------------------------------------------------- | --------------------- |
 | analyze          |            | Analyze your components                                     |                       |
+| --config         | string     | Path to custom config location                              | `--config "../custom-elements-manifest.config.js"` |
 | --globs          | string[]   | Globs to analyze                                            | `--globs "foo.js"`    |
 | --exclude        | string[]   | Globs to exclude                                            | `--exclude "foo.js"`  |
 | --outdir         | string     | Directory to output the Manifest to                         | `--outdir dist`       |
