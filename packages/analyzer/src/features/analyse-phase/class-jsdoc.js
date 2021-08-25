@@ -60,6 +60,7 @@ export function classJsDocPlugin() {
                     const eventAlreadyExists = classDoc?.events?.find(event => event.name === jsDoc.name);
                     let eventDoc = eventAlreadyExists || {};
                     eventDoc = handleClassJsDoc(eventDoc, jsDoc);
+                    delete eventDoc.privacy;
                     if(!eventAlreadyExists) {
                       classDoc.events.push(eventDoc);
                     }

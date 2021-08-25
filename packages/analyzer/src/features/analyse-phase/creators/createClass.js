@@ -183,6 +183,7 @@ function eventsVisitor(source, classTemplate) {
                 };
 
                 eventDoc = handleJsDoc(eventDoc, node?.parent);
+                delete eventDoc.privacy;
                 classTemplate.events.push(eventDoc);
               }
             }
