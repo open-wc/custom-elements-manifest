@@ -1,3 +1,6 @@
+## Release 0.5.1
+- Fix parsing bug in functions with an expressionless return
+
 ## Release 0.5.0
 - Allow passing config paths in CLI/config file
 
