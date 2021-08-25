@@ -27,8 +27,11 @@ import {
   
   if (mainOptions.command === 'analyze') {
 
-    const cliConfig = getCliConfig(argv)
-    const userConfig = await getUserConfig();
+    const {
+      config: configPath,
+      ...cliConfig
+    } = getCliConfig(argv);
+    const userConfig = await getUserConfig(configPath);
 
     /**
      * Merged config options
