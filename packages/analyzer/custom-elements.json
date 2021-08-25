@@ -9,25 +9,20 @@
         {
           "kind": "class",
           "description": "",
-          "name": "GenericSwitch",
-          "members": [
-            {
-              "kind": "method",
-              "name": "__onClick"
-            }
-          ],
+          "name": "MyElement",
           "superclass": {
             "name": "HTMLElement"
           },
+          "tagName": "my-element",
           "customElement": true
         }
       ],
       "exports": [
         {
-          "kind": "js",
-          "name": "GenericSwitch",
+          "kind": "custom-element-definition",
+          "name": "my-element",
           "declaration": {
-            "name": "GenericSwitch",
+            "name": "MyElement",
             "module": "fixtures/-default/package/bar.js"
           }
         }

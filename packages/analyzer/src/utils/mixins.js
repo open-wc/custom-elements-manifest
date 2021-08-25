@@ -70,7 +70,7 @@ export function extractMixinNodes(node) {
 
         const returnStatement = node.body.statements.find(statement => ts.isReturnStatement(statement));
 
-        if (returnStatement && ts.isClassExpression(returnStatement.expression)) {
+        if (returnStatement?.expression && ts.isClassExpression(returnStatement.expression)) {
           return { 
             mixinFunction: node, 
             mixinClass: returnStatement.expression

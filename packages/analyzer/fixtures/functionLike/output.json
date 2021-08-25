@@ -161,6 +161,10 @@
           ]
         },
         {
+          "kind": "function",
+          "name": "emptyReturn"
+        },
+        {
           "kind": "class",
           "description": "METHODS",
           "name": "MyEl",
@@ -338,6 +342,14 @@
           "name": "functionDeclaration6",
           "declaration": {
             "name": "functionDeclaration6",
+            "module": "fixtures/functionLike/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "emptyReturn",
+          "declaration": {
+            "name": "emptyReturn",
             "module": "fixtures/functionLike/package/my-element.js"
           }
         },

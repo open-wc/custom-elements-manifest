@@ -35,6 +35,10 @@ export function functionDeclaration5(bar:string):boolean{}
  */
 export function functionDeclaration6(bar:string):boolean{}
 
+export function emptyReturn() {
+  return;
+}
+
 /**
  * METHODS
  */
