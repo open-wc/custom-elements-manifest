@@ -268,6 +268,7 @@ export function handleDefaultValue(doc, node, expression) {
   if(initializer?.kind === ts.SyntaxKind.ConditionalExpression) return doc;
   if(initializer?.kind === ts.SyntaxKind.PropertyAccessExpression) return doc;
   if(initializer?.kind === ts.SyntaxKind.CallExpression) return doc;
+  if(initializer?.kind === ts.SyntaxKind.ArrowFunction) return doc;
   
   let defaultValue;
   /** 

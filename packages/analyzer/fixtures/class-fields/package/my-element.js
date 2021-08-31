@@ -70,6 +70,10 @@ class MyEl extends HTMLElement {
   prefixUnary2 = -1;
   prefixUnary3 = !1;
 
+  arrowfn = () => {
+    console.log('dont output me')
+  }
+
   constructor() {
     super();
     this.prop2 = 'default';

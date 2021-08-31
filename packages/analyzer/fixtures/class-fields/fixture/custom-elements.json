@@ -251,6 +251,10 @@
             },
             {
               "kind": "field",
+              "name": "arrowfn"
+            },
+            {
+              "kind": "field",
               "name": "commaprop1",
               "type": {
                 "text": "string"
