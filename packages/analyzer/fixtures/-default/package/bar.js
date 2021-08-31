@@ -1,25 +1,14 @@
 
-class MyElement extends HTMLElement {
-}
-customElements.define('my-element', MyElement);
+import { LitElement } from 'lit-element';
 
-// This works:
-function emptyFunction() {}
-function returnValue() {
-    return "anything";
-}
-function returnUndefined() {
-    return undefined;
-}
-function conditionalEmptyReturn() {
-    if(Math.random() > 0.5) {
-        return;
-    }
-    return true;
-}
-
-// This breaks:
-function emptyReturn() {
-    // empty return statements breaks the parser
-    return;
+export class MyElement extends LitElement {
+    public managePresenceObservedSlot = (): void => {
+        lightDomSelectors.forEach((selector) => {
+            this[slotContentIsPresent].set(
+                selector,
+                !!this.querySelector(selector)
+            );
+        });
+        this.requestUpdate();
+    };
 }

@@ -1,3 +1,6 @@
+## Release 0.5.3
+- Ignore default value for class fields that are arrow functions
+
 ## Release 0.5.2
 - Events dont have privacy
 

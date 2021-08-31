@@ -10,17 +10,24 @@
           "kind": "class",
           "description": "",
           "name": "MyElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "managePresenceObservedSlot",
+              "privacy": "public"
+            }
+          ],
           "superclass": {
-            "name": "HTMLElement"
+            "name": "LitElement",
+            "package": "lit-element"
           },
-          "tagName": "my-element",
           "customElement": true
         }
       ],
       "exports": [
         {
-          "kind": "custom-element-definition",
-          "name": "my-element",
+          "kind": "js",
+          "name": "MyElement",
           "declaration": {
             "name": "MyElement",
             "module": "fixtures/-default/package/bar.js"
