@@ -7,29 +7,36 @@
       "path": "fixtures/-default/package/bar.js",
       "declarations": [
         {
-          "kind": "class",
+          "kind": "mixin",
           "description": "",
-          "name": "MyElement",
+          "name": "InputMixin",
           "members": [
             {
               "kind": "field",
-              "name": "managePresenceObservedSlot",
-              "privacy": "public"
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "this description never gets picked up by the analyzer. \nso we lose some info about default values and the fact it is both property and attribute"
             }
           ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit-element"
-          },
-          "customElement": true
+          "parameters": [
+            {
+              "name": "superClass",
+              "type": {
+                "text": "T"
+              }
+            }
+          ]
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "MyElement",
+          "name": "InputMixin",
           "declaration": {
-            "name": "MyElement",
+            "name": "InputMixin",
             "module": "fixtures/-default/package/bar.js"
           }
         }

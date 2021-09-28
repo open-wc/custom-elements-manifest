@@ -91,10 +91,13 @@ export const getOptionsObject = decorator => decorator?.expression?.arguments?.f
 /**
  * Get the return value expression of a return statement, omitting the type assertion
  */
-export const getReturnValue = returnStatement => (
-    returnStatement.expression?.kind === ts.SyntaxKind.AsExpression ? returnStatement.expression.expression.getText()
-  : returnStatement.expression?.getText()
-);
+export const getReturnValue = returnStatement => {
+  let value = returnStatement.expression?.kind === ts.SyntaxKind.AsExpression 
+    ? returnStatement.expression.expression.getText() 
+    : returnStatement.expression?.getText()
+
+  return value?.split?.(' ')?.[0];
+}
 
 /**
  * Is this class member a static member?
