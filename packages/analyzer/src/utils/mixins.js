@@ -92,6 +92,7 @@ export function extractMixinNodes(node) {
           return;
 
         const classDeclarationName = classDeclaration.name?.getText?.();
+
         const returnValue = getReturnValue(returnStatement)
 
         /**

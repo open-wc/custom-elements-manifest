@@ -1,3 +1,6 @@
+## Release 0.5.4
+- Fix bug in mixin discovery
+
 ## Release 0.5.3
 - Ignore default value for class fields that are arrow functions
 
