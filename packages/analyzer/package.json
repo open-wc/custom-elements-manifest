@@ -23,7 +23,7 @@
   "scripts": {
     "prepublishOnly": "npm test && npm run build:browser",
     "start": "nodemon --ignore './custom-elements.json' index.js analyze --dev --litelement",
-    "test": "uvu test",
+    "test": "asdgf",
     "build:browser": "rollup -c rollup.browser.config.js",
     "test:watch": "watchexec -w src -w test npm test",
     "update-fixtures": "node scripts/update-version.js --version 1.0.0"
@@ -38,14 +38,14 @@
     "customelementsmanifest"
   ],
   "dependencies": {
-    "@web/config-loader": "^0.1.3",
-    "chokidar": "^3.5.2",
-    "command-line-args": "^5.1.2",
-    "comment-parser": "^1.2.0",
-    "custom-elements-manifest": "^1.0.0",
-    "debounce": "^1.2.1",
-    "globby": "^11.0.4",
-    "typescript": "^4.3.2"
+    "@web/config-loader": "0.1.3",
+    "chokidar": "3.5.2",
+    "command-line-args": "5.1.2",
+    "comment-parser": "1.2.0",
+    "custom-elements-manifest": "1.0.0",
+    "debounce": "1.2.1",
+    "globby": "11.0.4",
+    "typescript": "~4.3.2"
   },
   "devDependencies": {},
   "contributors": [
