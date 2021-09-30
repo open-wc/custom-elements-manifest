@@ -19,9 +19,6 @@ export function propertyDecoratorPlugin() {
       switch (node.kind) {
         case ts.SyntaxKind.VariableStatement:
         case ts.SyntaxKind.FunctionDeclaration:
-          /**
-           * Try to extract mixin nodes, if its a mixin
-           */
           if(isMixin(node)) {
             const { mixinFunction, mixinClass } = extractMixinNodes(node);
             const { name } = handleName({}, mixinFunction);
