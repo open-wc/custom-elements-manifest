@@ -17,7 +17,7 @@ export function createMixin(mixinFunctionNode, mixinClassNode, moduleDoc, contex
   return mixinTemplate;
 }
 
-function handleName(mixin, node) {
+export function handleName(mixin, node) {
   mixin.name = node?.name?.getText()  || node?.parent?.name?.getText() || node?.declarationList?.declarations?.[0]?.name?.getText() || '';
   return mixin;
 }
