@@ -23,7 +23,7 @@
   "scripts": {
     "prepublishOnly": "npm test && npm run build:browser",
     "start": "nodemon --ignore './custom-elements.json' index.js analyze --dev --litelement",
-    "test": "uvu test",
+    "test": "asdgf",
     "build:browser": "rollup -c rollup.browser.config.js",
     "test:watch": "watchexec -w src -w test npm test",
     "update-fixtures": "node scripts/update-version.js --version 1.0.0"
