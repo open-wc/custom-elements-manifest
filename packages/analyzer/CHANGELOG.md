@@ -1,3 +1,6 @@
+## Release 0.5.5
+- Pick up `@property` decorator in mixins as well
+
 ## Release 0.5.4
 - Fix bug in mixin discovery
 

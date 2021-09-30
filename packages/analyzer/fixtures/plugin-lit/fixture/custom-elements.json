@@ -14,28 +14,28 @@
             {
               "kind": "field",
               "name": "decoratedProperty",
-              "default": "[]",
               "type": {
                 "text": "array"
               },
+              "default": "[]",
               "attribute": "decoratedProperty"
             },
             {
               "kind": "field",
               "name": "decoratedPropertyAlsoAttr",
-              "default": "[]",
               "type": {
                 "text": "array"
               },
+              "default": "[]",
               "attribute": "my-attr2"
             },
             {
               "kind": "field",
               "name": "decoratedPropertyNoAttr",
-              "default": "[]",
               "type": {
                 "text": "array"
-              }
+              },
+              "default": "[]"
             },
             {
               "kind": "field",
@@ -55,9 +55,9 @@
               "type": {
                 "text": "string"
               },
+              "default": "'foo'",
               "description": "this is the description",
               "privacy": "public",
-              "default": "'foo'",
               "attribute": "prop1"
             },
             {
@@ -108,19 +108,19 @@
             },
             {
               "name": "decoratedProperty",
-              "fieldName": "decoratedProperty",
-              "default": "[]",
               "type": {
                 "text": "array"
-              }
+              },
+              "default": "[]",
+              "fieldName": "decoratedProperty"
             },
             {
               "name": "my-attr2",
-              "fieldName": "decoratedPropertyAlsoAttr",
-              "default": "[]",
               "type": {
                 "text": "array"
-              }
+              },
+              "default": "[]",
+              "fieldName": "decoratedPropertyAlsoAttr"
             },
             {
               "name": "decoratedReflect",
@@ -160,6 +160,39 @@
           },
           "tagName": "my-element",
           "customElement": true
+        },
+        {
+          "kind": "mixin",
+          "description": "Picks up @property decorator on mixins as well",
+          "name": "InputMixin",
+          "members": [
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "this description never gets picked up by the analyzer. \nso we lose some info about default values and the fact it is both property and attribute",
+              "attribute": "disabled"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "this description never gets picked up by the analyzer. \nso we lose some info about default values and the fact it is both property and attribute",
+              "fieldName": "disabled"
+            }
+          ],
+          "parameters": [
+            {
+              "name": "superClass"
+            }
+          ]
         }
       ],
       "exports": [
@@ -168,6 +201,14 @@
           "name": "my-element",
           "declaration": {
             "name": "MyElement",
+            "module": "fixtures/plugin-lit/package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "InputMixin",
+          "declaration": {
+            "name": "InputMixin",
             "module": "fixtures/plugin-lit/package/my-element.js"
           }
         }

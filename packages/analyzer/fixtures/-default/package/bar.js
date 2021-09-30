@@ -1,5 +1,5 @@
-export function InputMixin<T extends Constructor<LitElement>>(superClass: T): Constructor<InputMixinInterface> & T {
-  class InputElement extends superClass implements InputMixinInterface {
+export function InputMixin(superClass) {
+  class InputElement extends superClass {
     /**
      * this description never gets picked up by the analyzer. 
      * so we lose some info about default values and the fact it is both property and attribute
@@ -7,5 +7,5 @@ export function InputMixin<T extends Constructor<LitElement>>(superClass: T): Co
     @property({ type: Boolean }) disabled = false
   }
 
-  return InputElement as unknown as Constructor<InputMixinInterface> & T
+  return InputElement;
 }
