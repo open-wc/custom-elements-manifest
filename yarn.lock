@@ -69,16 +69,14 @@
     time-require "^0.1.2"
     valid-url "^1.0.9"
 
-"@asdgf/cli@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@asdgf/cli/-/cli-0.0.6.tgz#97aea397ee0bc88f87b8fc68c90e1004b0d1c148"
-  integrity sha512-GuoGlc+6FjSmNyQUKKdf2rHtJGY3b5IX5MDZ0WTh2v8YvEeZHiuRdVjBrcRcZTb7UP4robyz3Qx8VItz1rkpPQ==
+"@asdgf/cli@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@asdgf/cli/-/cli-0.0.8.tgz#b3db3e4738b9e354b5085eef7bc139248fe0aa24"
+  integrity sha512-Es2fv8cMI4hdMMS8MHC3imezHk8pzi7xjqxTcXfleEbH6H8v5692NzpDkWkxAOFTK1xAdJ21XUhLVOprk8s67Q==
   dependencies:
     "@asdgf/core" "^0.0.2"
     "@web/config-loader" "0.1.3"
-    chokidar "3.5.2"
     command-line-args "5.2.0"
-    debounce "1.2.1"
     globby "12.0.2"
     nanocolors "^0.2.12"
 
@@ -2351,7 +2349,7 @@ check-html-links@^0.2.3:
     sax-wasm "^2.0.0"
     slash "^3.0.0"
 
-chokidar@3.5.2, chokidar@^3.2.2, chokidar@^3.4.0, chokidar@^3.4.3, chokidar@^3.5.1, chokidar@^3.5.2:
+chokidar@^3.2.2, chokidar@^3.4.0, chokidar@^3.4.3, chokidar@^3.5.1, chokidar@^3.5.2:
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.2.tgz#dba3976fcadb016f66fd365021d91600d01c1e75"
   integrity sha512-ekGhOnNVPgT77r4K/U3GDhu+FQ2S8TnK/s2KbIGXi0SZWuwkZ2QNyfWdZW+TVfn84DpEP7rLeCt2UI6bJ8GwbQ==
@@ -2721,7 +2719,7 @@ date-time@^0.1.1:
   resolved "https://registry.yarnpkg.com/date-time/-/date-time-0.1.1.tgz#ed2f6d93d9790ce2fd66d5b5ff3edd5bbcbf3b07"
   integrity sha1-7S9tk9l5DOL9ZtW1/z7dW7y/Owc=
 
-debounce@1.2.1, debounce@^1.2.0, debounce@^1.2.1:
+debounce@^1.2.0, debounce@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.2.1.tgz#38881d8f4166a5c5848020c11827b834bcb3e0a5"
   integrity sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==
