@@ -7,35 +7,33 @@
       "path": "fixtures/-default/package/bar.js",
       "declarations": [
         {
-          "kind": "mixin",
+          "kind": "class",
           "description": "",
-          "name": "InputMixin",
+          "name": "MyEl",
+          "superclass": {
+            "name": "SuperFoo",
+            "package": "foo"
+          },
           "members": [
             {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "this description never gets picked up by the analyzer. \nso we lose some info about default values and the fact it is both property and attribute",
-              "attribute": "disabled"
+              "kind": "method",
+              "name": "superMethod",
+              "inheritedFrom": {
+                "name": "SuperFoo",
+                "module": "fixtures/-default/package/node_modules/foo/index.js"
+              }
             }
           ],
-          "attributes": [
+          "events": [
             {
-              "name": "disabled",
+              "name": "super-event",
               "type": {
-                "text": "boolean"
+                "text": "CustomEvent"
               },
-              "default": "false",
-              "description": "this description never gets picked up by the analyzer. \nso we lose some info about default values and the fact it is both property and attribute",
-              "fieldName": "disabled"
-            }
-          ],
-          "parameters": [
-            {
-              "name": "superClass"
+              "inheritedFrom": {
+                "name": "SuperFoo",
+                "module": "fixtures/-default/package/node_modules/foo/index.js"
+              }
             }
           ]
         }
@@ -43,9 +41,9 @@
       "exports": [
         {
           "kind": "js",
-          "name": "InputMixin",
+          "name": "MyEl",
           "declaration": {
-            "name": "InputMixin",
+            "name": "MyEl",
             "module": "fixtures/-default/package/bar.js"
           }
         }

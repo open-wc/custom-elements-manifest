@@ -4,7 +4,7 @@ import path from 'path';
 import commandLineArgs from 'command-line-args';
 import { has } from './index.js';
 
-const IGNORE = [
+let IGNORE = [
   '!node_modules/**/*.*', 
   '!bower_components/**/*.*', 
   '!**/*.test.{js,ts}', 
@@ -13,16 +13,23 @@ const IGNORE = [
 ];
 
 export function mergeGlobsAndExcludes(defaults, userConfig, cliConfig) {
-  const hasProvidedCliGlobs = has(cliConfig?.globs) || has(userConfig?.globs);
+  const cliGlobs = cliConfig?.globs || [];
+  const configGlobs = userConfig?.globs || [];
+  const userProvidedGlobs = [...cliGlobs, ...configGlobs];
 
+  const hasProvidedCliGlobs = has(cliConfig?.globs) || has(userConfig?.globs);
   if(hasProvidedCliGlobs) {
-    defaults.globs = defaults.globs.filter(glob => glob !== '**/*.{js,ts,tsx}');
+    defaults.globs = defaults.globs.filter(g => g !== '**/*.{js,ts,tsx}');
+  }
+
+  const wantsToAnalyzeNodeModules = userProvidedGlobs.some(g => g.includes('node_modules'));
+  if(wantsToAnalyzeNodeModules) {
+    IGNORE = IGNORE.filter(g => g !== '!node_modules/**/*.*');
   }
 
   const merged = [
     ...defaults.globs,
-    ...(userConfig?.globs || []),
-    ...(cliConfig?.globs || []),
+    ...userProvidedGlobs,
     ...(userConfig?.exclude?.map((i) => `!${i}`) || []),
     ...(cliConfig?.exclude?.map((i) => `!${i}`) || []),
     ...IGNORE,

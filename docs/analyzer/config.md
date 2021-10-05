@@ -86,3 +86,19 @@ Using the `--config` flag in the CLI you can supply a custom path to your config
 ```bash
 cem analyze --config "../configs/custom-elements-manifest.js"
 ```
+
+### Analyzing dependencies
+
+By default, the analyzer doesn't analyze any code inside `node_modules/`. For several reasons; you dont want all of `lodash` to accidentally get analyzed and output in your manifest, but also, we don't actually know which dependencies your project uses _until_ we're analyzing the code, by which time glob collection and compilation has already happened.
+
+If you want to analyze third-party dependencies, you're responsible for providing the globs for them as either a cli option, or in your `custom-elements-manifest.config.js` configuration file.
+
+Example:
+```js
+export default {
+  globs: [
+    'src/**/*.js',
+    'node_modules/foo/**/*.js'
+  ]
+}
+```

@@ -27,6 +27,7 @@ import { cleanupClassesPlugin } from './link-phase/cleanup-classes.js';
  * POST-PROCESSING
  */
 import { removeUnexportedDeclarationsPlugin } from './post-processing/remove-unexported-declarations.js';
+import { removeNodeModulesPlugin } from './post-processing/remove-node-modules.js';
 import { resolveInitializersPlugin } from './post-processing/resolve-initializers.js';
 import { isCustomElementPlugin } from './post-processing/is-custom-element.js';
 import { linkClassToTagnamePlugin } from './post-processing/link-class-to-tagname.js';
@@ -69,6 +70,7 @@ export const FEATURES = [
   linkClassToTagnamePlugin(),
   isCustomElementPlugin(),
   applyInheritancePlugin(),
+  removeNodeModulesPlugin(),
 
   /** FRAMEWORKS */
   // litPlugin()

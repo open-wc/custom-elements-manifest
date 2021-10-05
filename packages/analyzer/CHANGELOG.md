@@ -1,3 +1,6 @@
+## 0.6.0
+- Allow analyzing of `node_modules/` by user-provided globs
+
 ## Release 0.5.5
 - Pick up `@property` decorator in mixins as well
 
