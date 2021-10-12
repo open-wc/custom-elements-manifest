@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "mdast-builder": "^1.1.1",
-    "mdast-util-from-markdown": "^1.0.0",
+    "mdast-util-from-markdown": "^1.0.4",
     "mdast-util-gfm": "^1.0.0",
     "mdast-util-to-markdown": "^1.0.1",
     "remark-gfm": "^1.0.0",
