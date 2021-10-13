@@ -26,7 +26,8 @@
     "test": "asdgf",
     "build:browser": "rollup -c rollup.browser.config.js",
     "test:watch": "watchexec -w src -w test npm test",
-    "update-fixtures": "node scripts/update-version.js --version 1.0.0"
+    "update-fixtures": "node scripts/update-version.js --version 1.0.0",
+    "dev": "node index.js analyze"
   },
   "keywords": [
     "custom-elements",

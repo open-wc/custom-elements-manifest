@@ -8,32 +8,32 @@ import { withErrorHandling } from './utils/index.js';
  * This function is the core of the analyzer. It takes an array of ts sourceFiles, and creates a
  * custom elements manifest.
  */
-export function create({modules, plugins = [], dev = false}) {
-  const customElementsManifest = {
-    schemaVersion: '1.0.0',
-    readme: '',
-    modules: [],
-  };
+export function create({
+  packageName,
+  customElementsManifest, 
+  modules, 
+  plugins = [], 
+  context
+}) {
+  const { dev } = context;
 
   const mergedPlugins = [
     ...FEATURES,
     ...plugins,
   ];
 
-  const context = { dev };
-
   modules.forEach(currModule => {
-    if(dev) console.log('[COLLECT PHASE]: ', currModule.fileName);
+    if(dev) console.log('    [COLLECT PHASE]: ', currModule.fileName);
     /**
      * COLLECT PHASE
      * First pass through all modules. Can be used to gather imports, exports, types, default values, 
      * which you may need to know the existence of in a later phase.
      */
-    collect(currModule, context, mergedPlugins);
+    collect(currModule, packageName, context, mergedPlugins);
   });
 
   modules.forEach(currModule => {
-    if(dev) console.log('[ANALYZE PHASE]: ', currModule.fileName);
+    if(dev) console.log('    [ANALYZE PHASE]: ', currModule.fileName);
     const moduleDoc = {
       kind: "javascript-module",
       path: currModule.fileName,
@@ -47,10 +47,10 @@ export function create({modules, plugins = [], dev = false}) {
      * This includes a modules imports, which are not specified in custom-elements.json, but are
      * required for the LINK PHASE, and deleted when processed
      */
-    analyze(currModule, moduleDoc, context, mergedPlugins);
+    analyze(currModule, packageName, moduleDoc, context, mergedPlugins);
     customElementsManifest.modules.push(moduleDoc);
 
-    if(dev) console.log('[MODULE LINK PHASE]: ', currModule.fileName);
+    if(dev) console.log('    [MODULE LINK PHASE]: ', currModule.fileName);
     /**
      * LINK PHASE
      * All information for a module has been gathered, now we can link information together. Like:
@@ -58,13 +58,13 @@ export function create({modules, plugins = [], dev = false}) {
      * - Applying inheritance to classes (adding `inheritedFrom` properties/attrs/events/methods)
      */
     mergedPlugins.forEach(({name, moduleLinkPhase}) => {
-      withErrorHandling(name, () => {
+      withErrorHandling(packageName, name, () => {
         moduleLinkPhase?.({ts, moduleDoc, context});
       });
     });
   });
 
-  if(dev) console.log('[PACKAGE LINK PHASE]');
+  if(dev) console.log('    [PACKAGE LINK PHASE]');
   /** 
    * PACKAGE LINK PHASE 
    * All modules have now been parsed, we can now link information from across modules together
@@ -73,7 +73,7 @@ export function create({modules, plugins = [], dev = false}) {
    * - Apply inheritance
    */
   mergedPlugins.forEach(({name, packageLinkPhase}) => {
-    withErrorHandling(name, () => {
+    withErrorHandling(packageName, name, () => {
       packageLinkPhase?.({customElementsManifest, context});
     });
   });
@@ -81,12 +81,12 @@ export function create({modules, plugins = [], dev = false}) {
   return customElementsManifest;
 }
 
-function collect(source, context, mergedPlugins) {
+function collect(source, packageName, context, mergedPlugins) {
   visitNode(source);
 
   function visitNode(node) {
     mergedPlugins.forEach(({name, collectPhase}) => {
-      withErrorHandling(name, () => {
+      withErrorHandling(packageName, name, () => {
         collectPhase?.({ts, node, context});
       });
     });
@@ -95,12 +95,12 @@ function collect(source, context, mergedPlugins) {
   }
 }
 
-function analyze(source, moduleDoc, context, mergedPlugins) {
+function analyze(source, packageName, moduleDoc, context, mergedPlugins) {
   visitNode(source);
 
   function visitNode(node) {
     mergedPlugins.forEach(({name, analyzePhase}) => {
-      withErrorHandling(name, () => {
+      withErrorHandling(packageName, name, () => {
         analyzePhase?.({ts, node, moduleDoc, context});
       });
     });

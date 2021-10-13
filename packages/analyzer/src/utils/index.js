@@ -53,17 +53,17 @@ export const safe = (cb, returnType = '') => {
   }
 }
 
-export function withErrorHandling(name, cb) {
+export function withErrorHandling(packageName, pluginName, cb) {
   try {
     cb()
   } catch(e) {
     let errorMessage = '';
-    const externalError = `Looks like you've hit an error in third party plugin: ${name}. Please try to create a minimal reproduction and inform the author of the ${name} plugin.`;
-    const coreError = `Looks like you've hit an error in the core library. Please try to create a minimal reproduction at https://custom-elements-manifest.netlify.com and create an issue at: https://github.com/open-wc/custom-elements-manifest/issues`;
-    if(name) {
-      errorMessage = name.startsWith('CORE') ? coreError : externalError;
+    const externalError = `Looks like you've hit an error in third party plugin: "${pluginName}", while analyzing package: "${packageName}". Please try to create a minimal reproduction and inform the author of the "${pluginName}" plugin.`;
+    const coreError = `Looks like you've hit an error in the core library, while analyzing package: "${packageName}". Please try to create a minimal reproduction at https://custom-elements-manifest.netlify.com and create an issue at: https://github.com/open-wc/custom-elements-manifest/issues`;
+    if(pluginName) {
+      errorMessage = pluginName.startsWith('CORE') ? coreError : externalError;
     }
 
-    throw new Error(`\n\n[${name ?? 'unnamed-plugin'}]: ${errorMessage}\n\n ${e.stack}\n`);
+    throw new Error(`\n\n[${pluginName ?? 'unnamed-plugin'}]: ${errorMessage}\n\n ${e.stack}\n`);
   }
 }

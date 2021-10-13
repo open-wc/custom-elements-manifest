@@ -9,7 +9,7 @@ import { resolveModuleOrPackageSpecifier } from '../../utils/index.js';
 export function applyInheritancePlugin() {
   return {
     name: 'CORE - APPLY-INHERITANCE',
-    packageLinkPhase({customElementsManifest, context}){
+    packageLinkPhase({customElementsManifest}){
       const classes = getAllDeclarationsOfKind(customElementsManifest, 'class');
       const mixins = getAllDeclarationsOfKind(customElementsManifest, 'mixin');
 
@@ -48,7 +48,7 @@ export function applyInheritancePlugin() {
                 
                 existing.inheritedFrom = {
                   name: klass.name,
-                  ...resolveModuleOrPackageSpecifier(containingModule, context, klass.name)
+                  ...resolveModuleOrPackageSpecifier(containingModule, {imports:[]}, klass.name)
                 }
 
                 customElement[type] = customElement?.[type]?.map(item => item.name === existing.name 
@@ -64,7 +64,7 @@ export function applyInheritancePlugin() {
               } else {
                 newItem.inheritedFrom = {
                   name: klass.name,
-                  ...resolveModuleOrPackageSpecifier(containingModule, context, klass.name)
+                  ...resolveModuleOrPackageSpecifier(containingModule, {imports:[]}, klass.name)
                 }
   
                 customElement[type] = [...(customElement[type] || []), newItem];

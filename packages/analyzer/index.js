@@ -12,12 +12,12 @@ import { create } from './src/create.js';
 import { 
   getUserConfig, 
   getCliConfig, 
-  addFrameworkPlugins, 
   addCustomElementsPropertyToPackageJson,
   mergeGlobsAndExcludes,
+  createPackage,
   timestamp,
   DEFAULTS,
-  MENU
+  MENU,
 } from './src/utils/cli.js';
 
 (async () => {
@@ -38,54 +38,91 @@ import {
      * Command line options override userConfig options
      */
     const mergedOptions = { ...DEFAULTS, ...userConfig, ...cliConfig };
-    const merged = mergeGlobsAndExcludes(DEFAULTS, userConfig, cliConfig);
-    const globs = await globby(merged);
 
     async function run() {
-      /**
-       * Create modules for `create()`
-       * 
-       * By default, the analyzer doesn't actually compile a users source code with the TS compiler
-       * API. This means that by default, the typeChecker is not available in plugins.
-       * 
-       * If users want to use the typeChecker, they can do so by adding a `overrideModuleCreation` property
-       * in their custom-elements-manifest.config.js. `overrideModuleCreation` is a function that should return
-       * an array of sourceFiles.
-       */
-      const modules = userConfig?.overrideModuleCreation 
-        ? userConfig.overrideModuleCreation({ts, globs})
-        : globs.map(glob => {
-            const relativeModulePath = path.relative(process.cwd(), glob);
-            const source = fs.readFileSync(relativeModulePath).toString();
-  
-            return ts.createSourceFile(
-              relativeModulePath,
-              source,
-              ts.ScriptTarget.ES2015,
-              true,
-            );
-          });
-  
-      let plugins = await addFrameworkPlugins(mergedOptions);
-      plugins = [...plugins, ...(userConfig?.plugins || [])];
+      const packages = [];
+      const manifests = [];
+
+      const mainPkg = await createPackage(
+        'default', 
+        userConfig, 
+        userConfig?.overrideModuleCreation,
+        () => {
+          const merged = mergeGlobsAndExcludes(DEFAULTS, userConfig, cliConfig);
+          return globby(merged);
+        }
+      );
+      packages.push(mainPkg);
+   
+      await Promise.all(
+        mergedOptions?.dependencies?.map(async ({packageName, pathToCem, analyze}) => {
+          /** Validate dependency configuration */
+          if(!packageName) throw new Error("Dependency must have a `packageName`.");
+          if(!!pathToCem && !!analyze) throw new Error("Dependency cannot have both `pathToCem` and `analyze`. Either provide a path to it's manifest directly, or analyze the package.");
+
+          /** 
+           * No `pathToCem` was provided, and user doesn't want to analyze the dependency 
+           * so by default we try to find one ourself
+           */
+          if(!pathToCem && !analyze) {
+            const root = `${process.cwd()}${path.sep}node_modules${path.sep}${packageName}${path.sep}`;
+            const packageJsonPath = `${root}package.json`;
+            let packageJson;
+            try {
+              packageJson = JSON.parse(fs.readFileSync(packageJsonPath).toString());
+            } catch(e) {
+              throw new Error(`Failed to read package.json for package "${packageName}" from "${packageJsonPath}". Consider specifying the path to the package's manifest location, or analyzing the package instead. \n\n${e.stack}`)
+            }
+            const customElements = packageJson?.customElements || packageJson?.exports?.['./customElements'];
+            if(customElements) {
+              const manifestPath = path.posix.join(root, customElements);
+              try {
+                const manifest = JSON.parse(fs.readFileSync(manifestPath).toString());
+                manifests.push(manifest)
+              } catch(e) {
+                throw new Error(`Failed to read custom-elements.json for package "${packageName}" from "${manifestPath}". \n\n${e.stack}`);
+              }
+            } else {
+              throw new Error(`Failed to read custom-elements.json for package "${packageName}", consider specifying the path to the package's manifest location, or analyzing the package instead.`);
+            }
+          }
+
+          /** User provided a `pathToCem`, so we try to get it from that location */
+          if(!!pathToCem) {
+            try {
+              const manifest = JSON.parse(fs.readFileSync(pathToCem).toString());
+              manifests.push(manifest);
+              return;
+            } catch (e) {
+              throw new Error(`Could not find custom-elements.json at path: "${pathToCem}" for package "${packageName}". \n\n${e.stack}`);
+            }
+          } 
+
+          /** User provided `analyze` config, so they want to analyze the dependency */
+          if(!!analyze) {
+            const pkg = await createPackage(packageName, analyze, userConfig?.overrideModuleCreation);
+            packages.push(pkg);
+          }
+        })
+      );
   
       /**
        * Create the manifest
        */
-      const customElementsManifest = create({
-        modules,
-        plugins,
-        dev: mergedOptions.dev
-      });
+      // const customElementsManifest = create({
+      //   packages,
+      //   manifests,
+      //   dev: mergedOptions.dev
+      // });
 
-      const outdir = path.join(process.cwd(), mergedOptions.outdir);
-      if (!fs.existsSync(outdir)){
-        fs.mkdirSync(outdir, { recursive: true });
-      }
-      fs.writeFileSync(path.join(outdir, 'custom-elements.json'), `${JSON.stringify(customElementsManifest, null, 2)}\n`);
-      if(mergedOptions.dev) {
-        console.log(JSON.stringify(customElementsManifest, null, 2));
-      }
+      // const outdir = path.join(process.cwd(), mergedOptions.outdir);
+      // if (!fs.existsSync(outdir)){
+      //   fs.mkdirSync(outdir, { recursive: true });
+      // }
+      // fs.writeFileSync(path.join(outdir, 'custom-elements.json'), `${JSON.stringify(customElementsManifest, null, 2)}\n`);
+      // if(mergedOptions.dev) {
+      //   console.log(JSON.stringify(customElementsManifest, null, 2));
+      // }
 
       console.log(`[${timestamp()}] @custom-elements-manifest/analyzer: Created new manifest.`);
     }

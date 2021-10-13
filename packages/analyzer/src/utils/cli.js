@@ -1,10 +1,12 @@
 import { readConfig, ConfigLoaderError } from '@web/config-loader';
+import ts from 'typescript';
 import fs from 'fs';
+import globby from 'globby';
 import path from 'path';
 import commandLineArgs from 'command-line-args';
 import { has } from './index.js';
 
-let IGNORE = [
+const IGNORE = [
   '!node_modules/**/*.*', 
   '!bower_components/**/*.*', 
   '!**/*.test.{js,ts}', 
@@ -13,23 +15,16 @@ let IGNORE = [
 ];
 
 export function mergeGlobsAndExcludes(defaults, userConfig, cliConfig) {
-  const cliGlobs = cliConfig?.globs || [];
-  const configGlobs = userConfig?.globs || [];
-  const userProvidedGlobs = [...cliGlobs, ...configGlobs];
-
   const hasProvidedCliGlobs = has(cliConfig?.globs) || has(userConfig?.globs);
-  if(hasProvidedCliGlobs) {
-    defaults.globs = defaults.globs.filter(g => g !== '**/*.{js,ts,tsx}');
-  }
 
-  const wantsToAnalyzeNodeModules = userProvidedGlobs.some(g => g.includes('node_modules'));
-  if(wantsToAnalyzeNodeModules) {
-    IGNORE = IGNORE.filter(g => g !== '!node_modules/**/*.*');
+  if(hasProvidedCliGlobs) {
+    defaults.globs = defaults.globs.filter(glob => glob !== '**/*.{js,ts,tsx}');
   }
 
   const merged = [
     ...defaults.globs,
-    ...userProvidedGlobs,
+    ...(userConfig?.globs || []),
+    ...(cliConfig?.globs || []),
     ...(userConfig?.exclude?.map((i) => `!${i}`) || []),
     ...(cliConfig?.exclude?.map((i) => `!${i}`) || []),
     ...IGNORE,
@@ -56,6 +51,7 @@ export async function getUserConfig(configPath) {
 export const DEFAULTS = {
   outdir: '',
   globs: ['**/*.{js,ts,tsx}'],
+  dependencies: [],
   dev: false,
   watch: false,
   litelement: false,
@@ -79,6 +75,52 @@ export function getCliConfig(argv) {
   ];
   
   return commandLineArgs(optionDefinitions, { argv });
+}
+
+export async function createPackage(name, packageConfig, overrideModuleCreation, overrideGlobCreation) {
+  let globs;
+  let basePath;
+
+  if(name === 'default') {
+    basePath = process.cwd();
+  }
+
+  if(overrideGlobCreation) {
+    globs = await overrideGlobCreation();
+  } else {
+    basePath = packageConfig?.nodeModulesPath 
+      ? `${packageConfig?.nodeModulesPath}${path.sep}${name}` 
+      : `${process.cwd()}${path.sep}node_modules${path.sep}${name}`;
+  
+    const mergedGlobs = [...(packageConfig.globs || []), ...(packageConfig.exclude?.map((i) => `!${i}`) || []) ];
+    globs = await globby(mergedGlobs, { cwd: basePath });
+  }
+
+  const modules = overrideModuleCreation 
+    ? overrideModuleCreation({ts, globs})
+    : globs.map(g => compileGlob(g, basePath));
+
+  /** @TODO 🚨 this breaks flags passed from the cli, like `--litelement`, because the cli options isnt passed down for 'default' */
+  let plugins = await addFrameworkPlugins(packageConfig);
+  plugins = [...plugins, ...(packageConfig?.plugins || [])];
+
+  return {
+    name,
+    modules,
+    plugins,
+  };
+}
+
+const compileGlob = (glob, basePath) => {
+  const modulePath = path.join(basePath, glob);
+  const source = fs.readFileSync(modulePath).toString();
+
+  return ts.createSourceFile(
+    modulePath,
+    source,
+    ts.ScriptTarget.ES2015,
+    true,
+  );
 }
 
 export async function addFrameworkPlugins(mergedOptions) {
