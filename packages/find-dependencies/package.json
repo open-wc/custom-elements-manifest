@@ -1,0 +1,27 @@
+{
+  "name": "@custom-elements-manifest/find-dependencies",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon dev.js",
+    "test": "asdgf"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "es-module-lexer": "^0.9.3"
+  },
+  "files": [
+    "index.js",
+    "src/find-dependencies.js",
+    "src/utils.js",
+    "package.json"
+  ]
+}
