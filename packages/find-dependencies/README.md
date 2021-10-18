@@ -7,7 +7,10 @@ Intended to be used on post-build, frontend facing, ESM based code.
 ## Usage
 
 ```js
+import { findDependencies } from '@custom-elements-manifest/find-dependencies';
+
 const inputPaths = ['my-package/index.js'];
+const dependencies = await findDependencies(inputPaths);
 ```
 
 Where `my-package/index.js` contains:
@@ -22,22 +25,17 @@ import g from './bla.js';
 import('dynamic-import');
 ```
 
-```js
-const inputPaths = ['my-package/index.js'];
-const dependencies = await findDependencies(inputPaths);
-```
-
 Will output:
 
 ```js
 [
-  '/users/blank/my-package/node_modules/@scoped/package/index.js',
-  '/users/blank/my-package/node_modules/@scoped/package/baz/index.js',
-  '/users/blank/my-package/node_modules/export-map/long/path/index.js',
-  '/users/blank/my-package/node_modules/nested/index.js',
-  '/users/blank/my-package/node_modules/regular/index.js',
-  '/users/blank/my-package/node_modules/dynamic-import/index.js',
-  '/users/blank/my-package/node_modules/nested/node_modules/regular/index.js'
+  '/Users/blank/my-package/node_modules/@scoped/package/index.js',
+  '/Users/blank/my-package/node_modules/@scoped/package/baz/index.js',
+  '/Users/blank/my-package/node_modules/export-map/long/path/index.js',
+  '/Users/blank/my-package/node_modules/nested/index.js',
+  '/Users/blank/my-package/node_modules/regular/index.js',
+  '/Users/blank/my-package/node_modules/dynamic-import/index.js',
+  '/Users/blank/my-package/node_modules/nested/node_modules/regular/index.js'
 ]
 ```
 
@@ -60,4 +58,57 @@ findDependencies(inputPaths, {
   basePath: 'foo/bar',
   nodeModulesDepth: 5,
 });
+```
+
+## Utils
+
+```js
+import { 
+  splitPath, 
+  getUniquePackages, 
+  extractPackageNameFromSpecifier, 
+  isBareModuleSpecifier, 
+  isScopedPackage 
+} from '@custom-elements-manifest/find-dependencies';
+```
+
+
+### `splitPath`
+```js
+splitPath('/blank/node_modules/foo/index.js');
+// {packageRoot: '/blank/node_modules/foo', packageName: 'foo', specifier: 'foo/index.js', type: 'js' }
+
+splitPath('/blank/node_modules/foo/data.json');
+// {packageRoot: '/blank/node_modules/foo', packageName: 'foo', specifier: 'foo/data.json', type: 'json' }
+```
+
+### `extractPackageNameFromSpecifier`
+```js
+extractPackageNameFromSpecifier('foo/index.js') // foo
+extractPackageNameFromSpecifier('foo/bar/baz/index.js') // foo
+extractPackageNameFromSpecifier('@foo/bar/index.js') // @foo/bar
+extractPackageNameFromSpecifier('@foo/bar/baz/asdgf/index.js') // @foo/bar
+```
+### `isBareModuleSpecifier`
+```js
+isBareModuleSpecifier('foo') // true
+isBareModuleSpecifier('foo/bar.js') // true
+isBareModuleSpecifier('./foo.js') // false
+isBareModuleSpecifier('../foo.js') // false
+```
+### `isScopedPackage`
+```js
+isScopedPackage('foo') // false
+isScopedPackage('@foo/bar') // true
+```
+
+### `getUniquePackages`
+```js
+getUniquePackages([
+  'blank/node_modules/foo/index.js', 
+  'blank/node_modules/bar/index.js',
+  'blank/node_modules/bar/index2.js'
+  'blank/node_modules/bar/index3.js'
+]),
+// ['foo', 'bar',]
 ```

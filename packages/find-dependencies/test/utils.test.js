@@ -4,6 +4,7 @@ import assert from 'assert';
 import { 
   isBareModuleSpecifier, 
   isScopedPackage, 
+  getUniquePackages,
   splitPath
 } from '../src/utils.js';
 
@@ -19,6 +20,19 @@ describe('utils', () => {
       it(`case "${specifier}" is true`, () => {
         assert(isBareModuleSpecifier(specifier));
       });
+    });
+  });
+
+  describe('getUniquePackages', ({it}) => {
+    it('gets unique packages', () => {
+      assert.deepEqual(
+        getUniquePackages([
+          'blank/node_modules/foo/index.js', 
+          'blank/node_modules/bar/index.js',
+          'blank/node_modules/bar/index2.js'
+        ]),
+        ['foo', 'bar',]
+      )
     });
   });
 
