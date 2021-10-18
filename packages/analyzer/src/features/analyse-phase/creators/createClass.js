@@ -165,6 +165,7 @@ function eventsVisitor(source, classTemplate) {
 
         /** If callexpression is `this.dispatchEvent` */
         if (isDispatchEvent(node)) {
+          const hasIgnoreDocs = hasIgnoreJSDoc(node.parent);
           node?.arguments?.forEach((arg) => {
             if (arg.kind === ts.SyntaxKind.NewExpression) {
               /** e.g. `selected-changed` */
@@ -174,7 +175,7 @@ function eventsVisitor(source, classTemplate) {
                */
               const eventExists = classTemplate?.events?.some(event => event.name === eventName);
 
-              if (!eventExists && !hasIgnoreJSDoc(node.parent)) {
+              if (!eventExists && !hasIgnoreDocs) {
                 let eventDoc = {
                   ...(eventName ? { name: eventName } : {}),
                   type: {
