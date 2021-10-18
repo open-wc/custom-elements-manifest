@@ -1,5 +1,4 @@
 dist/
-node_modules/
 .DS_Store
 
 ## Rocket ignore files
@@ -8,3 +7,4 @@ docs/_merged_assets/
 docs/_merged_includes/
 _site-dev
 _site
+/node_modules
