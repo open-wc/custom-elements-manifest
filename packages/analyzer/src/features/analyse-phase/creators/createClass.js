@@ -164,7 +164,7 @@ function eventsVisitor(source, classTemplate) {
       case ts.SyntaxKind.CallExpression:
 
         /** If callexpression is `this.dispatchEvent` */
-        if (isDispatchEvent(node)) {
+        if (isDispatchEvent(node) && !hasIgnoreJSDoc(node.parent)) {
           node?.arguments?.forEach((arg) => {
             if (arg.kind === ts.SyntaxKind.NewExpression) {
               /** e.g. `selected-changed` */

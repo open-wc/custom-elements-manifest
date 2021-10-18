@@ -25,6 +25,24 @@ export class IncludeMe extends HTMLElement {
     this.ignoreThisAlso = 'hidden';
   }
 
+  connectedCallback() {
+    super.connectedCallback?.();
+
+    /** @ignore */
+    this.dispatchEvent(
+        new CustomEvent('my-event', {
+          detail: 'foo'
+        })
+    )
+
+    /** @internal */
+    this.dispatchEvent(
+        new CustomEvent('my-other-event', {
+          detail: 'bar'
+        })
+    )
+  }
+
   /** @internal */
   hideMe() {
     return '🙈'

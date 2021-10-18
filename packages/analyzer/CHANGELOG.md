@@ -1,3 +1,5 @@
+- Added support for `@ignore` and `@internal` jsdoc for events
+
 ## Release 0.5.5
 - Pick up `@property` decorator in mixins as well
 
