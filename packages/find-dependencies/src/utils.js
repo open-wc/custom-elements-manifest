@@ -58,7 +58,8 @@ export function extractPackageNameFromSpecifier(specifier) {
  * {
  *  packageRoot: '/Users/blank/custom-elements-manifest/packages/analyzer/node_modules/foo/node_modules/nested',
  *  packageName: 'nested',
- *  specifier: 'nested/index.js'
+ *  specifier: 'nested/index.js',
+ *  type: 'js'
  * }
  * ```
  * 
@@ -66,7 +67,8 @@ export function extractPackageNameFromSpecifier(specifier) {
  * @returns {{
  *  packageRoot: string,
  *  packageName: string,
- *  specifier: string
+ *  specifier: string,
+ *  type: 'js' | 'json' | 'css'
  * }}
  */
 export function splitPath(path) {
@@ -77,10 +79,30 @@ export function splitPath(path) {
   const packageName = extractPackageNameFromSpecifier(specifier);
 
   const packageRoot = packageRootMinusSpecifier + packageName;
+  
+  /** @type {'js' | 'json' | 'css'} */
+  let type;
+  if(specifier.endsWith('js')) {
+    type = 'js'
+  } else if (specifier.endsWith('json')) {
+    type = 'json'
+  } else if (specifier.endsWith('css')) {
+    type = 'css'
+  }
 
   return {
     packageRoot,
     packageName,
-    specifier
+    specifier,
+    type
   }
+}
+
+export function getUniquePackages(result) {
+  const unique = new Set();
+  result.forEach(pkg => {
+    const { packageName } = splitPath(pkg);
+    unique.add(packageName);
+  });
+  return [...unique];
 }
