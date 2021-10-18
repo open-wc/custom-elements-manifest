@@ -174,7 +174,7 @@ function eventsVisitor(source, classTemplate) {
                */
               const eventExists = classTemplate?.events?.some(event => event.name === eventName);
 
-              if (!eventExists) {
+              if (!eventExists && !hasIgnoreJSDoc(node.parent)) {
                 let eventDoc = {
                   ...(eventName ? { name: eventName } : {}),
                   type: {
