@@ -1,3 +1,4 @@
+## Release 0.5.6
 - Added support for `@ignore` and `@internal` jsdoc for events
 
 ## Release 0.5.5
