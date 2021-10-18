@@ -111,4 +111,8 @@ getUniquePackages([
   'blank/node_modules/bar/index3.js'
 ]),
 // ['foo', 'bar',]
+
+/** Or */
+const dependencies = await findDependencies(inputPaths);
+const unique = getUniquePackages(dependencies);
 ```
