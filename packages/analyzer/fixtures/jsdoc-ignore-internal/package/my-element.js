@@ -26,7 +26,7 @@ export class IncludeMe extends HTMLElement {
   }
 
   connectedCallback() {
-    super.connectedCallback && super.connectedCallback();
+    super.connectedCallback?.();
 
     /** @ignore */
     this.dispatchEvent(
