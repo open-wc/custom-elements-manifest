@@ -98,9 +98,13 @@ export function splitPath(path) {
   }
 }
 
-export function getUniquePackages(result) {
+/**
+ * @param {string[]} paths
+ * @returns {string[]}
+ */
+export function getUniquePackages(paths) {
   const unique = new Set();
-  result.forEach(pkg => {
+  paths.forEach(pkg => {
     const { packageName } = splitPath(pkg);
     unique.add(packageName);
   });
