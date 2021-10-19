@@ -90,7 +90,7 @@ export async function findDependencies(paths, options = {}) {
             dependencies.add(pathToDependency);
           }
         } catch(e) {
-          console.log(`Failed to resolve dependency "${dep}".`);
+          console.log(`Failed to resolve dependency "${i.n}".`);
         }
       });
     });

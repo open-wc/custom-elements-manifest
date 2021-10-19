@@ -109,7 +109,7 @@ getUniquePackages([
   'blank/node_modules/bar/index.js',
   'blank/node_modules/bar/index2.js'
   'blank/node_modules/bar/index3.js'
-]),
+])
 // ['foo', 'bar',]
 
 /** Or */
