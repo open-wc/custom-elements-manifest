@@ -4,6 +4,22 @@ import { Node, Parent } from 'mdast';
 export interface Options {
   private?: 'details'|'hidden'|'all';
   headingOffset?: number;
+  mainHeading: boolean;
+  classNameFilter: string | (() => string);
+  superClass: boolean;
+  fields: boolean;
+  methods: boolean;
+  staticFields: boolean;
+  staticMethods: boolean;
+  slots: boolean;
+  events: boolean;
+  attributes: boolean;
+  cssProperties: boolean;
+  cssParts: boolean;
+  mixins: boolean;
+  variables: boolean;
+  functions: boolean;
+  exports: boolean;
 }
 
 export interface Descriptor {

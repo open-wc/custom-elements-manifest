@@ -28,3 +28,4 @@ export const kindIs = test => compose(isSame(test), kind);
 export const repeat = (length, x) => Array.from({ length }, () => x);
 export const capital = x => typeof x !== 'string' ? x : x.trim().replace(/^\w/, c => c.toUpperCase());
 export const trace = tag => x => (console.log(tag, x), x);
+export const isDefined = value => typeof value !== 'undefined' && value !== null;
