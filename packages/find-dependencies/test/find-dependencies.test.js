@@ -29,14 +29,15 @@ describe('find-dependencies', ({it}) => {
   });
 
   it('finds dependencies for regular setup', async () => {
-    const globs = await globby(['fixtures/regular/*.js']);
+    const globs = await globby(['fixtures/regular/index.js']);
     let dependencies = await findDependencies(globs, { basePath: 'fixtures/regular' });
     dependencies = dependencies.map(d => d.split('fixtures')[1]);
 
     assert.deepEqual(dependencies,
       [ 
+        '/regular/node_modules/foo/index.js',
+        '/regular/internal.js',
         '/regular/node_modules/bar/index.js',
-        '/regular/node_modules/foo/index.js'
       ]
     )
   });

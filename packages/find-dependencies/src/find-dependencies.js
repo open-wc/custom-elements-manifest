@@ -37,20 +37,18 @@ export async function findDependencies(paths, options = {}) {
     imports?.forEach(i => {
       /** Skip built-in modules like fs, path, etc */
       if(builtinModules.includes(i.n)) return;
-      if(isBareModuleSpecifier(i.n)) {
-        try {
-          const pathToDependency = require.resolve(i.n, {paths: [
-            /** Current project's node_modules */
-            basePath,
-            /** Monorepo, look upwards in filetree n times */
-            ...traverseUp(nodeModulesDepth)
-          ]});
+      try {
+        const pathToDependency = require.resolve(i.n, {paths: [
+          /** Current project's node_modules */
+          basePath,
+          /** Monorepo, look upwards in filetree n times */
+          ...traverseUp(nodeModulesDepth)
+        ]});
 
-          importsToScan.add(pathToDependency);
-          dependencies.add(pathToDependency);
-        } catch {
-          console.log(`Failed to resolve dependency "${i.n}".`);
-        }
+        importsToScan.add(pathToDependency);
+        dependencies.add(pathToDependency);
+      } catch {
+        console.log(`Failed to resolve dependency "${i.n}".`);
       }
     });
   });
