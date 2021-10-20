@@ -20,10 +20,11 @@ describe('find-dependencies', ({it}) => {
         '/monorepo/node_modules/monorepo-dep/index.js',
         '/monorepo/packages/my-package/node_modules/internal-shared/index.js',
         '/monorepo/packages/my-package/node_modules/dynamic-import/index.js',
+        '/monorepo/packages/my-package/bla.js',
         '/monorepo/packages/my-package/node_modules/nested/node_modules/regular/index.js',
         '/monorepo/packages/my-package/node_modules/internal-shared/a.js',
         '/monorepo/packages/my-package/node_modules/internal-shared/b.js',
-        '/monorepo/packages/my-package/node_modules/internal-shared/c.js'
+        '/monorepo/packages/my-package/node_modules/internal-shared/c.js',
       ]
     )
   });
