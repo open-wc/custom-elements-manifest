@@ -5,10 +5,10 @@ import commandLineArgs from 'command-line-args';
 import { has } from './index.js';
 
 const IGNORE = [
-  '!node_modules/**/*.*', 
-  '!bower_components/**/*.*', 
-  '!**/*.test.{js,ts}', 
-  '!**/*.suite.{js,ts}', 
+  '!node_modules/**/*.*',
+  '!bower_components/**/*.*',
+  '!**/*.test.{js,ts}',
+  '!**/*.suite.{js,ts}',
   '!**/*.config.{js,ts}'
 ];
 
@@ -70,7 +70,7 @@ export function getCliConfig(argv) {
     { name: 'fast', type: Boolean },
     { name: 'catalyst', type: Boolean },
   ];
-  
+
   return commandLineArgs(optionDefinitions, { argv });
 }
 
@@ -120,8 +120,8 @@ export function addCustomElementsPropertyToPackageJson(outdir) {
   }
 }
 
-export const MENU = `
-@custom-elements-manifest/analyzer
+export const MENU = ({ version = ''}) => `
+@custom-elements-manifest/analyzer (${version})
 
 Available commands:
     | Command/option   | Type       | Description                                                 | Example                                                 |

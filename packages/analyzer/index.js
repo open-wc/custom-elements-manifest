@@ -8,11 +8,13 @@ import commandLineArgs from 'command-line-args';
 import chokidar from 'chokidar';
 import debounce from 'debounce';
 
+const pkg = JSON.parse(`${fs.readFileSync(path.resolve('package.json'), 'utf-8')}`);
+
 import { create } from './src/create.js';
-import { 
-  getUserConfig, 
-  getCliConfig, 
-  addFrameworkPlugins, 
+import {
+  getUserConfig,
+  getCliConfig,
+  addFrameworkPlugins,
   addCustomElementsPropertyToPackageJson,
   mergeGlobsAndExcludes,
   timestamp,
@@ -24,7 +26,7 @@ import {
   const mainDefinitions = [{ name: 'command', defaultOption: true }];
   const mainOptions = commandLineArgs(mainDefinitions, { stopAtFirstUnknown: true });
   const argv = mainOptions._unknown || [];
-  
+
   if (mainOptions.command === 'analyze') {
 
     const {
@@ -44,20 +46,20 @@ import {
     async function run() {
       /**
        * Create modules for `create()`
-       * 
+       *
        * By default, the analyzer doesn't actually compile a users source code with the TS compiler
        * API. This means that by default, the typeChecker is not available in plugins.
-       * 
+       *
        * If users want to use the typeChecker, they can do so by adding a `overrideModuleCreation` property
        * in their custom-elements-manifest.config.js. `overrideModuleCreation` is a function that should return
        * an array of sourceFiles.
        */
-      const modules = userConfig?.overrideModuleCreation 
+      const modules = userConfig?.overrideModuleCreation
         ? userConfig.overrideModuleCreation({ts, globs})
         : globs.map(glob => {
             const relativeModulePath = path.relative(process.cwd(), glob);
             const source = fs.readFileSync(relativeModulePath).toString();
-  
+
             return ts.createSourceFile(
               relativeModulePath,
               source,
@@ -65,10 +67,10 @@ import {
               true,
             );
           });
-  
+
       let plugins = await addFrameworkPlugins(mergedOptions);
       plugins = [...plugins, ...(userConfig?.plugins || [])];
-  
+
       /**
        * Create the manifest
        */
@@ -96,9 +98,9 @@ import {
      */
     if(mergedOptions.watch) {
       const fileWatcher = chokidar.watch(globs);
-  
+
       const onChange = debounce(run, 100);
-  
+
       fileWatcher.addListener('change', onChange);
       fileWatcher.addListener('unlink', onChange);
     }
@@ -109,6 +111,6 @@ import {
       console.log(`Could not add 'customElements' property to ${process.cwd()}${path.sep}package.json. \nAdding this property helps tooling locate your Custom Elements Manifest. Please consider adding it yourself, or file an issue if you think this is a bug.\nhttps://www.github.com/open-wc/custom-elements-manifest`);
     }
   } else {
-    console.log(MENU);
+    console.log(MENU(pkg));
   }
 })();
