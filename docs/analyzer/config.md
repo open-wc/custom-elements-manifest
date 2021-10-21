@@ -9,9 +9,10 @@
 | --globs          | string[]   | Globs to analyze                                            | \`--globs "foo.js"\`                                    |
 | --exclude        | string[]   | Globs to exclude                                            | \`--exclude "foo.js"\`                                  |
 | --outdir         | string     | Directory to output the Manifest to                         | \`--outdir dist\`                                       |
+| --dependencies   | boolean    | Include third party custom elements manifests               | \`--dependencies\`                                      |
+| --packagejson    | boolean    | Output CEM path to \`package.json\`, defaults to true       | \`--packagejson\`                                       |
 | --watch          | boolean    | Enables watch mode, generates a new manifest on file change | \`--watch\`                                             |
 | --dev            | boolean    | Enables extra logging for debugging                         | \`--dev\`                                               |
-| --dependencies   | boolean    | Include third party custom elements manifests               | \`--dependencies\`                                      |
 | --litelement     | boolean    | Enable special handling for LitElement syntax               | \`--litelement\`                                        |
 | --fast           | boolean    | Enable special handling for FASTElement syntax              | \`--fast\`                                              |
 | --stencil        | boolean    | Enable special handling for Stencil syntax                  | \`--stencil\`                                           |
@@ -38,6 +39,8 @@ export default {
   watch: true,
   /** Include third party custom elements manifests */
   dependencies: true,
+  /** Output CEM path to \`package.json\`, defaults to true */
+  packagejson: false,
   /** Enable special handling for litelement */
   litelement: true,
   /** Enable special handling for catalyst */
@@ -71,6 +74,7 @@ interface userConfigOptions {
   dev: boolean,
   watch: boolean,
   dependencies: boolean,
+  packagejson: boolean,
 
   litelement: boolean,
   catalyst: boolean,
