@@ -11,7 +11,7 @@ export function applyInheritancePlugin() {
   return {
     name: 'CORE - APPLY-INHERITANCE',
     moduleLinkPhase({moduleDoc, context}) {
-      console.log(moduleDoc.path)
+      // console.log(moduleDoc.path)
       // mapOfImportsPerFile[moduleDoc.path] = context.imports;
       // then in packageLink in the `resolveModuleOrPackageSpecifier` fn, 
       // I can pass the correct imports, so the output will become:

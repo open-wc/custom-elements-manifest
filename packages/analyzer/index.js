@@ -67,6 +67,20 @@ import { findDependencies } from './src/utils/find-dependencies.js';
             );
           });
 
+      /**
+       * 🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨
+       * @TODO
+       * 
+       * currently mocks are in `analyzer/node_modules/` (e.g. `@foo/bar` and `foo`)
+       * need to find a nice way for local development to point this to the fixtures dir
+       * 
+       * Maybe something like:
+       * dependencies: { basePath: 'fixtures/-default/package' }
+       * 
+       * but probably dont document it
+       * 
+       * Alternatively: (less desirable) create a script to scaffold files/folders in `analyzer/node_modules/`
+       */
       if(mergedOptions?.dependencies) {
         try {
           const cemsToMerge = await findDependencies(globs);
