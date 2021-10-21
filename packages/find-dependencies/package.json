@@ -1,11 +1,12 @@
 {
   "name": "@custom-elements-manifest/find-dependencies",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "nodemon dev.js",
-    "test": "asdgf"
+    "test": "asdgf",
+    "test:watch": "watchexec -w src -w test -w dev.js npm test"
   },
   "type": "module",
   "exports": {

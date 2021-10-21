@@ -37,20 +37,18 @@ export async function findDependencies(paths, options = {}) {
     imports?.forEach(i => {
       /** Skip built-in modules like fs, path, etc */
       if(builtinModules.includes(i.n)) return;
-      if(isBareModuleSpecifier(i.n)) {
-        try {
-          const pathToDependency = require.resolve(i.n, {paths: [
-            /** Current project's node_modules */
-            basePath,
-            /** Monorepo, look upwards in filetree n times */
-            ...traverseUp(nodeModulesDepth)
-          ]});
+      try {
+        const pathToDependency = require.resolve(i.n, {paths: [
+          /** Current project's node_modules */
+          basePath,
+          /** Monorepo, look upwards in filetree n times */
+          ...traverseUp(nodeModulesDepth)
+        ]});
 
-          importsToScan.add(pathToDependency);
-          dependencies.add(pathToDependency);
-        } catch {
-          console.log(`Failed to resolve dependency "${i.n}".`);
-        }
+        importsToScan.add(pathToDependency);
+        dependencies.add(pathToDependency);
+      } catch {
+        console.log(`Failed to resolve dependency "${i.n}".`);
       }
     });
   });
@@ -67,7 +65,6 @@ export async function findDependencies(paths, options = {}) {
         if(builtinModules.includes(i.n)) return;
         const { packageRoot } = splitPath(dep);
         const fileToFind = isBareModuleSpecifier(i.n) ? i.n : path.join(path.dirname(dep), i.n);
-
         try {
           /**
            * First check in the dependencies' node_modules, then in the project's node_modules,
@@ -90,7 +87,7 @@ export async function findDependencies(paths, options = {}) {
             dependencies.add(pathToDependency);
           }
         } catch(e) {
-          console.log(`Failed to resolve dependency "${dep}".`);
+          console.log(`Failed to resolve dependency "${i.n}".`);
         }
       });
     });

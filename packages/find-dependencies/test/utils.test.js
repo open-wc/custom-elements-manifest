@@ -37,6 +37,14 @@ describe('utils', () => {
   });
 
   describe('isScopedPackage', ({it}) => {
+    it('windows - is scoped package', () => {
+      assert(isScopedPackage('@foo\\bar'));
+    });
+
+    it('windows - is scoped package', () => {
+      assert(isScopedPackage('@foo\\bar\\baz.index.js'));
+    });
+
     it('is scoped package', () => {
       assert(isScopedPackage('@foo/bar'));
     });
@@ -48,6 +56,12 @@ describe('utils', () => {
 
   describe('splitPath', ({it}) => {
     [
+      {
+        path: 'C:\\Users\\IEUser\\long\\mock\\path\\node_modules\\@foo\\bar\\index.js', 
+        packageRoot: 'C:/Users/IEUser/long/mock/path/node_modules/@foo/bar', 
+        packageName: '@foo/bar', 
+        specifier: '@foo/bar/index.js'
+      },
       {
         path: '/long/mock/path/node_modules/@foo/bar/index.js', 
         packageRoot: '/long/mock/path/node_modules/@foo/bar', 
