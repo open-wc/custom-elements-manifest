@@ -69,10 +69,10 @@
     time-require "^0.1.2"
     valid-url "^1.0.9"
 
-"@asdgf/cli@^0.0.13":
-  version "0.0.13"
-  resolved "https://registry.yarnpkg.com/@asdgf/cli/-/cli-0.0.13.tgz#49fd55536d217020fd654f6814bb4cb92ce80378"
-  integrity sha512-m4l6Kf/TzMYxN7WJPodo5BKnLCZ5zIEw5zncq7/svyVNT2ysj1hLf/yDPURW+e+x01KTSDEj3xr/JgnpAjso9w==
+"@asdgf/cli@^0.0.14":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@asdgf/cli/-/cli-0.0.14.tgz#c2f4f7af6fb1386fdb96afb8de66a3ff7cf24e01"
+  integrity sha512-c8Dvz/V2SiO6MvEMOgzNEp6sAhtRW4HKWlgK9updBNRwbx1jCQx83V68v+S7dgvFnJ0K579C0mdp2QPiP7dyjA==
   dependencies:
     "@asdgf/core" "^0.0.2"
     "@web/config-loader" "0.1.3"
