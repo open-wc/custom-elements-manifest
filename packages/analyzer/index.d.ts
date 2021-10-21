@@ -101,3 +101,16 @@ export interface Plugin {
    */
   packageLinkPhase?(params: PackageLinkPhaseParams): void;
 }
+
+export interface Config {
+  globs?: string[];
+  exclude?: string[];
+  outdir?: string;
+  plugins?: Plugin[];
+  watch?: boolean;
+  dev?: boolean;
+  litelement?: boolean;
+  fast?: boolean;
+  stencil?: boolean;
+  catalyst?: boolean;
+}
