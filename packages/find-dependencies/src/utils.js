@@ -72,10 +72,11 @@ export function extractPackageNameFromSpecifier(specifier) {
  * }}
  */
 export function splitPath(path) {
-  const position = path.lastIndexOf('node_modules/');
-  const packageRootMinusSpecifier = path.substring(0, position + 'node_modules/'.length);
+  const unixPath = path.replace(/\\/g, '/')
+  const position = unixPath.lastIndexOf('node_modules/');
+  const packageRootMinusSpecifier = unixPath.substring(0, position + 'node_modules/'.length);
 
-  const specifier = path.substring(position + 'node_modules/'.length, path.length)
+  const specifier = unixPath.substring(position + 'node_modules/'.length, unixPath.length)
   const packageName = extractPackageNameFromSpecifier(specifier);
 
   const packageRoot = packageRootMinusSpecifier + packageName;
