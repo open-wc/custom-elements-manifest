@@ -54,8 +54,5 @@
     "Benny Powers <web@bennypowers.com>",
     "Matias Huhta <huhta.matias@gmail.com>"
   ],
-  "exports": {
-    ".": "./index.js",
-    "./customElements": "./custom-elements.json"
-  }
+  "customElements": "./custom-elements.json"
 }
