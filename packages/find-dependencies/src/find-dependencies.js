@@ -65,7 +65,6 @@ export async function findDependencies(paths, options = {}) {
         if(builtinModules.includes(i.n)) return;
         const { packageRoot } = splitPath(dep);
         const fileToFind = isBareModuleSpecifier(i.n) ? i.n : path.join(path.dirname(dep), i.n);
-
         try {
           /**
            * First check in the dependencies' node_modules, then in the project's node_modules,
