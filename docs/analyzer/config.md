@@ -39,7 +39,7 @@ export default {
   watch: true,
   /** Include third party custom elements manifests */
   dependencies: true,
-  /** Output CEM path to \`package.json\`, defaults to true */
+  /** Output CEM path to `package.json`, defaults to true */
   packagejson: false,
   /** Enable special handling for litelement */
   litelement: true,
