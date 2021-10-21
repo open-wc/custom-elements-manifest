@@ -111,6 +111,7 @@ export function addCustomElementsPropertyToPackageJson(outdir) {
   const packageJsonPath = `${process.cwd()}${path.sep}package.json`;
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath).toString());
   const manifestPath = path.posix.join(outdir, 'custom-elements.json');
+  
   if(packageJson?.customElements) {
     if(packageJson?.customElements !== manifestPath) {
       packageJson.customElements = manifestPath;

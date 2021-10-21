@@ -1,3 +1,6 @@
+## Release 0.6.0
+- Allow inclusion of third party `custom-elements.json`s from `node_modules`
+
 ## Release 0.5.6
 - Added support for `@ignore` and `@internal` jsdoc for events
 

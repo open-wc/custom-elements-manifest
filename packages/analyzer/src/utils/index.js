@@ -13,27 +13,6 @@ export function isBareModuleSpecifier(specifier) {
   return !!specifier?.replace(/'/g, '')[0].match(/[@a-zA-Z]/g);
 }
 
-function isScopedPackage(specifier) {
-  return specifier.startsWith('@')
-}
-
-export function extractPackageNameFromSpecifier(specifier) {
-  if(isScopedPackage(specifier)) {
-    /**
-     * @example '@foo/bar'
-     * @example '@foo/bar/baz.js'
-     */
-    const split = specifier.split('/');
-    return [split[0], split[1]].join('/');
-  } else {
-    /**
-     * @example 'foo'
-     * @example 'foo/bar/baz.js'
-     */
-    return specifier.split('/')[0];
-  }
-}
-
 export const url = path => new URL('', `file:///${path}`)?.pathname;
 
 export function resolveModuleOrPackageSpecifier(moduleDoc, context, name) {
