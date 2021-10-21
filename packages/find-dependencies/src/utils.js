@@ -1,6 +1,12 @@
 import path from 'path';
 
 /**
+ * @param {string} p 
+ * @returns {string}
+ */
+const toUnix = p => p.replace(/\\/g, '/');
+
+/**
  * @param {number} depth 
  * @returns {string[]}
  */
@@ -30,6 +36,7 @@ export function isScopedPackage(specifier) {
  * @returns {string}
  */
 export function extractPackageNameFromSpecifier(specifier) {
+  specifier = toUnix(specifier);
   if(isScopedPackage(specifier)) {
     /**
      * @example '@foo/bar'
@@ -72,7 +79,7 @@ export function extractPackageNameFromSpecifier(specifier) {
  * }}
  */
 export function splitPath(path) {
-  const unixPath = path.replace(/\\/g, '/')
+  const unixPath = toUnix(path);
   const position = unixPath.lastIndexOf('node_modules/');
   const packageRootMinusSpecifier = unixPath.substring(0, position + 'node_modules/'.length);
 
