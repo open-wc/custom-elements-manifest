@@ -50,6 +50,7 @@ export const DEFAULTS = {
   outdir: '',
   globs: ['**/*.{js,ts,tsx}'],
   dev: false,
+  dependencies: false,
   watch: false,
   litelement: false,
   stencil: false,
@@ -64,6 +65,7 @@ export function getCliConfig(argv) {
     { name: 'exclude', type: String, multiple: true },
     { name: 'outdir', type: String },
     { name: 'dev', type: Boolean },
+    { name: 'dependencies', type: Boolean },
     { name: 'watch', type: Boolean },
     { name: 'litelement', type: Boolean },
     { name: 'stencil', type: Boolean },
@@ -105,6 +107,7 @@ export function timestamp() {
 }
 
 export function addCustomElementsPropertyToPackageJson(outdir) {
+  /** @TODO check if exports in pjson, if so: add `./customElements` */
   const packageJsonPath = `${process.cwd()}${path.sep}package.json`;
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath).toString());
   const manifestPath = path.posix.join(outdir, 'custom-elements.json');
@@ -131,6 +134,7 @@ Available commands:
     | --globs          | string[]   | Globs to analyze                                            | \`--globs "foo.js"\`                                    |
     | --exclude        | string[]   | Globs to exclude                                            | \`--exclude "foo.js"\`                                  |
     | --outdir         | string     | Directory to output the Manifest to                         | \`--outdir dist\`                                       |
+    | --dependencies   | boolean    | Include third party custom elements manifests               | \`--dependencies\`                                      |
     | --watch          | boolean    | Enables watch mode, generates a new manifest on file change | \`--watch\`                                             |
     | --dev            | boolean    | Enables extra logging for debugging                         | \`--dev\`                                               |
     | --litelement     | boolean    | Enable special handling for LitElement syntax               | \`--litelement\`                                        |

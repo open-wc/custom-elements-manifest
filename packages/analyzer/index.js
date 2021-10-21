@@ -19,6 +19,7 @@ import {
   DEFAULTS,
   MENU
 } from './src/utils/cli.js';
+import { findDependencies } from './src/utils/find-dependencies.js';
 
 (async () => {
   const mainDefinitions = [{ name: 'command', defaultOption: true }];
@@ -57,7 +58,7 @@ import {
         : globs.map(glob => {
             const relativeModulePath = path.relative(process.cwd(), glob);
             const source = fs.readFileSync(relativeModulePath).toString();
-  
+
             return ts.createSourceFile(
               relativeModulePath,
               source,
@@ -65,29 +66,38 @@ import {
               true,
             );
           });
-  
+
+      if(mergedOptions?.dependencies) {
+        try {
+          const cemsToMerge = await findDependencies(globs);
+          if(mergedOptions.dev) console.log(cemsToMerge);
+        } catch(e) {
+          if(mergedOptions.dev) console.log(`Failed to add third party CEMs. \n\n${e.stack}`);
+        }
+      }
+
       let plugins = await addFrameworkPlugins(mergedOptions);
       plugins = [...plugins, ...(userConfig?.plugins || [])];
   
       /**
        * Create the manifest
        */
-      const customElementsManifest = create({
-        modules,
-        plugins,
-        dev: mergedOptions.dev
-      });
+      // const customElementsManifest = create({
+      //   modules,
+      //   plugins,
+      //   dev: mergedOptions.dev
+      // });
 
-      const outdir = path.join(process.cwd(), mergedOptions.outdir);
-      if (!fs.existsSync(outdir)){
-        fs.mkdirSync(outdir, { recursive: true });
-      }
-      fs.writeFileSync(path.join(outdir, 'custom-elements.json'), `${JSON.stringify(customElementsManifest, null, 2)}\n`);
-      if(mergedOptions.dev) {
-        console.log(JSON.stringify(customElementsManifest, null, 2));
-      }
+      // const outdir = path.join(process.cwd(), mergedOptions.outdir);
+      // if (!fs.existsSync(outdir)){
+      //   fs.mkdirSync(outdir, { recursive: true });
+      // }
+      // fs.writeFileSync(path.join(outdir, 'custom-elements.json'), `${JSON.stringify(customElementsManifest, null, 2)}\n`);
+      // if(mergedOptions.dev) {
+      //   console.log(JSON.stringify(customElementsManifest, null, 2));
+      // }
 
-      console.log(`[${timestamp()}] @custom-elements-manifest/analyzer: Created new manifest.`);
+      // console.log(`[${timestamp()}] @custom-elements-manifest/analyzer: Created new manifest.`);
     }
     await run();
 

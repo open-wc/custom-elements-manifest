@@ -11,6 +11,7 @@
 | --outdir         | string     | Directory to output the Manifest to                         | \`--outdir dist\`                                       |
 | --watch          | boolean    | Enables watch mode, generates a new manifest on file change | \`--watch\`                                             |
 | --dev            | boolean    | Enables extra logging for debugging                         | \`--dev\`                                               |
+| --dependencies   | boolean    | Include third party custom elements manifests               | \`--dependencies\`                                      |
 | --litelement     | boolean    | Enable special handling for LitElement syntax               | \`--litelement\`                                        |
 | --fast           | boolean    | Enable special handling for FASTElement syntax              | \`--fast\`                                              |
 | --stencil        | boolean    | Enable special handling for Stencil syntax                  | \`--stencil\`                                           |
@@ -35,6 +36,8 @@ export default {
   dev: true,
   /** Run in watch mode, runs on file changes */
   watch: true,
+  /** Include third party custom elements manifests */
+  dependencies: true,
   /** Enable special handling for litelement */
   litelement: true,
   /** Enable special handling for catalyst */
@@ -67,6 +70,7 @@ interface userConfigOptions {
   outdir: string,
   dev: boolean,
   watch: boolean,
+  dependencies: boolean,
 
   litelement: boolean,
   catalyst: boolean,
@@ -79,10 +83,8 @@ interface userConfigOptions {
 
 ```
 
-### Custom config location
+### Analyzing dependencies
 
-Using the `--config` flag in the CLI you can supply a custom path to your configuration file as follows:
+By default, the analyzer doesn't analyze any code inside `node_modules/`. This has several reasons; you dont want all of `lodash` to accidentally get analyzed and output in your manifest, but also, we don't actually know which dependencies your project uses _until_ we're analyzing the code, by which time glob collection and compilation has already happened.
 
-```bash
-cem analyze --config "../configs/custom-elements-manifest.js"
-```
+If you want to include metadata about third party packages in your `custom-elements.json` you can enable the `--dependencies` flag. This will try to find your dependencies' `custom-elements.json` files, by either looking at the `customElements` field in your `package.json`, or the `./customElements` field in the packages' exports map if available. If a `custom-elements.json` is found, the output will be included in your `custom-elements.json`.
