@@ -114,7 +114,9 @@ import { findDependencies } from './src/utils/find-dependencies.js';
     }
 
     try {
-      addCustomElementsPropertyToPackageJson(mergedOptions.outdir);
+      if(mergedOptions.packagejson) {
+        addCustomElementsPropertyToPackageJson(mergedOptions.outdir);
+      }
     } catch {
       console.log(`Could not add 'customElements' property to ${process.cwd()}${path.sep}package.json. \nAdding this property helps tooling locate your Custom Elements Manifest. Please consider adding it yourself, or file an issue if you think this is a bug.\nhttps://www.github.com/open-wc/custom-elements-manifest`);
     }
