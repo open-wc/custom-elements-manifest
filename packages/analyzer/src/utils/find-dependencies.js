@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import { findDependencies as find, splitPath } from '@custom-elements-manifest/find-dependencies';
 
-
 export async function findDependencies(globs) {
   const cemsToMerge = [];
   const visited = new Set();
