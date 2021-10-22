@@ -14,6 +14,28 @@ import { serialize } from './lib/serialize.js';
 
 const line = html('<hr/>');
 
+const DECLARATIONS = {
+  mixins: 'mixins',
+  variables: 'variables',
+  functions: 'functions',
+  exports: 'exports'
+};
+
+const SECTIONS = {
+  mainHeading: 'main-heading',
+  superClass: 'super-class',
+  fields: 'fields', 
+  methods: 'methods',
+  staticFields: 'static-fields',
+  staticMethods: 'static-methods',
+  slots: 'slots',
+  events: 'events',
+  attributes: 'attributes',
+  cssProperties: 'css-properties',
+  cssParts: 'css-parts',
+  mixins: 'mixins'
+}
+
 /** Options -> Declaration -> Heading */
 const declarationHeading = options =>
   ({ kind, name, tagName }) =>
@@ -104,30 +126,32 @@ function optionEnabled(option) {
   return isDefined(option) && option === true;
 }
 
+function getOmittedConfig(type, omittedOptions) {
+  // target will either be the declarations options object or the sections options object, depending on `type`
+  const target = type === 'decl' ? Object.assign({}, DECLARATIONS) : Object.assign({}, SECTIONS);
+
+  // rewrite target object with boolean values for comparison in nodes array
+  // true if not omitted, false if omitted.
+  Object.keys(target).forEach((omitted) => target[omitted] = !omittedOptions.includes(target[omitted]));
+  return target;
+}
+
 /** Declaration[] -> Declaration[] */
-function filteredDeclarations(declarationsToFilter, options) {
-  const DEFAULT_OPTIONS = {
-    classNameFilter: '.*',
-    mixins: true,
-    variables: true,
-    functions: true
-  };
-
-  const filterOptions = Object.assign({}, DEFAULT_OPTIONS, options);
-
+function filteredDeclarations(declarationsToFilter, ommitedDeclarations, classNameFilter) {
+  
   // run classNameFilter function if present
-  filterOptions.classNameFilter = filterOptions.classNameFilter instanceof Function ? new RegExp(filterOptions.classNameFilter()) : new RegExp(filterOptions.classNameFilter);
+  const actualClassNameFilter = classNameFilter instanceof Function ? new RegExp(classNameFilter()) : new RegExp(classNameFilter);
   
   return declarationsToFilter.filter((decl) => {
 
     if(kindIs('class')(decl)) {
-      return filterOptions.classNameFilter.test(decl.name);
+      return actualClassNameFilter.test(decl.name);
     } else if(kindIs('mixin')(decl)) {
-      return isDefined(filterOptions.mixins) && filterOptions.mixins === true;
+      return isDefined(ommitedDeclarations.mixins) && ommitedDeclarations.mixins === true;
     } else if(kindIs('variable')(decl)) {
-      return isDefined(filterOptions.variables) && filterOptions.variables === true;
+      return isDefined(ommitedDeclarations.variables) && ommitedDeclarations.variables === true;
     } else if(kindIs('function')(decl)) {
-      return isDefined(filterOptions.functions) && filterOptions.functions === true;
+      return isDefined(ommitedDeclarations.functions) && ommitedDeclarations.functions === true;
     }
     
     return keepDeclaration.every((result) => result === true);
@@ -143,32 +167,23 @@ function makeModuleDoc(mod, options) {
     return;
   const { 
     headingOffset = 0,
-    mainHeading = true,
-    superClass = true,
-    fields = true,
-    methods = true,
-    staticFields = true,
-    staticMethods = true,
-    slots = true,
-    events = true,
-    attributes = true,
-    cssProperties = true,
-    cssParts = true,
-    exports = true,
-    mixins = true,
-    variables = true,
-    functions = true
+    classNameFilter = '.*',
+    omitSections = [],
+    omitDeclarations = [],
   } = options ?? {};
+  
+  const omittedSections = getOmittedConfig('section', omitSections);
+  const omittedDeclarations = getOmittedConfig('decl', omitDeclarations);
 
   const makeTable = tableWithTitle(options);
   const makeHeading = declarationHeading(options);
-  const variablesDecl = filteredDeclarations(declarations, options).filter(kindIs('variable'));
-  const functionsDecl = filteredDeclarations(declarations, options).filter(kindIs('function'));
+  const variablesDecl = filteredDeclarations(declarations, omittedDeclarations, classNameFilter).filter(kindIs('variable'));
+  const functionsDecl = filteredDeclarations(declarations, omittedDeclarations, classNameFilter).filter(kindIs('function'));
 
   return [
-    optionEnabled(mainHeading) ? heading(1 + headingOffset, [inlineCode(mod.path), text(':')]) : null,
+    optionEnabled(omittedSections.mainHeading) ? heading(1 + headingOffset, [inlineCode(mod.path), text(':')]) : null,
 
-    ...(filteredDeclarations(declarations, options).flatMap(decl => {
+    ...(filteredDeclarations(declarations, omittedDeclarations, classNameFilter).flatMap(decl => {
 
       const { kind, members = [] } = decl;
       const fieldsDecl = members.filter(and(kindIs('field'), not(isStatic)));
@@ -178,18 +193,18 @@ function makeModuleDoc(mod, options) {
 
       const nodes = [
         !['mixin', 'class'].includes(kind) ? null : makeHeading(decl),
-        ...optionEnabled(superClass) ? makeTable('Superclass', [CELLS.NAME, 'module', 'package'], [decl.superclass]) : [],
-        ...optionEnabled(mixins) ? makeTable('Mixins', [CELLS.NAME, 'module', 'package'], decl.mixins) : [],
-        ...kind === 'mixin' && optionEnabled(mixins) ?  makeTable('Parameters', [CELLS.NAME, CELLS.TYPE, CELLS.DEFAULT, 'description'], decl.parameters) : [],
-        ...optionEnabled(staticFields) ? makeTable('Static Fields', [CELLS.NAME, 'privacy', CELLS.TYPE, CELLS.DEFAULT, 'description', CELLS.INHERITANCE], staticFieldsDecl) : [],
-        ...optionEnabled(staticMethods) ? makeTable('Static Methods', [CELLS.NAME, 'privacy', 'description', CELLS.PARAMETERS, CELLS.RETURN, CELLS.INHERITANCE], staticMethodsDecl) : [],
-        ...optionEnabled(fields) ? makeTable('Fields', [CELLS.NAME, 'privacy', CELLS.TYPE, CELLS.DEFAULT, 'description', CELLS.INHERITANCE], fieldsDecl) : [],
-        ...optionEnabled(methods) ? makeTable('Methods', [CELLS.NAME, 'privacy', 'description', CELLS.PARAMETERS, CELLS.RETURN, CELLS.INHERITANCE], methodsDecl) : [],
-        ...optionEnabled(events) ? makeTable('Events', [CELLS.NAME, CELLS.TYPE, 'description', CELLS.INHERITANCE], decl.events) : [],
-        ...optionEnabled(attributes) ? makeTable('Attributes', [CELLS.NAME, CELLS.ATTR_FIELD, CELLS.INHERITANCE], decl.attributes) : [],
-        ...optionEnabled(cssProperties) ? makeTable('CSS Properties', [CELLS.NAME, CELLS.DEFAULT, 'description'], decl.cssProperties) : [],
-        ...optionEnabled(cssParts) ? makeTable('CSS Parts', [CELLS.NAME, 'description'], decl.cssParts) : [],
-        ...optionEnabled(slots) ? makeTable('Slots', [CELLS.NAME, 'description'], decl.slots) : [],
+        ...optionEnabled(omittedSections.superClass) ? makeTable('Superclass', [CELLS.NAME, 'module', 'package'], [decl.superclass]) : [],
+        ...optionEnabled(omittedSections.mixins) ? makeTable('Mixins', [CELLS.NAME, 'module', 'package'], decl.mixins) : [],
+        ...kind === 'mixin' && optionEnabled(omittedSections.mixins) ?  makeTable('Parameters', [CELLS.NAME, CELLS.TYPE, CELLS.DEFAULT, 'description'], decl.parameters) : [],
+        ...optionEnabled(omittedSections.staticFields) ? makeTable('Static Fields', [CELLS.NAME, 'privacy', CELLS.TYPE, CELLS.DEFAULT, 'description', CELLS.INHERITANCE], staticFieldsDecl) : [],
+        ...optionEnabled(omittedSections.staticMethods) ? makeTable('Static Methods', [CELLS.NAME, 'privacy', 'description', CELLS.PARAMETERS, CELLS.RETURN, CELLS.INHERITANCE], staticMethodsDecl) : [],
+        ...optionEnabled(omittedSections.fields) ? makeTable('Fields', [CELLS.NAME, 'privacy', CELLS.TYPE, CELLS.DEFAULT, 'description', CELLS.INHERITANCE], fieldsDecl) : [],
+        ...optionEnabled(omittedSections.methods) ? makeTable('Methods', [CELLS.NAME, 'privacy', 'description', CELLS.PARAMETERS, CELLS.RETURN, CELLS.INHERITANCE], methodsDecl) : [],
+        ...optionEnabled(omittedSections.events) ? makeTable('Events', [CELLS.NAME, CELLS.TYPE, 'description', CELLS.INHERITANCE], decl.events) : [],
+        ...optionEnabled(omittedSections.attributes) ? makeTable('Attributes', [CELLS.NAME, CELLS.ATTR_FIELD, CELLS.INHERITANCE], decl.attributes) : [],
+        ...optionEnabled(omittedSections.cssProperties) ? makeTable('CSS Properties', [CELLS.NAME, CELLS.DEFAULT, 'description'], decl.cssProperties) : [],
+        ...optionEnabled(omittedSections.cssParts) ? makeTable('CSS Parts', [CELLS.NAME, 'description'], decl.cssParts) : [],
+        ...optionEnabled(omittedSections.slots) ? makeTable('Slots', [CELLS.NAME, 'description'], decl.slots) : [],
       ].filter(identity);
 
       if (
@@ -211,11 +226,11 @@ function makeModuleDoc(mod, options) {
       return nodes;
     })),
 
-    ...variablesDecl.length && optionEnabled(variables) ? makeTable('Variables', [CELLS.NAME, 'description', CELLS.TYPE], variablesDecl, { headingLevel: 2} ) : [],
-    ...variablesDecl.length && optionEnabled(variables) ? [line] : [],
-    ...functionsDecl.length && optionEnabled(functions) ? makeTable('Functions', [CELLS.NAME, 'description', CELLS.PARAMETERS, CELLS.RETURN], functionsDecl, { headingLevel: 2} ) : [],
-    ...functionsDecl.length && optionEnabled(functions) ? [line] : [],
-    ...optionEnabled(exports) ? makeTable('Exports', [CELLS.EXPORT_KIND, CELLS.NAME, CELLS.DECLARATION, CELLS.MODULE, CELLS.PACKAGE], mod.exports, { headingLevel: 2} ) : [],
+    ...variablesDecl.length && optionEnabled(omittedDeclarations.variables) ? makeTable('Variables', [CELLS.NAME, 'description', CELLS.TYPE], variablesDecl, { headingLevel: 2} ) : [],
+    ...variablesDecl.length && optionEnabled(omittedDeclarations.variables) ? [line] : [],
+    ...functionsDecl.length && optionEnabled(omittedDeclarations.functions) ? makeTable('Functions', [CELLS.NAME, 'description', CELLS.PARAMETERS, CELLS.RETURN], functionsDecl, { headingLevel: 2} ) : [],
+    ...functionsDecl.length && optionEnabled(omittedDeclarations.functions) ? [line] : [],
+    ...optionEnabled(omittedDeclarations.exports) ? makeTable('Exports', [CELLS.EXPORT_KIND, CELLS.NAME, CELLS.DECLARATION, CELLS.MODULE, CELLS.PACKAGE], mod.exports, { headingLevel: 2} ) : [],
   ].filter(identity)
 }
 

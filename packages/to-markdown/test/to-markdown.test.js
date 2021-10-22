@@ -27,22 +27,22 @@ const MAIN_TEST_CASE_OPTIONS = {
 };
 
 const OUTPUT_OPTIONS_TESTS_OPTIONS = {
-  'no-heading': { mainHeading: false },
+  'no-heading': { omitSections: ['main-heading'] },
   'class-name-filter': { classNameFilter: 'My*' },
-  'no-attributes': { attributes: false },
-  'no-cssparts': { cssParts: false },
-  'no-cssproperties': { cssProperties: false },
-  'no-events': { events: false },
-  'no-exports': { exports: false },
-  'no-fields': { fields: false },
-  'no-functions': { functions: false },
-  'no-methods': { methods: false },
-  'no-mixins': { mixins: false },
-  'no-slots': { slots: false },
-  'no-staticfields': { staticFields: false },
-  'no-staticmethods': { staticMethods: false },
-  'no-superclass': { superClass: false },
-  'no-variables': { variables: false },
+  'no-attributes': { omitSections: ['attributes'] },
+  'no-cssparts': { omitSections: ['css-parts'] },
+  'no-cssproperties': { omitSections: ['css-properties'] },
+  'no-events': { omitSections: ['events'] },
+  'no-exports': { omitDeclarations: ['exports']},
+  'no-fields': { omitSections: ['fields'] },
+  'no-functions': { omitDeclarations: ['functions'] },
+  'no-methods': { omitSections: ['methods'] },
+  'no-mixins': { omitDeclarations: ['mixins'], omitSections: ['mixins'] },
+  'no-slots': { omitSections: ['slots'] },
+  'no-staticfields': { omitSections: ['static-fields'] },
+  'no-staticmethods': { omitSections: ['static-methods'] },
+  'no-superclass': { omitSections: ['super-class'] },
+  'no-variables': { omitDeclarations: ['variables'] },
 };
 
 mainTestCases.forEach(testCase => {
