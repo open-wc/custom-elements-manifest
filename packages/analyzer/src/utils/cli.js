@@ -3,6 +3,10 @@ import fs from 'fs';
 import path from 'path';
 import commandLineArgs from 'command-line-args';
 import { has } from './index.js';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const { version } = require('../../package.json');
 
 const IGNORE = [
   '!node_modules/**/*.*',
@@ -120,7 +124,7 @@ export function addCustomElementsPropertyToPackageJson(outdir) {
   }
 }
 
-export const MENU = ({ version = ''}) => `
+export const MENU = `
 @custom-elements-manifest/analyzer (${version})
 
 Available commands:

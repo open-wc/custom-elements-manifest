@@ -8,8 +8,6 @@ import commandLineArgs from 'command-line-args';
 import chokidar from 'chokidar';
 import debounce from 'debounce';
 
-const pkg = JSON.parse(`${fs.readFileSync(path.resolve('package.json'), 'utf-8')}`);
-
 import { create } from './src/create.js';
 import {
   getUserConfig,
@@ -111,6 +109,6 @@ import {
       console.log(`Could not add 'customElements' property to ${process.cwd()}${path.sep}package.json. \nAdding this property helps tooling locate your Custom Elements Manifest. Please consider adding it yourself, or file an issue if you think this is a bug.\nhttps://www.github.com/open-wc/custom-elements-manifest`);
     }
   } else {
-    console.log(MENU(pkg));
+    console.log(MENU);
   }
 })();
