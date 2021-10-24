@@ -11,13 +11,13 @@ import {
 describe('utils', () => {
   describe('isBareModuleSpecifier', ({it}) => {
     ['./foo', './foo.js', '../foo', '../foo.js'].forEach((specifier) => {
-      it(`case "${specifier}" is false`, () => {
+      it(`"${specifier}" is false`, () => {
         assert(!isBareModuleSpecifier(specifier));
       });
     });
 
     ['foo', '@foo/bar'].forEach((specifier) => {
-      it(`case "${specifier}" is true`, () => {
+      it(`"${specifier}" is true`, () => {
         assert(isBareModuleSpecifier(specifier));
       });
     });
@@ -87,7 +87,7 @@ describe('utils', () => {
         specifier: 'foo/index.js'
       },
     ].forEach((test) => {
-      it(`case "${test.path}"`, () => {
+      it(test.path, () => {
         const { packageRoot, packageName, specifier } = splitPath(test.path);
         assert.equal(packageRoot, test.packageRoot);
         assert.equal(packageName, test.packageName);

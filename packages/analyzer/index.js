@@ -43,16 +43,7 @@ import { findDependencies } from './src/utils/find-dependencies.js';
     const globs = await globby(merged);
 
     async function run() {
-      /**
-       * Create modules for `create()`
-       * 
-       * By default, the analyzer doesn't actually compile a users source code with the TS compiler
-       * API. This means that by default, the typeChecker is not available in plugins.
-       * 
-       * If users want to use the typeChecker, they can do so by adding a `overrideModuleCreation` property
-       * in their custom-elements-manifest.config.js. `overrideModuleCreation` is a function that should return
-       * an array of sourceFiles.
-       */
+
       const modules = userConfig?.overrideModuleCreation 
         ? userConfig.overrideModuleCreation({ts, globs})
         : globs.map(glob => {
@@ -80,11 +71,35 @@ import { findDependencies } from './src/utils/find-dependencies.js';
        * but probably dont document it
        * 
        * Alternatively: (less desirable) create a script to scaffold files/folders in `analyzer/node_modules/`
+       *
+       * 👇👇👇👇👇👇👇👇👇👇👇
+       * OR maybe this is not necessary at all... since its kind of an implementation detail of `find-dependencies`
+       * Maybe I just test `create` and pass it the thirdPartyCEMs, so in the test I'll have to creatively import some thirdPartyCEMs
+       * 
        */
+
+      /**
+       * @TODO 
+       * setup some mocks so I can start testing the merge of modules
+       * so in `@foo/bar` and `foo` I'll want some actual CEMs 
+       */
+
+      /**
+       * @TODO
+       * filter out thirdPartyCEMs that are not dependencies
+       * [{isDependency: true, name: 1}, {isDependency: true, name: 2}, {name: 3}].filter(({isDependency}) => !isDependency)
+       */
+
+      let thirdPartyCEMs = [];
       if(mergedOptions?.dependencies) {
         try {
-          const cemsToMerge = await findDependencies(globs);
-          if(mergedOptions.dev) console.log(cemsToMerge);
+          thirdPartyCEMs = await findDependencies(globs);
+          /** Flatten found CEMs, and mark them as being a dependency so we can remove them later */
+          thirdPartyCEMs
+            .flatMap(({modules}) => modules)
+            .map(mod => ({...mod, isDependency: true}));
+
+          if(mergedOptions.dev) console.log(thirdPartyCEMs);
         } catch(e) {
           if(mergedOptions.dev) console.log(`Failed to add third party CEMs. \n\n${e.stack}`);
         }

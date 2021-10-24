@@ -1,5 +1,5 @@
 import { describe } from '@asdgf/cli';
-import * as assert from 'uvu/assert';
+import assert from 'assert';
 import path from 'path';
 import { pathToFileURL } from 'url';
 import fs from 'fs';
@@ -19,9 +19,9 @@ if (runSingle) {
 describe('@CEM/A', ({it}) => {
   testCases.forEach(testCase => {
     if(testCase.startsWith('-')) {
-      it.skip(`Testcase ${testCase}`, () =>{});
+      it.skip(testCase, () =>{});
     } else {
-      it(`Testcase ${testCase}`, async () => {
+      it(testCase, async () => {
         const fixturePath = path.join(fixturesDir, `${testCase}/fixture/custom-elements.json`);
         const fixture = JSON.parse(fs.readFileSync(fixturePath, 'utf-8'));
     
@@ -55,7 +55,7 @@ describe('@CEM/A', ({it}) => {
     
         fs.writeFileSync(outputPath, JSON.stringify(result, null, 2));
     
-        assert.equal(result, fixture);
+        assert.deepStrictEqual(result, fixture);
       });
     }
   });

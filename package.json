@@ -34,7 +34,6 @@
     "rocket-preset-code-tabs": "^0.2.2",
     "rollup": "^2.52.8",
     "rollup-plugin-terser": "^7.0.2",
-    "uvu": "^0.5.1",
     "watchexec-bin": "^1.0.0"
   },
   "workspaces": [

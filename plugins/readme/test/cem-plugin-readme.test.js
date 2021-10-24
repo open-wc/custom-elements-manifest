@@ -1,5 +1,5 @@
-import { test } from 'uvu';
-import * as assert from 'uvu/assert';
+import { describe } from '@asdgf/core';
+import assert from 'assert';
 
 import ts from 'typescript';
 
@@ -49,30 +49,30 @@ const OPTIONS = {
   }
 };
 
-readdirSync(casesDir).forEach(testCase => {
-  test(`readmePlugin ${testCase}`, function() {
-    const input = join(casesDir, testCase, 'fixture', 'my-element.js');
-    const from = join(casesDir, testCase, 'fixture');
-    const to = join('..', 'out', 'README.md');
-    const expectedPath = join(from, '..', 'expected', 'README.md')
-    const actualPath = join(from, to);
-
-    const source = read(input);
-
-    const { description, ...options } = OPTIONS[testCase] ?? {};
-
-    const customElementsManifest = create({
-      modules: [ts.createSourceFile(
-        join('./fixture', 'my-element.js'),
-        source,
-        ts.ScriptTarget.ES2015,
-        true
-      )],
-      plugins: [readmePlugin({ from, to, ...options })],
+describe('README plugin', ({it}) => { 
+  readdirSync(casesDir).forEach(testCase => {
+    it(testCase, function() {
+      const input = join(casesDir, testCase, 'fixture', 'my-element.js');
+      const from = join(casesDir, testCase, 'fixture');
+      const to = join('..', 'out', 'README.md');
+      const expectedPath = join(from, '..', 'expected', 'README.md')
+      const actualPath = join(from, to);
+  
+      const source = read(input);
+  
+      const { description, ...options } = OPTIONS[testCase] ?? {};
+  
+      const customElementsManifest = create({
+        modules: [ts.createSourceFile(
+          join('./fixture', 'my-element.js'),
+          source,
+          ts.ScriptTarget.ES2015,
+          true
+        )],
+        plugins: [readmePlugin({ from, to, ...options })],
+      });
+  
+      assert.equal(read(actualPath), read(expectedPath), description);
     });
-
-    assert.equal(read(actualPath), read(expectedPath), description);
   });
 });
-
-test.run();
