@@ -6,5 +6,6 @@ Custom Elements Manifest is a file format that describes custom elements. This f
 ## Packages
 
 - [`@custom-elements-manifest/analyzer`](./packages/analyzer) Generate manifests from source
+- [`@custom-elements-manifest/find-dependencies`](./packages/find-dependencies) Given an array of paths, scans all modules and returns all depending paths
 - [`@custom-elements-manifest/to-markdown`](./packages/to-markdown) Generate markdown from manifests
 - [`cem-plugin-readme`](./plugins/readme) Generate README files
