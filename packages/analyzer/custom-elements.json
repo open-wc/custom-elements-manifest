@@ -7,45 +7,42 @@
       "path": "fixtures/-default/package/bar.js",
       "declarations": [
         {
-          "kind": "mixin",
+          "kind": "class",
           "description": "",
-          "name": "InputMixin",
+          "name": "MyElementA",
+          "mixins": [
+            {
+              "name": "MyMixin",
+              "module": "fixtures/-default/package/bar.js"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "my-mixin-element-a",
+          "customElement": true,
           "members": [
             {
               "kind": "field",
-              "name": "disabled",
+              "name": "foo",
               "type": {
-                "text": "boolean"
+                "text": "number"
               },
-              "default": "false",
-              "description": "this description never gets picked up by the analyzer. \nso we lose some info about default values and the fact it is both property and attribute",
-              "attribute": "disabled"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "this description never gets picked up by the analyzer. \nso we lose some info about default values and the fact it is both property and attribute",
-              "fieldName": "disabled"
-            }
-          ],
-          "parameters": [
-            {
-              "name": "superClass"
+              "default": "1",
+              "inheritedFrom": {
+                "name": "MyMixin",
+                "module": "fixtures/-default/package/bar.js"
+              }
             }
           ]
         }
       ],
       "exports": [
         {
-          "kind": "js",
-          "name": "InputMixin",
+          "kind": "custom-element-definition",
+          "name": "my-mixin-element-a",
           "declaration": {
-            "name": "InputMixin",
+            "name": "MyElementA",
             "module": "fixtures/-default/package/bar.js"
           }
         }

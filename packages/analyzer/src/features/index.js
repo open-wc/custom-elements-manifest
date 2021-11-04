@@ -65,10 +65,10 @@ export const FEATURES = [
   
   /** POST-PROCESSING */
   resolveInitializersPlugin(),
-  removeUnexportedDeclarationsPlugin(),
   linkClassToTagnamePlugin(),
   isCustomElementPlugin(),
   applyInheritancePlugin(),
+  removeUnexportedDeclarationsPlugin(),
 
   /** FRAMEWORKS */
   // litPlugin()
