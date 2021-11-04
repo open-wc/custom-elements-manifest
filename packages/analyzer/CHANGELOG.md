@@ -1,3 +1,6 @@
+## Release 0.5.7
+- Only remove unexported declarations _after_ applying inheritance. Usecase as described in [#145](https://github.com/open-wc/custom-elements-manifest/issues/145).
+
 ## Release 0.5.6
 - Added support for `@ignore` and `@internal` jsdoc for events
 
