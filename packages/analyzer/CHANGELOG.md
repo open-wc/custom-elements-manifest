@@ -3,6 +3,10 @@
 - If a package has an export map, add the `./customElements` key in the export map
   - This feature can be disabled with the `--packagejson` flag, but make sure to include the path to the `custom-elements.json` in your `package.json` so that tools can find it.
   
+## Release 0.5.7
+- Only remove unexported declarations _after_ applying inheritance. Usecase as described in [#145](https://github.com/open-wc/custom-elements-manifest/issues/145).
+- Log analyzer version number to default CLI message. Via [#144](https://github.com/open-wc/custom-elements-manifest/pull/144)
+
 ## Release 0.5.6
 - Added support for `@ignore` and `@internal` jsdoc for events
 

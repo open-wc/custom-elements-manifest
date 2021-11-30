@@ -9,10 +9,10 @@ import chokidar from 'chokidar';
 import debounce from 'debounce';
 
 import { create } from './src/create.js';
-import { 
-  getUserConfig, 
-  getCliConfig, 
-  addFrameworkPlugins, 
+import {
+  getUserConfig,
+  getCliConfig,
+  addFrameworkPlugins,
   addCustomElementsPropertyToPackageJson,
   mergeGlobsAndExcludes,
   timestamp,
@@ -25,7 +25,7 @@ import { findDependencies } from './src/utils/find-dependencies.js';
   const mainDefinitions = [{ name: 'command', defaultOption: true }];
   const mainOptions = commandLineArgs(mainDefinitions, { stopAtFirstUnknown: true });
   const argv = mainOptions._unknown || [];
-  
+
   if (mainOptions.command === 'analyze') {
 
     const {
@@ -81,7 +81,7 @@ import { findDependencies } from './src/utils/find-dependencies.js';
 
       let plugins = await addFrameworkPlugins(mergedOptions);
       plugins = [...plugins, ...(userConfig?.plugins || [])];
-  
+
       /**
        * Create the manifest
        */
@@ -109,9 +109,9 @@ import { findDependencies } from './src/utils/find-dependencies.js';
      */
     if(mergedOptions.watch) {
       const fileWatcher = chokidar.watch(globs);
-  
+
       const onChange = debounce(run, 100);
-  
+
       fileWatcher.addListener('change', onChange);
       fileWatcher.addListener('unlink', onChange);
     }

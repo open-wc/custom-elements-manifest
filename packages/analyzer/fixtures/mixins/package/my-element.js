@@ -23,6 +23,15 @@ export const ReturnValArrowMixin = klass => {
   return Bar;
 }
 
+// `InternalMixin` is not exported, but `InternalClass` is still expected to have `foo = 1` documented in the CEM
+export class InternalClass extends InternalMixin(HTMLElement){}
+
+function InternalMixin(superClass){
+    return class extends superClass {
+       foo = 1;
+    }
+}
+
 /**
  * @type {Element}
  * @param {string} klass
