@@ -58,38 +58,12 @@ import { findDependencies } from './src/utils/find-dependencies.js';
             );
           });
 
-      /**
-       * 🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨
-       * @TODO
-       * 
-       * currently mocks are in `analyzer/node_modules/` (e.g. `@foo/bar` and `foo`)
-       * need to find a nice way for local development to point this to the fixtures dir
-       * 
-       * Maybe something like:
-       * dependencies: { basePath: 'fixtures/-default/package' }
-       * 
-       * but probably dont document it
-       * 
-       * Alternatively: (less desirable) create a script to scaffold files/folders in `analyzer/node_modules/`
-       *
-       * 👇👇👇👇👇👇👇👇👇👇👇
-       * OR maybe this is not necessary at all... since its kind of an implementation detail of `find-dependencies`
-       * Maybe I just test `create` and pass it the thirdPartyCEMs, so in the test I'll have to creatively import some thirdPartyCEMs
-       * 
-       */
-
-      /**
-       * @TODO 
-       * setup some mocks so I can start testing the merge of modules
-       * so in `@foo/bar` and `foo` I'll want some actual CEMs 
-       */
 
       /**
        * @TODO
        * filter out thirdPartyCEMs that are not dependencies
        * [{isDependency: true, name: 1}, {isDependency: true, name: 2}, {name: 3}].filter(({isDependency}) => !isDependency)
        */
-
       let thirdPartyCEMs = [];
       if(mergedOptions?.dependencies) {
         try {
