@@ -7,7 +7,7 @@ import { findDependencies } from '../src/find-dependencies.js';
 describe('find-dependencies', ({it}) => {
   it('finds dependencies for monorepo setup', async () => {
     const globs = await globby(['fixtures/monorepo/packages/my-package/*.js']);
-    let dependencies = await findDependencies(globs, { basePath: 'fixtures/monorepo/packages/my-package' });
+    let dependencies = await findDependencies(globs);
     dependencies = dependencies.map(d => d.split('fixtures')[1]);
 
     assert.deepEqual(dependencies,
@@ -31,7 +31,7 @@ describe('find-dependencies', ({it}) => {
 
   it('finds dependencies for regular setup', async () => {
     const globs = await globby(['fixtures/regular/index.js']);
-    let dependencies = await findDependencies(globs, { basePath: 'fixtures/regular' });
+    let dependencies = await findDependencies(globs);
     dependencies = dependencies.map(d => d.split('fixtures')[1]);
 
     assert.deepEqual(dependencies,

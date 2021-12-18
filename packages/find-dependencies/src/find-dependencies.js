@@ -5,18 +5,13 @@ import { init, parse } from 'es-module-lexer';
 
 import { 
   isBareModuleSpecifier,
-  splitPath,
-  traverseUp
 } from './utils.js';
-
-const require = createRequire(import.meta.url);
 
 /**
  * 
  * @param {string[]} paths 
  * @param {{
  *  nodeModulesDepth?: number,
- *  basePath?: string,
  * }} options 
  * @returns {Promise<string[]>}
  */
@@ -25,25 +20,21 @@ export async function findDependencies(paths, options = {}) {
   const dependencies = new Set();
 
   const nodeModulesDepth = options?.nodeModulesDepth ?? 3;
-  const basePath = options?.basePath ?? process.cwd();
 
   /** Init es-module-lexer wasm */
   await init;
 
-  paths.forEach(path => {
-    const source = fs.readFileSync(path).toString();
+  paths.forEach(filePath => {
+    const source = fs.readFileSync(filePath).toString();
     const [imports] = parse(source);
+
+    const pathRequire = createRequire(path.resolve(filePath));
 
     imports?.forEach(i => {
       /** Skip built-in modules like fs, path, etc */
       if(builtinModules.includes(i.n)) return;
       try {
-        const pathToDependency = require.resolve(i.n, {paths: [
-          /** Current project's node_modules */
-          basePath,
-          /** Monorepo, look upwards in filetree n times */
-          ...traverseUp(nodeModulesDepth)
-        ]});
+        const pathToDependency = pathRequire.resolve(i.n);
 
         importsToScan.add(pathToDependency);
         dependencies.add(pathToDependency);
@@ -60,24 +51,18 @@ export async function findDependencies(paths, options = {}) {
       const source = fs.readFileSync(dep).toString();
       const [imports] = parse(source);
 
+      const depRequire = createRequire(dep);
+
       imports?.forEach(i => {
         /** Skip built-in modules like fs, path, etc */
         if(builtinModules.includes(i.n)) return;
-        const { packageRoot } = splitPath(dep);
         const fileToFind = isBareModuleSpecifier(i.n) ? i.n : path.join(path.dirname(dep), i.n);
         try {
           /**
            * First check in the dependencies' node_modules, then in the project's node_modules,
            * then up, and up, and up
            */
-          const pathToDependency = require.resolve(fileToFind, {paths: [
-            /** Nested node_modules */
-            packageRoot, 
-            /** Current project's node_modules */
-            basePath, 
-            /** Monorepo, look upwards in filetree n times */
-            ...traverseUp(nodeModulesDepth)
-          ]});
+          const pathToDependency = depRequire.resolve(fileToFind);
           /** 
            * Don't add dependencies we've already scanned, also avoids circular dependencies 
            * and multiple modules importing from the same module 
