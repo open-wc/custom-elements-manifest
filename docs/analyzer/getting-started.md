@@ -169,6 +169,11 @@ For all supported syntax, please check the [fixtures](https://github.com/open-wc
      */
     foo = 'foo';
 
+    /**
+     * @internal
+     */
+    _privateThing = 1;
+
     constructor() {
       super();
       /** @type {boolean} - disabled state */
@@ -310,6 +315,7 @@ For all supported syntax, please check the [fixtures](https://github.com/open-wc
 | `@fires`,<br>`@event`         | Documents events that your component might fire    |
 | `@tag`,<br>`@tagname`         | Documents the name of your custom element          |
 | `@summary`                    | Documents a short summary                          |
+| `@internal`,<br>`@ignore`     | To omit documentation of internal details          |
 
 ```js
 /**
