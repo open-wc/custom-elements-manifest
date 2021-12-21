@@ -221,33 +221,44 @@ For all supported syntax, please check the [fixtures](https://github.com/open-wc
             "name": "MyElement",
             "cssProperties": [
               {
-                "description": "- Controls the color of foo",
+                "description": "Controls the color of foo",
                 "name": "--text-color"
               },
               {
-                "description": "- Controls the color of bar",
+                "description": "Controls the color of bar",
                 "name": "--background-color"
               }
             ],
             "cssParts": [
               {
-                "description": "- Styles the color of bar",
+                "description": "Styles the color of bar",
                 "name": "bar"
               }
             ],
             "slots": [
               {
-                "description": "- You can put some elements here",
+                "description": "You can put some elements here",
                 "name": "container"
               }
             ],
             "members": [
               {
                 "kind": "field",
+                "name": "foo",
+                "type": {
+                  "text": "string"
+                },
+                "default": "'foo'",
+                "reflects": true,
+                "attribute": "foo"
+              },
+              {
+                "kind": "field",
                 "name": "disabled",
                 "type": {
                   "text": "boolean"
                 },
+                "description": "disabled state",
                 "default": "true"
               },
               {
@@ -260,20 +271,35 @@ For all supported syntax, please check the [fixtures](https://github.com/open-wc
                 "name": "foo-changed",
                 "type": {
                   "text": "FooEvent"
-                }
+                },
+                "description": "foo-event - description"
+              }
+            ],
+            "attributes": [
+              {
+                "name": "foo",
+                "type": {
+                  "text": "string"
+                },
+                "default": "'foo'",
+                "fieldName": "foo"
               }
             ],
             "superclass": {
-              "name": "LitElement"
+              "name": "LitElement",
+              "package": "lit-element"
             },
-            "tagName": "my-element"
+            "tagName": "my-element",
+            "customElement": true
           },
           {
             "kind": "variable",
             "name": "someVariable",
             "type": {
               "text": "boolean"
-            }
+            },
+            "default": "true",
+            "description": "This will show up in the custom-elements.json too"
           }
         ],
         "exports": [
