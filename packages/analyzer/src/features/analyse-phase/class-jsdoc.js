@@ -74,6 +74,7 @@ export function classJsDocPlugin() {
                   case 'cssproperty':
                     let cssPropertyDoc = {};
                     cssPropertyDoc = handleClassJsDoc(cssPropertyDoc, jsDoc);
+                    delete cssPropertyDoc.type;
                     classDoc.cssProperties.push(cssPropertyDoc);
                     break;
                   case 'slot':

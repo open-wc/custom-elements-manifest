@@ -21,7 +21,7 @@
  * @slot container - You can put some elements here
  *
  * @cssprop --text-color - Controls the color of foo
- * @cssproperty [--background-color=red] - Controls the color of bar
+ * @cssproperty {color} [--background-color=red] - Controls the color of bar
  *
  * @prop {boolean} prop1 - some description
  * @property {number} prop2 - some description
