@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "fixtures/events/package/bar.js",
+      "path": "package/bar.js",
       "declarations": [
         {
           "kind": "class",
@@ -37,7 +37,7 @@
           "name": "my-element",
           "declaration": {
             "name": "MyElement",
-            "module": "fixtures/events/package/bar.js"
+            "module": "package/bar.js"
           }
         }
       ]

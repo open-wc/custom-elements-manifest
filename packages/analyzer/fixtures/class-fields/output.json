@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "fixtures/class-fields/package/my-element.js",
+      "path": "package/my-element.js",
       "declarations": [
         {
           "kind": "class",
@@ -301,7 +301,7 @@
           "name": "my-el",
           "declaration": {
             "name": "MyEl",
-            "module": "fixtures/class-fields/package/my-element.js"
+            "module": "package/my-element.js"
           }
         }
       ]

@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "fixtures/plugin-stencil/package/my-element.js",
+      "path": "package/my-element.js",
       "declarations": [
         {
           "kind": "class",
@@ -105,7 +105,7 @@
           "name": "TodoList",
           "declaration": {
             "name": "TodoList",
-            "module": "fixtures/plugin-stencil/package/my-element.js"
+            "module": "package/my-element.js"
           }
         },
         {
@@ -113,7 +113,7 @@
           "name": "todo-list",
           "declaration": {
             "name": "TodoList",
-            "module": "fixtures/plugin-stencil/package/my-element.js"
+            "module": "package/my-element.js"
           }
         }
       ]

@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "fixtures/inheritance-superclass/package/BatchingElement.js",
+      "path": "package/BatchingElement.js",
       "declarations": [
         {
           "kind": "class",
@@ -53,14 +53,14 @@
           "name": "BatchingElement",
           "declaration": {
             "name": "BatchingElement",
-            "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+            "module": "package/BatchingElement.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "fixtures/inheritance-superclass/package/implements-element.ts",
+      "path": "package/implements-element.ts",
       "declarations": [
         {
           "kind": "class",
@@ -84,7 +84,7 @@
               "name": "superClassField",
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+                "module": "package/BatchingElement.js"
               }
             },
             {
@@ -92,7 +92,7 @@
               "name": "superClassMethod",
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+                "module": "package/BatchingElement.js"
               }
             },
             {
@@ -104,7 +104,7 @@
               "default": "'hello'",
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+                "module": "package/BatchingElement.js"
               }
             }
           ],
@@ -122,7 +122,7 @@
               },
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+                "module": "package/BatchingElement.js"
               }
             }
           ],
@@ -134,13 +134,13 @@
               "name": "superClass-attr",
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+                "module": "package/BatchingElement.js"
               }
             }
           ],
           "superclass": {
             "name": "BatchingElement",
-            "module": "/fixtures/inheritance-superclass/package/BatchingElement"
+            "module": "package/BatchingElement"
           }
         }
       ],
@@ -150,14 +150,14 @@
           "name": "ImplementsElement",
           "declaration": {
             "name": "ImplementsElement",
-            "module": "fixtures/inheritance-superclass/package/implements-element.ts"
+            "module": "package/implements-element.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "fixtures/inheritance-superclass/package/my-element.js",
+      "path": "package/my-element.js",
       "declarations": [
         {
           "kind": "class",
@@ -181,7 +181,7 @@
               "default": "'bye'",
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+                "module": "package/BatchingElement.js"
               }
             },
             {
@@ -189,7 +189,7 @@
               "name": "superClassField",
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+                "module": "package/BatchingElement.js"
               }
             },
             {
@@ -197,7 +197,7 @@
               "name": "superClassMethod",
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+                "module": "package/BatchingElement.js"
               }
             }
           ],
@@ -215,7 +215,7 @@
               },
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+                "module": "package/BatchingElement.js"
               }
             }
           ],
@@ -227,13 +227,13 @@
               "name": "superClass-attr",
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "fixtures/inheritance-superclass/package/BatchingElement.js"
+                "module": "package/BatchingElement.js"
               }
             }
           ],
           "superclass": {
             "name": "BatchingElement",
-            "module": "/fixtures/inheritance-superclass/package/BatchingElement.js"
+            "module": "package/BatchingElement.js"
           }
         }
       ],
@@ -243,7 +243,7 @@
           "name": "MyElement",
           "declaration": {
             "name": "MyElement",
-            "module": "fixtures/inheritance-superclass/package/my-element.js"
+            "module": "package/my-element.js"
           }
         }
       ]
