@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "fixtures/plugin-fast/package/my-element.js",
+      "path": "package/my-element.js",
       "declarations": [
         {
           "kind": "class",
@@ -52,7 +52,7 @@
           "name": "NameTag",
           "declaration": {
             "name": "NameTag",
-            "module": "fixtures/plugin-fast/package/my-element.js"
+            "module": "package/my-element.js"
           }
         },
         {
@@ -60,7 +60,7 @@
           "name": "name-tag",
           "declaration": {
             "name": "NameTag",
-            "module": "fixtures/plugin-fast/package/my-element.js"
+            "module": "package/my-element.js"
           }
         }
       ]

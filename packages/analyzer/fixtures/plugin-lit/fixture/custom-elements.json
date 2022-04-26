@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "fixtures/plugin-lit/package/my-element.js",
+      "path": "package/my-element.js",
       "declarations": [
         {
           "kind": "class",
@@ -201,7 +201,7 @@
           "name": "my-element",
           "declaration": {
             "name": "MyElement",
-            "module": "fixtures/plugin-lit/package/my-element.js"
+            "module": "package/my-element.js"
           }
         },
         {
@@ -209,7 +209,7 @@
           "name": "InputMixin",
           "declaration": {
             "name": "InputMixin",
-            "module": "fixtures/plugin-lit/package/my-element.js"
+            "module": "package/my-element.js"
           }
         }
       ]

@@ -16,6 +16,24 @@ if (runSingle) {
   testCases = [runSingle];
 }
 
+const stripRegex = /\.?\/?fixtures\/(.*?)\//;
+function stripFixturePaths(cem, testCase) {
+  if (typeof cem === 'object') {
+    Object.keys(cem).forEach(key => {
+      cem[key] = stripFixturePaths(cem[key], testCase);
+    });
+  }
+  if (Array.isArray(cem)) {
+    cem.forEach(key => {
+      cem[key] = stripFixturePaths(cem[key], testCase);
+    });
+  }
+  if (typeof cem === 'string') {
+    cem = cem.replace(stripRegex, '');
+  }
+  return cem;
+}
+
 describe('@CEM/A', ({it}) => {
   testCases.forEach(testCase => {
     if(testCase.startsWith('-')) {
@@ -50,8 +68,9 @@ describe('@CEM/A', ({it}) => {
           const config = await import(manifestPathFileURL);
           plugins = [...config.default.plugins];
         } catch {}
-    
+
         const result = create({modules, plugins});
+        stripFixturePaths(result, testCase); // adjusts result
     
         fs.writeFileSync(outputPath, JSON.stringify(result, null, 2));
     

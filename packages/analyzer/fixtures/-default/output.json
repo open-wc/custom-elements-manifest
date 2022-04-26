@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "fixtures/default/package/my-element.js",
+      "path": "package/my-element.js",
       "declarations": [
         {
           "kind": "mixin",
@@ -13,7 +13,7 @@
           "mixins": [
             {
               "name": "dedupeMixin",
-              "module": "fixtures/default/package/my-element.js"
+              "module": "package/my-element.js"
             }
           ]
         }
@@ -24,7 +24,7 @@
           "name": "ReexportedWrappedMixin",
           "declaration": {
             "name": "ReexportedWrappedMixin",
-            "module": "fixtures/default/package/my-element.js"
+            "module": "package/my-element.js"
           }
         }
       ]
