@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "package/my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "firstName",
+              "type": {
+                "text": "string"
+              },
+              "default": "'John'"
+            },
+            {
+              "kind": "field",
+              "name": "properties",
+              "type": {
+                "text": "object"
+              },
+              "static": true,
+              "default": "{\n      disabled: { type: Boolean }\n    }",
+              "inheritedFrom": {
+                "name": "InputMixin",
+                "module": "package/my-element.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "inheritedFrom": {
+                "name": "InputMixin",
+                "module": "package/my-element.js"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "firstName",
+              "fieldName": "firstName"
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "inheritedFrom": {
+                "name": "InputMixin",
+                "module": "package/my-element.js"
+              }
+            }
+          ],
+          "mixins": [
+            {
+              "name": "InputMixin",
+              "module": "package/my-element.js"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "my-element",
+          "customElement": true
+        },
+        {
+          "kind": "mixin",
+          "description": "",
+          "name": "InputMixin",
+          "members": [
+            {
+              "kind": "field",
+              "name": "properties",
+              "type": {
+                "text": "object"
+              },
+              "static": true,
+              "default": "{\n      disabled: { type: Boolean }\n    }"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disabled",
+              "fieldName": "disabled"
+            }
+          ],
+          "parameters": [
+            {
+              "name": "superClass"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "my-element",
+          "declaration": {
+            "name": "MyElement",
+            "module": "package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "InputMixin",
+          "declaration": {
+            "name": "InputMixin",
+            "module": "package/my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}
