@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "package/bar.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyElementA",
+          "mixins": [
+            {
+              "name": "MyMixin",
+              "module": "package/bar.js"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "my-mixin-element-a",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "foo",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "inheritedFrom": {
+                "name": "MyMixin",
+                "module": "package/bar.js"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "my-mixin-element-a",
+          "declaration": {
+            "name": "MyElementA",
+            "module": "package/bar.js"
+          }
+        }
+      ]
+    }
+  ]
+}
