@@ -52,12 +52,12 @@
             {
               "kind": "field",
               "name": "prop1",
+              "privacy": "public",
               "type": {
                 "text": "string"
               },
               "default": "'foo'",
               "description": "this is the description",
-              "privacy": "public",
               "attribute": "prop1"
             },
             {
@@ -132,6 +132,11 @@
             },
             {
               "name": "prop1",
+              "type": {
+                "text": "string"
+              },
+              "default": "'foo'",
+              "description": "this is the description",
               "fieldName": "prop1"
             },
             {

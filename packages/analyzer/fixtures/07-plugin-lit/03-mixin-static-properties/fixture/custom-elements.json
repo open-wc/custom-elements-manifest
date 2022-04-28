@@ -18,7 +18,21 @@
                 "text": "string"
               },
               "default": "'John'",
+              "privacy": "public",
               "attribute": "firstName"
+            },
+            {
+              "kind": "field",
+              "name": "properties",
+              "type": {
+                "text": "object"
+              },
+              "static": true,
+              "default": "{\n      disabled: { type: Boolean }\n    }",
+              "inheritedFrom": {
+                "name": "InputMixin",
+                "module": "package/my-element.js"
+              }
             },
             {
               "kind": "field",
@@ -27,6 +41,7 @@
                 "text": "boolean"
               },
               "default": "false",
+              "privacy": "public",
               "attribute": "disabled",
               "inheritedFrom": {
                 "name": "InputMixin",
@@ -76,12 +91,22 @@
           "members": [
             {
               "kind": "field",
+              "name": "properties",
+              "type": {
+                "text": "object"
+              },
+              "static": true,
+              "default": "{\n      disabled: { type: Boolean }\n    }"
+            },
+            {
+              "kind": "field",
               "name": "disabled",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "attribute": "disabled"
+              "attribute": "disabled",
+              "privacy": "public"
             }
           ],
           "attributes": [
