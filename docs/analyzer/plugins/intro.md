@@ -47,5 +47,6 @@ export default {
 - [cem-plugin-reactify](https://www.npmjs.com/package/cem-plugin-reactify) - plugin to automatically create React wrappers for your custom elements
 - [cem-plugin-readonly](https://www.npmjs.com/package/cem-plugin-readonly) - plugin to handle read-only class members
 - [cem-plugin-type-descriptions-markdown](https://www.npmjs.com/package/cem-plugin-type-descriptions-markdown) - plugin to add markdown type documentation to manifest member descriptions
+- [vite-plugin-cem](https://www.npmjs.com/package/vite-plugin-cem) - a [vite.js](https://vitejs.dev/) plugin based on the [@custom-elements-manifest/analyzer](https://custom-elements-manifest.open-wc.org/analyzer/getting-started)
 
 > Want your plugin listed here? Please create a PR!
