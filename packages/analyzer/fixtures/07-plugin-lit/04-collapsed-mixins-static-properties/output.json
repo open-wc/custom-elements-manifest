@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "package/my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "lastName",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Doe'",
+              "attribute": "lastName"
+            },
+            {
+              "kind": "field",
+              "name": "properties",
+              "type": {
+                "text": "object"
+              },
+              "static": true,
+              "default": "{\n      mixB: { type: Boolean },\n    }",
+              "inheritedFrom": {
+                "name": "MixinA",
+                "module": "package/my-element.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "mixB",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "mixB",
+              "inheritedFrom": {
+                "name": "MixinB",
+                "module": "package/my-element.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "mixA",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "mixA",
+              "inheritedFrom": {
+                "name": "MixinA",
+                "module": "package/my-element.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "firstName",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'John'",
+              "attribute": "firstName",
+              "inheritedFrom": {
+                "name": "MyField",
+                "module": "package/my-element.js"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "lastName",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Doe'",
+              "fieldName": "lastName"
+            },
+            {
+              "name": "mixB",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "mixB",
+              "inheritedFrom": {
+                "name": "MixinB",
+                "module": "package/my-element.js"
+              }
+            },
+            {
+              "name": "mixA",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "mixA",
+              "inheritedFrom": {
+                "name": "MixinA",
+                "module": "package/my-element.js"
+              }
+            },
+            {
+              "name": "firstName",
+              "type": {
+                "text": "string"
+              },
+              "default": "'John'",
+              "fieldName": "firstName",
+              "inheritedFrom": {
+                "name": "MyField",
+                "module": "package/my-element.js"
+              }
+            }
+          ],
+          "mixins": [
+            {
+              "name": "MixinB",
+              "module": "package/my-element.js"
+            }
+          ],
+          "superclass": {
+            "name": "MyField",
+            "module": "package/my-element.js"
+          },
+          "tagName": "my-element",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "my-element",
+          "declaration": {
+            "name": "MyElement",
+            "module": "package/my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}
