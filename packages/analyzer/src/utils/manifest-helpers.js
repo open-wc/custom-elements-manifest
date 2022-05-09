@@ -89,8 +89,15 @@ export function getInheritanceTree(cem, className) {
 
     while(allClassLikes.has(klass.superclass?.name)) {
       const newKlass = allClassLikes.get(klass.superclass.name);
+      let allMixins = [];
+      if (klass?.mixins) {
+        allMixins = [...klass.mixins];
+      }
+      if (newKlass?.mixins) {
+        allMixins = [...allMixins, ...newKlass.mixins];
+      }
 
-      klass?.mixins?.forEach(mixin => {
+      allMixins.forEach(mixin => {
         let foundMixin = _mixins.find(m => m.name === mixin.name);
         if(foundMixin) {
           tree.push(foundMixin);
