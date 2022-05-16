@@ -7,14 +7,6 @@ import path from 'path';
 const toUnix = p => p.replace(/\\/g, '/');
 
 /**
- * @param {number} depth 
- * @returns {string[]}
- */
-export function traverseUp(depth) {
-  return Array(depth).fill().map((_, i) => path.join(process.cwd(), ...Array(i).fill('..')));
-}
-
-/**
  * @param {string} specifier
  * @returns {boolean}
  */
