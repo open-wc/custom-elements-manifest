@@ -18,10 +18,10 @@
   "type": "module",
   "scripts": {
     "prepare": "npm run build",
-    "build": "run-s build:*",
+    "build": "npm run build:browser && npm run build:cjs",
     "build:browser": "esbuild index.js --outfile=dist/browser.js --format=esm --bundle --minify",
     "build:cjs": "esbuild index.js --outfile=dist/index.cjs --format=cjs --bundle",
-    "test": "uvu test"
+    "test": "asdgf"
   },
   "files": [
     "*.d.ts",

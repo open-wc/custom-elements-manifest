@@ -19,6 +19,7 @@ import {
   DEFAULTS,
   MENU
 } from './src/utils/cli.js';
+import { findDependencies } from './src/utils/find-dependencies.js';
 
 (async () => {
   const mainDefinitions = [{ name: 'command', defaultOption: true }];
@@ -42,17 +43,8 @@ import {
     const globs = await globby(merged);
 
     async function run() {
-      /**
-       * Create modules for `create()`
-       *
-       * By default, the analyzer doesn't actually compile a users source code with the TS compiler
-       * API. This means that by default, the typeChecker is not available in plugins.
-       *
-       * If users want to use the typeChecker, they can do so by adding a `overrideModuleCreation` property
-       * in their custom-elements-manifest.config.js. `overrideModuleCreation` is a function that should return
-       * an array of sourceFiles.
-       */
-      const modules = userConfig?.overrideModuleCreation
+
+      const modules = userConfig?.overrideModuleCreation 
         ? userConfig.overrideModuleCreation({ts, globs})
         : globs.map(glob => {
             const relativeModulePath = path.relative(process.cwd(), glob);
@@ -66,28 +58,49 @@ import {
             );
           });
 
+
+      /**
+       * @TODO
+       * filter out thirdPartyCEMs that are not dependencies
+       * [{isDependency: true, name: 1}, {isDependency: true, name: 2}, {name: 3}].filter(({isDependency}) => !isDependency)
+       */
+      let thirdPartyCEMs = [];
+      if(mergedOptions?.dependencies) {
+        try {
+          thirdPartyCEMs = await findDependencies(globs);
+          /** Flatten found CEMs, and mark them as being a dependency so we can remove them later */
+          thirdPartyCEMs
+            .flatMap(({modules}) => modules)
+            .map(mod => ({...mod, isDependency: true}));
+
+          if(mergedOptions.dev) console.log(thirdPartyCEMs);
+        } catch(e) {
+          if(mergedOptions.dev) console.log(`Failed to add third party CEMs. \n\n${e.stack}`);
+        }
+      }
+
       let plugins = await addFrameworkPlugins(mergedOptions);
       plugins = [...plugins, ...(userConfig?.plugins || [])];
 
       /**
        * Create the manifest
        */
-      const customElementsManifest = create({
-        modules,
-        plugins,
-        dev: mergedOptions.dev
-      });
+      // const customElementsManifest = create({
+      //   modules,
+      //   plugins,
+      //   dev: mergedOptions.dev
+      // });
 
-      const outdir = path.join(process.cwd(), mergedOptions.outdir);
-      if (!fs.existsSync(outdir)){
-        fs.mkdirSync(outdir, { recursive: true });
-      }
-      fs.writeFileSync(path.join(outdir, 'custom-elements.json'), `${JSON.stringify(customElementsManifest, null, 2)}\n`);
-      if(mergedOptions.dev) {
-        console.log(JSON.stringify(customElementsManifest, null, 2));
-      }
+      // const outdir = path.join(process.cwd(), mergedOptions.outdir);
+      // if (!fs.existsSync(outdir)){
+      //   fs.mkdirSync(outdir, { recursive: true });
+      // }
+      // fs.writeFileSync(path.join(outdir, 'custom-elements.json'), `${JSON.stringify(customElementsManifest, null, 2)}\n`);
+      // if(mergedOptions.dev) {
+      //   console.log(JSON.stringify(customElementsManifest, null, 2));
+      // }
 
-      console.log(`[${timestamp()}] @custom-elements-manifest/analyzer: Created new manifest.`);
+      // console.log(`[${timestamp()}] @custom-elements-manifest/analyzer: Created new manifest.`);
     }
     await run();
 
@@ -104,7 +117,9 @@ import {
     }
 
     try {
-      addCustomElementsPropertyToPackageJson(mergedOptions.outdir);
+      if(mergedOptions.packagejson) {
+        addCustomElementsPropertyToPackageJson(mergedOptions.outdir);
+      }
     } catch {
       console.log(`Could not add 'customElements' property to ${process.cwd()}${path.sep}package.json. \nAdding this property helps tooling locate your Custom Elements Manifest. Please consider adding it yourself, or file an issue if you think this is a bug.\nhttps://www.github.com/open-wc/custom-elements-manifest`);
     }

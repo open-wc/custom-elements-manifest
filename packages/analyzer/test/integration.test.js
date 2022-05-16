@@ -1,5 +1,5 @@
 import { describe } from '@asdgf/cli';
-import * as assert from 'uvu/assert';
+import assert from 'assert';
 import path from 'path';
 import { pathToFileURL } from 'url';
 import fs from 'fs';
@@ -60,18 +60,18 @@ describe('@CEM/A', ({it}) => {
           it(`Testcase ${testCase.test}`, async () => {
             const fixturePath = path.join(fixturesDir, `${testCase.relPath}/fixture/custom-elements.json`);
             const fixture = JSON.parse(fs.readFileSync(fixturePath, 'utf-8'));
-        
+
             const packagePath = path.join(fixturesDir, `${testCase.relPath}/package`);
             const packagePathPosix = packagePath.split(path.sep).join(path.posix.sep);
             const outputPath = path.join(fixturesDir, `${testCase.relPath}/output.json`);
-        
+
             const globs = await globby(packagePathPosix);
             const modules = globs
               .filter(path => !path.includes('custom-elements-manifest.config.js'))
               .map(glob => {
                 const relativeModulePath = `.${path.sep}${path.relative(process.cwd(), glob)}`;
                 const source = fs.readFileSync(relativeModulePath).toString();
-        
+
                 return ts.createSourceFile(
                   relativeModulePath,
                   source,
@@ -79,7 +79,7 @@ describe('@CEM/A', ({it}) => {
                   true,
                 );
               });
-        
+
             let plugins = [];
             const manifestPathFileURL = pathToFileURL(`${packagePath}/custom-elements-manifest.config.js`).href;
             try {
@@ -89,9 +89,9 @@ describe('@CEM/A', ({it}) => {
 
             const result = create({modules, plugins});
             stripFixturePaths(result, testCase.relPath); // adjusts result
-        
+
             fs.writeFileSync(outputPath, JSON.stringify(result, null, 2));
-        
+
             assert.equal(result, fixture);
           });
         }

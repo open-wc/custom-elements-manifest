@@ -56,13 +56,16 @@ export function getAllDeclarationsOfKind(manifest, kind) {
  */
 export function getInheritanceTree(cem, className) {
   const tree = [];
-
   const allClassLikes = new Map();
+  const _classes = [];
+  const _mixins = [];
 
-  const _classes = getAllDeclarationsOfKind(cem, 'class');
-  const _mixins = getAllDeclarationsOfKind(cem, 'mixin');
+  manifests.forEach((cem) => {
+    _classes.push(...getAllDeclarationsOfKind(cem, 'class'));
+    _mixins.push(...getAllDeclarationsOfKind(cem, 'mixin'));
+  });
 
-  [..._mixins, ..._classes].forEach(klass => {
+  [..._mixins, ..._classes].forEach((klass) => {
     allClassLikes.set(klass.name, klass);
   });
 
@@ -121,26 +124,33 @@ export function getInheritanceTree(cem, className) {
   return [];
 }
 
-export function getModuleFromManifest(cem, modulePath) {
+export function getModuleFromManifests(manifests, modulePath) {
   let result = undefined;
 
-  cem?.modules?.forEach(_module => {
-    if(_module.path === modulePath) {
-      result = _module;
-    }
+  manifests.forEach((cem) => {
+    cem?.modules?.forEach((_module) => {
+      if (_module.path === modulePath) {
+        result = _module;
+      }
+    });
   });
 
   return result;
 }
 
-export function getModuleForClassLike(cem, className) {
+export function getModuleForClassLike(manifests, className) {
   let result = undefined;
 
-  cem?.modules?.forEach(_module => {
-    _module?.declarations?.forEach(declaration => {
-      if((declaration.kind === 'class' || declaration.kind === 'mixin') && declaration.name === className) {
-        result = _module.path;
-      }
+  manifests.forEach((cem) => {
+    cem?.modules?.forEach((_module) => {
+      _module?.declarations?.forEach((declaration) => {
+        if (
+          (declaration.kind === 'class' || declaration.kind === 'mixin') &&
+          declaration.name === className
+        ) {
+          result = _module.path;
+        }
+      });
     });
   });
 
