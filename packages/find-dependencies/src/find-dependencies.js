@@ -3,7 +3,7 @@ import path from 'path';
 import { createRequire, builtinModules } from 'module';
 import { init, parse } from 'es-module-lexer';
 
-import { 
+import {
   isBareModuleSpecifier,
   splitPath,
   traverseUp
@@ -12,12 +12,12 @@ import {
 const require = createRequire(import.meta.url);
 
 /**
- * 
- * @param {string[]} paths 
+ *
+ * @param {string[]} paths
  * @param {{
  *  nodeModulesDepth?: number,
  *  basePath?: string,
- * }} options 
+ * }} options
  * @returns {Promise<string[]>}
  */
 export async function findDependencies(paths, options = {}) {
@@ -42,7 +42,7 @@ export async function findDependencies(paths, options = {}) {
           /** Current project's node_modules */
           basePath,
           /** Monorepo, look upwards in filetree n times */
-          ...traverseUp(nodeModulesDepth)
+          ...traverseUp(nodeModulesDepth, { cwd: basePath })
         ]});
 
         importsToScan.add(pathToDependency);
@@ -72,15 +72,15 @@ export async function findDependencies(paths, options = {}) {
            */
           const pathToDependency = require.resolve(fileToFind, {paths: [
             /** Nested node_modules */
-            packageRoot, 
+            packageRoot,
             /** Current project's node_modules */
-            basePath, 
+            basePath,
             /** Monorepo, look upwards in filetree n times */
-            ...traverseUp(nodeModulesDepth)
+            ...traverseUp(nodeModulesDepth, { cwd: basePath })
           ]});
-          /** 
-           * Don't add dependencies we've already scanned, also avoids circular dependencies 
-           * and multiple modules importing from the same module 
+          /**
+           * Don't add dependencies we've already scanned, also avoids circular dependencies
+           * and multiple modules importing from the same module
            */
           if(!dependencies.has(pathToDependency)) {
             importsToScan.add(pathToDependency);

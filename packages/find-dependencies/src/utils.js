@@ -1,17 +1,18 @@
 import path from 'path';
 
 /**
- * @param {string} p 
+ * @param {string} p
  * @returns {string}
  */
 const toUnix = p => p.replace(/\\/g, '/');
 
 /**
- * @param {number} depth 
+ * @param {number} depth
+ * @param {{ cwd:string }} [opts]
  * @returns {string[]}
  */
-export function traverseUp(depth) {
-  return Array(depth).fill().map((_, i) => path.join(process.cwd(), ...Array(i).fill('..')));
+ export function traverseUp(depth, { cwd = process.cwd() }) {
+  return Array(depth).fill().map((_, i) => path.join(cwd, ...Array(i).fill('..')));
 }
 
 /**
@@ -31,8 +32,8 @@ export function isScopedPackage(specifier) {
 }
 
 /**
- * 
- * @param {string} specifier 
+ *
+ * @param {string} specifier
  * @returns {string}
  */
 export function extractPackageNameFromSpecifier(specifier) {
@@ -55,11 +56,11 @@ export function extractPackageNameFromSpecifier(specifier) {
 
 /**
  * Takes a path, returns some split-up information about the path
- * @example 
+ * @example
  * ```
  * '/Users/blank/custom-elements-manifest/packages/analyzer/node_modules/foo/node_modules/nested/index.js'
  * ```
- * 
+ *
  * returns:
  * ```
  * {
@@ -69,7 +70,7 @@ export function extractPackageNameFromSpecifier(specifier) {
  *  type: 'js'
  * }
  * ```
- * 
+ *
  * @param {string} path
  * @returns {{
  *  packageRoot: string,
@@ -87,7 +88,7 @@ export function splitPath(path) {
   const packageName = extractPackageNameFromSpecifier(specifier);
 
   const packageRoot = packageRootMinusSpecifier + packageName;
-  
+
   /** @type {'js' | 'json' | 'css'} */
   let type;
   if(specifier.endsWith('js')) {
