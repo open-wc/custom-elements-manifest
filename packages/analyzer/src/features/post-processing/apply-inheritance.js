@@ -2,46 +2,27 @@ import { getAllDeclarationsOfKind, getModuleForClassLike, getModuleFromManifests
 import { resolveModuleOrPackageSpecifier } from '../../utils/index.js';
 
 /**
- * @typedef {import('custom-elements-manifest/schema').Package} CemPackage
- * @typedef {import('custom-elements-manifest/schema').ClassDeclaration} CemClassDeclaration
- * @typedef {import('custom-elements-manifest/schema').MixinDeclaration} CemMixinDeclaration
- */
-
-/**
  * APPLY-INHERITANCE-PLUGIN
  *
  * Applies inheritance for all classes in the manifest
  */
 export function applyInheritancePlugin() {
-  const mapOfImportsPerFile = {};
   return {
     name: 'CORE - APPLY-INHERITANCE',
-    moduleLinkPhase({moduleDoc, context}) {
-      // console.log(moduleDoc.path)
-      // mapOfImportsPerFile[moduleDoc.path] = context.imports;
-      // then in packageLink in the `resolveModuleOrPackageSpecifier` fn,
-      // I can pass the correct imports, so the output will become:
-      // inheritedFrom: { module: 'bare-module' } (pseudocode)
-    },
     packageLinkPhase({customElementsManifest, context}){
       const allManifests = [customElementsManifest, ...(context.thirdPartyCEMs || [])];
-      /** @type {(CemClassDeclaration|CemMixinDeclaration)[]} */
       const classLikes = [];
 
       allManifests.forEach((manifest) => {
-        const classes = /** @type {CemClassDeclaration[]} */ (
-          getAllDeclarationsOfKind(manifest, 'class')
-        );
-        const mixins = /** @type {CemMixinDeclaration[]} */ (
-          getAllDeclarationsOfKind(manifest, 'mixin')
-        );
+        const classes =  getAllDeclarationsOfKind(manifest, 'class');
+        const mixins =  getAllDeclarationsOfKind(manifest, 'mixin');
         classLikes.push(...[...classes, ...mixins]);
       });
+
       classLikes.forEach((customElement) => {
-        const inheritanceChain = getInheritanceTree(customElementsManifest, customElement.name);
+        const inheritanceChain = getInheritanceTree(allManifests, customElement.name);
 
         inheritanceChain?.forEach(klass => {
-
           // ignore the current class itself
           if (klass?.name === customElement.name) {
             return;

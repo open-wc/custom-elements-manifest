@@ -35,10 +35,10 @@ export function mergeGlobsAndExcludes(defaults, userConfig, cliConfig) {
   return merged;
 }
 
-export async function getUserConfig(configPath) {
+export async function getUserConfig(configPath, cwd) {
   let userConfig = {};
   try {
-    userConfig = await readConfig('custom-elements-manifest.config', configPath);
+    userConfig = await readConfig('custom-elements-manifest.config', configPath, cwd);
   } catch (error) {
     if (error instanceof ConfigLoaderError) {
       console.error(error.message);
@@ -54,8 +54,6 @@ export const DEFAULTS = {
   outdir: '',
   globs: ['**/*.{js,ts,tsx}'],
   dev: false,
-  dependencies: false,
-  packagejson: true,
   watch: false,
   litelement: false,
   stencil: false,
@@ -115,43 +113,16 @@ export function timestamp() {
 export function addCustomElementsPropertyToPackageJson(outdir) {
   const packageJsonPath = `${process.cwd()}${path.sep}package.json`;
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath).toString());
-  const manifestPath = `./${path.posix.join(outdir, 'custom-elements.json')}`;
-  
-  const packageHasExportsMap = !!packageJson?.exports;
-  /** Is there a pointer to the CEM in the package.json at all yet? */
-  const isListed = !!packageJson?.customElements || !!packageJson?.exports?.['./customElements'];
-
-  /** If CEM is not listed in package.json yet */
-  if(!isListed) {
-    if(packageHasExportsMap) {
-      /** If the package has an export map, add it there */
-      packageJson.exports['./customElements'] = manifestPath;
-    } else {
-      /** Otherwise use the custom `customElements` key */
+  const manifestPath = path.posix.join(outdir, 'custom-elements.json');
+  if(packageJson?.customElements) {
+    if(packageJson?.customElements !== manifestPath) {
       packageJson.customElements = manifestPath;
+      fs.writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`);
     }
-    fs.writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`);
     return;
   } else {
-    /** CEM is already listed in package.json */
-
-    /** It's listed under custom `customElements` key */
-    if(!!packageJson?.customElements) {
-      /** Only update if it has actually changed */
-      if(packageJson.customElements !== manifestPath) {
-        packageJson.customElements = manifestPath;
-        fs.writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`);
-      }
-    }
-
-    /** It's listed in the exports map */
-    if(!!packageJson?.exports?.['./customElements']) {
-      /** Only update if it has actually changed */
-      if(packageJson.exports['./customElements'] !== manifestPath) {
-        packageJson.exports['./customElements'] = manifestPath;
-        fs.writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`);
-      }
-    }
+    packageJson.customElements = manifestPath;
+    fs.writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`);
   }
 }
 
@@ -167,8 +138,7 @@ Available commands:
     | --exclude        | string[]   | Globs to exclude                                            | \`--exclude "foo.js"\`                                  |
     | --outdir         | string     | Directory to output the Manifest to                         | \`--outdir dist\`                                       |
     | --dependencies   | boolean    | Include third party custom elements manifests               | \`--dependencies\`                                      |
-    | --packagejson    | boolean    | Output CEM path to \`package.json\`, defaults to true       | \`--packagejson\`                                       |
-    | --watch          | boolean    | Enables watch mode, generates a new manifest on file change | \`--watch\`                                             |
+    | --packagejson    | boolean    | Output CEM path to \`package.json\`, defaults to true       | \`--packagejson\`                                       || --watch          | boolean    | Enables watch mode, generates a new manifest on file change | \`--watch\`                                             |
     | --dev            | boolean    | Enables extra logging for debugging                         | \`--dev\`                                               |
     | --litelement     | boolean    | Enable special handling for LitElement syntax               | \`--litelement\`                                        |
     | --fast           | boolean    | Enable special handling for FASTElement syntax              | \`--fast\`                                              |

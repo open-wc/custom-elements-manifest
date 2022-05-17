@@ -1,12 +1,24 @@
 import fs from 'fs';
 import path from 'path';
-import { findDependencies as find, splitPath } from '@custom-elements-manifest/find-dependencies';
+import { findDependencies, splitPath } from '@custom-elements-manifest/find-dependencies';
 
-export async function findDependencies(globs) {
+/**
+ * @typedef {import('custom-elements-manifest/schema').Package} Package
+ */
+
+/**
+ * @param {string[]} paths
+ * @param {{
+ *  nodeModulesDepth?: number,
+ *  basePath?: string,
+ * }} [options]
+ */
+export async function findExternalManifests(paths, options) {
+  /** @type {Package[]} */
   const cemsToMerge = [];
   const visited = new Set();
 
-  const dependencies = await find(globs);
+  const dependencies = await findDependencies(paths, options);
 
   dependencies?.forEach((dependencyPath) => {
     /** Ignore the original globs, we don't want to try to find a CEM for those */
