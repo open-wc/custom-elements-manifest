@@ -1,0 +1,10 @@
+{
+  "name": "@ext-scoped/with-export-map",
+  "version": "0.2.0",
+  "type": "module",
+  "exports": {
+    ".": "./MyMixin.js",
+    "./custom-elements.json": "./custom-elements.json"
+  },
+  "customElements": "custom-elements.json"
+}

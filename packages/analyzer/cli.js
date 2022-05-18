@@ -73,17 +73,20 @@ export async function cli({ argv = process.argv, cwd = process.cwd(), noWrite } 
        */
        const customElementsManifest = create({modules, plugins, context});
 
-      const outdir = path.join(process.cwd(), mergedOptions.outdir);
-      if (!fs.existsSync(outdir)) {
-        fs.mkdirSync(outdir, { recursive: true });
-      }
-      fs.writeFileSync(
-        path.join(outdir, 'custom-elements.json'),
-        `${JSON.stringify(customElementsManifest, null, 2)}\n`,
-      );
-      if (mergedOptions.dev) {
+       if (mergedOptions.dev) {
         console.log(JSON.stringify(customElementsManifest, null, 2));
       }
+
+      if(!noWrite) {
+        const outdir = path.join(cwd, mergedOptions.outdir);
+        if (!fs.existsSync(outdir)) {
+          fs.mkdirSync(outdir, { recursive: true });
+        }
+        fs.writeFileSync(
+          path.join(outdir, 'custom-elements.json'),
+          `${JSON.stringify(customElementsManifest, null, 2)}\n`,
+        );
+       }
 
       console.log(`[${timestamp()}] @custom-elements-manifest/analyzer: Created new manifest.`);
 
@@ -110,7 +113,7 @@ export async function cli({ argv = process.argv, cwd = process.cwd(), noWrite } 
       }
     } catch {
       console.log(
-        `Could not add 'customElements' property to ${process.cwd()}${
+        `Could not add 'customElements' property to ${cwd}${
           path.sep
         }package.json. \nAdding this property helps tooling locate your Custom Elements Manifest. Please consider adding it yourself, or file an issue if you think this is a bug.\nhttps://www.github.com/open-wc/custom-elements-manifest`,
       );

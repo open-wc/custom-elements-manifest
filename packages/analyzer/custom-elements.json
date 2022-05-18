@@ -47,45 +47,6 @@
           }
         }
       ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "fixtures/-default/package/node_modules/foo/index.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "SuperFoo",
-          "members": [
-            {
-              "kind": "method",
-              "name": "superMethod"
-            }
-          ],
-          "events": [
-            {
-              "name": "super-event",
-              "type": {
-                "text": "CustomEvent"
-              }
-            }
-          ],
-          "superclass": {
-            "name": "HTMLElement"
-          },
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SuperFoo",
-          "declaration": {
-            "name": "SuperFoo",
-            "module": "fixtures/-default/package/node_modules/foo/index.js"
-          }
-        }
-      ]
     }
   ]
 }

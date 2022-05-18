@@ -1,3 +1,9 @@
-import { bla } from '@foo/bar';
-import { bla2 } from '@foo/bar/baz/asd.js';
-import { foo } from 'bar';
+class MyElementA extends MyMixin(HTMLElement){}
+
+function MyMixin(superClass){
+    return class extends superClass {
+       foo = 1;
+    }
+}
+
+customElements.define('my-mixin-element-a', MyElementA);

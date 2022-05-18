@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "package/my-element.js",
+      "path": "my-element.js",
       "declarations": [
         {
           "kind": "function",
@@ -254,7 +254,7 @@
           "name": "arrow1",
           "declaration": {
             "name": "arrow1",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -262,7 +262,7 @@
           "name": "arrow2",
           "declaration": {
             "name": "arrow2",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -270,7 +270,7 @@
           "name": "arrow3",
           "declaration": {
             "name": "arrow3",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -278,7 +278,7 @@
           "name": "arrow4",
           "declaration": {
             "name": "arrow4",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -286,7 +286,7 @@
           "name": "arrow5",
           "declaration": {
             "name": "arrow5",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -294,7 +294,7 @@
           "name": "arrow6",
           "declaration": {
             "name": "arrow6",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -302,7 +302,7 @@
           "name": "functionDeclaration1",
           "declaration": {
             "name": "functionDeclaration1",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -310,7 +310,7 @@
           "name": "functionDeclaration2",
           "declaration": {
             "name": "functionDeclaration2",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -318,7 +318,7 @@
           "name": "functionDeclaration3",
           "declaration": {
             "name": "functionDeclaration3",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -326,7 +326,7 @@
           "name": "functionDeclaration4",
           "declaration": {
             "name": "functionDeclaration4",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -334,7 +334,7 @@
           "name": "functionDeclaration5",
           "declaration": {
             "name": "functionDeclaration5",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -342,14 +342,14 @@
           "name": "functionDeclaration6",
           "declaration": {
             "name": "functionDeclaration6",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
           "name": "emptyReturn",
           "declaration": {
             "name": "emptyReturn",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           },
           "kind": "js"
         },
@@ -358,7 +358,7 @@
           "name": "MyEl",
           "declaration": {
             "name": "MyEl",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         }
       ]

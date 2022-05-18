@@ -46,7 +46,7 @@ describe('@CEM/A', ({ it }) => {
 
             const packagePath = path.join(fixturesDir, `${testCase.relPath}/package`);
             const packagePathPosix = packagePath.split(path.sep).join(path.posix.sep);
-            const result = await cli({ argv: ['analyze', '--dependencies'], cwd: packagePathPosix });
+            const result = await cli({ argv: ['analyze', '--dependencies'], cwd: packagePathPosix, noWrite: true });
 
             const outputPath = path.join(fixturesDir, `${testCase.relPath}/output.json`);
             fs.writeFileSync(outputPath, JSON.stringify(result, null, 2));
