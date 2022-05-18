@@ -13,7 +13,8 @@ const IGNORE = [
   '!bower_components/**/*.*',
   '!**/*.test.{js,ts}',
   '!**/*.suite.{js,ts}',
-  '!**/*.config.{js,ts}'
+  '!**/*.config.{js,ts}',
+  '!**/*.d.ts',
 ];
 
 export function mergeGlobsAndExcludes(defaults, userConfig, cliConfig) {
