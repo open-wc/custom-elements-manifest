@@ -43,6 +43,16 @@ export class IncludeMe extends HTMLElement {
     )
   }
 
+  /** @deprecated */
+  imDeprecated() {
+
+  }
+
+  /** @deprecated the reason for the deprecation. */
+  imDeprecatedWithReason() {
+  
+  }
+
   /** @internal */
   hideMe() {
     return '🙈'

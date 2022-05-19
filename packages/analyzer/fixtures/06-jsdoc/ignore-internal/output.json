@@ -26,6 +26,16 @@
                 "text": "string"
               },
               "default": "'hello world'"
+            },
+            {
+              "kind": "method",
+              "name": "imDeprecated",
+              "deprecated": "true"
+            },
+            {
+              "kind": "method",
+              "name": "imDeprecatedWithReason",
+              "deprecated": "the reason for the deprecation."
             }
           ],
           "superclass": {
