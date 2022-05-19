@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "MyClass.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyClass",
+          "members": [
+            {
+              "kind": "field",
+              "name": "extClassProp",
+              "type": {
+                "text": "string"
+              },
+              "default": "'prop'"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "ext-class-attr"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MyClass",
+          "declaration": {
+            "name": "MyClass",
+            "module": "MyClass.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "MyClassWithMyMixin.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyClassWithMyMixin",
+          "mixins": [
+            {
+              "name": "MyMixin",
+              "package": "@ext-scoped/with-export-map"
+            }
+          ],
+          "superclass": {
+            "name": "MyClass",
+            "module": "MyClass.js"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MyClassWithMyMixin",
+          "declaration": {
+            "name": "MyClassWithMyMixin",
+            "module": "MyClass.js"
+          }
+        }
+      ]
+    }
+  ]
+}

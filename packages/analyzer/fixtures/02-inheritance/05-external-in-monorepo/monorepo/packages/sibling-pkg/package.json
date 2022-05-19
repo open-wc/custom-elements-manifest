@@ -1,0 +1,10 @@
+{
+  "name": "@mono/sibling-pkg",
+  "version": "0.2.0",
+  "type": "module",
+  "exports": {
+    ".": "./MyMixin.js",
+    "./custom-elements.json": "./custom-elements.json"
+  },
+  "customElements": "custom-elements.json"
+}

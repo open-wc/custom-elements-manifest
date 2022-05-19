@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "MyMixin.js",
+      "declarations": [
+        {
+          "kind": "mixin",
+          "description": "",
+          "name": "MyMixin",
+          "members": [
+            {
+              "kind": "field",
+              "name": "extMixinProp",
+              "type": {
+                "text": "string"
+              },
+              "default": "'prop'"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "ext-mixin-attr"
+            }
+          ],
+          "parameters": [
+            {
+              "name": "superClass"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MyMixin",
+          "declaration": {
+            "name": "MyMixin",
+            "module": "MyMixin.js"
+          }
+        }
+      ]
+    }
+  ]
+}

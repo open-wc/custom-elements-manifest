@@ -61,8 +61,6 @@ export async function cli({ argv = process.argv, cwd = process.cwd(), noWrite } 
         }
       }
 
-
-
       let plugins = await addFrameworkPlugins(mergedOptions);
       plugins = [...plugins, ...(userConfig?.plugins || [])];
 

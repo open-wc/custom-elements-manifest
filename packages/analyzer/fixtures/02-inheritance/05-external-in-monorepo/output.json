@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "index.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "extClassProp",
+              "type": {
+                "text": "string"
+              },
+              "default": "'otherValueThanProp'",
+              "inheritedFrom": {
+                "name": "MyClass",
+                "module": "MyClass.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "extMixinProp",
+              "type": {
+                "text": "string"
+              },
+              "default": "'prop'",
+              "inheritedFrom": {
+                "name": "MyMixin",
+                "module": "MyMixin.js"
+              }
+            }
+          ],
+          "mixins": [
+            {
+              "name": "MyMixin",
+              "package": "@mono/sibling-pkg"
+            }
+          ],
+          "superclass": {
+            "name": "MyClass",
+            "package": "ext-pkg-without-export-map"
+          },
+          "attributes": [
+            {
+              "name": "ext-mixin-attr",
+              "inheritedFrom": {
+                "name": "MyMixin",
+                "module": "MyMixin.js"
+              }
+            },
+            {
+              "name": "ext-class-attr",
+              "inheritedFrom": {
+                "name": "MyClass",
+                "module": "MyClass.js"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MyElement",
+          "declaration": {
+            "name": "MyElement",
+            "module": "index.js"
+          }
+        }
+      ]
+    }
+  ]
+}
