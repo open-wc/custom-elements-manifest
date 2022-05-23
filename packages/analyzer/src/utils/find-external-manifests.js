@@ -21,10 +21,8 @@ export async function findExternalManifests(paths, options) {
   const dependencies = await findDependencies(paths, options);
 
   dependencies?.forEach((dependencyPath) => {
-    /** Ignore the original globs, we don't want to try to find a CEM for those */
-    if(!dependencyPath.includes('node_modules')) return;
-
     const { packageRoot, packageName } = splitPath(dependencyPath);
+
     if(visited.has(packageName)) return;
     visited.add(packageName);
 
