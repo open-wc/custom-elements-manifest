@@ -1,3 +1,6 @@
+## Release 0.6.1
+- Re-add `#!/usr/bin/env node` to bin file
+
 ## Release 0.6.0
 - Allow inclusion of third party `custom-elements.json`s from `node_modules`
 - If a package has an export map, add the `./customElements` key in the export map
