@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "package/BatchingElement.js",
+      "path": "BatchingElement.js",
       "declarations": [
         {
           "kind": "class",
@@ -53,14 +53,14 @@
           "name": "BatchingElement",
           "declaration": {
             "name": "BatchingElement",
-            "module": "package/BatchingElement.js"
+            "module": "BatchingElement.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "package/implements-element.ts",
+      "path": "implements-element.ts",
       "declarations": [
         {
           "kind": "class",
@@ -84,7 +84,7 @@
               "name": "superClassField",
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "package/BatchingElement.js"
+                "module": "BatchingElement.js"
               }
             },
             {
@@ -92,7 +92,7 @@
               "name": "superClassMethod",
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "package/BatchingElement.js"
+                "module": "BatchingElement.js"
               }
             },
             {
@@ -104,7 +104,7 @@
               "default": "'hello'",
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "package/BatchingElement.js"
+                "module": "BatchingElement.js"
               }
             }
           ],
@@ -122,7 +122,7 @@
               },
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "package/BatchingElement.js"
+                "module": "BatchingElement.js"
               }
             }
           ],
@@ -134,13 +134,13 @@
               "name": "superClass-attr",
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "package/BatchingElement.js"
+                "module": "BatchingElement.js"
               }
             }
           ],
           "superclass": {
             "name": "BatchingElement",
-            "module": "package/BatchingElement"
+            "module": "/BatchingElement"
           }
         }
       ],
@@ -150,14 +150,14 @@
           "name": "ImplementsElement",
           "declaration": {
             "name": "ImplementsElement",
-            "module": "package/implements-element.ts"
+            "module": "implements-element.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "package/my-element.js",
+      "path": "my-element.js",
       "declarations": [
         {
           "kind": "class",
@@ -181,7 +181,7 @@
               "default": "'bye'",
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "package/BatchingElement.js"
+                "module": "BatchingElement.js"
               }
             },
             {
@@ -189,7 +189,7 @@
               "name": "superClassField",
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "package/BatchingElement.js"
+                "module": "BatchingElement.js"
               }
             },
             {
@@ -197,7 +197,7 @@
               "name": "superClassMethod",
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "package/BatchingElement.js"
+                "module": "BatchingElement.js"
               }
             }
           ],
@@ -215,7 +215,7 @@
               },
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "package/BatchingElement.js"
+                "module": "BatchingElement.js"
               }
             }
           ],
@@ -227,13 +227,13 @@
               "name": "superClass-attr",
               "inheritedFrom": {
                 "name": "BatchingElement",
-                "module": "package/BatchingElement.js"
+                "module": "BatchingElement.js"
               }
             }
           ],
           "superclass": {
             "name": "BatchingElement",
-            "module": "package/BatchingElement.js"
+            "module": "/BatchingElement.js"
           }
         }
       ],
@@ -243,7 +243,7 @@
           "name": "MyElement",
           "declaration": {
             "name": "MyElement",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         }
       ]

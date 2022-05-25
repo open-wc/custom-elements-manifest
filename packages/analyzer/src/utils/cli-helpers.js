@@ -13,7 +13,8 @@ const IGNORE = [
   '!bower_components/**/*.*',
   '!**/*.test.{js,ts}',
   '!**/*.suite.{js,ts}',
-  '!**/*.config.{js,ts}'
+  '!**/*.config.{js,ts}',
+  '!**/*.d.ts',
 ];
 
 export function mergeGlobsAndExcludes(defaults, userConfig, cliConfig) {
@@ -35,10 +36,10 @@ export function mergeGlobsAndExcludes(defaults, userConfig, cliConfig) {
   return merged;
 }
 
-export async function getUserConfig(configPath) {
+export async function getUserConfig(configPath, cwd) {
   let userConfig = {};
   try {
-    userConfig = await readConfig('custom-elements-manifest.config', configPath);
+    userConfig = await readConfig('custom-elements-manifest.config', configPath, cwd);
   } catch (error) {
     if (error instanceof ConfigLoaderError) {
       console.error(error.message);
@@ -68,6 +69,8 @@ export function getCliConfig(argv) {
     { name: 'exclude', type: String, multiple: true },
     { name: 'outdir', type: String },
     { name: 'dev', type: Boolean },
+    { name: 'dependencies', type: Boolean },
+    { name: 'packagejson', type: Boolean },
     { name: 'watch', type: Boolean },
     { name: 'litelement', type: Boolean },
     { name: 'stencil', type: Boolean },
@@ -135,7 +138,8 @@ Available commands:
     | --globs          | string[]   | Globs to analyze                                            | \`--globs "foo.js"\`                                    |
     | --exclude        | string[]   | Globs to exclude                                            | \`--exclude "foo.js"\`                                  |
     | --outdir         | string     | Directory to output the Manifest to                         | \`--outdir dist\`                                       |
-    | --watch          | boolean    | Enables watch mode, generates a new manifest on file change | \`--watch\`                                             |
+    | --dependencies   | boolean    | Include third party custom elements manifests               | \`--dependencies\`                                      |
+    | --packagejson    | boolean    | Output CEM path to \`package.json\`, defaults to true       | \`--packagejson\`                                       || --watch          | boolean    | Enables watch mode, generates a new manifest on file change | \`--watch\`                                             |
     | --dev            | boolean    | Enables extra logging for debugging                         | \`--dev\`                                               |
     | --litelement     | boolean    | Enable special handling for LitElement syntax               | \`--litelement\`                                        |
     | --fast           | boolean    | Enable special handling for FASTElement syntax              | \`--fast\`                                              |

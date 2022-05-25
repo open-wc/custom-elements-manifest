@@ -29,12 +29,10 @@
     "esbuild": "^0.12.15",
     "globby": "^12.0.2",
     "nodemon": "^2.0.13",
-    "npm-run-all": "^4.1.5",
     "request": "^2.88.2",
     "rocket-preset-code-tabs": "^0.2.2",
     "rollup": "^2.52.8",
     "rollup-plugin-terser": "^7.0.2",
-    "uvu": "^0.5.1",
     "watchexec-bin": "^1.0.0"
   },
   "workspaces": [

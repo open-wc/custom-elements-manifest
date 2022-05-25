@@ -416,7 +416,7 @@ You can also run the analyzer in the browser. You can import it like so:
       const manifest = create({
         modules,
         plugins: [...litPlugin()],
-        dev: false
+        context: {dev: false},
       });
 
       console.log(manifest);

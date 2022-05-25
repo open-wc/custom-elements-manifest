@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "package/bar.js",
+      "path": "bar.js",
       "declarations": [
         {
           "kind": "class",
@@ -37,7 +37,7 @@
           "name": "my-element",
           "declaration": {
             "name": "MyElement",
-            "module": "package/bar.js"
+            "module": "bar.js"
           }
         }
       ]

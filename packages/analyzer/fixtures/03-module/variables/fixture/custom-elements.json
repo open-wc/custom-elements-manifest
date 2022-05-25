@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "package/my-element.js",
+      "path": "my-element.js",
       "declarations": [
         {
           "kind": "variable",
@@ -78,7 +78,7 @@
           "name": "var1",
           "declaration": {
             "name": "var1",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -86,7 +86,7 @@
           "name": "var2",
           "declaration": {
             "name": "var2",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -94,7 +94,7 @@
           "name": "var3B",
           "declaration": {
             "name": "var3A",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -102,7 +102,7 @@
           "name": "var4",
           "declaration": {
             "name": "var4",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -110,7 +110,7 @@
           "name": "var5",
           "declaration": {
             "name": "var5",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -118,7 +118,7 @@
           "name": "var6",
           "declaration": {
             "name": "var6",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -126,7 +126,7 @@
           "name": "var7",
           "declaration": {
             "name": "var7",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -134,7 +134,7 @@
           "name": "function1",
           "declaration": {
             "name": "function1",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -142,7 +142,7 @@
           "name": "Class1",
           "declaration": {
             "name": "Class1",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -150,7 +150,7 @@
           "name": "typeinferrence",
           "declaration": {
             "name": "typeinferrence",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -158,7 +158,7 @@
           "name": "asConst",
           "declaration": {
             "name": "asConst",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -166,7 +166,7 @@
           "name": "asConstRef",
           "declaration": {
             "name": "asConstRef",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         }
       ]

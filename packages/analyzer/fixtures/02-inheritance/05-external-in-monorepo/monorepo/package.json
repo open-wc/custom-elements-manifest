@@ -1,0 +1,12 @@
+{
+  "name": "@mono/root",
+  "type": "module",
+  "dependencies": {
+    "ext-pkg-without-export-map": "0.1.0"
+  },
+  "workspaces": [
+    "packages/sibling-pkg",
+    "packages/to-be-analyzed-pkg"
+  ],
+  "analyzeTarget": "packages/to-be-analyzed-pkg"
+}

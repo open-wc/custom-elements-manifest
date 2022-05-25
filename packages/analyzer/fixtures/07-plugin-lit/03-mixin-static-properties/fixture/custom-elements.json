@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "package/my-element.js",
+      "path": "my-element.js",
       "declarations": [
         {
           "kind": "class",
@@ -31,7 +31,7 @@
               "default": "{\n      disabled: { type: Boolean }\n    }",
               "inheritedFrom": {
                 "name": "InputMixin",
-                "module": "package/my-element.js"
+                "module": "my-element.js"
               }
             },
             {
@@ -45,7 +45,7 @@
               "attribute": "disabled",
               "inheritedFrom": {
                 "name": "InputMixin",
-                "module": "package/my-element.js"
+                "module": "my-element.js"
               }
             }
           ],
@@ -67,14 +67,14 @@
               "fieldName": "disabled",
               "inheritedFrom": {
                 "name": "InputMixin",
-                "module": "package/my-element.js"
+                "module": "my-element.js"
               }
             }
           ],
           "mixins": [
             {
               "name": "InputMixin",
-              "module": "package/my-element.js"
+              "module": "my-element.js"
             }
           ],
           "superclass": {
@@ -132,7 +132,7 @@
           "name": "my-element",
           "declaration": {
             "name": "MyElement",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -140,7 +140,7 @@
           "name": "InputMixin",
           "declaration": {
             "name": "InputMixin",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         }
       ]

@@ -1,17 +1,13 @@
 import { describe } from '@asdgf/cli';
-import * as assert from 'uvu/assert';
+import assert from 'assert';
 import path from 'path';
-import { pathToFileURL } from 'url';
 import fs from 'fs';
-import globby from 'globby';
-import ts from 'typescript';
-
-import { create } from '../src/create.js';
+import { cli } from '../cli.js';
 
 const fixturesDir = path.join(process.cwd(), 'fixtures');
 
 let groups = fs.readdirSync(fixturesDir);
-const singleGroup = groups.find(_case => _case.startsWith('+'));
+const singleGroup = groups.find((_case) => _case.startsWith('+'));
 if (singleGroup) {
   groups = [singleGroup];
 }
@@ -25,74 +21,73 @@ for (const group of groups) {
   }
 }
 
-const stripRegex = /\.?\/?fixtures\/(.*?)\/(.*?)\//;
-function stripFixturePaths(cem, testCase) {
-  if (typeof cem === 'object') {
-    Object.keys(cem).forEach(key => {
-      cem[key] = stripFixturePaths(cem[key], testCase);
-    });
+/**
+ * Given a mono repo, creates symlinks
+ */
+async function symLinkMonoPackages({rootPkgJson, cwd}) {
+  for (const p of rootPkgJson.workspaces) {
+    const pkgJson = JSON.parse(fs.readFileSync(`${cwd}/${p}/package.json`));
+    const [source, destination] = [`${cwd}/${p}`, `${cwd}/node_modules/${pkgJson.name}`];
+    const nameSplit = pkgJson.name.split('/');
+    if (nameSplit.length === 2 && !fs.existsSync(`${cwd}/node_modules/${nameSplit[0]}`)) {
+      fs.mkdirSync(`${cwd}/node_modules/${nameSplit[0]}`);
+    }
+    try {
+      const link = fs.readlinkSync(destination);
+      if (link !== source) {
+        fs.unlinkSync(source);
+        await fs.promises.symlink(source, destination);
+      }
+    } catch (e) {
+      await fs.promises.symlink(source, destination);
+     }
   }
-  if (Array.isArray(cem)) {
-    cem.forEach(key => {
-      cem[key] = stripFixturePaths(cem[key], testCase);
-    });
-  }
-  if (typeof cem === 'string') {
-    cem = cem.replace(stripRegex, '');
-  }
-  return cem;
 }
 
 let testCases = [];
-describe('@CEM/A', ({it}) => {
+describe('@CEM/A', ({ it }) => {
   for (const group of groups) {
-    testCases = fs.readdirSync(path.join(fixturesDir, group)).map(test => ({ group, test, relPath: path.join(group, test) }));
-    const runSingle = testCases.find(_case => _case.test.startsWith('+'));
+    testCases = fs
+      .readdirSync(path.join(fixturesDir, group))
+      .map((test) => ({ group, test, relPath: path.join(group, test) }));
+    const runSingle = testCases.find((_case) => _case.test.startsWith('+'));
     if (runSingle) {
       testCases = [runSingle];
     }
 
-    describe(group, ({it}) => {
-      testCases.forEach(testCase => {
-        if(testCase.test.startsWith('-')) {
-          it.skip(`Testcase ${testCase.test}`, () =>{});
+    describe(group, ({ it }) => {
+      testCases.forEach((testCase) => {
+        if (testCase.test.startsWith('-')) {
+          it.skip(`Testcase ${testCase.test}`, () => {});
         } else {
           it(`Testcase ${testCase.test}`, async () => {
-            const fixturePath = path.join(fixturesDir, `${testCase.relPath}/fixture/custom-elements.json`);
+            const fixturePath = path.join(
+              fixturesDir,
+              `${testCase.relPath}/fixture/custom-elements.json`,
+            );
             const fixture = JSON.parse(fs.readFileSync(fixturePath, 'utf-8'));
-        
-            const packagePath = path.join(fixturesDir, `${testCase.relPath}/package`);
-            const packagePathPosix = packagePath.split(path.sep).join(path.posix.sep);
-            const outputPath = path.join(fixturesDir, `${testCase.relPath}/output.json`);
-        
-            const globs = await globby(packagePathPosix);
-            const modules = globs
-              .filter(path => !path.includes('custom-elements-manifest.config.js'))
-              .map(glob => {
-                const relativeModulePath = `.${path.sep}${path.relative(process.cwd(), glob)}`;
-                const source = fs.readFileSync(relativeModulePath).toString();
-        
-                return ts.createSourceFile(
-                  relativeModulePath,
-                  source,
-                  ts.ScriptTarget.ES2015,
-                  true,
-                );
-              });
-        
-            let plugins = [];
-            const manifestPathFileURL = pathToFileURL(`${packagePath}/custom-elements-manifest.config.js`).href;
-            try {
-              const config = await import(manifestPathFileURL);
-              plugins = [...config.default.plugins];
-            } catch {}
 
-            const result = create({modules, plugins});
-            stripFixturePaths(result, testCase.relPath); // adjusts result
-        
+            let packagePath = path.join(fixturesDir, `${testCase.relPath}/package`);
+            let packagePathPosix = packagePath.split(path.sep).join(path.posix.sep);
+            // Handle monorepo
+            if (!fs.existsSync(packagePathPosix)) {
+              const monoRoot = path.join(fixturesDir, `${testCase.relPath}/monorepo`);
+              const monoRootPosix = monoRoot.split(path.sep).join(path.posix.sep);
+              const rootPkgJson = JSON.parse(fs.readFileSync(`${monoRootPosix}/package.json`));
+              packagePath = path.join(monoRootPosix, rootPkgJson.analyzeTarget);
+              packagePathPosix = packagePath.split(path.sep).join(path.posix.sep);
+              await symLinkMonoPackages({ rootPkgJson, cwd: monoRootPosix });
+            }
+
+            const result = await cli({
+              argv: ['analyze', '--dependencies'],
+              cwd: packagePathPosix,
+              noWrite: true
+            });
+
+            const outputPath = path.join(fixturesDir, `${testCase.relPath}/output.json`);
             fs.writeFileSync(outputPath, JSON.stringify(result, null, 2));
-        
-            assert.equal(result, fixture);
+            assert.deepEqual(result, fixture);
           });
         }
       });

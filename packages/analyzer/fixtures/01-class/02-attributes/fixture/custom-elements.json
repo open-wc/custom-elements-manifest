@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "package/my-element.js",
+      "path": "my-element.js",
       "declarations": [
         {
           "kind": "class",
@@ -102,7 +102,7 @@
           "name": "my-el",
           "declaration": {
             "name": "MyEl",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -110,7 +110,7 @@
           "name": "Foo",
           "declaration": {
             "name": "Foo",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         }
       ]

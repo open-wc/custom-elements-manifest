@@ -1,5 +1,5 @@
-import { test } from 'uvu';
-import * as assert from 'uvu/assert';
+import { describe } from '@asdgf/core';
+import assert from 'assert';
 import path from 'path';
 import fs from 'fs';
 
@@ -45,42 +45,42 @@ const OUTPUT_OPTIONS_TESTS_OPTIONS = {
   'no-variables': { omitDeclarations: ['variables'] },
 };
 
-mainTestCases.forEach(testCase => {
-  test(`Testcase ${testCase}`, async () => {
-    const manifestPath = path.join(fixturesDir, `${testCase}/custom-elements.json`);
-    const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
-    const outputPath = path.join(fixturesDir, `${testCase}/README.md`);
-    const expectPath = path.join(fixturesDir, `${testCase}/EXPECTED.md`);
-
-    const { description, ...options } = MAIN_TEST_CASE_OPTIONS[testCase] ?? {}
-
-    const output = customElementsManifestToMarkdown(manifest, options);
-
-    const expected = fs.readFileSync(expectPath, 'utf8');
-
-    fs.writeFileSync(outputPath, output, 'utf8');
-
-    assert.equal(normalize(output), normalize(expected), description);
+describe('', ({it}) => {
+  mainTestCases.forEach(testCase => {
+    it(`Testcase ${testCase}`, async () => {
+      const manifestPath = path.join(fixturesDir, `${testCase}/custom-elements.json`);
+      const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+      const outputPath = path.join(fixturesDir, `${testCase}/README.md`);
+      const expectPath = path.join(fixturesDir, `${testCase}/EXPECTED.md`);
+  
+      const { description, ...options } = MAIN_TEST_CASE_OPTIONS[testCase] ?? {}
+  
+      const output = customElementsManifestToMarkdown(manifest, options);
+  
+      const expected = fs.readFileSync(expectPath, 'utf8');
+  
+      fs.writeFileSync(outputPath, output, 'utf8');
+  
+      assert.equal(normalize(output), normalize(expected), description);
+    });
+  });
+  
+  outputOptionsTestCases.forEach(testCase => {
+    it(`Testcase ${testCase}`, async () => {
+      const manifestPath = path.join(outputOptionsFixturesDir, `/custom-elements.json`);
+      const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+      const outputPath = path.join(outputOptionsFixturesDir, `${testCase}/README.md`);
+      const expectPath = path.join(outputOptionsFixturesDir, `${testCase}/EXPECTED.md`);
+  
+      const { description, ...options } = OUTPUT_OPTIONS_TESTS_OPTIONS[testCase] ?? {}
+  
+      const output = customElementsManifestToMarkdown(manifest, options);
+  
+      const expected = fs.readFileSync(expectPath, 'utf8');
+  
+      fs.writeFileSync(outputPath, output, 'utf8');
+  
+      assert.equal(normalize(output), normalize(expected), description);
+    });
   });
 });
-
-outputOptionsTestCases.forEach(testCase => {
-  test(`Testcase ${testCase}`, async () => {
-    const manifestPath = path.join(outputOptionsFixturesDir, `/custom-elements.json`);
-    const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
-    const outputPath = path.join(outputOptionsFixturesDir, `${testCase}/README.md`);
-    const expectPath = path.join(outputOptionsFixturesDir, `${testCase}/EXPECTED.md`);
-
-    const { description, ...options } = OUTPUT_OPTIONS_TESTS_OPTIONS[testCase] ?? {}
-
-    const output = customElementsManifestToMarkdown(manifest, options);
-
-    const expected = fs.readFileSync(expectPath, 'utf8');
-
-    fs.writeFileSync(outputPath, output, 'utf8');
-
-    assert.equal(normalize(output), normalize(expected), description);
-  });
-});
-
-test.run();

@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "package/my-element.js",
+      "path": "my-element.js",
       "declarations": [
         {
           "kind": "mixin",
@@ -76,7 +76,7 @@
           "mixins": [
             {
               "name": "InternalMixin",
-              "module": "package/my-element.js"
+              "module": "my-element.js"
             }
           ],
           "superclass": {
@@ -93,7 +93,7 @@
               "default": "1",
               "inheritedFrom": {
                 "name": "InternalMixin",
-                "module": "package/my-element.js"
+                "module": "my-element.js"
               }
             }
           ]
@@ -105,7 +105,7 @@
           "mixins": [
             {
               "name": "BarMixin",
-              "module": "package/bar-mixin.js"
+              "module": "/bar-mixin.js"
             },
             {
               "name": "dedupeMixin",
@@ -131,7 +131,7 @@
           "name": "ArrowFunctionMixin",
           "declaration": {
             "name": "ArrowFunctionMixin",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -139,7 +139,7 @@
           "name": "FunctionDeclarationMixin",
           "declaration": {
             "name": "FunctionDeclarationMixin",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -147,7 +147,7 @@
           "name": "ReturnValMixin",
           "declaration": {
             "name": "ReturnValMixin",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -155,7 +155,7 @@
           "name": "ReturnValArrowMixin",
           "declaration": {
             "name": "ReturnValArrowMixin",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -163,7 +163,7 @@
           "name": "InternalClass",
           "declaration": {
             "name": "InternalClass",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -171,7 +171,7 @@
           "name": "ReexportedWrappedMixin",
           "declaration": {
             "name": "ReexportedWrappedMixin",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         }
       ]

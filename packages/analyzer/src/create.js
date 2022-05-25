@@ -4,29 +4,30 @@ import { withErrorHandling } from './utils/index.js';
 
 /**
  * CORE
- * 
+ *
  * This function is the core of the analyzer. It takes an array of ts sourceFiles, and creates a
  * custom elements manifest.
  */
-export function create({modules, plugins = [], dev = false}) {
+export function create({modules, plugins = [], context = {dev:false}}) {
   const customElementsManifest = {
     schemaVersion: '1.0.0',
     readme: '',
     modules: [],
   };
 
+  const { dev } = context;
+
   const mergedPlugins = [
     ...FEATURES,
     ...plugins,
   ];
 
-  const context = { dev };
 
   modules.forEach(currModule => {
     if(dev) console.log('[COLLECT PHASE]: ', currModule.fileName);
     /**
      * COLLECT PHASE
-     * First pass through all modules. Can be used to gather imports, exports, types, default values, 
+     * First pass through all modules. Can be used to gather imports, exports, types, default values,
      * which you may need to know the existence of in a later phase.
      */
     collect(currModule, context, mergedPlugins);
@@ -65,10 +66,10 @@ export function create({modules, plugins = [], dev = false}) {
   });
 
   if(dev) console.log('[PACKAGE LINK PHASE]');
-  /** 
-   * PACKAGE LINK PHASE 
+  /**
+   * PACKAGE LINK PHASE
    * All modules have now been parsed, we can now link information from across modules together
-   * - Link classes to their definitions etc 
+   * - Link classes to their definitions etc
    * - Match tagNames for classDocs
    * - Apply inheritance
    */

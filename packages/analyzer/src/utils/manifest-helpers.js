@@ -4,6 +4,9 @@
 
 import { has } from "./index.js";
 
+/**
+ * @typedef {import('custom-elements-manifest/schema').Package} Package
+ */
 
 function loopThroughDeclarations(manifest, predicate) {
   manifest?.modules?.forEach(_module => {
@@ -53,16 +56,22 @@ export function getAllDeclarationsOfKind(manifest, kind) {
 /**
  * Gets the inheritance tree from a manifest given a className
  * Returns an array of a classes mixins/superclasses all the way up the chain
+ *
+ * @param {Package[]} manifests
+ * @param {string} className
  */
-export function getInheritanceTree(cem, className) {
+export function getInheritanceTree(manifests, className) {
   const tree = [];
-
   const allClassLikes = new Map();
+  const _classes = [];
+  const _mixins = [];
 
-  const _classes = getAllDeclarationsOfKind(cem, 'class');
-  const _mixins = getAllDeclarationsOfKind(cem, 'mixin');
+  manifests.forEach((cem) => {
+    _classes.push(...getAllDeclarationsOfKind(cem, 'class'));
+    _mixins.push(...getAllDeclarationsOfKind(cem, 'mixin'));
+  });
 
-  [..._mixins, ..._classes].forEach(klass => {
+  [..._mixins, ..._classes].forEach((klass) => {
     allClassLikes.set(klass.name, klass);
   });
 
@@ -121,26 +130,38 @@ export function getInheritanceTree(cem, className) {
   return [];
 }
 
-export function getModuleFromManifest(cem, modulePath) {
-  let result = undefined;
+/**
+ * @param {Package[]} manifests
+ * @param {string} modulePath
+ */
+ export function getModuleFromManifests(manifests, modulePath) {
+   let result = undefined;
 
-  cem?.modules?.forEach(_module => {
-    if(_module.path === modulePath) {
-      result = _module;
-    }
+   manifests.forEach((cem) => {
+    cem?.modules?.forEach((_module) => {
+      if (_module.path === modulePath) {
+        result = _module;
+      }
+    });
   });
 
   return result;
 }
 
-export function getModuleForClassLike(cem, className) {
+/**
+ * @param {Package[]} manifests
+ * @param {string} className
+ */
+ export function getModuleForClassLike(manifests, className) {
   let result = undefined;
 
-  cem?.modules?.forEach(_module => {
-    _module?.declarations?.forEach(declaration => {
-      if((declaration.kind === 'class' || declaration.kind === 'mixin') && declaration.name === className) {
-        result = _module.path;
-      }
+  manifests.forEach((cem) => {
+    cem?.modules?.forEach(_module => {
+      _module?.declarations?.forEach(declaration => {
+        if((declaration.kind === 'class' || declaration.kind === 'mixin') && declaration.name === className) {
+          result = _module.path;
+        }
+      });
     });
   });
 

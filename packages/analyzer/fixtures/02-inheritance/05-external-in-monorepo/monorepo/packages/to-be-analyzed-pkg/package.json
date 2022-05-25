@@ -1,0 +1,14 @@
+{
+  "name": "@mono/to-be-analyzed-pkg",
+  "version": "0.1.0",
+  "type": "module",
+  "dependencies": {
+    "@mono/sibling-pkg": "0.2.0",
+    "ext-pkg-without-export-map": "0.1.0"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./custom-elements.json": "./custom-elements.json"
+  },
+  "customElements": "custom-elements.json"
+}

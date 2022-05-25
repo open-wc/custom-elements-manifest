@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "package/ModuleMixin.js",
+      "path": "ModuleMixin.js",
       "declarations": [
         {
           "kind": "mixin",
@@ -46,14 +46,14 @@
           "name": "ModuleMixin",
           "declaration": {
             "name": "ModuleMixin",
-            "module": "package/ModuleMixin.js"
+            "module": "ModuleMixin.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "package/my-element.js",
+      "path": "my-element.js",
       "declarations": [
         {
           "kind": "mixin",
@@ -106,7 +106,7 @@
               "name": "nestedMixinField",
               "inheritedFrom": {
                 "name": "NestedMixin",
-                "module": "package/my-element.js"
+                "module": "my-element.js"
               }
             },
             {
@@ -114,7 +114,7 @@
               "name": "nestedMixinMethod",
               "inheritedFrom": {
                 "name": "NestedMixin",
-                "module": "package/my-element.js"
+                "module": "my-element.js"
               }
             }
           ],
@@ -132,7 +132,7 @@
               },
               "inheritedFrom": {
                 "name": "NestedMixin",
-                "module": "package/my-element.js"
+                "module": "my-element.js"
               }
             }
           ],
@@ -144,14 +144,14 @@
               "name": "nestedMixin-attr",
               "inheritedFrom": {
                 "name": "NestedMixin",
-                "module": "package/my-element.js"
+                "module": "my-element.js"
               }
             }
           ],
           "mixins": [
             {
               "name": "NestedMixin",
-              "module": "package/my-element.js"
+              "module": "my-element.js"
             }
           ],
           "parameters": [
@@ -178,7 +178,7 @@
               "name": "moduleMixinField",
               "inheritedFrom": {
                 "name": "ModuleMixin",
-                "module": "package/ModuleMixin.js"
+                "module": "ModuleMixin.js"
               }
             },
             {
@@ -186,7 +186,7 @@
               "name": "moduleMixinMethod",
               "inheritedFrom": {
                 "name": "ModuleMixin",
-                "module": "package/ModuleMixin.js"
+                "module": "ModuleMixin.js"
               }
             },
             {
@@ -194,7 +194,7 @@
               "name": "mixinField",
               "inheritedFrom": {
                 "name": "MyMixin",
-                "module": "package/my-element.js"
+                "module": "my-element.js"
               }
             },
             {
@@ -202,7 +202,7 @@
               "name": "mixinMethod",
               "inheritedFrom": {
                 "name": "MyMixin",
-                "module": "package/my-element.js"
+                "module": "my-element.js"
               }
             },
             {
@@ -210,7 +210,7 @@
               "name": "nestedMixinField",
               "inheritedFrom": {
                 "name": "NestedMixin",
-                "module": "package/my-element.js"
+                "module": "my-element.js"
               }
             },
             {
@@ -218,7 +218,7 @@
               "name": "nestedMixinMethod",
               "inheritedFrom": {
                 "name": "NestedMixin",
-                "module": "package/my-element.js"
+                "module": "my-element.js"
               }
             }
           ],
@@ -236,7 +236,7 @@
               },
               "inheritedFrom": {
                 "name": "ModuleMixin",
-                "module": "package/ModuleMixin.js"
+                "module": "ModuleMixin.js"
               }
             },
             {
@@ -246,7 +246,7 @@
               },
               "inheritedFrom": {
                 "name": "MyMixin",
-                "module": "package/my-element.js"
+                "module": "my-element.js"
               }
             },
             {
@@ -256,7 +256,7 @@
               },
               "inheritedFrom": {
                 "name": "NestedMixin",
-                "module": "package/my-element.js"
+                "module": "my-element.js"
               }
             }
           ],
@@ -268,32 +268,32 @@
               "name": "moduleMixin-attr",
               "inheritedFrom": {
                 "name": "ModuleMixin",
-                "module": "package/ModuleMixin.js"
+                "module": "ModuleMixin.js"
               }
             },
             {
               "name": "mixin-attr",
               "inheritedFrom": {
                 "name": "MyMixin",
-                "module": "package/my-element.js"
+                "module": "my-element.js"
               }
             },
             {
               "name": "nestedMixin-attr",
               "inheritedFrom": {
                 "name": "NestedMixin",
-                "module": "package/my-element.js"
+                "module": "my-element.js"
               }
             }
           ],
           "mixins": [
             {
               "name": "ModuleMixin",
-              "module": "package/ModuleMixin.js"
+              "module": "/ModuleMixin.js"
             },
             {
               "name": "MyMixin",
-              "module": "package/my-element.js"
+              "module": "my-element.js"
             }
           ],
           "superclass": {
@@ -308,7 +308,7 @@
           "name": "NestedMixin",
           "declaration": {
             "name": "NestedMixin",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -316,7 +316,7 @@
           "name": "MyMixin",
           "declaration": {
             "name": "MyMixin",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -324,7 +324,7 @@
           "name": "MyElement",
           "declaration": {
             "name": "MyElement",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         }
       ]

@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "package/my-element.js",
+      "path": "my-element.js",
       "declarations": [
         {
           "kind": "class",
@@ -63,7 +63,7 @@
           "name": "my-foo",
           "declaration": {
             "name": "MyFoo",
-            "module": "package/foo.js"
+            "module": "/foo.js"
           }
         },
         {
@@ -79,7 +79,7 @@
           "name": "my-element",
           "declaration": {
             "name": "MyElement",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -87,7 +87,7 @@
           "name": "my-window",
           "declaration": {
             "name": "MyWindow",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -95,7 +95,7 @@
           "name": "anon-1",
           "declaration": {
             "name": "anonymous_4",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -103,7 +103,7 @@
           "name": "anon-2",
           "declaration": {
             "name": "MyEl",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         }
       ]
