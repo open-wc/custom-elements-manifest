@@ -13,7 +13,7 @@ export function isBareModuleSpecifier(specifier) {
   return !!specifier?.replace(/'/g, '')[0].match(/[@a-zA-Z]/g);
 }
 
-export const url = path => new URL('', `file:///${path}`)?.pathname;
+export const url = path => new URL('', `file:///${path}`)?.pathname.replace(/^\/+/g, '');
 
 export function resolveModuleOrPackageSpecifier(moduleDoc, context, name) {
   const foundImport = context?.imports?.find(_import => _import.name === name);
@@ -25,7 +25,7 @@ export function resolveModuleOrPackageSpecifier(moduleDoc, context, name) {
       return { package: foundImport.importPath }
     } else {
       /* import is imported from a local module */
-      return { module: new URL(foundImport.importPath, `file:///${moduleDoc.path}`).pathname }
+      return { module: new URL(foundImport.importPath, `file:///${moduleDoc.path}`).pathname.replace(/\//, '') }
     }
   } else {
     /* item is in current module */

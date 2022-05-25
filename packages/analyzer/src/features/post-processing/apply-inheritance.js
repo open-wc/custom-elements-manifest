@@ -1,5 +1,6 @@
-import { getAllDeclarationsOfKind, getModuleForClassLike, getModuleFromManifest, getInheritanceTree } from '../../utils/manifest-helpers.js';
-import { resolveModuleOrPackageSpecifier } from '../../utils/index.js';
+import { getModuleForClassLike, getModuleFromManifest } from '../../utils/manifest-helpers.js';
+import { has, resolveModuleOrPackageSpecifier } from '../../utils/index.js';
+
 
 /**
  * APPLY-INHERITANCE-PLUGIN
@@ -9,14 +10,89 @@ import { resolveModuleOrPackageSpecifier } from '../../utils/index.js';
 export function applyInheritancePlugin() {
   return {
     name: 'CORE - APPLY-INHERITANCE',
-    packageLinkPhase({customElementsManifest, context}){
-      const classes = getAllDeclarationsOfKind(customElementsManifest, 'class');
-      const mixins = getAllDeclarationsOfKind(customElementsManifest, 'mixin');
+    packageLinkPhase({customElementsManifest, context}) {
 
-      [...classes, ...mixins].forEach((customElement) => {
-        const inheritanceChain = getInheritanceTree(customElementsManifest, customElement.name);
+      const classLikes = [];
+      const packageMap = new Map();
+
+      /**
+       * Create a package map of the project for easy resolving of symbols
+       */
+      customElementsManifest?.modules?.forEach(mod => {
+        const declarations = new Map();
+
+        mod.declarations.forEach(declaration => {
+          declarations.set(declaration.name, declaration);
+          
+          if(declaration.kind === 'mixin' || declaration.kind === 'class') {
+            classLikes.push(declaration);
+          }
+        });
+
+        packageMap.set(mod.path, declarations);
+      });
+
+      const getReference = (mod, name) => {
+        for (const extension of ['', '.js', '.ts', '.tsx']) {
+          let r = packageMap.get(mod + extension)?.get(name);
+          if(r) return r;
+        }
+
+        return null;
+      }
+
+      const createMixinHandler = tree => mixin => {
+        let foundMixin = getReference(mixin.module, mixin.name);
+        if (foundMixin) {
+          // @TODO
+          // foundMixin.import = mixin.module;
+          tree.push(foundMixin);
+          
+          while(has(foundMixin?.mixins)) {
+            foundMixin?.mixins?.forEach(mixin => {
+              foundMixin = getReference(mixin.module, mixin.name);
+              if(foundMixin) {
+                // @TODO
+                // foundMixin.import = mixin.module;
+                tree.push(foundMixin);
+              }
+            });
+          }
+        }
+      }
+      
+      function getInheritanceTree(customElement) {
+        let currentClass = customElement;
+        const tree = [];
+        const mixinHandler = createMixinHandler(tree);
+
+        tree.push(currentClass);
+        currentClass?.mixins?.forEach(mixinHandler);
+
+        while(
+          /** There is a superclass */
+          currentClass?.superclass 
+          /** The superclass is imported from a third party package or module */
+          // @TODO should we really add it to the tree if its from a third party?
+          && (currentClass.superclass.package ?? currentClass.superclass.module)
+        ) {
+          const specifier = currentClass.superclass.package ?? currentClass.superclass.module;
+          const superclass = getReference(specifier, currentClass.superclass.name);
+
+          superclass?.mixins?.forEach(mixinHandler);
+
+          tree.push(superclass);
+          currentClass = superclass;
+        }
+
+        return tree;
+      }
+      
+      classLikes.forEach((customElement) => {
+        const inheritanceChain = getInheritanceTree(customElement);
 
         inheritanceChain?.forEach(klass => {
+          console.log(1, klass);
           // Handle mixins
           if (klass?.kind !== 'class') {
             if (klass?.package) {
@@ -24,7 +100,7 @@ export function applyInheritancePlugin() {
               return;
             }
           }
-
+          
           // ignore the current class itself
           if (klass?.name === customElement.name) {
             return;

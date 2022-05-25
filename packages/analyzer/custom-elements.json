@@ -4,34 +4,105 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "fixtures/-default/package/bar.js",
+      "path": "fixtures/-default/package/mixin-a.js",
+      "declarations": [
+        {
+          "kind": "mixin",
+          "description": "",
+          "name": "Mixin",
+          "members": [
+            {
+              "kind": "field",
+              "name": "foo",
+              "type": {
+                "text": "string"
+              },
+              "default": "'I should not be included'"
+            }
+          ],
+          "parameters": [
+            {
+              "name": "superClass"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Mixin",
+          "declaration": {
+            "name": "Mixin",
+            "module": "fixtures/-default/package/mixin-a.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/-default/package/mixin-b.js",
+      "declarations": [
+        {
+          "kind": "mixin",
+          "description": "",
+          "name": "Mixin",
+          "members": [
+            {
+              "kind": "field",
+              "name": "foo",
+              "type": {
+                "text": "string"
+              },
+              "default": "'I should be included'"
+            }
+          ],
+          "parameters": [
+            {
+              "name": "superClass"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Mixin",
+          "declaration": {
+            "name": "Mixin",
+            "module": "fixtures/-default/package/mixin-b.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/-default/package/my-el.js",
       "declarations": [
         {
           "kind": "class",
           "description": "",
-          "name": "MyElementA",
+          "name": "MyElement",
           "mixins": [
             {
-              "name": "MyMixin",
-              "module": "fixtures/-default/package/bar.js"
+              "name": "Mixin",
+              "module": "fixtures/-default/package/mixin-b.js"
             }
           ],
           "superclass": {
             "name": "HTMLElement"
           },
-          "tagName": "my-mixin-element-a",
           "customElement": true,
           "members": [
             {
               "kind": "field",
               "name": "foo",
               "type": {
-                "text": "number"
+                "text": "string"
               },
-              "default": "1",
+              "default": "'I should be included'",
               "inheritedFrom": {
-                "name": "MyMixin",
-                "module": "fixtures/-default/package/bar.js"
+                "name": "Mixin",
+                "module": "fixtures/-default/package/mixin-b.js"
               }
             }
           ]
@@ -39,11 +110,11 @@
       ],
       "exports": [
         {
-          "kind": "custom-element-definition",
-          "name": "my-mixin-element-a",
+          "kind": "js",
+          "name": "MyElement",
           "declaration": {
-            "name": "MyElementA",
-            "module": "fixtures/-default/package/bar.js"
+            "name": "MyElement",
+            "module": "fixtures/-default/package/my-el.js"
           }
         }
       ]

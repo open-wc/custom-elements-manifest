@@ -32,7 +32,6 @@ import {
       ...cliConfig
     } = getCliConfig(argv);
     const userConfig = await getUserConfig(configPath);
-
     /**
      * Merged config options
      * Command line options override userConfig options
@@ -84,7 +83,7 @@ import {
       }
       fs.writeFileSync(path.join(outdir, 'custom-elements.json'), `${JSON.stringify(customElementsManifest, null, 2)}\n`);
       if(mergedOptions.dev) {
-        console.log(JSON.stringify(customElementsManifest, null, 2));
+        // console.log(JSON.stringify(customElementsManifest, null, 2));
       }
 
       console.log(`[${timestamp()}] @custom-elements-manifest/analyzer: Created new manifest.`);
