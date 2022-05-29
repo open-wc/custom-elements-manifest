@@ -86,7 +86,9 @@ export async function cli({ argv = process.argv, cwd = process.cwd(), noWrite } 
         );
        }
 
-      console.log(`[${timestamp()}] @custom-elements-manifest/analyzer: Created new manifest.`);
+      if (!mergedOptions.quiet) {
+        console.log(`[${timestamp()}] @custom-elements-manifest/analyzer: Created new manifest.`);
+      }
 
       return customElementsManifest;
     }
