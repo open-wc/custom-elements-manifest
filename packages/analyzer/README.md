@@ -39,6 +39,7 @@ cem analyze
 | --packagejson    | boolean    | Output CEM path to `package.json`, defaults to true         | `--packagejson`                                       |
 | --watch          | boolean    | Enables watch mode, generates a new manifest on file change | `--watch`                                             |
 | --dev            | boolean    | Enables extra logging for debugging                         | `--dev`                                               |
+| --quiet          | boolean    | Hides all logging                                           | `--quiet`                                             |
 | --litelement     | boolean    | Enable special handling for LitElement syntax               | `--litelement`                                        |
 | --fast           | boolean    | Enable special handling for FASTElement syntax              | `--fast`                                              |
 | --stencil        | boolean    | Enable special handling for Stencil syntax                  | `--stencil`                                           |
