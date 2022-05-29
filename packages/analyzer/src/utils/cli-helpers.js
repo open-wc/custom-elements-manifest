@@ -55,6 +55,7 @@ export const DEFAULTS = {
   outdir: '',
   globs: ['**/*.{js,ts,tsx}'],
   dev: false,
+  quiet: false,
   watch: false,
   litelement: false,
   stencil: false,
@@ -69,6 +70,7 @@ export function getCliConfig(argv) {
     { name: 'exclude', type: String, multiple: true },
     { name: 'outdir', type: String },
     { name: 'dev', type: Boolean },
+    { name: 'quiet', type: Boolean },
     { name: 'dependencies', type: Boolean },
     { name: 'packagejson', type: Boolean },
     { name: 'watch', type: Boolean },
@@ -139,8 +141,10 @@ Available commands:
     | --exclude        | string[]   | Globs to exclude                                            | \`--exclude "foo.js"\`                                  |
     | --outdir         | string     | Directory to output the Manifest to                         | \`--outdir dist\`                                       |
     | --dependencies   | boolean    | Include third party custom elements manifests               | \`--dependencies\`                                      |
-    | --packagejson    | boolean    | Output CEM path to \`package.json\`, defaults to true       | \`--packagejson\`                                       || --watch          | boolean    | Enables watch mode, generates a new manifest on file change | \`--watch\`                                             |
+    | --packagejson    | boolean    | Output CEM path to \`package.json\`, defaults to true       | \`--packagejson\`                                       |
+    | --watch          | boolean    | Enables watch mode, generates a new manifest on file change | \`--watch\`                                             |
     | --dev            | boolean    | Enables extra logging for debugging                         | \`--dev\`                                               |
+    | --quiet          | boolean    | Hides all logging                                           | \`--quiet\`                                             |
     | --litelement     | boolean    | Enable special handling for LitElement syntax               | \`--litelement\`                                        |
     | --fast           | boolean    | Enable special handling for FASTElement syntax              | \`--fast\`                                              |
     | --stencil        | boolean    | Enable special handling for Stencil syntax                  | \`--stencil\`                                           |
