@@ -1,3 +1,9 @@
+## Release 0.6.3
+- Filter out internal manifests
+
+## Release 0.6.2
+- Add --quiet cli parameter
+
 ## Release 0.6.1
 - Re-add `#!/usr/bin/env node` to bin file
 
