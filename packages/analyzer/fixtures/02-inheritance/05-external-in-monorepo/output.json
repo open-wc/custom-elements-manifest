@@ -17,7 +17,7 @@
               "type": {
                 "text": "string"
               },
-              "default": "'otherValueThanProp'",
+              "default": "'prop'",
               "inheritedFrom": {
                 "name": "MyClass",
                 "module": "MyClass.js"
@@ -71,6 +71,30 @@
           "declaration": {
             "name": "MyElement",
             "module": "index.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "internalFile.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "internalVar",
+          "type": {
+            "text": "string"
+          },
+          "default": "'internalVar'"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "internalVar",
+          "declaration": {
+            "name": "internalVar",
+            "module": "internalFile.js"
           }
         }
       ]
