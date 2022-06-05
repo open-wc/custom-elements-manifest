@@ -26,6 +26,16 @@ export function reflects(node) {
   return result;
 }
 
+export function getType(node) {
+  let result = false;
+  (node?.initializer || node)?.properties?.forEach((property) => {
+    if (property.name.text === 'type') {
+      result = property.initializer.text.toLowerCase();
+    }
+  });
+  return result;
+}
+
 export function getAttributeName(node) {
   let result = false;
   (node?.initializer || node)?.properties?.forEach((property) => {
