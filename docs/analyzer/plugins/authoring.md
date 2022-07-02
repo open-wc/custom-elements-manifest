@@ -103,9 +103,9 @@ _After_ analyzing a module, and _before_ moving on to the next module, the `modu
 
 This hook gets passed the current module's `moduleDoc`. You can mutate the object as you like.
 
-### `analyzePhase`
+### `packageLinkPhase`
 
-After all modules have been analyzed and all the ASTs have been traversed, the Manifest should now be fully constructed. You can use the `analyzePhase` for any post-processing you may need to do.
+After all modules have been analyzed and all the ASTs have been traversed, the Manifest should now be fully constructed. You can use the `packageLinkPhase` for any post-processing you may need to do.
 
 This hook gets passed the complete Custom Elements Manifest.
 
