@@ -110,6 +110,11 @@ export function handleJsDoc(doc, node) {
         doc.summary = tag.comment;
       }
 
+      /** @deprecated */
+      if(safe(() => tag?.tagName?.getText()) === 'deprecated') {
+        doc.deprecated = tag.comment || "true";
+      }
+
       /**
        * Overwrite privacy
        * @public

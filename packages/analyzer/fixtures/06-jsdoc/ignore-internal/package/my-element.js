@@ -9,6 +9,12 @@ export const variable = 'var';
 /** @ignore */
 export class IgnoreMe extends HTMLElement { }
 
+/** @deprecated */
+export class IamDepricated extends HTMLElement { }
+
+/** @deprecated the reason for the deprecation. */
+export class IamDepricatedWithReason extends HTMLElement { }
+
 customElements.define("ignore-me", IgnoreMe);
 
 export class IncludeMe extends HTMLElement {
@@ -41,6 +47,16 @@ export class IncludeMe extends HTMLElement {
           detail: 'bar'
         })
     )
+  }
+
+  /** @deprecated */
+  imDeprecated() {
+
+  }
+
+  /** @deprecated the reason for the deprecation. */
+  imDeprecatedWithReason() {
+  
   }
 
   /** @internal */
