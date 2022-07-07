@@ -86,6 +86,9 @@ export function classJsDocPlugin() {
                   case 'element':
                     classDoc.tagName = jsDoc?.name || '';
                     break;
+                  case 'deprecated':
+                    classDoc.deprecated = jsDoc?.name ? `${jsDoc.name} ${jsDoc?.description}`.trim() : "true";
+                    break;
                 }
               })
             });

@@ -17,6 +17,26 @@
         {
           "kind": "class",
           "description": "",
+          "name": "IamDepricated",
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "deprecated": "true",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "IamDepricatedWithReason",
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "deprecated": "the reason for the deprecation.",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
           "name": "IncludeMe",
           "members": [
             {
@@ -51,6 +71,22 @@
           "name": "variable",
           "declaration": {
             "name": "variable",
+            "module": "package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "IamDepricated",
+          "declaration": {
+            "name": "IamDepricated",
+            "module": "package/my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "IamDepricatedWithReason",
+          "declaration": {
+            "name": "IamDepricatedWithReason",
             "module": "package/my-element.js"
           }
         },
