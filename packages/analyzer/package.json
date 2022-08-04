@@ -6,8 +6,8 @@
   "type": "module",
   "types": "index.d.ts",
   "bin": {
-    "custom-elements-manifest": "./index.js",
-    "cem": "./index.js"
+    "custom-elements-manifest": "./cem.js",
+    "cem": "./cem.js"
   },
   "repository": {
     "type": "git",
