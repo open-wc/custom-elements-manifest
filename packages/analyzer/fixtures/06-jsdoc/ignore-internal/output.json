@@ -79,7 +79,7 @@
           "name": "IamDepricated",
           "declaration": {
             "name": "IamDepricated",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -87,7 +87,7 @@
           "name": "IamDepricatedWithReason",
           "declaration": {
             "name": "IamDepricatedWithReason",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {

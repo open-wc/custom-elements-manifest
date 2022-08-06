@@ -21,8 +21,8 @@
           "superclass": {
             "name": "HTMLElement"
           },
-          "customElement": true,
-          "deprecated": "true"
+          "deprecated": "true",
+          "customElement": true
         },
         {
           "kind": "class",
@@ -31,8 +31,8 @@
           "superclass": {
             "name": "HTMLElement"
           },
-          "customElement": true,
-          "deprecated": "the reason for the deprecation."
+          "deprecated": "the reason for the deprecation.",
+          "customElement": true
         },
         {
           "kind": "class",
@@ -79,7 +79,7 @@
           "name": "IamDepricated",
           "declaration": {
             "name": "IamDepricated",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
@@ -87,7 +87,7 @@
           "name": "IamDepricatedWithReason",
           "declaration": {
             "name": "IamDepricatedWithReason",
-            "module": "package/my-element.js"
+            "module": "my-element.js"
           }
         },
         {
