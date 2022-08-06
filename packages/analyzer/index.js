@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
-import { cli } from './cli.js';
-
-cli();
+export { create } from './src/create.js';
+// Export ts to avoid version missmatch when using the create() method programatically 
+export { default as ts } from 'typescript';
