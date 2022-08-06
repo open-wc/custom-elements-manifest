@@ -1,3 +1,6 @@
+## Release 0.6.4
+- Reexport TS for programmatic usage/module generation
+
 ## Release 0.6.3
 - Filter out internal manifests
 
