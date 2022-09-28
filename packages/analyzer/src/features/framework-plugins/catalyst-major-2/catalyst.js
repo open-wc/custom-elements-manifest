@@ -2,9 +2,9 @@ import { attrDecoratorPlugin } from '../decorators/attr.js';
 import { controllerPlugin } from './controller.js';
 import { toKebabCase } from '../../../utils/index.js'
 
-export const catalystPlugin = () => [
+export const catalystPlugin2 = () => [
   attrDecoratorPlugin(attr => {
-    attr.name = `data-${toKebabCase(attr.name)}`;
+    attr.name = toKebabCase(attr.name);
     return attr;
   }),
   controllerPlugin()

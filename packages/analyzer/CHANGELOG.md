@@ -1,3 +1,7 @@
+## Release 0.6.5
+- Fix attr decorator for Catalyst
+- Add catalyst-major-2
+
 ## Release 0.6.4
 - Reexport TS for programmatic usage/module generation
 

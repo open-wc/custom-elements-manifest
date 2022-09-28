@@ -1,9 +1,8 @@
-class MyElementA extends MyMixin(HTMLElement){}
+import { controller, attr } from '@github/catalyst'
 
-function MyMixin(superClass){
-    return class extends superClass {
-       foo = 1;
-    }
+@controller
+export class HelloWorldElement extends HTMLElement {
+  @attr fooBar = 'hello'
+
+  bar;
 }
-
-customElements.define('my-mixin-element-a', MyElementA);

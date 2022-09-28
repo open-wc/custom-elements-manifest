@@ -2,7 +2,7 @@ import { decorator } from '../../../utils/index.js'
 import { getOptionsObject } from '../../../utils/ast-helpers.js'
 import { createAttributeFromField } from '../../analyse-phase/creators/createAttribute.js';
 
-export function attrDecoratorPlugin() {
+export function attrDecoratorPlugin(converter) {
   return {
     name: 'CORE - ATTR-DECORATOR',
     analyzePhase({ts, node, moduleDoc}){
@@ -18,7 +18,7 @@ export function attrDecoratorPlugin() {
             const hasAttrDecorator = member?.decorators?.find(decorator('attr'));
             if(hasAttrDecorator) {
               const correspondingField = classDoc?.members?.find(classMember => classMember.name === member.name.getText());
-              const attribute = createAttributeFromField(correspondingField);
+              let attribute = createAttributeFromField(correspondingField);
 
               /**
                * An @attr might have an options object, like: @attr({attribute: 'my-el'})
@@ -29,6 +29,10 @@ export function attrDecoratorPlugin() {
               if(optionsObject) {
                 const name = optionsObject?.properties?.find(prop => prop.name.getText() === 'attribute')?.initializer?.text;
                 attribute.name = name;
+              }
+
+              if (converter) {
+                attribute = converter(attribute);
               }
 
               classDoc.attributes = [...(classDoc.attributes || []), attribute];

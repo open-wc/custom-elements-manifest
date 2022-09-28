@@ -19,7 +19,7 @@
 let typeChecker;
 
 export default {
-  globs: ['fixtures/-default/package/**/*.{js,ts}'], 
+  globs: ['fixtures/01-class/-default/package/**/*.{js,ts}'], 
   exclude: [],
   dependencies: true,
   dev: false,

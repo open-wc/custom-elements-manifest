@@ -37,6 +37,7 @@ import { applyInheritancePlugin } from './post-processing/apply-inheritance.js';
  */
 import { stencilPlugin } from './framework-plugins/stencil/stencil.js';
 import { catalystPlugin } from './framework-plugins/catalyst/catalyst.js';
+import { catalystPlugin2 } from './framework-plugins/catalyst-major-2/catalyst.js';
 import { fastPlugin } from './framework-plugins/fast/fast.js';
 import { litPlugin } from './framework-plugins/lit/lit.js';
 
@@ -75,4 +76,5 @@ export const FEATURES = [
   // fastPlugin()
   // stencilPlugin()
   // catalystPlugin()
+  // catalystPlugin2()
 ].flat();
