@@ -1,3 +1,6 @@
+## Release 0.6.6
+- Fix incorrect release
+
 ## Release 0.6.5
 - Fix attr decorator for Catalyst
 - Add catalyst-major-2
