@@ -1,10 +1,10 @@
+import { dasherize } from '@github/catalyst/lib/dasherize.js';
 import { attrDecoratorPlugin } from '../decorators/attr.js';
 import { controllerPlugin } from './controller.js';
-import { toKebabCase } from '../../../utils/index.js'
 
 export const catalystPlugin = () => [
   attrDecoratorPlugin(attr => {
-    attr.name = `data-${toKebabCase(attr.name)}`;
+    attr.name = `data-${dasherize(attr.name)}`;
     return attr;
   }),
   controllerPlugin()

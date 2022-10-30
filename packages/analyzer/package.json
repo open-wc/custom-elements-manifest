@@ -38,13 +38,14 @@
     "customelementsmanifest"
   ],
   "dependencies": {
+    "@custom-elements-manifest/find-dependencies": "^0.0.5",
+    "@github/catalyst": "^1.6.0",
     "@web/config-loader": "0.1.3",
     "chokidar": "3.5.2",
     "command-line-args": "5.1.2",
     "comment-parser": "1.2.4",
     "custom-elements-manifest": "1.0.0",
     "debounce": "1.2.1",
-    "@custom-elements-manifest/find-dependencies": "^0.0.5",
     "globby": "11.0.4",
     "typescript": "~4.3.2"
   },
