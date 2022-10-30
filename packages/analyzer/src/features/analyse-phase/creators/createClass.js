@@ -239,6 +239,11 @@ function mapClassMember(source, classTemplate, context, node, statement, express
       kind: 'field',
       name: expression?.left?.name?.getText(),
     }
+
+    if(!classTemplate.members){
+      classTemplate.members = [];
+    }
+
     classTemplate.members.push(existingMember);
   }
 

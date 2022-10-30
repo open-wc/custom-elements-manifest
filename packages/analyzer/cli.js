@@ -40,7 +40,6 @@ export async function cli({ argv = process.argv, cwd = process.cwd(), noWrite } 
     const mergedOptions = { ...DEFAULTS, ...userConfig, ...cliConfig };
     const merged = mergeGlobsAndExcludes(DEFAULTS, userConfig, cliConfig);
     const globs = await globby(merged, { cwd });
-
     async function run() {
       const modules = userConfig?.overrideModuleCreation
         ? userConfig.overrideModuleCreation({ ts, globs })

@@ -4,46 +4,58 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "fixtures/-default/package/bar.js",
+      "path": "fixtures/01-class/-default/package/bar.js",
       "declarations": [
         {
           "kind": "class",
           "description": "",
-          "name": "MyElementA",
-          "mixins": [
+          "name": "HelloWorldElement",
+          "members": [
             {
-              "name": "MyMixin",
-              "module": "fixtures/-default/package/bar.js"
+              "kind": "field",
+              "name": "fooBar",
+              "type": {
+                "text": "string"
+              },
+              "default": "'hello'"
+            },
+            {
+              "kind": "field",
+              "name": "bar"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "data-foo-bar",
+              "type": {
+                "text": "string"
+              },
+              "default": "'hello'",
+              "fieldName": "fooBar"
             }
           ],
           "superclass": {
             "name": "HTMLElement"
           },
-          "tagName": "my-mixin-element-a",
-          "customElement": true,
-          "members": [
-            {
-              "kind": "field",
-              "name": "foo",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "inheritedFrom": {
-                "name": "MyMixin",
-                "module": "fixtures/-default/package/bar.js"
-              }
-            }
-          ]
+          "tagName": "hello-world",
+          "customElement": true
         }
       ],
       "exports": [
         {
-          "kind": "custom-element-definition",
-          "name": "my-mixin-element-a",
+          "kind": "js",
+          "name": "HelloWorldElement",
           "declaration": {
-            "name": "MyElementA",
-            "module": "fixtures/-default/package/bar.js"
+            "name": "HelloWorldElement",
+            "module": "fixtures/01-class/-default/package/bar.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hello-world",
+          "declaration": {
+            "name": "HelloWorldElement",
+            "module": "fixtures/01-class/-default/package/bar.js"
           }
         }
       ]

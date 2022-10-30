@@ -13,7 +13,7 @@
           "members": [
             {
               "kind": "field",
-              "name": "foo",
+              "name": "fooBar",
               "type": {
                 "text": "string"
               },
@@ -26,12 +26,12 @@
           ],
           "attributes": [
             {
-              "name": "foo",
+              "name": "data-foo-bar",
               "type": {
                 "text": "string"
               },
               "default": "'hello'",
-              "fieldName": "foo"
+              "fieldName": "fooBar"
             }
           ],
           "superclass": {

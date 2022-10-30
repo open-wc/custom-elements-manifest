@@ -14,10 +14,10 @@
             {
               "kind": "field",
               "name": "fooBar",
-              "default": "'hello'",
               "type": {
                 "text": "string"
-              }
+              },
+              "default": "'hello'"
             },
             {
               "kind": "field",
@@ -26,12 +26,12 @@
           ],
           "attributes": [
             {
-              "name": "data-foo-bar",
-              "default": "'hello'",
-              "fieldName": "fooBar",
+              "name": "foo-bar",
               "type": {
                 "text": "string"
-              }
+              },
+              "default": "'hello'",
+              "fieldName": "fooBar"
             }
           ],
           "superclass": {
