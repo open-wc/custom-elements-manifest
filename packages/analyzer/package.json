@@ -49,11 +49,13 @@
     "globby": "11.0.4",
     "typescript": "~4.3.2"
   },
-  "devDependencies": {},
   "contributors": [
     "Pascal Schilp <pascalschilp@gmail.com>",
     "Benny Powers <web@bennypowers.com>",
     "Matias Huhta <huhta.matias@gmail.com>"
   ],
-  "customElements": "custom-elements.json"
+  "customElements": "custom-elements.json",
+  "devDependencies": {
+    "@asdgf/cli": "^0.0.15"
+  }
 }
