@@ -9,52 +9,20 @@
         {
           "kind": "class",
           "description": "",
-          "name": "HelloWorldElement",
-          "members": [
-            {
-              "kind": "field",
-              "name": "fooBar",
-              "type": {
-                "text": "string"
-              },
-              "default": "'hello'"
-            },
-            {
-              "kind": "field",
-              "name": "bar"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "data-foo-bar",
-              "type": {
-                "text": "string"
-              },
-              "default": "'hello'",
-              "fieldName": "fooBar"
-            }
-          ],
+          "name": "MyElement",
           "superclass": {
-            "name": "HTMLElement"
+            "name": "LitElement",
+            "package": "lit"
           },
-          "tagName": "hello-world",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "HelloWorldElement",
+          "name": "MyElement",
           "declaration": {
-            "name": "HelloWorldElement",
-            "module": "fixtures/01-class/-default/package/bar.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "hello-world",
-          "declaration": {
-            "name": "HelloWorldElement",
+            "name": "MyElement",
             "module": "fixtures/01-class/-default/package/bar.js"
           }
         }

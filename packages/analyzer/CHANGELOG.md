@@ -1,3 +1,6 @@
+## Release 0.6.7
+- Fix `@internal` bug on decorated Lit properties
+
 ## Release 0.6.6
 - Fix incorrect release
 

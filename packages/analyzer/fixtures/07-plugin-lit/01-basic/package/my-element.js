@@ -34,6 +34,12 @@ class MyElement extends LitElement {
   @property({attribute: false})
   decoratedPropertyNoAttr = [];
 
+  /** 
+   * @internal
+   */
+  @property({reflect: true})
+  decoratedInternal;
+
   @property({reflect: true})
   decoratedReflect;
 
