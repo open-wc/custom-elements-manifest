@@ -1,8 +1,13 @@
-import { controller, attr } from '@github/catalyst'
 
-@controller
-export class HelloWorldElement extends HTMLElement {
-  @attr fooBar = 'hello'
+import { LitElement, css } from 'lit';
+import { property } from 'lit/decorators.js'
 
-  bar;
+export class MyElement extends LitElement {
+  /**
+   * A property set internally that reflects up to an attribute that is only used for styling, so is marked as internal
+   * 
+   * @internal
+   */
+  @property({ type: Boolean, reflect: true })
+  private flagged = false;
 }

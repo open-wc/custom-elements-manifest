@@ -57,6 +57,10 @@ function handlePropertyDecorator(classNode, moduleDoc, mixinName = null) {
        */
       if (isAlsoAttribute(propertyOptions)) {
         const field = currClass.members.find(classMember => classMember.name === member.name.getText());
+        /** If a `field` was not found on the `currClass`, that's because it has a @internal jsdoc notation */
+        if(!field) {
+          return;
+        }
         const attribute = createAttributeFromField(field);
 
         /**

@@ -1,6 +1,6 @@
 {
   "name": "@custom-elements-manifest/analyzer",
-  "version": "0.6.6",
+  "version": "0.6.7",
   "description": "",
   "license": "MIT",
   "type": "module",
@@ -22,7 +22,7 @@
   "main": "index.js",
   "scripts": {
     "prepublishOnly": "npm test && npm run build:browser",
-    "start": "nodemon --ignore './custom-elements.json' cem.js analyze --dev --catalyst",
+    "start": "nodemon --ignore './custom-elements.json' cem.js analyze --dev --litelement",
     "test": "asdgf",
     "build:browser": "rollup -c rollup.browser.config.js",
     "test:watch": "watchexec -w src -w test npm test",
