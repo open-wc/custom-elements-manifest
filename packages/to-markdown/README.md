@@ -61,18 +61,18 @@ customElementsManifestToMarkdown(manifest, {
 
 The `omitSections` option is a `string[]` that controls which sections of a declaration's full entry in the manifest.json should be rendered in the final markdown output. The section names are:
 
-- mainHeading
-- superClass
-- fields
-- methods
-- staticFields
-- staticMethods
-- slots
-- events
-- attributes
-- cssProperties
-- cssParts
-- mixins
+- mainHeading : "main-heading"
+- superClass : "super-class"
+- fields : "fields"
+- methods : "methods"
+- staticFields : "static-fields"
+- staticMethods : "static-methods"
+- slots : "slots"
+- events : "events"
+- attributes : "attributes"
+- cssProperties : "css-properties"
+- cssParts : "css-parts"
+- mixins : "main-heading"
 
 The following is an example config showing how to filter out a few sections:
 
@@ -80,7 +80,7 @@ The following is an example config showing how to filter out a few sections:
 customElementsManifestToMarkdown(manifest, {
   // static fields and static methods tables will not be present
   // in the markdown result
-  omitSections: [ 'staticFields', 'staticMethods' ]
+  omitSections: [ 'super-class', 'static-methods', 'fields' ]
 })
 ```
 
