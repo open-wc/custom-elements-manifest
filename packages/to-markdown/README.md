@@ -52,7 +52,7 @@ The following is an example config that would filter out all four declaration ty
 
 ```js
 customElementsManifestToMarkdown(manifest, {
-  omitSections: ['mixins', 'variables', 'functions', 'exports' ]
+  omitDeclarations: ['mixins', 'variables', 'functions', 'exports' ]
 })
 ```
 **Note: ** Mixins can be rendered both as declarations AND as sections inside a declaration. The `omitDeclarations` option for `mixins` will only filter out top level mixin declarations. To filter out mixin sections from a `class` declaration, use the `mixin` filter from `omitSections`.
