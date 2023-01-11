@@ -1,3 +1,6 @@
+## Release 0.6.8
+- Detect types from lits static properties
+
 ## Release 0.6.7
 - Fix `@internal` bug on decorated Lit properties
 
