@@ -7,6 +7,7 @@ import {
   getPropertiesObject,
   getAttributeName,
   reflects,
+  getType,
 } from './utils.js';
 
 import { extractMixinNodes, isMixin } from '../../../utils/mixins.js';
@@ -58,6 +59,12 @@ function handleStaticProperties(classNode, moduleDoc, context, mixinName = null)
           name: property?.name?.getText() || '',
           privacy: 'public',
         };
+
+        const type = getType(property);
+        if (type) {
+          classMember.type = { text: type }
+        }
+
         classMember = handleJsDoc(classMember, property);
 
         const memberIndex = currClass?.members?.findIndex(field => field.name === classMember.name);

@@ -64,18 +64,27 @@
               "kind": "field",
               "name": "prop2",
               "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
               "attribute": "prop2"
             },
             {
               "kind": "field",
               "name": "attr",
               "privacy": "public",
+              "type": {
+                "text": "string"
+              },
               "attribute": "my-attr"
             },
             {
               "kind": "field",
               "name": "noAttr",
-              "privacy": "public"
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              }
             },
             {
               "kind": "field",
@@ -90,6 +99,9 @@
               "kind": "field",
               "name": "reflect",
               "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
               "attribute": "reflect",
               "reflects": true
             },
@@ -97,6 +109,9 @@
               "kind": "field",
               "name": "reflect2",
               "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
               "attribute": "reflect-2",
               "reflects": true
             }
@@ -104,6 +119,9 @@
           "attributes": [
             {
               "name": "my-attr",
+              "type": {
+                "text": "string"
+              },
               "fieldName": "attr"
             },
             {
@@ -141,6 +159,9 @@
             },
             {
               "name": "prop2",
+              "type": {
+                "text": "boolean"
+              },
               "fieldName": "prop2"
             },
             {
@@ -152,10 +173,16 @@
             },
             {
               "name": "reflect",
+              "type": {
+                "text": "boolean"
+              },
               "fieldName": "reflect"
             },
             {
               "name": "reflect-2",
+              "type": {
+                "text": "boolean"
+              },
               "fieldName": "reflect2"
             }
           ],
