@@ -1,3 +1,6 @@
+## Release 0.6.9
+- Add support for `@part` jsdoc
+
 ## Release 0.6.8
 - Detect types from lits static properties
 
