@@ -335,7 +335,7 @@ For all supported syntax, please check the [fixtures](https://github.com/open-wc
 | ----------------------------- | -------------------------------------------------- |
 | `@attr`, <br>`@attribute`     | Documents attributes for your custom element       |
 | `@prop`, <br>`@property `     | Documents properties for your custom element       |
-| `@csspart`                    | Documents your custom elements CSS Shadow Parts    |
+| `@part`,<br>`@csspart`        | Documents your custom elements Shadow Parts        |
 | `@slot`                       | Documents the Slots used in your components        |
 | `@cssprop`,<br>`@cssproperty` | Documents CSS Custom Properties for your component |
 | `@fires`,<br>`@event`         | Documents events that your component might fire    |

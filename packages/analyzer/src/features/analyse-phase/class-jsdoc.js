@@ -66,6 +66,7 @@ export function classJsDocPlugin() {
                     }
                     break;
                   case 'csspart':
+                  case 'part':
                     let cssPartDoc = {};
                     cssPartDoc = handleClassJsDoc(cssPartDoc, jsDoc);
                     classDoc.cssParts.push(cssPartDoc);
