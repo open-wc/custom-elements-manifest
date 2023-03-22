@@ -1,7 +1,4 @@
-
-import { LitElement } from 'lit';
-
-export class MyElement extends LitElement {
+export class MyElement extends HTMLElement {
   /** @readonly */
   foo = 1;
 

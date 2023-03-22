@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "fixtures/01-class/-default/package/bar.js",
+      "path": "my-element.js",
       "declarations": [
         {
           "kind": "class",
@@ -40,8 +40,7 @@
             }
           ],
           "superclass": {
-            "name": "LitElement",
-            "package": "lit"
+            "name": "HTMLElement"
           },
           "customElement": true
         }
@@ -52,7 +51,7 @@
           "name": "MyElement",
           "declaration": {
             "name": "MyElement",
-            "module": "fixtures/01-class/-default/package/bar.js"
+            "module": "my-element.js"
           }
         }
       ]

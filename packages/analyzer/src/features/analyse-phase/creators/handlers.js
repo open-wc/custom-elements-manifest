@@ -17,6 +17,10 @@ export function handleModifiers(doc, node) {
       doc.static = true;
     }
 
+    if (modifier?.kind === ts.SyntaxKind.ReadonlyKeyword) {
+      doc.readonly = true;
+    }
+
     switch (modifier.kind) {
       case ts.SyntaxKind.PublicKeyword:
         doc.privacy = 'public';
@@ -47,6 +51,11 @@ export function handleJsDoc(doc, node) {
     }
 
     jsDocComment?.tags?.forEach(tag => {
+      /** @readonly */
+      if(tag.kind === ts.SyntaxKind.JSDocReadonlyTag) {
+        doc.readonly = true;
+      }
+
       /** @param */
       if(tag.kind === ts.SyntaxKind.JSDocParameterTag) {
         const parameter = doc?.parameters?.find(parameter => parameter.name === tag.name.text);
