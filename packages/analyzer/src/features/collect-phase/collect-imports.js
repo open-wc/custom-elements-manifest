@@ -2,6 +2,7 @@ import {
   hasDefaultImport,
   hasNamedImport,
   hasAggregatingImport,
+  hasSideEffectImport,
 } from '../../utils/imports.js';
 import { isBareModuleSpecifier } from '../../utils/index.js';
 
@@ -57,7 +58,7 @@ export function collectImportsPlugin() {
         });
       }
 
-      /** 
+      /**
        * @example import * as name from './my-module.js'; 
        */
       if (hasAggregatingImport(node)) {
@@ -67,6 +68,19 @@ export function collectImportsPlugin() {
           importPath: node.moduleSpecifier.text,
           isBareModuleSpecifier: isBareModuleSpecifier(node.moduleSpecifier.text),
           isTypeOnly: !!node?.importClause?.isTypeOnly
+        };
+        currModuleImports.push(importTemplate);
+      }
+
+      /**
+       * @example import './my-module.js';
+       */
+      if(hasSideEffectImport(node)) {
+        const importTemplate = {
+          kind: 'side-effect',
+          importPath: node.moduleSpecifier.text,
+          isBareModuleSpecifier: isBareModuleSpecifier(node.moduleSpecifier.text),
+          isTypeOnly: false
         };
         currModuleImports.push(importTemplate);
       }
