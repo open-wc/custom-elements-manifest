@@ -1,3 +1,6 @@
+## Release 0.7.0
+- Collect side-effectul imports during `collectPhase`, e.g.: `import 'foo';`
+
 ## Release 0.6.9
 - Add support for `@part` jsdoc
 
