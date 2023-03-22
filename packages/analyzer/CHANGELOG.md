@@ -1,3 +1,6 @@
+## Release 0.8.0
+- Add support for `readonly` which has just been standardized in the schema
+
 ## Release 0.7.0
 - Collect side-effectul imports during `collectPhase`, e.g.: `import 'foo';`
 

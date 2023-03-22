@@ -82,6 +82,14 @@ export function createClass(node, moduleDoc, context) {
     if (isProperty(member) && !hasIgnoreJSDoc(member)) {
       const field = createField(member);
 
+      /** If a member has only a getAccessor, it means it's readonly */
+      if(ts.isGetAccessor(member)) {
+        const hasSetter = node.members.some(m => ts.isSetAccessor(m) && m.name.getText() === field.name);
+        if(!hasSetter) {
+          field.readonly = true;
+        }
+      }
+
       /** Flag class fields that get assigned a variable, so we can resolve it later (in the RESOLVE-INITIALIZERS plugin) */
       if (member?.initializer?.kind === ts.SyntaxKind.Identifier) {
         field.resolveInitializer = {
