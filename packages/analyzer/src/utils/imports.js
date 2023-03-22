@@ -18,3 +18,8 @@ export function hasNamedImport(node) {
 export function hasAggregatingImport(node) {
   return !!node?.importClause?.namedBindings?.name && !hasNamedImport(node);
 }
+
+/** @example import './my-module.js'; */
+export function hasSideEffectImport(node) {
+  return 'importClause' in node && node.importClause == null;
+}
