@@ -1,3 +1,6 @@
+## Release 0.8.1
+- Fixed bug that crashes analyzer when using `{@link foo}` in a JSDoc comment
+
 ## Release 0.8.0
 - Add support for `readonly` which has just been standardized in the schema
 

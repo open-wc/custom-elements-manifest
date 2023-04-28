@@ -2,13 +2,11 @@
 import { LitElement } from 'lit';
 
 export class MyElement extends LitElement {
-  /** @readonly */
-  foo = 1;
 
-  readonly bar = 2;
-
-  get baz() {}
-  set baz() {}
-
-  get qux() {}
+ /**
+   * @param fruit - {@link test} - This is a test param
+   */
+ fire() {
+  this.dispatchEvent(new Event('disabled-changed'));
+}
 }
