@@ -7,8 +7,13 @@ export function handleJsDocType(type) {
 }
 
 export function normalizeDescription(desc) {
-  if (desc.startsWith('- ')) {
+  if (Array.isArray(desc)) {
+    desc = desc.reduce((prev, curr) => prev += curr.getText(), '');
+  }
+
+  if (typeof desc === 'string' && desc?.startsWith('- ')) {
     desc = desc.slice(2);
   }
+
   return desc;
 }

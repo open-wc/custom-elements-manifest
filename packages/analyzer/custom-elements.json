@@ -12,31 +12,22 @@
           "name": "MyElement",
           "members": [
             {
-              "kind": "field",
-              "name": "foo",
+              "kind": "method",
+              "name": "fire",
+              "parameters": [
+                {
+                  "description": "{@link test}- This is a test param\n   ",
+                  "name": "fruit"
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "disabled-changed",
               "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "readonly": true
-            },
-            {
-              "kind": "field",
-              "name": "bar",
-              "type": {
-                "text": "number"
-              },
-              "readonly": true,
-              "default": "2"
-            },
-            {
-              "kind": "field",
-              "name": "baz"
-            },
-            {
-              "kind": "field",
-              "name": "qux",
-              "readonly": true
+                "text": "Event"
+              }
             }
           ],
           "superclass": {
