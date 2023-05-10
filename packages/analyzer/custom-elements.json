@@ -9,30 +9,10 @@
         {
           "kind": "class",
           "description": "",
-          "name": "MyElement",
-          "members": [
-            {
-              "kind": "method",
-              "name": "fire",
-              "parameters": [
-                {
-                  "description": "{@link test}- This is a test param\n   ",
-                  "name": "fruit"
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "name": "disabled-changed",
-              "type": {
-                "text": "Event"
-              }
-            }
-          ],
+          "name": "Avatar",
           "superclass": {
-            "name": "LitElement",
-            "package": "lit"
+            "name": "FASTElement",
+            "module": "fixtures/01-class/-default/package/bar.js"
           },
           "customElement": true
         }
@@ -40,9 +20,9 @@
       "exports": [
         {
           "kind": "js",
-          "name": "MyElement",
+          "name": "Avatar",
           "declaration": {
-            "name": "MyElement",
+            "name": "Avatar",
             "module": "fixtures/01-class/-default/package/bar.js"
           }
         }

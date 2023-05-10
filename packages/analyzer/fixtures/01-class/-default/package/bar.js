@@ -1,12 +1,7 @@
-
-import { LitElement } from 'lit';
-
-export class MyElement extends LitElement {
-
- /**
-   * @param fruit - {@link test} - This is a test param
+export class Avatar extends FASTElement {
+  /**
+   * entityID used to control the definition of an optional entity column which is created with the {@link Users.entityColumn} function.
+   * @internal
    */
- fire() {
-  this.dispatchEvent(new Event('disabled-changed'));
-}
+  @attr entityLabel: string = 'Counterparty';
 }
