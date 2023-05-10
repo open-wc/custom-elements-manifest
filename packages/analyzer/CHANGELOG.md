@@ -1,3 +1,6 @@
+## Release 0.8.2
+- Fixed a bug where an `@internal` field was being accessed, causing the analyzer to error
+
 ## Release 0.8.1
 - Fixed bug that crashes analyzer when using `{@link foo}` in a JSDoc comment
 

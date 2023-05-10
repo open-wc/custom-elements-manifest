@@ -18,6 +18,14 @@ export function attrDecoratorPlugin(converter) {
             const hasAttrDecorator = member?.decorators?.find(decorator('attr'));
             if(hasAttrDecorator) {
               const correspondingField = classDoc?.members?.find(classMember => classMember.name === member.name.getText());
+
+              /**
+               * If a `field` was not found on the `currClass`, that's because it has a @internal jsdoc notation
+               */
+              if(!correspondingField) {
+                return;
+              }
+
               let attribute = createAttributeFromField(correspondingField);
 
               /**
