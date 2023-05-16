@@ -124,6 +124,11 @@ export function handleJsDoc(doc, node) {
         doc.deprecated = tag.comment || "true";
       }
 
+      /** @default */
+      if (safe(() => tag?.tagName?.getText()) === 'default' && doc?.kind === 'field') {
+        doc.default ??= tag.comment;
+      }
+
       /**
        * Overwrite privacy
        * @public

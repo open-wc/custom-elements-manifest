@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "DefaultValues",
+          "members": [
+            {
+              "kind": "field",
+              "name": "defaultViaJsDoc",
+              "default": "'default from jsdoc'"
+            },
+            {
+              "kind": "field",
+              "name": "defaultWhereCodeTakesPrecedence",
+              "type": {
+                "text": "string"
+              },
+              "default": "'default from code'"
+            },
+            {
+              "kind": "field",
+              "name": "withoutDefault"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "default-values",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DefaultValues",
+          "declaration": {
+            "name": "DefaultValues",
+            "module": "my-element.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "default-values",
+          "declaration": {
+            "name": "DefaultValues",
+            "module": "my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}
