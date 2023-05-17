@@ -1,3 +1,6 @@
+## Release 0.8.3
+- Added support for `@default` jsdoc
+
 ## Release 0.8.2
 - Fixed a bug where an `@internal` field was being accessed, causing the analyzer to error
 
