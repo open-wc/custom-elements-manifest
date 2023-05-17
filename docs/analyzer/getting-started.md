@@ -342,6 +342,7 @@ For all supported syntax, please check the [fixtures](https://github.com/open-wc
 | `@tag`,<br>`@tagname`         | Documents the name of your custom element          |
 | `@summary`                    | Documents a short summary                          |
 | `@internal`,<br>`@ignore`     | To omit documentation of internal details          |
+| `@default`                    | Documents the default value for a property         |
 
 ```js
 /**
