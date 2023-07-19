@@ -1,3 +1,6 @@
+## Release 0.8.4
+- Support `globalThis.customElements.define`
+
 ## Release 0.8.3
 - Added support for `@default` jsdoc
 
