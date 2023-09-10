@@ -16,8 +16,11 @@ function getExportKind(x, options) {
     return x.kind ? inlineCode(x.kind) : text('');
 }
 
+const formatInline = x =>
+  x?.replace(/\n/g, '');
+
 export const DECLARATION = { heading: 'Declaration',     get: x => x.declaration?.name ?? '' };
-export const DEFAULT     = { heading: 'Default',         get: x => x.default, cellType: inlineCode };
+export const DEFAULT     = { heading: 'Default',         get: x => formatInline(x.default), cellType: inlineCode };
 export const NAME        = { heading: 'Name',            get: x => x.name, cellType: inlineCode };
 export const ATTR_FIELD  = { heading: 'Field',           get: x => x.fieldName };
 export const INHERITANCE = { heading: 'Inherited From',  get: x => x.inheritedFrom?.name ?? '' };
