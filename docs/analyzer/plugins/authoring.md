@@ -70,6 +70,8 @@ export default function myPlugin() {
   return {
     // Make sure to always give your plugin a name! This helps when debugging
     name: 'my-plugin',
+    // Runs before analysis starts
+    initialize({ts, customElementsManifest, context}) {},
     // Runs for all modules in a project, before continuing to the `analyzePhase`
     collectPhase({ts, node, context}){},
     // Runs for each module
@@ -83,6 +85,10 @@ export default function myPlugin() {
 ```
 
 ## Plugin Hooks Lifecycle
+
+### `initialize`
+
+Runs once before analysis starts. Can be used to run setup code required for your plugin.
 
 ### `collectPhase`
 
@@ -364,7 +370,7 @@ export default {
   },
   plugins: [
     /** You can now pass the typeChecker to your plugins */
-    myPlugin(typeChecker)
+    myPlugin(() => typeChecker)
   ],
 }
 
@@ -372,9 +378,13 @@ export default {
 
 `my-plugin.js`:
 ```js
-export function myPlugin(typeChecker) {
+export function myPlugin(getTypechecker) {
+  let typechecker;
   return {
     name: 'my-plugin',
+    initialize() {
+      typechecker = getTypechecker();
+    }
     analyzePhase({ts, moduleDoc, context}) {
       // do something with typeChecker
     }
