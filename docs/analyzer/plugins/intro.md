@@ -6,6 +6,7 @@ You can also write custom plugins to extend the functionality to fit what your p
 
 A plugin is a function that returns an object. You can read about plugins in more detail in the [authoring plugins documentation](../authoring/). There are several hooks you can opt in to:
 
+- **initialize**: Can be used to run setup code in your plugin, runs before analysis
 - **collectPhase**: First passthrough through the AST of all modules in a project, before continuing to the `analyzePhase`. Runs for each module, and gives access to a Context object that you can use for sharing data between phases, and gives access to the AST nodes of your source code. This is useful for collecting information you may need access to in a later phase.
 - **analyzePhase**: Runs for each module, and gives access to the current Module's moduleDoc, and gives access to the AST nodes of your source code. This is generally used for AST stuff.
 - **moduleLinkPhase**: Runs after a module is done analyzing, all information about your module should now be available. You can use this hook to stitch pieces of information together.
@@ -22,6 +23,8 @@ export default {
     {
       // Make sure to always give your plugins a name, this helps when debugging
       name: 'my-plugin',
+      // Runs before analysis starts
+      initialize({ts, customElementsManifest, context}) {},
       // Runs for all modules in a project, before continuing to the `analyzePhase`
       collectPhase({ts, node, context}){},
       // Runs for each module
