@@ -1,3 +1,6 @@
+## Release 0.9.0
+- Adds support for `initialize` hook for plugins. This also fixes a initialization issue when previously using TS's typechecker in combination with `overrideModuleCreation`
+
 ## Release 0.8.4
 - Support `globalThis.customElements.define`
 

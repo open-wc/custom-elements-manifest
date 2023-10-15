@@ -3,6 +3,23 @@ import { Module, Package } from 'custom-elements-manifest/schema';
 /** Plugin execution context. Pass arbitrary data here. */
 export type Context = Record<string, unknown>;
 
+export interface PackageLinkPhaseParams {
+  /**
+   * TypeScript API
+   */
+  ts: typeof import('typescript');
+
+  /**
+   * The newly initialized manifest.
+   */
+  customElementsManifest: Package;
+
+  /**
+   * Plugin execution context. Pass arbitrary data here.
+   */
+  context: Context;
+}
+
 export interface CollectPhaseParams {
   /**
    * TypeScript API
@@ -71,6 +88,12 @@ export interface PackageLinkPhaseParams {
  */
 export interface Plugin {
   name: string,
+
+  /**
+   * @summary Plugin hook that runs once for each plugin
+   */
+  initialize?(params: InitializeParams): void;
+
   /**
    * @summary Plugin hook that runs in the collect phase.
    *

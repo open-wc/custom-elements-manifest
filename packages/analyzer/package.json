@@ -1,6 +1,6 @@
 {
   "name": "@custom-elements-manifest/analyzer",
-  "version": "0.8.4",
+  "version": "0.9.0",
   "description": "",
   "license": "MIT",
   "type": "module",

@@ -22,6 +22,12 @@ export function create({modules, plugins = [], context = {dev:false}}) {
     ...plugins,
   ];
 
+  if(dev) console.log('[INITIALIZE PLUGINS]');
+  mergedPlugins.forEach(({name, initialize}) => {
+    withErrorHandling(name, () => {
+      initialize?.({ts, customElementsManifest, context});
+    });
+  });
 
   modules.forEach(currModule => {
     if(dev) console.log('[COLLECT PHASE]: ', currModule.fileName);

@@ -25,13 +25,27 @@ export default {
   dev: false,
   packagejson: true,
   plugins: [
-    // myPlugin(typeChecker)
+    test(() => typeChecker)
     /** myAwesomePlugin() */
   ],
-  // overrideModuleCreation: ({ts, globs}) => {
-  //   const program = ts.createProgram(globs, defaultCompilerOptions);
-  //   typeChecker = program.getTypeChecker();
+  overrideModuleCreation: ({ts, globs}) => {
+    const program = ts.createProgram(globs, {allowJs: true});
+    typeChecker = program.getTypeChecker();
 
-  //   return program.getSourceFiles().filter(sf => globs.find(glob => sf.fileName.includes(glob)));
-  // },
+    return program.getSourceFiles().filter(sf => globs.find(glob => sf.fileName.includes(glob)));
+  },
+}
+
+function test(getTypeChecker) {
+  let typeChecker;
+  return {
+    name: 'test',
+    initialize() {
+      console.log('initialize')
+      typeChecker = getTypeChecker();
+    },
+    collectPhase({ts, node}) {
+      // console.log(typeChecker)
+    }
+  }
 }
