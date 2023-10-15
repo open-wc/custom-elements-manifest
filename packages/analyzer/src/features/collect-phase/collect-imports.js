@@ -50,10 +50,12 @@ export function collectImportsPlugin() {
           const importTemplate = {
             name: element.name.text,
             kind: 'named',
+            localName: element.propertyName ? element.propertyName.text : element.name.text,
             importPath: node.moduleSpecifier.text,
             isBareModuleSpecifier: isBareModuleSpecifier(node.moduleSpecifier.text),
             isTypeOnly: !!node?.importClause?.isTypeOnly
           };
+          console.log(1111, importTemplate);
           currModuleImports.push(importTemplate);
         });
       }

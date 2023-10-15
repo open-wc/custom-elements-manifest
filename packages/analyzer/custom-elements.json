@@ -10,11 +10,30 @@
           "kind": "class",
           "description": "",
           "name": "Avatar",
+          "members": [
+            {
+              "kind": "field",
+              "name": "title",
+              "type": {
+                "text": "string"
+              },
+              "default": "'default title'"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "title",
+              "type": {
+                "text": "string"
+              },
+              "default": "'default title'",
+              "fieldName": "title"
+            }
+          ],
           "superclass": {
-            "name": "FASTElement",
+            "name": "FoundationElement",
             "module": "fixtures/01-class/-default/package/bar.js"
-          },
-          "customElement": true
+          }
         }
       ],
       "exports": [
@@ -24,6 +43,51 @@
           "declaration": {
             "name": "Avatar",
             "module": "fixtures/01-class/-default/package/bar.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/01-class/-default/package/foo.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Bvatar",
+          "members": [
+            {
+              "kind": "field",
+              "name": "avatar",
+              "type": {
+                "text": "string"
+              },
+              "default": "':)'"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "avatar",
+              "type": {
+                "text": "string"
+              },
+              "default": "':)'",
+              "fieldName": "avatar"
+            }
+          ],
+          "superclass": {
+            "name": "BaseAvatar",
+            "module": "/fixtures/01-class/-default/package/bar.js"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Bvatar",
+          "declaration": {
+            "name": "Bvatar",
+            "module": "fixtures/01-class/-default/package/foo.js"
           }
         }
       ]
