@@ -58,5 +58,7 @@ export default {
 - [custom-element-solidjs-integration](https://www.npmjs.com/package/custom-element-solidjs-integration) - a custom type generator to convert the CEM data into usable types to integrate custom elements into [SolidJS projects](https://www.solidjs.com/)
 - [custom-element-vs-code-integration](https://www.npmjs.com/package/custom-element-vs-code-integration) - a mapper to take the information captured in the CEM and generate the appropriate HTML and CSS data files for for [VS Code](https://code.visualstudio.com/) integration
 - [custom-element-vuejs-integration](https://www.npmjs.com/package/custom-element-vuejs-integration) - a custom type generator to convert the CEM data into usable types to integrate custom elements into [Vue.js projects](https://vuejs.org/)
+- [analyzer-import-alias-plugin](https://www.npmjs.com/package/@genesiscommunitysuccess/analyzer-import-alias-plugin) - plugin to improve handling for import aliased classnames
+- [custom-elements-lsp](https://www.npmjs.com/package/@genesiscommunitysuccess/custom-elements-lsp) - `tsserver` plugin which uses the analyzer and provides intellisense for custom elements in tagged template literals
 
 > Want your plugin listed here? Please create a PR!
