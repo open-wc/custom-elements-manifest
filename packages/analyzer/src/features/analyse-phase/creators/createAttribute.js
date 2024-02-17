@@ -18,6 +18,7 @@ export function createAttributeFromField(field) {
   delete attribute.static;
   delete attribute.privacy;
   delete attribute.reflects;
+  delete attribute.resolveInitializer;
 
   return attribute;
 }
