@@ -1,3 +1,6 @@
+## Release 0.9.2
+- Apply inheritance for `slots`, `cssParts` and `cssProperties`
+
 ## Release 0.9.1
 - Correctly remove `resolveInitializer`s from attributes when using `litPlugin`
 

@@ -28,7 +28,7 @@ export function applyInheritancePlugin() {
             return;
           }
 
-          ['attributes', 'members', 'events'].forEach(type => {
+          ['slots', 'cssParts', 'cssProperties', 'attributes', 'members', 'events'].forEach(type => {
             klass?.[type]?.forEach(currItem => {
               const containingModulePath = getModuleForClassLike(allManifests, klass.name);
               const containingModule = getModuleFromManifests(allManifests, containingModulePath);
