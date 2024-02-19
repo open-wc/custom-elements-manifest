@@ -1,18 +1,20 @@
 import fs from 'fs';
 import path from 'path';
 
+const unixSep = '/';
+
 /**
  * @param {string} p
  * @returns {string}
  */
-const toUnix = p => p.replace(/\\/g, '/');
+const toUnix = p => p.replace(/\\/g, unixSep);
 
 /**
  * @param {number} depth
  * @param {{ cwd:string }} [opts]
  * @returns {string[]}
  */
- export function traverseUp(depth, { cwd = process.cwd() }) {
+export function traverseUp(depth, { cwd = process.cwd() }) {
   return Array(depth).fill().map((_, i) => path.join(cwd, ...Array(i).fill('..')));
 }
 
@@ -44,14 +46,14 @@ export function extractPackageNameFromSpecifier(specifier) {
      * @example '@foo/bar'
      * @example '@foo/bar/baz.js'
      */
-    const split = specifier.split('/');
-    return [split[0], split[1]].join('/');
+    const split = specifier.split(unixSep);
+    return [split[0], split[1]].join(unixSep);
   } else {
     /**
      * @example 'foo'
      * @example 'foo/bar/baz.js'
      */
-    return specifier.split('/')[0];
+    return specifier.split(unixSep)[0];
   }
 }
 
@@ -70,10 +72,10 @@ const getPackageRootAndName = memoize((potentialRoot) => {
 
 const splitPathForResolvedSymlinks = memoize((unixPath) => {
   // Given ['','path','to','monorepo','pkg','src'], iterate till /path/to/monorepo/pkg is found
-  const parts = path.dirname(unixPath).split(path.sep);
+  const parts = path.dirname(unixPath).split(unixSep);
   for (let i = 0; i < parts.length; i += 1) {
     const consideredParts = i > 0 ? parts.slice(0, -i) : parts;
-    const potentialRoot = consideredParts.join(path.sep);
+    const potentialRoot = consideredParts.join(unixSep);
     const packageOutput = getPackageRootAndName(potentialRoot);
     if (packageOutput) {
       return {
