@@ -3,6 +3,23 @@ import { Module, Package } from 'custom-elements-manifest/schema';
 /** Plugin execution context. Pass arbitrary data here. */
 export type Context = Record<string, unknown>;
 
+export interface InitializeParams {
+  /**
+   * TypeScript API
+   */
+  ts: typeof import('typescript')
+
+  /**
+   * The newly initialized manifest.
+   */
+  customElementsManifest: Package;
+
+  /**
+   * Plugin execution context. Pass arbitrary data here.
+   */
+  context: Context;
+}
+
 export interface PackageLinkPhaseParams {
   /**
    * TypeScript API
