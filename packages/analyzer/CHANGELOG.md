@@ -1,3 +1,6 @@
+## Release 0.9.3
+- Fix missing type for `initialize` hook
+
 ## Release 0.9.2
 - Apply inheritance for `slots`, `cssParts` and `cssProperties`
 
