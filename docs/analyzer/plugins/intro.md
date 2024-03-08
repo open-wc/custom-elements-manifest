@@ -42,23 +42,29 @@ export default {
 
 ## Community Plugins
 
-- [cem-plugin-async-function](https://www.npmjs.com/package/cem-plugin-async-function) - plugin to add (non-standard) async flag to functions
-- [cem-plugin-copy](https://www.npmjs.com/package/cem-plugin-copy) - plugin to copy files when finished analyzing
-- [cem-plugin-jsdoc-example](https://www.npmjs.com/package/cem-plugin-jsdoc-example) - plugin to handle jsdoc `@example` tag
-- [cem-plugin-jsdoc-function](https://www.npmjs.com/package/cem-plugin-jsdoc-function) - plugin to handle jsdoc `@function` tag on variables
-- [cem-plugin-module-file-extensions](https://www.npmjs.com/package/cem-plugin-module-file-extensions) - plugin to rewrite file extensions (e.g. from `.js` to `.ts`)
-- [cem-plugin-reactify](https://www.npmjs.com/package/cem-plugin-reactify) - plugin to automatically create React wrappers for your custom elements
-- [cem-plugin-readonly](https://www.npmjs.com/package/cem-plugin-readonly) - plugin to handle read-only class members
-- [cem-plugin-type-descriptions-markdown](https://www.npmjs.com/package/cem-plugin-type-descriptions-markdown) - plugin to add markdown type documentation to manifest member descriptions
-- [vite-plugin-cem](https://www.npmjs.com/package/vite-plugin-cem) - a [vite.js](https://vitejs.dev/) plugin based on the [@custom-elements-manifest/analyzer](https://custom-elements-manifest.open-wc.org/analyzer/getting-started)
-- [cem-plugin-expanded-types](https://www.npmjs.com/package/cem-plugin-expanded-types) - a plugin for the CEM Analyzer to parse TypeScript types and provide usable information for tools.
-- [custom-element-jet-brains-integration](https://www.npmjs.com/package/custom-element-jet-brains-integration) - a mapper to take the information captured in the CEM and generate the appropriate `web-types.json` file for [JetBrains IDEs](https://www.jetbrains.com/)
-- [custom-element-jsx-integration](https://www.npmjs.com/package/custom-element-jsx-integration) - a custom type generator to convert the CEM data into usable types to integrate custom elements into _non-React_ projects that use JSX templates
-- [custom-element-react-wrappers](https://www.npmjs.com/package/custom-element-react-wrappers) - a tool for generating react-compatible wrappers for custom elements
-- [custom-element-solidjs-integration](https://www.npmjs.com/package/custom-element-solidjs-integration) - a custom type generator to convert the CEM data into usable types to integrate custom elements into [SolidJS projects](https://www.solidjs.com/)
-- [custom-element-vs-code-integration](https://www.npmjs.com/package/custom-element-vs-code-integration) - a mapper to take the information captured in the CEM and generate the appropriate HTML and CSS data files for for [VS Code](https://code.visualstudio.com/) integration
-- [custom-element-vuejs-integration](https://www.npmjs.com/package/custom-element-vuejs-integration) - a custom type generator to convert the CEM data into usable types to integrate custom elements into [Vue.js projects](https://vuejs.org/)
-- [analyzer-import-alias-plugin](https://www.npmjs.com/package/@genesiscommunitysuccess/analyzer-import-alias-plugin) - plugin to improve handling for import aliased classnames
-- [custom-elements-lsp](https://www.npmjs.com/package/@genesiscommunitysuccess/custom-elements-lsp) - `tsserver` plugin which uses the analyzer and provides intellisense for custom elements in tagged template literals
+| Name | Description |
+| ---- | ----------- |
+| [analyzer-import-alias-plugin](https://www.npmjs.com/package/@genesiscommunitysuccess/analyzer-import-alias-plugin) | plugin to improve handling for import aliased classnames |
+| [cem-plugin-async-function](https://www.npmjs.com/package/cem-plugin-async-function) | plugin to add (non-standard) async flag to functions |
+| [cem-plugin-copy](https://www.npmjs.com/package/cem-plugin-copy) | plugin to copy files when finished analyzing |
+| [cem-plugin-custom-jsdoc-tags](https://www.npmjs.com/package/cem-plugin-custom-jsdoc-tags) | A tool for mapping custom JSDoc tags to properties in the Custom Elements Manifest. |
+| [cem-plugin-expanded-types](https://www.npmjs.com/package/cem-plugin-expanded-types) | a plugin for the CEM Analyzer to parse TypeScript types and provide usable information for tools. |
+| [cem-plugin-jsdoc-example](https://www.npmjs.com/package/cem-plugin-jsdoc-example) | plugin to handle jsdoc `@example` tag |
+| [cem-plugin-jsdoc-function](https://www.npmjs.com/package/cem-plugin-jsdoc-function) | plugin to handle jsdoc `@function` tag on variables |
+| [cem-plugin-module-file-extensions](https://www.npmjs.com/package/cem-plugin-module-file-extensions) | plugin to rewrite file extensions (e.g. from `.js` to `.ts`) |
+| [cem-plugin-reactify](https://www.npmjs.com/package/cem-plugin-reactify) | plugin to automatically create React wrappers for your custom elements |
+| [cem-plugin-readonly](https://www.npmjs.com/package/cem-plugin-readonly) | plugin to handle read-only class members |
+| [cem-plugin-type-descriptions-markdown](https://www.npmjs.com/package/cem-plugin-type-descriptions-markdown) | plugin to add markdown type documentation to manifest member descriptions |
+| [custom-element-jet-brains-integration](https://www.npmjs.com/package/custom-element-jet-brains-integration) | a mapper to take the information captured in the CEM and generate the appropriate `web-types.json` file for [JetBrains IDEs](https://www.jetbrains.com/) |
+| [custom-element-jsx-integration](https://www.npmjs.com/package/custom-element-jsx-integration) | a custom type generator to convert the CEM data into usable types to integrate custom elements into _non-React_ projects that use JSX templates |
+| [custom-element-lazy-loader](https://www.npmjs.com/package/custom-element-lazy-loader) | Create a single entry point to lazy-load your custom elements/web components as needed! |
+| [custom-element-react-wrappers](https://www.npmjs.com/package/custom-element-react-wrappers) | a tool for generating react-compatible wrappers for custom elements |
+| [custom-element-solidjs-integration](https://www.npmjs.com/package/custom-element-solidjs-integration) | a custom type generator to convert the CEM data into usable types to integrate custom elements into [SolidJS projects](https://www.solidjs.com/) |
+| [custom-element-svelte-integration](https://www.npmjs.com/package/custom-element-svelte-integration) | a custom type generator to convert the CEM data into usable types to integrate custom elements into Svelte projects |
+| [custom-element-vs-code-integration](https://www.npmjs.com/package/custom-element-vs-code-integration) | a mapper to take the information captured in the CEM and generate the appropriate HTML and CSS data files for for [VS Code](https://code.visualstudio.com/) integration |
+| [custom-element-vuejs-integration](https://www.npmjs.com/package/custom-element-vuejs-integration) | a custom type generator to convert the CEM data into usable types to integrate custom elements into [Vue.js projects](https://vuejs.org/) |
+| [custom-elements-lsp](https://www.npmjs.com/package/@genesiscommunitysuccess/custom-elements-lsp) | `tsserver` plugin which uses the analyzer and provides intellisense for custom elements in tagged template literals |
+| [custom-elements-manifest-inheritance](https://www.npmjs.com/package/custom-elements-manifest-inheritance) | A tool for mapping inherited content (including class members, attributes, CSS parts, CSS variables, slots, and events) from parent classes in the Custom Elements Manifest. |
+| [vite-plugin-cem](https://www.npmjs.com/package/vite-plugin-cem) | a [vite.js](https://vitejs.dev/) plugin based on the [@custom-elements-manifest/analyzer](https://custom-elements-manifest.open-wc.org/analyzer/getting-started) |
 
 > Want your plugin listed here? Please create a PR!
