@@ -195,7 +195,7 @@
         },
         {
           "kind": "mixin",
-          "description": "Picks up @property decorator on mixins as well",
+          "description": "Picks up property decorator on mixins as well",
           "name": "InputMixin",
           "members": [
             {

@@ -11,8 +11,8 @@ export function customElementDecoratorPlugin() {
   return {
     name: 'CORE - CUSTOM-ELEMENT-DECORATOR',
     analyzePhase({node, moduleDoc, context}){
-      if(has(node.decorators)) {
-        const customElementDecorator = node.decorators?.find(decorator('customElement'));
+      if (has(node.modifiers)) {
+        const customElementDecorator = node.modifiers?.find(decorator('customElement'));
 
         if(customElementDecorator) {
           const className = node.name.text;
@@ -26,7 +26,6 @@ export function customElementDecoratorPlugin() {
               ...resolveModuleOrPackageSpecifier(moduleDoc, context, className)
             },
           };
-
 
           moduleDoc.exports = [...(moduleDoc.exports || []), definitionDoc];
         }

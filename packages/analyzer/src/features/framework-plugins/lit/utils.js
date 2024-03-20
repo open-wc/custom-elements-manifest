@@ -50,7 +50,7 @@ export function getAttributeName(node) {
 }
 
 export function hasPropertyDecorator(node) {
-  return node?.decorators?.some((decorator) => { 
+  return node?.modifiers?.some((decorator) => { 
     return ts.isDecorator(decorator) && decorator?.expression?.expression?.getText() === 'property'
   });
 }

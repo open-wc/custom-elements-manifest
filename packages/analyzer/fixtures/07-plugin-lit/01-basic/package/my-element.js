@@ -53,7 +53,7 @@ class MyElement extends LitElement {
 }
 
 /**
- * Picks up @property decorator on mixins as well
+ * Picks up property decorator on mixins as well
  */
 export function InputMixin(superClass) {
   class InputElement extends superClass {

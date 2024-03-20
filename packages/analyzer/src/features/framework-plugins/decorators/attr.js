@@ -15,7 +15,7 @@ export function attrDecoratorPlugin(converter) {
            * If a field has the @attr decorator, create an attr from the field in the classDoc
            */
           node?.members?.forEach(member => {
-            const hasAttrDecorator = member?.decorators?.find(decorator('attr'));
+            const hasAttrDecorator = member?.modifiers?.find(decorator('attr'));
             if(hasAttrDecorator) {
               const correspondingField = classDoc?.members?.find(classMember => classMember.name === member.name.getText());
 

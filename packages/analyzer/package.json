@@ -1,6 +1,6 @@
 {
   "name": "@custom-elements-manifest/analyzer",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "",
   "license": "MIT",
   "type": "module",
@@ -24,7 +24,7 @@
     "prepublishOnly": "npm test && npm run build:browser",
     "start": "nodemon --ignore './custom-elements.json' cem.js analyze --dev --fast",
     "test": "asdgf",
-    "build:browser": "rollup -c rollup.browser.config.js",
+    "build:browser": "esbuild src/browser-entrypoint.js --bundle --format=esm --outfile=browser/index.js",
     "test:watch": "watchexec -w src -w test npm test",
     "update-fixtures": "node scripts/update-version.js --version 1.0.0"
   },
@@ -47,7 +47,7 @@
     "custom-elements-manifest": "1.0.0",
     "debounce": "1.2.1",
     "globby": "11.0.4",
-    "typescript": "~4.3.2"
+    "typescript": "~5.4.2"
   },
   "devDependencies": {},
   "contributors": [

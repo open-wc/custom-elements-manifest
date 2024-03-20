@@ -49,7 +49,7 @@ function handlePropertyDecorator(classNode, moduleDoc, mixinName = null) {
    */
   classNode?.members?.forEach(member => {
     if (hasPropertyDecorator(member)) {
-      const propertyDecorator = member.decorators.find(decorator('property'));
+      const propertyDecorator = member.modifiers.find(decorator('property'));
       const propertyOptions = propertyDecorator?.expression?.arguments?.find(arg => ts.isObjectLiteralExpression(arg));
 
       /**
