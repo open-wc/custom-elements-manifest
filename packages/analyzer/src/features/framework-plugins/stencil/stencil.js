@@ -15,7 +15,7 @@ export function stencilPlugin() {
            * Add tagName to classDoc, extracted from `@Component({tag: 'foo-bar'})` decorator
            * Add custom-element-definition to exports
            */ 
-          const componentDecorator = node?.decorators?.find(decorator('Component'))?.expression;
+          const componentDecorator = node?.modifiers?.find(decorator('Component'))?.expression;
 
           const tagName = componentDecorator?.arguments?.[0]?.properties?.find(prop => {
             return prop?.name?.getText() === 'tag'
@@ -39,9 +39,9 @@ export function stencilPlugin() {
            * Collect fields with `@Event()` decorator so we can process them in `moduleLinkPhase`
            */ 
           const eventFields = node?.members
-            ?.filter(member => member?.decorators?.find(decorator('Event')))
+            ?.filter(member => member?.modifiers?.find(decorator('Event')))
             ?.map(member => {
-              const eventDecorator = member?.decorators?.find(decorator('Event'));
+              const eventDecorator = member?.modifiers?.find(decorator('Event'));
               const eventName = eventDecorator?.expression?.arguments?.[0]?.properties?.find(prop => {
                 return prop?.name?.getText() === 'eventName'
               })?.initializer?.text;
@@ -58,13 +58,13 @@ export function stencilPlugin() {
            * - add fieldName to attr
            */
           node?.members
-            ?.filter(member => member?.decorators?.find(decorator('Prop')))
+            ?.filter(member => member?.modifiers?.find(decorator('Prop')))
             ?.forEach(property => {
               const fieldName = property?.name?.text;
-              const attrNameFromDecorator = property?.decorators?.[0]?.expression?.arguments?.[0]?.properties?.find(prop => prop?.name?.getText() === 'attribute')?.initializer?.text;
+              const attrNameFromDecorator = property?.modifiers?.[0]?.expression?.arguments?.[0]?.properties?.find(prop => prop?.name?.getText() === 'attribute')?.initializer?.text;
               const attrName = attrNameFromDecorator || toKebabCase(property?.name?.text);
               
-              const reflects = property?.decorators?.[0]?.expression?.arguments?.[0]?.properties?.find(prop => prop?.name?.getText() === 'reflects')?.initializer?.getText?.() === 'true';
+              const reflects = property?.modifiers?.[0]?.expression?.arguments?.[0]?.properties?.find(prop => prop?.name?.getText() === 'reflects')?.initializer?.getText?.() === 'true';
               const member = currClass?.members?.find(mem => mem?.name === fieldName);
               if(reflects) {
                 member.reflects = true;

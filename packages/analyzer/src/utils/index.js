@@ -1,3 +1,5 @@
+import ts from 'typescript';
+
 /**
  * GENERAL UTILITIES
  */
@@ -5,9 +7,9 @@
 export const has = arr => Array.isArray(arr) && arr.length > 0;
 
 /**
- * @example node?.decorators?.find(decorator('Component'))
+ * @example node?.modifiers?.find(decorator('Component'))
  */
-export const decorator = type => decorator => decorator?.expression?.expression?.getText() === type || decorator?.expression?.getText() === type;
+export const decorator = type => decorator => ts.isDecorator(decorator) && decorator?.expression?.expression?.getText() === type || decorator?.expression?.getText() === type;
 
 export function isBareModuleSpecifier(specifier) {
   return !!specifier?.replace(/'/g, '')[0].match(/[@a-zA-Z]/g);

@@ -1,3 +1,6 @@
+## Release 0.9.4
+- Updated the internally used TS version to `4.9`. This is a breaking change for plugin authors, because the AST that typescript exposes has changed; specifically for decorators; `node.decorators` no longer exists, but decorators can now be found in `node.modifiers`. There may be other AST changes as well.
+
 ## Release 0.9.3
 - Fix missing type for `initialize` hook
 

@@ -9,7 +9,7 @@ export function controllerPlugin() {
           /**
            * handle @controller
            */
-          const hasController = node?.decorators?.find(decorator('controller'));
+          const hasController = node?.modifiers?.find(decorator('controller'));
 
           if(hasController) {
             const className = node?.name?.getText();
