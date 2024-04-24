@@ -1,3 +1,6 @@
+## Release 0.9.6
+- Added `createRenderRoot` to lit's method denylist
+
 ## Release 0.9.5
 - When using `litPlugin`, it now removes overriden lit specific lifecycle methods to be aligned with the behavior of overriding lit specific lifecycle methods in classes
 
