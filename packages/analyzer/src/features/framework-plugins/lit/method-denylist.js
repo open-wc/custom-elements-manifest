@@ -9,13 +9,12 @@ export function methodDenyListPlugin() {
   return {
     name: 'CORE - LIT-METHOD-DENYLIST',
     moduleLinkPhase({moduleDoc}){
-      const classes = moduleDoc?.declarations?.filter(declaration => declaration.kind === 'class');
+      const classesAndMixins = moduleDoc?.declarations?.filter(declaration => declaration.kind === 'class' || declaration.kind === 'mixin');
 
-      classes?.forEach(klass => {
+      classesAndMixins?.forEach(klass => {
         if(!klass?.members) return;
         klass.members = klass?.members?.filter(member => !METHOD_DENY_LIST.includes(member.name));
       });
     },
   }
 }
-
