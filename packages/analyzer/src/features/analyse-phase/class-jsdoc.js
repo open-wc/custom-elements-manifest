@@ -87,9 +87,7 @@ export function classJsDocPlugin() {
                   case 'element':
                     classDoc.tagName = jsDoc?.name || '';
                     break;
-                  case 'state':
                   case 'customState':
-                    console.log("CUSTOM STATE")
                     let statePropertyDoc = {};
                     statePropertyDoc = handleClassJsDoc(statePropertyDoc, jsDoc);
                     classDoc.customStates.push(statePropertyDoc);
