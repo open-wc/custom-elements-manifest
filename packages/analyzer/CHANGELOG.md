@@ -1,3 +1,6 @@
+## Release 0.9.8
+- Skip `...super.properties` in lit's `static properties`
+
 ## Release 0.9.7
 - Added `scheduleUpdate` to lit's method denylist
 

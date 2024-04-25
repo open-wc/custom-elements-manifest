@@ -8,6 +8,7 @@ import { LitElement, property, customElement } from 'lit-element';
 class MyElement extends LitElement {
   static get properties() {
     return {
+      ...super.properties,
       prop1: { type: String }, // has default "'foo'"
       prop2: { type: Boolean },
       attr: { type: String, attribute: 'my-attr' }, // attr output as 'my-attr'
