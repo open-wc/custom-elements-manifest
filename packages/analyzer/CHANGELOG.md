@@ -1,3 +1,6 @@
+## Release 0.9.7
+- Added `scheduleUpdate` to lit's method denylist
+
 ## Release 0.9.6
 - Added `createRenderRoot` to lit's method denylist
 

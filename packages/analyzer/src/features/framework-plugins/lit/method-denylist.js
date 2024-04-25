@@ -4,7 +4,7 @@
  * Excludes methods from the manifest
  */
 export function methodDenyListPlugin() {
-  const METHOD_DENY_LIST = ['requestUpdate', 'createRenderRoot', 'performUpdate', 'shouldUpdate', 'update', 'render', 'firstUpdated', 'updated', 'willUpdate'];
+  const METHOD_DENY_LIST = ['requestUpdate', 'createRenderRoot', 'scheduleUpdate', 'performUpdate', 'shouldUpdate', 'update', 'render', 'firstUpdated', 'updated', 'willUpdate'];
 
   return {
     name: 'CORE - LIT-METHOD-DENYLIST',
