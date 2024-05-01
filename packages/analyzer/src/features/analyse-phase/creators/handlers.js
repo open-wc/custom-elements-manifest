@@ -79,8 +79,39 @@ export function handleJsDoc(doc, node) {
         }
 
         if(tag?.typeExpression) {
-          parameterTemplate.type = {
-            text: handleJsDocType(tag.typeExpression.type.getText())
+          /**
+           * @TODO Output is:
+                {
+                  "name": "{ bar }"
+                },
+                {
+                  "name": "options",
+                  "type": {
+                    "text": "{\nfoo?: string, bar: boolean, baz: baz, }"
+                  }
+                }
+           * So its duplicated, we need to dedupe the parameters still
+           * but I think the code that adds the "name": "{ bar }" is somewhere else,
+           * I think its in the functionlike handler or something
+           */
+          const jsDocPropertyTags = tag.typeExpression.type.jsDocPropertyTags;
+          if (jsDocPropertyTags && jsDocPropertyTags.length) {
+            let output = "{\n";
+            jsDocPropertyTags?.forEach(tag => {
+              if (!tag.kind === ts.SyntaxKind.JSDocParameterTag) return;
+              const name = tag.name.right.escapedText;
+              const type = handleJsDocType(tag.typeExpression.type.getText());
+              const optional = tag.isBracketed ? '?' : '';
+              output += `${name}${optional}: ${type}, `;
+            });
+            output += "}";
+            parameterTemplate.type = {
+              text: output
+            }
+          } else {
+            parameterTemplate.type = {
+              text: handleJsDocType(tag.typeExpression.type.getText())
+            }
           }
         }
 

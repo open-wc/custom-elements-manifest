@@ -1,7 +1,9 @@
-export class Avatar extends FASTElement {
+export class MyEl extends HTMLElement {
   /**
-   * entityID used to control the definition of an optional entity column which is created with the {@link Users.entityColumn} function.
-   * @internal
+   * @param {object} options
+   * @param {string} [options.foo]
+   * @param {boolean} options.bar
+   * @param {import('foo').baz} options.baz
    */
-  @attr entityLabel: string = 'Counterparty';
+  foo({ bar }) {}
 }
