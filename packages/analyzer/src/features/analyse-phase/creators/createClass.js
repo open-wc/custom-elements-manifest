@@ -278,7 +278,7 @@ function mapClassMember(source, classTemplate, context, node, statement, express
     if (hasAttrAnnotation(statement)) {
       const field = existingMember
       let attribute = createAttributeFromField(field);
-      attribute = handleAttrJsDoc(existingMember, attribute);
+      attribute = handleAttrJsDoc(statement, attribute);
 
       field.attribute = attribute.name;
 

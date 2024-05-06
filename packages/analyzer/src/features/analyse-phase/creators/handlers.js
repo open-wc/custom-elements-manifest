@@ -216,8 +216,8 @@ export function handleHeritage(classTemplate, moduleDoc, context, node) {
  */
 export function handleAttrJsDoc(node, doc) {
   node?.jsDoc?.forEach(jsDoc => {
-    const docs = parse(jsDoc?.getFullText())?.find(doc => doc?.tags?.some(({tag}) => tag === 'attr'));
-    const attrTag = docs?.tags?.find(({tag}) => tag === 'attr');
+    const docs = parse(jsDoc?.getFullText())?.find(doc => doc?.tags?.some(({tag}) => ["attribute", "attr"].includes(tag)));
+    const attrTag = docs?.tags?.find(({tag}) => ["attribute", "attr"].includes(tag));
 
     if(attrTag?.name) {
       doc.name = attrTag.name;
@@ -288,9 +288,9 @@ export function handleDefaultValue(doc, node, expression) {
   if(initializer?.kind === ts.SyntaxKind.PropertyAccessExpression) return doc;
   if(initializer?.kind === ts.SyntaxKind.CallExpression) return doc;
   if(initializer?.kind === ts.SyntaxKind.ArrowFunction) return doc;
-  
+
   let defaultValue;
-  /** 
+  /**
    * Check if value has `as const`
    * @example const foo = 'foo' as const;
    */
@@ -299,7 +299,7 @@ export function handleDefaultValue(doc, node, expression) {
   } else {
     defaultValue = initializer?.getText()
   }
-  
+
   if(defaultValue) {
     doc.default = defaultValue;
   }
