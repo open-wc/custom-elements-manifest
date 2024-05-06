@@ -13,7 +13,7 @@ export function cleanupClassesPlugin() {
       const classes = moduleDoc?.declarations?.filter(declaration => declaration.kind === 'class' || declaration.kind === 'mixin');
 
       classes?.forEach(klass => {
-        ['cssProperties', 'cssParts', 'slots', 'members', 'attributes', 'events', 'customStates'].forEach(field => {
+        ['cssProperties', 'cssParts', 'slots', 'members', 'attributes', 'events', 'cssStates'].forEach(field => {
           if(!has(klass[field])) {
             delete klass[field];
           }

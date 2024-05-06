@@ -25,7 +25,7 @@ export function createClass(node, moduleDoc, context) {
     members: [],
     events: [],
     attributes: [],
-    customStates: [],
+    cssStates: [],
   };
 
   node?.members?.forEach(member => {

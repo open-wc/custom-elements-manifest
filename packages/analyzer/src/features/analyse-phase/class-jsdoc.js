@@ -35,7 +35,7 @@ export function classJsDocPlugin() {
               if(parsedJsDoc?.tags?.some(tag => tag?.tag === 'typedef')) return;
 
               parsedJsDoc?.tags?.forEach(jsDoc => {
-                switch(jsDoc.tag) {
+                switch(jsDoc.tag.toLowerCase()) {
                   case 'attr':
                   case 'attribute':
                     const attributeAlreadyExists = classDoc?.attributes?.find(attr => attr.name === jsDoc.name);
@@ -87,10 +87,10 @@ export function classJsDocPlugin() {
                   case 'element':
                     classDoc.tagName = jsDoc?.name || '';
                     break;
-                  case 'customState':
+                  case 'cssstate':
                     let statePropertyDoc = {};
                     statePropertyDoc = handleClassJsDoc(statePropertyDoc, jsDoc);
-                    classDoc.customStates.push(statePropertyDoc);
+                    classDoc.cssStates.push(statePropertyDoc);
                     break;
                   case 'deprecated':
                     classDoc.deprecated = jsDoc?.name ? `${jsDoc.name} ${jsDoc?.description}`.trim() : "true";
