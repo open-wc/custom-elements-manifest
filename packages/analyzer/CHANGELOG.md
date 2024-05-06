@@ -1,3 +1,15 @@
+## Release 0.9.8
+- Skip `...super.properties` in lit's `static properties`
+
+## Release 0.9.7
+- Added `scheduleUpdate` to lit's method denylist
+
+## Release 0.9.6
+- Added `createRenderRoot` to lit's method denylist
+
+## Release 0.9.5
+- When using `litPlugin`, it now removes overriden lit specific lifecycle methods to be aligned with the behavior of overriding lit specific lifecycle methods in classes
+
 ## Release 0.9.4
 - Updated the internally used TS version to `~5.4.2`. This is a breaking change for plugin authors, because the AST that typescript exposes has changed; specifically for decorators; `node.decorators` no longer exists, but decorators can now be found in `node.modifiers`. There may be other AST changes as well.
 

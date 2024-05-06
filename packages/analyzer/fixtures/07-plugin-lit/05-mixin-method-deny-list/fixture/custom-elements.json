@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "my-element.js",
+      "declarations": [
+        {
+          "kind": "mixin",
+          "description": "",
+          "name": "MyMixin",
+          "members": [
+            {
+              "kind": "method",
+              "name": "foo"
+            }
+          ],
+          "parameters": [
+            {
+              "name": "superclass"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MyMixin",
+          "declaration": {
+            "name": "MyMixin",
+            "module": "my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

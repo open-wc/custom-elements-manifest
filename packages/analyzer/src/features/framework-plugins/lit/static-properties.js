@@ -28,19 +28,19 @@ export function staticPropertiesPlugin() {
           if (isMixin(node)) {
             const { mixinFunction, mixinClass } = extractMixinNodes(node);
             const { name } = handleName({}, mixinFunction);
-            handleStaticProperties(mixinClass, moduleDoc, context, name);
+            handleStaticProperties(mixinClass, moduleDoc, context, name, ts);
           }
           break;
 
         case ts.SyntaxKind.ClassDeclaration:
-          handleStaticProperties(node, moduleDoc, context);
+          handleStaticProperties(node, moduleDoc, context, null, ts);
           break;
       }
     },
   };
 }
 
-function handleStaticProperties(classNode, moduleDoc, context, mixinName = null) {
+function handleStaticProperties(classNode, moduleDoc, context, mixinName = null, ts) {
   let className;
   if (!mixinName) {
     className = classNode?.name?.getText();
@@ -52,8 +52,9 @@ function handleStaticProperties(classNode, moduleDoc, context, mixinName = null)
   classNode?.members?.forEach(member => {
     if (hasStaticKeyword(member) && member.name.text === 'properties') {
       const propertiesObject = getPropertiesObject(member);
-
       propertiesObject?.properties?.forEach(property => {
+        if (property.kind !== ts.SyntaxKind.PropertyAssignment) return;
+
         let classMember = {
           kind: 'field',
           name: property?.name?.getText() || '',
