@@ -33,7 +33,7 @@ export function createClass(node, moduleDoc, context) {
      */
     if (isProperty(member)) {
       if (member?.name?.getText() === 'observedAttributes') {
-        /** 
+        /**
          * @example static observedAttributes
          */
         if (ts.isPropertyDeclaration(member)) {
@@ -64,7 +64,7 @@ export function createClass(node, moduleDoc, context) {
 
   /**
    * Second pass through a class's members.
-   * We do this in two passes, because we need to know whether or not a class has any 
+   * We do this in two passes, because we need to know whether or not a class has any
    * attributes, so we handle those first.
    */
   node?.members?.forEach(member => {
@@ -124,7 +124,7 @@ export function createClass(node, moduleDoc, context) {
       /**
        * A class can have a static prop and an instance prop with the same name,
        * both should be output in the CEM
-       * 
+       *
        * If not a static prop, we merge getter and setter pairs here
        */
       if (field?.static) {
@@ -144,7 +144,7 @@ export function createClass(node, moduleDoc, context) {
 
     /**
      * Handle events
-     * 
+     *
      * In order to find `this.dispatchEvent` calls, we have to traverse a method's AST
      */
     if (ts.isMethodDeclaration(member)) {
@@ -210,7 +210,7 @@ export function getDefaultValuesFromConstructorVisitor(source, classTemplate, co
   function visitNode(node) {
     switch (node.kind) {
       case ts.SyntaxKind.Constructor:
-        /** 
+        /**
          * For every member that was added in the classDoc, we want to add a default value if we can
          * To do this, we visit a class's constructor, and loop through the statements
          */
@@ -272,6 +272,28 @@ function mapClassMember(source, classTemplate, context, node, statement, express
     if (expression?.right?.kind === ts.SyntaxKind.Identifier) {
       existingMember.resolveInitializer = {
         ...resolveModuleOrPackageSpecifier({ path: source.getSourceFile().fileName }, context, expression?.right?.getText()),
+      }
+    }
+
+    if (hasAttrAnnotation(statement)) {
+      const field = existingMember
+      let attribute = createAttributeFromField(field);
+      attribute = handleAttrJsDoc(existingMember, attribute);
+
+      field.attribute = attribute.name;
+
+      /**
+        * If the attribute already exists, merge it together with the extra
+        * information we got from the field (like type, summary, description, etc)
+        */
+      let attrAlreadyExists = classTemplate.attributes.find(attr => attr.name === attribute.name);
+
+      if (attrAlreadyExists) {
+        classTemplate.attributes = classTemplate.attributes.map(attr => {
+          return attr.name === attribute.name ? { ...attrAlreadyExists, ...attribute } : attr;
+        });
+      } else {
+        classTemplate.attributes.push(attribute);
       }
     }
   }

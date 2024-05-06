@@ -22,9 +22,10 @@ export const isCustomElementsDefineCall = node => (node?.expression?.getText() =
 
 /**
  * @example @attr
+ * @example @attribute
  */
 export function hasAttrAnnotation(member) {
-  return member?.jsDoc?.some(jsDoc => jsDoc?.tags?.some(tag => safe(() => tag?.tagName?.getText()) === 'attr'));
+  return member?.jsDoc?.some(jsDoc => jsDoc?.tags?.some(tag => safe(() => ["attribute", "attr"].includes(tag?.tagName?.getText()))));
 }
 
 
@@ -92,8 +93,8 @@ export const getOptionsObject = decorator => decorator?.expression?.arguments?.f
  * Get the return value expression of a return statement, omitting the type assertion
  */
 export const getReturnValue = returnStatement => {
-  let value = returnStatement.expression?.kind === ts.SyntaxKind.AsExpression 
-    ? returnStatement.expression.expression.getText() 
+  let value = returnStatement.expression?.kind === ts.SyntaxKind.AsExpression
+    ? returnStatement.expression.expression.getText()
     : returnStatement.expression?.getText()
 
   return value?.split?.(' ')?.[0];
