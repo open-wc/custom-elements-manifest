@@ -87,6 +87,12 @@ export function classJsDocPlugin() {
                   case 'element':
                     classDoc.tagName = jsDoc?.name || '';
                     break;
+                  case 'cssState':
+                  case 'cssstate':
+                    let statePropertyDoc = {};
+                    statePropertyDoc = handleClassJsDoc(statePropertyDoc, jsDoc);
+                    classDoc.cssStates.push(statePropertyDoc);
+                    break;
                   case 'deprecated':
                     classDoc.deprecated = jsDoc?.name ? `${jsDoc.name} ${jsDoc?.description}`.trim() : "true";
                     break;

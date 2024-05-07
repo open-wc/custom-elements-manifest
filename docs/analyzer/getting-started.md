@@ -331,18 +331,19 @@ For all supported syntax, please check the [fixtures](https://github.com/open-wc
 
 ### Supported JSDoc
 
-| JSDoc                         | Description                                        |
-| ----------------------------- | -------------------------------------------------- |
-| `@attr`, <br>`@attribute`     | Documents attributes for your custom element       |
-| `@prop`, <br>`@property `     | Documents properties for your custom element       |
-| `@part`,<br>`@csspart`        | Documents your custom elements Shadow Parts        |
-| `@slot`                       | Documents the Slots used in your components        |
-| `@cssprop`,<br>`@cssproperty` | Documents CSS Custom Properties for your component |
-| `@fires`,<br>`@event`         | Documents events that your component might fire    |
-| `@tag`,<br>`@tagname`         | Documents the name of your custom element          |
-| `@summary`                    | Documents a short summary                          |
-| `@internal`,<br>`@ignore`     | To omit documentation of internal details          |
-| `@default`                    | Documents the default value for a property         |
+| JSDoc                         | Description                                                                       |
+| ----------------------------- | --------------------------------------------------------------------------------- |
+| `@attr`, <br>`@attribute`     | Documents attributes for your custom element                                      |
+| `@prop`, <br>`@property `     | Documents properties for your custom element                                      |
+| `@part`,<br>`@csspart`        | Documents your custom elements Shadow Parts                                       |
+| `@slot`                       | Documents the Slots used in your components                                       |
+| `@cssprop`,<br>`@cssproperty` | Documents CSS Custom Properties for your component                                |
+| `@cssState`                   | Documents the custom CSS state of your custom element when using ElementInternals |
+| `@fires`,<br>`@event`         | Documents events that your component might fire                                   |
+| `@tag`,<br>`@tagname`         | Documents the name of your custom element                                         |
+| `@summary`                    | Documents a short summary                                                         |
+| `@internal`,<br>`@ignore`     | To omit documentation of internal details                                         |
+| `@default`                    | Documents the default value for a property                                        |
 
 ```js
 /**
