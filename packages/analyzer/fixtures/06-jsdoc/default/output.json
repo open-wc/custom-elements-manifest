@@ -27,6 +27,84 @@
             {
               "kind": "field",
               "name": "withoutDefault"
+            },
+            {
+              "kind": "field",
+              "name": "foo",
+              "type": {
+                "text": "string"
+              },
+              "description": "Should work with \"@attribute\" and no name",
+              "default": "\"bar\"",
+              "attribute": "foo"
+            },
+            {
+              "kind": "field",
+              "name": "myFoo",
+              "type": {
+                "text": "string"
+              },
+              "description": "Should work with \"@attribute\" and a name",
+              "default": "\"bar\"",
+              "attribute": "my-foo"
+            },
+            {
+              "kind": "field",
+              "name": "bar",
+              "type": {
+                "text": "string"
+              },
+              "description": "Should work with \"@attr\" and no name",
+              "default": "\"bar\"",
+              "attribute": "bar"
+            },
+            {
+              "kind": "field",
+              "name": "myBar",
+              "type": {
+                "text": "string"
+              },
+              "description": "Should work with \"@attr\" and a name",
+              "default": "\"bar\"",
+              "attribute": "my-bar"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "foo",
+              "type": {
+                "text": "string"
+              },
+              "description": "Should work with \"@attribute\" and no name",
+              "default": "\"bar\"",
+              "fieldName": "foo"
+            },
+            {
+              "name": "my-foo",
+              "type": {
+                "text": "string"
+              },
+              "description": "Should work with \"@attribute\" and a name",
+              "default": "\"bar\"",
+              "fieldName": "myFoo"
+            },
+            {
+              "name": "bar",
+              "type": {
+                "text": "string"
+              },
+              "description": "Should work with \"@attr\" and no name",
+              "default": "\"bar\"",
+              "fieldName": "bar"
+            },
+            {
+              "name": "my-bar",
+              "type": {
+                "text": "string"
+              },
+              "description": "Should work with \"@attr\" and a name",
+              "default": "\"bar\"",
+              "fieldName": "myBar"
             }
           ],
           "superclass": {
