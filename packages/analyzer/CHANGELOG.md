@@ -1,3 +1,6 @@
+## Release 0.10.0
+- Added support for new `cssState` addition to the schema
+
 ## Release 0.9.9
 - Support `@attribute` jsdoc better
 
