@@ -14,11 +14,11 @@
             {
               "kind": "field",
               "name": "firstName",
+              "privacy": "public",
               "type": {
                 "text": "string"
               },
               "default": "'John'",
-              "privacy": "public",
               "attribute": "firstName"
             },
             {
@@ -28,7 +28,7 @@
                 "text": "object"
               },
               "static": true,
-              "default": "{\n      disabled: { type: Boolean }\n    }",
+              "default": "{ disabled: { type: Boolean } }",
               "inheritedFrom": {
                 "name": "InputMixin",
                 "module": "my-element.js"
@@ -37,11 +37,11 @@
             {
               "kind": "field",
               "name": "disabled",
+              "privacy": "public",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "privacy": "public",
               "attribute": "disabled",
               "inheritedFrom": {
                 "name": "InputMixin",
@@ -96,17 +96,17 @@
                 "text": "object"
               },
               "static": true,
-              "default": "{\n      disabled: { type: Boolean }\n    }"
+              "default": "{ disabled: { type: Boolean } }"
             },
             {
               "kind": "field",
               "name": "disabled",
+              "privacy": "public",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "attribute": "disabled",
-              "privacy": "public"
+              "attribute": "disabled"
             }
           ],
           "attributes": [
