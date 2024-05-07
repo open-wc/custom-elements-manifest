@@ -1,3 +1,6 @@
+## Release 0.9.9
+- Support `@attribute` jsdoc better
+
 ## Release 0.9.8
 - Skip `...super.properties` in lit's `static properties`
 
