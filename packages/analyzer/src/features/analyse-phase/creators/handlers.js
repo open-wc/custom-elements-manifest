@@ -301,7 +301,7 @@ export function handleDefaultValue(doc, node, expression) {
   }
 
   if(defaultValue) {
-    doc.default = defaultValue;
+    doc.default = defaultValue.replace(/\s+/g, ' ').trim();
   }
   return doc;
 }

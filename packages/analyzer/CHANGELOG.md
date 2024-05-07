@@ -1,3 +1,6 @@
+## Release 0.10.1
+- Escape newlines and whitespaces from object output
+
 ## Release 0.10.0
 - Added support for new `cssState` addition to the schema
 
