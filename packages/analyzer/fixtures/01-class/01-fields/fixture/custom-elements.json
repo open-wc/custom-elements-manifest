@@ -255,6 +255,20 @@
             },
             {
               "kind": "field",
+              "name": "#truePrivateField",
+              "privacy": "private",
+              "type": {
+                "text": "number"
+              },
+              "default": "1"
+            },
+            {
+              "kind": "method",
+              "name": "#truePrivateMethod",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
               "name": "commaprop1",
               "type": {
                 "text": "string"

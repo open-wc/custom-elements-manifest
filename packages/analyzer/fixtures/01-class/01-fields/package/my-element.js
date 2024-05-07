@@ -74,6 +74,9 @@ class MyEl extends HTMLElement {
     console.log('dont output me')
   }
 
+  #truePrivateField = 1;
+  #truePrivateMethod() {}
+
   constructor() {
     super();
     this.prop2 = 'default';

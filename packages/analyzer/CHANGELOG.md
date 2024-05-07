@@ -1,3 +1,6 @@
+## Release 0.10.2
+- Mark fields and methods starting with `#` as `private`
+
 ## Release 0.10.1
 - Escape newlines and whitespaces from object output
 

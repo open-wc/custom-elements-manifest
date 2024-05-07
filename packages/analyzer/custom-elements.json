@@ -12,12 +12,9 @@
           "name": "Foo",
           "members": [
             {
-              "kind": "field",
-              "name": "foo",
-              "type": {
-                "text": "object"
-              },
-              "default": "{ foo: 'bar' }"
+              "kind": "method",
+              "name": "#foo",
+              "privacy": "private"
             }
           ],
           "superclass": {
