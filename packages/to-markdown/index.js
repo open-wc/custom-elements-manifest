@@ -22,6 +22,7 @@ const DECLARATIONS = {
 };
 
 const SECTIONS = {
+  mainDescription : 'main-description',
   mainHeading: 'main-heading',
   superClass: 'super-class',
   fields: 'fields', 
@@ -180,7 +181,20 @@ function makeModuleDoc(mod, options) {
   const variablesDecl = filteredDeclarations(declarations, omittedDeclarations, classNameFilter).filter(kindIs('variable'));
   const functionsDecl = filteredDeclarations(declarations, omittedDeclarations, classNameFilter).filter(kindIs('function'));
 
+  const mainDescription =
+    optionEnabled(omittedSections.mainDescription)
+      ? declarations.map((decl) =>{
+        if (['mixin', 'class'].includes(decl.kind) && decl.description) {
+          return html(`${decl.description}\n`);
+        } else {
+          return '';
+        }
+      })
+      : [];
+
   return [
+    ...mainDescription,
+
     optionEnabled(omittedSections.mainHeading) ? heading(1 + headingOffset, [inlineCode(mod.path), text(':')]) : null,
 
     ...(filteredDeclarations(declarations, omittedDeclarations, classNameFilter).flatMap(decl => {
