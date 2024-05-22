@@ -1,0 +1,12 @@
+{
+  "name": "nested-node-modules-test-2",
+  "version": "0.0.1",
+  "description": "Used to generate a fixutres with nested node_module",
+  "author": "open-wc",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "dependencies": {
+    "@custom-elements-manifest/to-markdown": "^0.0.12"
+  }
+}
