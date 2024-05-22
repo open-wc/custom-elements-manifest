@@ -32,6 +32,7 @@
   },
   "workspaces": [
     "packages/*",
+    "packages/analyzer/fixtures/11-nested-node-modules/*",
     "plugins/*"
   ]
 }

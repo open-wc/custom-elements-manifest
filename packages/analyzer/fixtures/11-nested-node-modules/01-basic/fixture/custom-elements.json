@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "foo",
+              "type": {
+                "text": "string"
+              },
+              "default": "'bar'"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "my-element",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyWindow",
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "my-window",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "anonymous_4",
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "anon-1",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyEl",
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "anon-2",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "my-foo",
+          "declaration": {
+            "name": "MyFoo",
+            "module": "/foo.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "my-bar",
+          "declaration": {
+            "name": "MyBar",
+            "package": "foo"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "my-element",
+          "declaration": {
+            "name": "MyElement",
+            "module": "my-element.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "my-window",
+          "declaration": {
+            "name": "MyWindow",
+            "module": "my-element.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "anon-1",
+          "declaration": {
+            "name": "anonymous_4",
+            "module": "my-element.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "anon-2",
+          "declaration": {
+            "name": "MyEl",
+            "module": "my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}
