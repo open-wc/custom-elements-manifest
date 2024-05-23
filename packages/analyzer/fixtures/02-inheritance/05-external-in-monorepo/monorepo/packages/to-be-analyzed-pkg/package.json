@@ -4,7 +4,8 @@
   "type": "module",
   "dependencies": {
     "@mono/sibling-pkg": "0.2.0",
-    "ext-pkg-without-export-map": "0.1.0"
+    "ext-pkg-without-export-map": "0.1.0",
+    "is-sorted": "1.0.5"
   },
   "exports": {
     ".": "./index.js",
