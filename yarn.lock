@@ -956,19 +956,6 @@
   resolved "https://registry.yarnpkg.com/@bundled-es-modules/message-format/-/message-format-6.0.4.tgz#232da6877adb960f6c8f598c72588a84352de147"
   integrity sha512-NGUoPxqsBzDwvRhY3A3L/AhS1hzS9OWappfyDOyCwE7G3W4ua28gau7QwvJz7QzA6ArbAdeb8c1mLjvd1WUFAA==
 
-"@custom-elements-manifest/to-markdown@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@custom-elements-manifest/to-markdown/-/to-markdown-0.0.12.tgz#9aae0271636a5300c8d95e6cb8b83c0d74d52747"
-  integrity sha512-24RMTw1leMIJuXjtyZXAjYJ3VLRYTSjdNWvYiJ7wKHyLc0Ab4dv27nX9PQvQkxg8huFzweMad5kUkAFp8S9bww==
-  dependencies:
-    mdast-builder "^1.1.1"
-    mdast-util-from-markdown "^1.0.0"
-    mdast-util-gfm "^1.0.0"
-    mdast-util-to-markdown "^1.0.1"
-    remark-gfm "^1.0.0"
-    remark-stringify "^9.0.1"
-    unified "^9.2.1"
-
 "@custom-elements-manifest/to-markdown@^0.0.13":
   version "0.0.13"
   resolved "https://registry.yarnpkg.com/@custom-elements-manifest/to-markdown/-/to-markdown-0.0.13.tgz#c479e8c29d7febc51c83d3a7bb7ad86dbd3789d5"
