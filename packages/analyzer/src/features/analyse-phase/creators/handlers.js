@@ -34,7 +34,7 @@ export function handleModifiers(doc, node) {
     }
   });
 
-  if (node.name?.text.startsWith('#')) {
+  if (node.name?.text?.startsWith('#')) {
     doc.privacy = 'private';
   }
 
