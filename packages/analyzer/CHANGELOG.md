@@ -1,3 +1,6 @@
+## Release 0.10.3
+- Better support symbols used as propertys, e.g. `get [foo]() { return 1 }`
+
 ## Release 0.10.2
 - Mark fields and methods starting with `#` as `private`
 
