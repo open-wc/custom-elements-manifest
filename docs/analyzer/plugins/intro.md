@@ -66,5 +66,6 @@ export default {
 | [custom-elements-lsp](https://www.npmjs.com/package/@genesiscommunitysuccess/custom-elements-lsp) | `tsserver` plugin which uses the analyzer and provides intellisense for custom elements in tagged template literals |
 | [custom-elements-manifest-inheritance](https://www.npmjs.com/package/custom-elements-manifest-inheritance) | A tool for mapping inherited content (including class members, attributes, CSS parts, CSS variables, slots, and events) from parent classes in the Custom Elements Manifest. |
 | [vite-plugin-cem](https://www.npmjs.com/package/vite-plugin-cem) | a [vite.js](https://vitejs.dev/) plugin based on the [@custom-elements-manifest/analyzer](https://custom-elements-manifest.open-wc.org/analyzer/getting-started) |
+| [skeleton-component-generator](https://www.npmjs.com/package/@addasoft/skeleton-component-generator) | Create skeleton web components using Lit based on given Custom Elements Manifest. |
 
 > Want your plugin listed here? Please create a PR!
