@@ -165,6 +165,45 @@
           "name": "emptyReturn"
         },
         {
+          "kind": "function",
+          "name": "functionWithRestParam1",
+          "parameters": [
+            {
+              "name": "args",
+              "type": {
+                "text": "string"
+              },
+              "rest": true
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "functionWithRestParam2",
+          "parameters": [
+            {
+              "name": "args",
+              "type": {
+                "text": "number"
+              },
+              "rest": true
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "functionWithRestParam3",
+          "parameters": [
+            {
+              "name": "args",
+              "type": {
+                "text": "number"
+              },
+              "rest": true
+            }
+          ]
+        },
+        {
           "kind": "class",
           "description": "METHODS",
           "name": "MyEl",
@@ -242,6 +281,45 @@
                   "type": {
                     "text": "number"
                   }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "functionWithRestParam1",
+              "parameters": [
+                {
+                  "name": "args",
+                  "type": {
+                    "text": "string"
+                  },
+                  "rest": true
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "functionWithRestParam2",
+              "parameters": [
+                {
+                  "name": "args",
+                  "type": {
+                    "text": "number"
+                  },
+                  "rest": true
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "functionWithRestParam3",
+              "parameters": [
+                {
+                  "name": "args",
+                  "type": {
+                    "text": "number"
+                  },
+                  "rest": true
                 }
               ]
             }
@@ -350,6 +428,30 @@
           "name": "emptyReturn",
           "declaration": {
             "name": "emptyReturn",
+            "module": "my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "functionWithRestParam1",
+          "declaration": {
+            "name": "functionWithRestParam1",
+            "module": "my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "functionWithRestParam2",
+          "declaration": {
+            "name": "functionWithRestParam2",
+            "module": "my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "functionWithRestParam3",
+          "declaration": {
+            "name": "functionWithRestParam3",
             "module": "my-element.js"
           }
         },
