@@ -137,7 +137,7 @@ function getOmittedConfig(type, omittedOptions) {
 }
 
 /** Declaration[] -> Declaration[] */
-function filteredDeclarations(declarationsToFilter, ommitedDeclarations, classNameFilter) {
+function filteredDeclarations(declarationsToFilter, omittedDeclarations, classNameFilter) {
   
   // run classNameFilter function if present
   const actualClassNameFilter = classNameFilter instanceof Function ? new RegExp(classNameFilter()) : new RegExp(classNameFilter);
@@ -147,11 +147,11 @@ function filteredDeclarations(declarationsToFilter, ommitedDeclarations, classNa
     if(kindIs('class')(decl)) {
       return actualClassNameFilter.test(decl.name);
     } else if(kindIs('mixin')(decl)) {
-      return isDefined(ommitedDeclarations.mixins) && ommitedDeclarations.mixins === true;
+      return isDefined(omittedDeclarations.mixins) && omittedDeclarations.mixins === true;
     } else if(kindIs('variable')(decl)) {
-      return isDefined(ommitedDeclarations.variables) && ommitedDeclarations.variables === true;
+      return isDefined(omittedDeclarations.variables) && omittedDeclarations.variables === true;
     } else if(kindIs('function')(decl)) {
-      return isDefined(ommitedDeclarations.functions) && ommitedDeclarations.functions === true;
+      return isDefined(omittedDeclarations.functions) && omittedDeclarations.functions === true;
     }
     
     return keepDeclaration.every((result) => result === true);
