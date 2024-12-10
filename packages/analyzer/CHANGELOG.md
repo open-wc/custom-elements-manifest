@@ -1,3 +1,6 @@
+## Release 0.10.4
+- Support `@customelement` and `@customElement` class jsdoc
+
 ## Release 0.10.3
 - Better support symbols used as propertys, e.g. `get [foo]() { return 1 }`
 
