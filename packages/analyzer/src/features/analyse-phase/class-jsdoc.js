@@ -88,6 +88,7 @@ export function classJsDocPlugin() {
                   case 'customElement':
                   case 'customelement':
                     classDoc.tagName = jsDoc?.name || '';
+                    classDoc.customElement = true;
                     break;
                   case 'cssState':
                   case 'cssstate':
