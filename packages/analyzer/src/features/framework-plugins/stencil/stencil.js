@@ -54,7 +54,7 @@ export function stencilPlugin() {
            * Handle `@Prop` decorator, and store attributes to add to manifest later
            * - if type is primitive -> create attr
            *  - if not `{ attribute: ''}` in decorator, just kebabcase the fieldname, otherwise use the value provided
-           * - if type is not primitve -> no attr
+           * - if type is not primitive -> no attr
            * - add fieldName to attr
            */
           node?.members

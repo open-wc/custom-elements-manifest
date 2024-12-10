@@ -1,5 +1,5 @@
 ## Release 0.10.3
-- Better support symbols used as propertys, e.g. `get [foo]() { return 1 }`
+- Better support symbols used as properties, e.g. `get [foo]() { return 1 }`
 
 ## Release 0.10.2
 - Mark fields and methods starting with `#` as `private`
@@ -23,7 +23,7 @@
 - Added `createRenderRoot` to lit's method denylist
 
 ## Release 0.9.5
-- When using `litPlugin`, it now removes overriden lit specific lifecycle methods to be aligned with the behavior of overriding lit specific lifecycle methods in classes
+- When using `litPlugin`, it now removes overridden lit specific lifecycle methods to be aligned with the behavior of overriding lit specific lifecycle methods in classes
 
 ## Release 0.9.4
 - Updated the internally used TS version to `~5.4.2`. This is a breaking change for plugin authors, because the AST that typescript exposes has changed; specifically for decorators; `node.decorators` no longer exists, but decorators can now be found in `node.modifiers`. There may be other AST changes as well.
@@ -62,7 +62,7 @@
 - Add support for `@part` jsdoc
 
 ## Release 0.6.8
-- Detect types from lits static properties
+- Detect types from Lit's static properties
 
 ## Release 0.6.7
 - Fix `@internal` bug on decorated Lit properties
@@ -147,7 +147,7 @@
 - Improved error logging
 
 ## Release 0.4.10
-- Recognize `PrefixUnaryExpression` as being `number` when handling type inferrence
+- Recognize `PrefixUnaryExpression` as being `number` when handling type inference
 
 ## Release 0.4.9
 - Fixed bug to correctly apply default values on overridden inherited fields
