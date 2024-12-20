@@ -9,6 +9,7 @@ enum Declarations {
 }
 
 enum Sections {
+  mainDescription = 'main-description',
   mainHeading = 'main-heading',
   superClass = 'super-class',
   fields = 'fields', 
@@ -29,6 +30,7 @@ type OptionalSections = `${Sections}`;
 export interface Options {
   private?: 'details'|'hidden'|'all';
   headingOffset?: number;
+  mainDescription?: boolean;
   omitSections: OptionalSections[];
   omitDeclarations: OptionalDeclarations[];
   classNameFilter: string | (() => string);
