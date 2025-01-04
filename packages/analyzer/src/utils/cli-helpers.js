@@ -56,6 +56,7 @@ export const DEFAULTS = {
   globs: ['**/*.{js,ts,tsx}'],
   dev: false,
   quiet: false,
+  packagejson: true,
   watch: false,
   litelement: false,
   stencil: false,
