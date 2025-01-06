@@ -3,6 +3,7 @@ html {
   --button-one: #2758ff;
   --button-two-hover: #444;
   --button-two: black;
+  --code-button-focus-color: color-mix(in srgb, currentColor 75%, transparent);
   --code-button-focus-background: var(--markdown-syntax-background-color);
   --code-button-background: var(--markdown-table-row-odd-background-color);
   --code-tabs-tabs-background: var(--page-background);
