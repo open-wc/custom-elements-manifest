@@ -2,6 +2,11 @@
   "name": "@custom-elements-manifest/find-dependencies",
   "version": "0.0.5",
   "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-wc/custom-elements-manifest.git",
+    "directory": "packages/find-dependencies"
+  },
   "main": "index.js",
   "scripts": {
     "start": "nodemon dev.js",
