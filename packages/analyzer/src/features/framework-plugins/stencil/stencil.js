@@ -14,7 +14,7 @@ export function stencilPlugin() {
           /**
            * Add tagName to classDoc, extracted from `@Component({tag: 'foo-bar'})` decorator
            * Add custom-element-definition to exports
-           */ 
+           */
           const componentDecorator = node?.modifiers?.find(decorator('Component'))?.expression;
 
           const tagName = componentDecorator?.arguments?.[0]?.properties?.find(prop => {
@@ -35,9 +35,9 @@ export function stencilPlugin() {
             });
           }
 
-          /** 
+          /**
            * Collect fields with `@Event()` decorator so we can process them in `moduleLinkPhase`
-           */ 
+           */
           const eventFields = node?.members
             ?.filter(member => member?.modifiers?.find(decorator('Event')))
             ?.map(member => {
@@ -63,7 +63,7 @@ export function stencilPlugin() {
               const fieldName = property?.name?.text;
               const attrNameFromDecorator = property?.modifiers?.[0]?.expression?.arguments?.[0]?.properties?.find(prop => prop?.name?.getText() === 'attribute')?.initializer?.text;
               const attrName = attrNameFromDecorator || toKebabCase(property?.name?.text);
-              
+
               const reflects = property?.modifiers?.[0]?.expression?.arguments?.[0]?.properties?.find(prop => prop?.name?.getText() === 'reflects')?.initializer?.getText?.() === 'true';
               const member = currClass?.members?.find(mem => mem?.name === fieldName);
               if(reflects) {
@@ -79,19 +79,21 @@ export function stencilPlugin() {
                 fieldName,
                 ...(hasType ? {
                   type: { text: property?.type?.getText?.() }
-                } : {})
+                } : {}),
+                default: member?.default,
+                description: member?.description
               })
             });
 
           break;
       }
     },
-    
+
     // Runs for each module, after analyzing, all information about your module should now be available
     moduleLinkPhase({moduleDoc}){
       /**
        * Remove lifecycle methods
-       */ 
+       */
       const classes = moduleDoc?.declarations?.filter(declaration => declaration.kind === 'class');
 
       classes?.forEach(klass => {
@@ -102,7 +104,7 @@ export function stencilPlugin() {
       });
 
       /**
-       * Events 
+       * Events
        */
       classes?.forEach(klass => {
         if(!klass?.members) return;

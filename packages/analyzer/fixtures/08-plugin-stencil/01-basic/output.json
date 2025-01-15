@@ -78,7 +78,8 @@
             },
             {
               "name": "message",
-              "fieldName": "message"
+              "fieldName": "message",
+              "default": "'Hello'"
             }
           ],
           "tagName": "todo-list",
