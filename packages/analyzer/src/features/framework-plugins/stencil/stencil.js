@@ -74,15 +74,15 @@ export function stencilPlugin() {
               if(!currClass.attributes) currClass.attributes = [];
               const hasType = !!property?.type?.getText?.();
 
-              currClass.attributes.push({
-                name: attrName,
-                fieldName,
-                ...(hasType ? {
-                  type: { text: property?.type?.getText?.() }
-                } : {}),
-                default: member?.default,
-                description: member?.description
-              })
+                currClass.attributes.push({
+                  name: attrName,
+                  fieldName,
+                  ...(member?.default ? { default: member.default } : {}),
+                  ...(member?.description ? { description: member.description } : {}),
+                  ...(hasType ? {
+                    type: { text: property?.type?.getText?.() }
+                  } : {})
+                })
             });
 
           break;
