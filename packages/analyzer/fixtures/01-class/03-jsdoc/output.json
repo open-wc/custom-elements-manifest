@@ -95,8 +95,8 @@
             "name": "HTMLElement"
           },
           "tagName": "my-element",
-          "summary": "This is MyElement",
-          "customElement": true
+          "customElement": true,
+          "summary": "This is MyElement"
         }
       ],
       "exports": [
