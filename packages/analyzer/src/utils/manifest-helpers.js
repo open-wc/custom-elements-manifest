@@ -47,6 +47,8 @@ export function getAllDeclarationsOfKind(manifest, kind) {
   const result = [];
   loopThroughDeclarations(manifest, (declaration) => {
     if(declaration.kind === kind) {
+      // add package name
+      declaration.packageName = manifest.packageName;
       result.push(declaration);
     }
   });
@@ -60,7 +62,7 @@ export function getAllDeclarationsOfKind(manifest, kind) {
  * @param {Package[]} manifests
  * @param {string} className
  */
-export function getInheritanceTree(manifests, className) {
+export function getInheritanceTree(manifests, className, packageName) {
   const tree = [];
   const allClassLikes = new Map();
   const _classes = [];
@@ -72,10 +74,10 @@ export function getInheritanceTree(manifests, className) {
   });
 
   [..._mixins, ..._classes].forEach((klass) => {
-    allClassLikes.set(klass.name, klass);
+    allClassLikes.set(klass.packageName + "/" + klass.name, klass);
   });
 
-  let klass = allClassLikes.get(className)
+  let klass = allClassLikes.get(packageName + "/" + className);
 
   if(klass) {
     tree.push(klass)
@@ -96,8 +98,8 @@ export function getInheritanceTree(manifests, className) {
       }
     });
 
-    while(allClassLikes.has(klass.superclass?.name)) {
-      const newKlass = allClassLikes.get(klass.superclass.name);
+    while (allClassLikes.has(klass.superclass?.package +"/" + klass.superclass?.name)) {
+      const newKlass = allClassLikes.get(klass.superclass.package +"/"+ klass.superclass.name);
       let allMixins = [];
       if (klass?.mixins) {
         allMixins = [...klass.mixins];

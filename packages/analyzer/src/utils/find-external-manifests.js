@@ -55,6 +55,7 @@ export async function findExternalManifests(paths, {basePath = process.cwd(), no
         try {
           const cemPath = path.resolve(packageRoot, cemLocation);
           const cem = JSON.parse(fs.readFileSync(cemPath).toString());
+          cem.packageName = packageJson.name;
           cemsToMerge.push(cem);
         } catch(e) {
           throw new Error(`Failed to read custom-elements.json at path "${cemPath}". \n\n${e.stack}`);
