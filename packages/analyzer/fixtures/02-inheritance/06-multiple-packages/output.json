@@ -1,0 +1,232 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "extClassProp",
+              "type": {
+                "text": "string"
+              },
+              "default": "'otherValueThanProp'"
+            },
+            {
+              "kind": "field",
+              "name": "extMixinProp",
+              "type": {
+                "text": "string"
+              },
+              "default": "'prop'",
+              "inheritedFrom": {
+                "name": "MyClass",
+                "module": "MyClass.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "shouldNotApear",
+              "type": {
+                "text": "string"
+              },
+              "default": "'no'",
+              "inheritedFrom": {
+                "name": "MyClass",
+                "module": "MyClass.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "otherPackage",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "inheritedFrom": {
+                "name": "MyClass",
+                "module": "MyClass.js"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "MyClass",
+            "package": "@ext-scoped/same-path/MyClass.js"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MyElement",
+          "declaration": {
+            "name": "MyElement",
+            "module": "my-element.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "my-element2.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyElement2",
+          "members": [
+            {
+              "kind": "field",
+              "name": "extClassProp",
+              "type": {
+                "text": "string"
+              },
+              "default": "'otherValueThanProp'"
+            },
+            {
+              "kind": "field",
+              "name": "extMixinProp",
+              "type": {
+                "text": "string"
+              },
+              "default": "'prop'",
+              "inheritedFrom": {
+                "name": "MyClass",
+                "module": "MyClass.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "shouldNotApear",
+              "type": {
+                "text": "string"
+              },
+              "default": "'no'",
+              "inheritedFrom": {
+                "name": "MyClass",
+                "module": "MyClass.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "otherPackage",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "inheritedFrom": {
+                "name": "MyClass",
+                "module": "MyClass.js"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "MyClass",
+            "package": "ext-pkg-without-export-map"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MyElement2",
+          "declaration": {
+            "name": "MyElement2",
+            "module": "my-element2.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "my-element3.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyElement3",
+          "members": [
+            {
+              "kind": "field",
+              "name": "extClassProp",
+              "type": {
+                "text": "string"
+              },
+              "default": "'otherValueThanProp'"
+            },
+            {
+              "kind": "field",
+              "name": "superClassField",
+              "inheritedFrom": {
+                "name": "OtherElement",
+                "module": "OtherElement.js"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "superClassMethod",
+              "inheritedFrom": {
+                "name": "OtherElement",
+                "module": "OtherElement.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "overriddenField",
+              "type": {
+                "text": "string"
+              },
+              "default": "'hello'",
+              "inheritedFrom": {
+                "name": "OtherElement",
+                "module": "OtherElement.js"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "OtherElement",
+            "package": "@other-package/same-path/OtherElement.js"
+          },
+          "attributes": [
+            {
+              "name": "superClass-attr",
+              "inheritedFrom": {
+                "name": "OtherElement",
+                "module": "OtherElement.js"
+              }
+            }
+          ],
+          "events": [
+            {
+              "name": "superClass-event",
+              "type": {
+                "text": "Event"
+              },
+              "inheritedFrom": {
+                "name": "OtherElement",
+                "module": "OtherElement.js"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MyElement3",
+          "declaration": {
+            "name": "MyElement3",
+            "module": "my-element3.js"
+          }
+        }
+      ]
+    }
+  ]
+}
