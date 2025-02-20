@@ -1,6 +1,6 @@
-import { OtherElement } from '@other-package/same-path/OtherElement.js';
+import { MyClass } from '@other-package/same-path/MyClass.js';
 
-export class MyElement3 extends OtherElement {
+export class MyElement3 extends MyClass {
   constructor() {
     super();
 
