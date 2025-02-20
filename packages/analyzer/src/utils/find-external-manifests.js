@@ -39,6 +39,7 @@ export async function findExternalManifests(paths, {basePath = process.cwd(), no
     if(fs.existsSync(cemPath)) {
       try {
         const cem = JSON.parse(fs.readFileSync(cemPath).toString());
+        cem.packageName = packageName;
         cemsToMerge.push(cem);
         return;
       } catch(e) {

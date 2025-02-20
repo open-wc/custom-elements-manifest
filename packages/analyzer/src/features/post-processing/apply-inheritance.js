@@ -2,21 +2,10 @@ import {
   getAllDeclarationsOfKind,
   getInheritanceTree,
   getModuleForClassLike,
-  getModuleFromManifests
+  getModuleFromManifests,
+  getPackageName
 } from '../../utils/manifest-helpers.js';
 import {resolveModuleOrPackageSpecifier} from '../../utils/index.js';
-
-import path from 'path';
-import fs from 'fs';
-
-function pkgname(cwd = '') {
-  const pkgPath = path.join(process.cwd(), 'package.json');
-
-  if (fs.existsSync(pkgPath)) {
-    let pkg = JSON.parse(fs.readFileSync(pkgPath));
-    return pkg.name;
-  }
-}
 
 /**
  * APPLY-INHERITANCE-PLUGIN
@@ -28,7 +17,7 @@ export function applyInheritancePlugin() {
     name: 'CORE - APPLY-INHERITANCE',
     packageLinkPhase({customElementsManifest, context}) {
       // set package name for cem of this project
-      customElementsManifest.packageName = pkgname();
+      customElementsManifest.packageName = getPackageName();
 
       const allManifests = [customElementsManifest, ...(context.thirdPartyCEMs || [])];
       const classLikes = [];
@@ -88,11 +77,19 @@ export function applyInheritancePlugin() {
 
                 customElement[type] = [...(customElement[type] || []), newItem];
               }
-              ;
             });
           });
         });
       });
+
+      // clean up the manifest (remove the added packageName entries)
+      delete customElementsManifest.packageName
+      customElementsManifest.modules.forEach(module => {
+        module.declarations.forEach((declaration) => {
+          delete declaration.packageName;
+        })
+
+      })
     }
   }
 }
