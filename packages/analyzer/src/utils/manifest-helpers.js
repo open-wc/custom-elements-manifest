@@ -122,11 +122,18 @@ export function getInheritanceTree(manifests, className, packageName) {
      * undefined the reference is local to the containing module.
      */
     function evalKlassPath(klass) {
+
       let lookup = klass.superclass?.package + "/" + klass.superclass?.name;
+
       if (klass.superclass?.package === undefined) {
         // if there is no package name defined, the imported class must be in the same package as the current class
         lookup = klass.packageName + "/" + klass.superclass?.name
+      }else{
+        // Sometimes CEM places the full path during the analyzing phase, therfore we use the regex to be sure.
+        const matches = klass.superclass.package.match(/^(@[^\/]*\/[^\/]*|[^\/]*)/)
+        lookup = matches[0] + "/" + klass.superclass?.name
       }
+
       return lookup;
     }
 

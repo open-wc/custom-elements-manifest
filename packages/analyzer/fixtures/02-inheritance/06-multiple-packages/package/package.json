@@ -5,6 +5,6 @@
   "dependencies": {
     "ext-pkg-without-export-map": "0.1.0",
     "@ext-scoped/same-path": "0.2.0",
-    "@other-element/same-path": "0.2.0"
+    "@other-package/same-path": "0.2.0"
   }
 }
