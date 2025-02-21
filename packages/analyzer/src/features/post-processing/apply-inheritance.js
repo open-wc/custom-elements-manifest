@@ -82,7 +82,7 @@ export function applyInheritancePlugin() {
         });
       });
 
-      // clean up the manifest (remove the added packageName entries)
+      // clean up the manifest (remove the added packageName entries from the declaration)
       delete customElementsManifest.packageName
       customElementsManifest.modules.forEach(module => {
         module.declarations.forEach((declaration) => {
