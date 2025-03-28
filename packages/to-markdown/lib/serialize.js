@@ -15,7 +15,7 @@ export function serialize(tree) {
 
 export function parse(markdown) {
   return fromMarkdown(markdown, {
-    extentions: [gfmFromMarkdown],
+    extensions: [gfmFromMarkdown],
   });
 }
 

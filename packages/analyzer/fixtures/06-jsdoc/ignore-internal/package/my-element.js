@@ -10,10 +10,10 @@ export const variable = 'var';
 export class IgnoreMe extends HTMLElement { }
 
 /** @deprecated */
-export class IamDepricated extends HTMLElement { }
+export class IamDeprecated extends HTMLElement { }
 
 /** @deprecated the reason for the deprecation. */
-export class IamDepricatedWithReason extends HTMLElement { }
+export class IamDeprecatedWithReason extends HTMLElement { }
 
 customElements.define("ignore-me", IgnoreMe);
 

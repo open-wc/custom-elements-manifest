@@ -17,7 +17,7 @@
         {
           "kind": "class",
           "description": "",
-          "name": "IamDepricated",
+          "name": "IamDeprecated",
           "superclass": {
             "name": "HTMLElement"
           },
@@ -27,7 +27,7 @@
         {
           "kind": "class",
           "description": "",
-          "name": "IamDepricatedWithReason",
+          "name": "IamDeprecatedWithReason",
           "superclass": {
             "name": "HTMLElement"
           },
@@ -76,17 +76,17 @@
         },
         {
           "kind": "js",
-          "name": "IamDepricated",
+          "name": "IamDeprecated",
           "declaration": {
-            "name": "IamDepricated",
+            "name": "IamDeprecated",
             "module": "my-element.js"
           }
         },
         {
           "kind": "js",
-          "name": "IamDepricatedWithReason",
+          "name": "IamDeprecatedWithReason",
           "declaration": {
-            "name": "IamDepricatedWithReason",
+            "name": "IamDeprecatedWithReason",
             "module": "my-element.js"
           }
         },
