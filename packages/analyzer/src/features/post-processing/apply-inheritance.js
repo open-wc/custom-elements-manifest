@@ -52,11 +52,7 @@ export function applyInheritancePlugin() {
                 customElement[type] = customElement?.[type]?.map(item => item.name === existing.name
                   ? {
                       ...newItem,
-                      ...existing,
-                      ...{
-                        ...(newItem.type ? { type: newItem.type } : {}),
-                        ...(newItem.privacy ? { privacy: newItem.privacy } : {})
-                      }
+                      ...existing
                     }
                   : item);
               } else {
