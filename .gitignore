@@ -1,5 +1,6 @@
 dist/
 .DS_Store
+.idea
 
 ## Rocket ignore files
 docs/_merged_data/
