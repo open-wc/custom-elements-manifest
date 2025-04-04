@@ -9,6 +9,7 @@
         {
           "kind": "class",
           "name": "MyElement",
+          "description": "Large description of ...",
           "cssProperties": [
             {
               "name": "--background-color",

@@ -27,6 +27,7 @@ fs.writeFileSync('./custom-elements.md', markdown);
 | Option             | Type                         | Default | Description |
 | -------------      | ---------------------------- | ------- | ----------- |
 | headingOffset      | Integer                      | 0       | Offset the heading level by this number |
+| mainDescription    | Boolean                      | true    | Show description field for Class and Mixins |
 | private            | `'all'\|'details'\|'hidden'` | `'all'` | See [Private Members](#private-members) |
 | omitDeclarations   | `OptionalDeclarations[]`     | []      | See [Omit Declarations](#omit-declarations) |
 | omitSections       | `OptionalSections[]`         | []      | See [Omit Sections](#omit-sections) |
@@ -62,6 +63,7 @@ customElementsManifestToMarkdown(manifest, {
 The `omitSections` option is a `string[]` that controls which sections of a declaration's full entry in the manifest.json should be rendered in the final markdown output. The section names are:
 
 - mainHeading : "main-heading"
+- mainDescription : "main-description"
 - superClass : "super-class"
 - fields : "fields"
 - methods : "methods"
@@ -117,6 +119,7 @@ customElementsManifestToMarkdown(manifest, {
       "declarations": [
         {
           "kind": "class",
+          "description": "My description",
           "name": "SuperClass",
           "events": [
             {
@@ -419,6 +422,8 @@ customElementsManifestToMarkdown(manifest, {
 </details>
 
 <details><summary>Result</summary>
+
+  My description
 
   ## `./fixtures/-TEST/package/my-element.js`:
 
