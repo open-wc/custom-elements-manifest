@@ -1,0 +1,53 @@
+[
+  {
+    "array": [],
+    "expected": true
+  },
+  {
+    "array": [1],
+    "expected": true
+  },
+  {
+    "array": [5],
+    "expected": true
+  },
+  {
+    "array": [1, 5],
+    "expected": true
+  },
+  {
+    "array": [1, 2, 3, 4, 5],
+    "expected": true
+  },
+  {
+    "array": [1, 1, 3, 4, 5],
+    "expected": true
+  },
+  {
+    "array": [1, 1.5, 3, 4, 5],
+    "expected": true
+  },
+  {
+    "array": [1, 2, 3, 4, 6],
+    "expected": true
+  },
+  {
+    "array": [5, 4, 3, 1, 1],
+    "comparator": "descending",
+    "expected": true
+  },
+  {
+    "array": [5, 4, 3, 2, 1],
+    "comparator": "descending",
+    "expected": true
+  },
+  {
+    "array": [1, 5, 2, 3, 4],
+    "expected": false
+  },
+  {
+    "array": [5, 4, 3, 1, 2],
+    "comparator": "descending",
+    "expected": false
+  }
+]
