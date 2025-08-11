@@ -1,3 +1,6 @@
+## Release 0.10.5
+- CLI: Don't crash on file creation/deletion
+
 ## Release 0.10.4
 - Support `@customelement` and `@customElement` class jsdoc
 
