@@ -39,8 +39,8 @@ export async function cli({ argv = process.argv, cwd = process.cwd(), noWrite } 
      */
     const mergedOptions = { ...DEFAULTS, ...userConfig, ...cliConfig };
     const merged = mergeGlobsAndExcludes(DEFAULTS, userConfig, cliConfig);
-    const globs = await globby(merged, { cwd });
     async function run() {
+      const globs = await globby(merged, { cwd });
       const modules = userConfig?.overrideModuleCreation
         ? userConfig.overrideModuleCreation({ ts, globs })
         : globs.map((glob) => {
@@ -98,10 +98,11 @@ export async function cli({ argv = process.argv, cwd = process.cwd(), noWrite } 
      * Watch mode
      */
     if (mergedOptions.watch) {
-      const fileWatcher = chokidar.watch(globs);
+      const fileWatcher = chokidar.watch(merged);
 
       const onChange = debounce(run, 100);
 
+      fileWatcher.addListener('add', onChange);
       fileWatcher.addListener('change', onChange);
       fileWatcher.addListener('unlink', onChange);
     }
