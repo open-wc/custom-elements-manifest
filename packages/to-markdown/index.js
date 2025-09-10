@@ -241,10 +241,17 @@ function makeModuleDoc(mod, options) {
  * @return {string}
  */
 export function customElementsManifestToMarkdown(manifest, options) {
-  const tree =
-    root(manifest.modules
-      .flatMap(x => makeModuleDoc(x, options))
-      .filter(identity))
+  return serialize(customElementsManifestToMarkdownAST(manifest, options));
+}
 
-  return serialize(tree);
+/**
+ * Renders a custom elements manifest as Markdown AST
+ * @param  {import('custom-elements-manifest/schema').Package} manifest
+ * @param  {import('./types/main').Options} manifest
+ * @return {import('mdast-util-to-markdown/lib/types.js').Parent}
+ */
+export function customElementsManifestToMarkdownAST(manifest, options) {
+  return root(manifest.modules
+      .flatMap(x => makeModuleDoc(x, options))
+      .filter(identity));
 }
