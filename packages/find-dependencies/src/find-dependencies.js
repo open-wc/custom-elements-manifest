@@ -24,23 +24,25 @@ export async function findDependencies(paths, options = {}) {
   const importsToScan = new Set();
   const dependencies = new Set();
 
-  const nodeModulesDepth = options?.nodeModulesDepth ?? 3;
+  const nodeModulesDepth = options?.nodeModulesDepth ?? 5;
   const basePath = options?.basePath ?? process.cwd();
 
   /** Init es-module-lexer wasm */
   await init;
 
-  paths.forEach(path => {
-    const source = fs.readFileSync(path).toString();
+  paths.forEach(p => {
+    const source = fs.readFileSync(p).toString();
     const [imports] = parse(source);
 
     imports?.forEach(i => {
       /** Skip built-in modules like fs, path, etc */
       if(builtinModules.includes(i.n)) return;
+
       try {
         const pathToDependency = require.resolve(i.n, {paths: [
           /** Current project's node_modules */
           basePath,
+          ...traverseUp(nodeModulesDepth, { cwd: path.dirname(p) }),
           /** Monorepo, look upwards in filetree n times */
           ...traverseUp(nodeModulesDepth, { cwd: basePath })
         ]});
@@ -48,7 +50,7 @@ export async function findDependencies(paths, options = {}) {
         importsToScan.add(pathToDependency);
         dependencies.add(pathToDependency);
       } catch {
-        console.log(`Failed to resolve dependency "${i.n}".`);
+        console.log(`[find-dependencies] Failed to resolve dependency "${i.n}".`);
       }
     });
   });
@@ -76,6 +78,7 @@ export async function findDependencies(paths, options = {}) {
             /** Current project's node_modules */
             basePath,
             /** Monorepo, look upwards in filetree n times */
+            ...traverseUp(nodeModulesDepth, { cwd: path.dirname(dep) }),
             ...traverseUp(nodeModulesDepth, { cwd: basePath })
           ]});
           /**
@@ -87,7 +90,7 @@ export async function findDependencies(paths, options = {}) {
             dependencies.add(pathToDependency);
           }
         } catch(e) {
-          console.log(`Failed to resolve dependency "${i.n}".`);
+          console.log(`[find-dependencies] Failed to resolve dependency "${i.n}".`);
         }
       });
     });
