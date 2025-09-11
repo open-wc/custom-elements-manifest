@@ -10,8 +10,7 @@ import {
   isDefined
 } from './lib/fp.js';
 import * as CELLS from './lib/cells.js';
-import { serialize } from './lib/serialize.js';
-import { fromMarkdown } from 'mdast-util-from-markdown';
+import { serialize, parse } from './lib/serialize.js';
 
 const line = html('<hr/>');
 
@@ -59,7 +58,7 @@ const declarationDescription = options =>
   const headingOffset = 1 + (options?.headingOffset ?? 0);
 
   try {
-    const contentNodes = fromMarkdown(description).children || [];
+    const contentNodes = parse(description).children || [];
 
     contentNodes.forEach((node) => {
       if (node.type === 'heading' && typeof node.depth === "number") {
