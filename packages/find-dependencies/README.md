@@ -9,15 +9,15 @@ Intended to be used on post-build, frontend facing, ESM based code.
 ```js
 import { findDependencies } from '@custom-elements-manifest/find-dependencies';
 
-const inputPaths = ['my-package/index.js'];
+const inputPaths = ['my-package/index.ts'];
 const dependencies = await findDependencies(inputPaths);
 ```
 
-Where `my-package/index.js` contains:
+Where `my-package/index.ts` contains:
 
 ```js
 import '@scoped/package';
-import {b} from '@scoped/package/baz/index.js';
+import {b} from '@scoped/package/baz/index.ts';
 import c from 'export-map';
 import d from 'nested';
 import e from 'regular';
@@ -29,19 +29,19 @@ Will output:
 
 ```js
 [
-  '/Users/blank/my-package/node_modules/@scoped/package/index.js',
-  '/Users/blank/my-package/node_modules/@scoped/package/baz/index.js',
-  '/Users/blank/my-package/node_modules/export-map/long/path/index.js',
-  '/Users/blank/my-package/node_modules/nested/index.js',
-  '/Users/blank/my-package/node_modules/regular/index.js',
-  '/Users/blank/my-package/node_modules/dynamic-import/index.js',
-  '/Users/blank/my-package/node_modules/nested/node_modules/regular/index.js'
+  '/Users/blank/my-package/node_modules/@scoped/package/index.ts',
+  '/Users/blank/my-package/node_modules/@scoped/package/baz/index.ts',
+  '/Users/blank/my-package/node_modules/export-map/long/path/index.ts',
+  '/Users/blank/my-package/node_modules/nested/index.ts',
+  '/Users/blank/my-package/node_modules/regular/index.ts',
+  '/Users/blank/my-package/node_modules/dynamic-import/index.ts',
+  '/Users/blank/my-package/node_modules/nested/node_modules/regular/index.ts'
 ]
 ```
 
 ## Configuration
 
-```js
+```ts
 interface Options {
   /** 
    * In case `node_modules` is higher up in the file tree, for example in a monorepo
@@ -75,8 +75,8 @@ import {
 
 ### `splitPath`
 ```js
-splitPath('/blank/node_modules/foo/index.js');
-// {packageRoot: '/blank/node_modules/foo', packageName: 'foo', specifier: 'foo/index.js', type: 'js' }
+splitPath('/blank/node_modules/foo/index.ts');
+// {packageRoot: '/blank/node_modules/foo', packageName: 'foo', specifier: 'foo/index.ts', type: 'js' }
 
 splitPath('/blank/node_modules/foo/data.json');
 // {packageRoot: '/blank/node_modules/foo', packageName: 'foo', specifier: 'foo/data.json', type: 'json' }
@@ -84,10 +84,10 @@ splitPath('/blank/node_modules/foo/data.json');
 
 ### `extractPackageNameFromSpecifier`
 ```js
-extractPackageNameFromSpecifier('foo/index.js') // foo
-extractPackageNameFromSpecifier('foo/bar/baz/index.js') // foo
-extractPackageNameFromSpecifier('@foo/bar/index.js') // @foo/bar
-extractPackageNameFromSpecifier('@foo/bar/baz/asdgf/index.js') // @foo/bar
+extractPackageNameFromSpecifier('foo/index.ts') // foo
+extractPackageNameFromSpecifier('foo/bar/baz/index.ts') // foo
+extractPackageNameFromSpecifier('@foo/bar/index.ts') // @foo/bar
+extractPackageNameFromSpecifier('@foo/bar/baz/asdgf/index.ts') // @foo/bar
 ```
 ### `isBareModuleSpecifier`
 ```js
@@ -105,9 +105,9 @@ isScopedPackage('@foo/bar') // true
 ### `getUniquePackages`
 ```js
 getUniquePackages([
-  'blank/node_modules/foo/index.js', 
-  'blank/node_modules/bar/index.js',
-  'blank/node_modules/bar/index2.js'
+  'blank/node_modules/foo/index.ts', 
+  'blank/node_modules/bar/index.ts',
+  'blank/node_modules/bar/index2.js',
   'blank/node_modules/bar/index3.js'
 ])
 // ['foo', 'bar',]

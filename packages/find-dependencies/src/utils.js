@@ -91,7 +91,7 @@ const splitPathForResolvedSymlinks = memoize((unixPath) => {
  * Takes a path, returns some split-up information about the path
  * @example
  * ```
- * '/Users/blank/custom-elements-manifest/packages/analyzer/node_modules/foo/node_modules/nested/index.js'
+ * '/Users/blank/custom-elements-manifest/packages/analyzer/node_modules/foo/node_modules/nested/index.ts'
  * ```
  *
  * returns:
@@ -99,7 +99,7 @@ const splitPathForResolvedSymlinks = memoize((unixPath) => {
  * {
  *  packageRoot: '/Users/blank/custom-elements-manifest/packages/analyzer/node_modules/foo/node_modules/nested',
  *  packageName: 'nested',
- *  specifier: 'nested/index.js',
+ *  specifier: 'nested/index.ts',
  *  type: 'js'
  * }
  * ```
@@ -157,4 +157,27 @@ export function getUniquePackages(paths) {
     unique.add(packageName);
   });
   return [...unique];
+}
+
+/**
+ * Converts Windows backslash paths to POSIX forward slash paths
+ * @param {string} p
+ * @returns {string}
+ */
+export function toPosix (p) {
+    return p.replace(/\\/g, '/');
+}
+
+/**
+ *
+ * @param {string} filePath
+ * @returns {{filename: string, code: string}}
+ */
+export function getFileNameWithSource (filePath) {
+    const filename = filePath.split('/').pop();
+    const code = fs.readFileSync(filePath).toString();
+    return {
+        filename,
+        code
+    }
 }
