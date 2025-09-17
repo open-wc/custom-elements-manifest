@@ -35,10 +35,10 @@
             {
               "kind": "field",
               "name": "message",
-              "default": "'Hello'",
               "type": {
                 "text": "string"
               },
+              "default": "'Hello'",
               "reflects": true,
               "attribute": "message"
             },
@@ -78,11 +78,11 @@
             },
             {
               "name": "message",
-              "fieldName": "message"
+              "fieldName": "message",
+              "default": "'Hello'"
             }
           ],
           "tagName": "todo-list",
-          "customElement": true,
           "events": [
             {
               "name": "todoCompleted",
@@ -96,7 +96,8 @@
                 "text": "EventEmitter<Todo>"
               }
             }
-          ]
+          ],
+          "customElement": true
         }
       ],
       "exports": [
