@@ -41,7 +41,7 @@ Will output:
 
 ## Configuration
 
-```js
+```ts
 interface Options {
   /** 
    * In case `node_modules` is higher up in the file tree, for example in a monorepo
@@ -107,7 +107,7 @@ isScopedPackage('@foo/bar') // true
 getUniquePackages([
   'blank/node_modules/foo/index.js', 
   'blank/node_modules/bar/index.js',
-  'blank/node_modules/bar/index2.js'
+  'blank/node_modules/bar/index2.js',
   'blank/node_modules/bar/index3.js'
 ])
 // ['foo', 'bar',]

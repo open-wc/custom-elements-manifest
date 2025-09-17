@@ -1,6 +1,6 @@
 {
   "name": "@custom-elements-manifest/find-dependencies",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "repository": {
     "type": "git",
@@ -22,7 +22,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "es-module-lexer": "^0.9.3"
+    "rs-module-lexer": "^2.5.1"
   },
   "files": [
     "index.js",

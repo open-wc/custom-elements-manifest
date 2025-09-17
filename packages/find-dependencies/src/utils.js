@@ -1,19 +1,21 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
 /**
  * @param {string} p
  * @returns {string}
  */
-const toUnix = p => p.replace(/\\/g, '/');
+const toUnix = (p) => p.replace(/\\/g, "/");
 
 /**
  * @param {number} depth
  * @param {{ cwd:string }} [opts]
  * @returns {string[]}
  */
- export function traverseUp(depth, { cwd = process.cwd() }) {
-  return Array(depth).fill().map((_, i) => path.join(cwd, ...Array(i).fill('..')));
+export function traverseUp(depth, { cwd = process.cwd() }) {
+  return Array(depth)
+    .fill()
+    .map((_, i) => path.join(cwd, ...Array(i).fill("..")));
 }
 
 /**
@@ -21,7 +23,7 @@ const toUnix = p => p.replace(/\\/g, '/');
  * @returns {boolean}
  */
 export function isBareModuleSpecifier(specifier) {
-  return !!specifier?.replace(/'/g, '')[0].match(/[@a-zA-Z]/g);
+  return !!specifier?.replace(/'/g, "")[0].match(/[@a-zA-Z]/g);
 }
 
 /**
@@ -29,7 +31,7 @@ export function isBareModuleSpecifier(specifier) {
  * @returns {boolean}
  */
 export function isScopedPackage(specifier) {
-  return specifier.startsWith('@');
+  return specifier.startsWith("@");
 }
 
 /**
@@ -39,27 +41,32 @@ export function isScopedPackage(specifier) {
  */
 export function extractPackageNameFromSpecifier(specifier) {
   specifier = toUnix(specifier);
-  if(isScopedPackage(specifier)) {
+  if (isScopedPackage(specifier)) {
     /**
      * @example '@foo/bar'
      * @example '@foo/bar/baz.js'
      */
-    const split = specifier.split('/');
-    return [split[0], split[1]].join('/');
+    const split = specifier.split("/");
+    return [split[0], split[1]].join("/");
   } else {
     /**
      * @example 'foo'
      * @example 'foo/bar/baz.js'
      */
-    return specifier.split('/')[0];
+    return specifier.split("/")[0];
   }
 }
 
-const memoize = (fn, cache = {}) => (x) => (x in cache && cache[x]) || (cache[x] = fn(x));
+const memoize =
+  (fn, cache = {}) =>
+  (x) =>
+    (x in cache && cache[x]) || (cache[x] = fn(x));
 
 const getPackageRootAndName = memoize((potentialRoot) => {
   try {
-    const pkg = JSON.parse(fs.readFileSync(`${potentialRoot}/package.json`, 'utf8'));
+    const pkg = JSON.parse(
+      fs.readFileSync(`${potentialRoot}/package.json`, "utf8")
+    );
     return {
       packageName: pkg.name,
       packageRoot: potentialRoot,
@@ -85,7 +92,6 @@ const splitPathForResolvedSymlinks = memoize((unixPath) => {
   }
   throw new Error(`No package found in parent hierarchy of path ${unixPath}`);
 });
-
 
 /**
  * Takes a path, returns some split-up information about the path
@@ -114,36 +120,42 @@ const splitPathForResolvedSymlinks = memoize((unixPath) => {
  */
 export function splitPath(fullPath) {
   const unixPath = toUnix(fullPath);
-  const position = unixPath.lastIndexOf('node_modules/');
+  const position = unixPath.lastIndexOf("node_modules/");
 
   if (position === -1) {
     // When we are not in node_modules, we deal with resolved symlinks in a monorepo
     return splitPathForResolvedSymlinks(unixPath);
   }
 
-  const packageRootMinusSpecifier = unixPath.substring(0, position + 'node_modules/'.length);
+  const packageRootMinusSpecifier = unixPath.substring(
+    0,
+    position + "node_modules/".length
+  );
 
-  const specifier = unixPath.substring(position + 'node_modules/'.length, unixPath.length);
+  const specifier = unixPath.substring(
+    position + "node_modules/".length,
+    unixPath.length
+  );
   const packageName = extractPackageNameFromSpecifier(specifier);
 
   const packageRoot = packageRootMinusSpecifier + packageName;
 
   /** @type {'js' | 'json' | 'css'} */
   let type;
-  if(specifier.endsWith('js')) {
-    type = 'js'
-  } else if (specifier.endsWith('json')) {
-    type = 'json'
-  } else if (specifier.endsWith('css')) {
-    type = 'css'
+  if (specifier.endsWith("js")) {
+    type = "js";
+  } else if (specifier.endsWith("json")) {
+    type = "json";
+  } else if (specifier.endsWith("css")) {
+    type = "css";
   }
 
   return {
     packageRoot,
     packageName,
     specifier,
-    type
-  }
+    type,
+  };
 }
 
 /**
@@ -152,9 +164,32 @@ export function splitPath(fullPath) {
  */
 export function getUniquePackages(paths) {
   const unique = new Set();
-  paths.forEach(pkg => {
+  paths.forEach((pkg) => {
     const { packageName } = splitPath(pkg);
     unique.add(packageName);
   });
   return [...unique];
+}
+
+/**
+ * Converts Windows backslash paths to POSIX forward slash paths
+ * @param {string} p
+ * @returns {string}
+ */
+export function toPosix(p) {
+  return p.replace(/\\/g, "/");
+}
+
+/**
+ *
+ * @param {string} filePath
+ * @returns {{filename: string, code: string}}
+ */
+export function getFileNameWithSource(filePath) {
+  const filename = filePath.split("/").pop();
+  const code = fs.readFileSync(filePath).toString();
+  return {
+    filename,
+    code,
+  };
 }
