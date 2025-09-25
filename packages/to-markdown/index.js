@@ -159,8 +159,14 @@ function filteredDeclarations(declarationsToFilter, omittedDeclarations, classNa
 
 }
 
-/** @type {import("./types/main").MakeModuleDocFn} */
-function makeModuleDoc(mod, options) {
+/** 
+ * Renders a custom elements manifest module as Markdown AST
+ * @type {import("./types/main").MakeModuleDocFn}
+ * @param {import('custom-elements-manifest/schema').Module} mod
+ * @param {import('./types/main').Options} options
+ * @return {import('mdast-util-to-markdown/lib/types.js').Parent}
+ */
+export function makeModuleDoc(mod, options) {
   const declarations = mod?.declarations ?? [];
   const exportsDecl = mod?.exports ?? [];
   if (!declarations.length && !exportsDecl.length)
