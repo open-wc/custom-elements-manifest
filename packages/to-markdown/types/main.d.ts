@@ -10,6 +10,7 @@ enum Declarations {
 
 enum Sections {
   mainHeading = 'main-heading',
+  description = 'description',
   superClass = 'super-class',
   fields = 'fields', 
   methods = 'methods',
