@@ -36,7 +36,9 @@ export function attrDecoratorPlugin(converter) {
               const optionsObject = getOptionsObject(hasAttrDecorator);
               if(optionsObject) {
                 const name = optionsObject?.properties?.find(prop => prop.name.getText() === 'attribute')?.initializer?.text;
-                attribute.name = name;
+                if(name) {
+                  attribute.name = name;
+                }
               }
 
               if (converter) {
