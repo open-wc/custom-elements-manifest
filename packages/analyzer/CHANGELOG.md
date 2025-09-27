@@ -1,3 +1,7 @@
+## Release 0.10.7
+
+- Attr decorator fix
+
 ## Release 0.10.6
 
 - Update version of find-dependencies
