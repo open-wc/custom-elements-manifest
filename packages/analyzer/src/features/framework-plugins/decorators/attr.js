@@ -12,7 +12,6 @@ export function attrDecoratorPlugin(converter) {
           const classDoc = moduleDoc?.declarations?.find(
             (declaration) => declaration.name === className
           );
-
           /**
            * If a field has the @attr decorator, create an attr from the field in the classDoc
            */

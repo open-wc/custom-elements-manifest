@@ -9,26 +9,57 @@
         {
           "kind": "class",
           "description": "",
-          "name": "Foo",
+          "name": "BooleanTest",
           "members": [
             {
-              "kind": "method",
-              "name": "#foo",
-              "privacy": "private"
+              "kind": "field",
+              "name": "normalAttr"
+            },
+            {
+              "kind": "field",
+              "name": "booleanAttr"
+            },
+            {
+              "kind": "field",
+              "name": "explicitName"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "normalAttr",
+              "fieldName": "normalAttr"
+            },
+            {
+              "name": "booleanAttr",
+              "fieldName": "booleanAttr"
+            },
+            {
+              "name": "customName",
+              "fieldName": "explicitName"
             }
           ],
           "superclass": {
-            "name": "HTMLElement"
+            "name": "FASTElement",
+            "package": "@microsoft/fast-element"
           },
+          "tagName": "boolean-test",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "Foo",
+          "name": "BooleanTest",
           "declaration": {
-            "name": "Foo",
+            "name": "BooleanTest",
+            "module": "fixtures/01-class/-default/package/bar.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "boolean-test",
+          "declaration": {
+            "name": "BooleanTest",
             "module": "fixtures/01-class/-default/package/bar.js"
           }
         }
