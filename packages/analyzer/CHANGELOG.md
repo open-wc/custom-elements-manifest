@@ -1,3 +1,7 @@
+## Release 0.10.8
+
+- Add `.npmignore` to prevent stuff from being published
+
 ## Release 0.10.7
 
 - Attr decorator fix
