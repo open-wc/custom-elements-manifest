@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "BooleanTest",
+          "members": [
+            {
+              "kind": "field",
+              "name": "normalAttr"
+            },
+            {
+              "kind": "field",
+              "name": "booleanAttr"
+            },
+            {
+              "kind": "field",
+              "name": "explicitName"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "normalAttr",
+              "fieldName": "normalAttr"
+            },
+            {
+              "name": "booleanAttr",
+              "fieldName": "booleanAttr"
+            },
+            {
+              "name": "customName",
+              "fieldName": "explicitName"
+            }
+          ],
+          "superclass": {
+            "name": "FASTElement",
+            "package": "@microsoft/fast-element"
+          },
+          "tagName": "boolean-test",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BooleanTest",
+          "declaration": {
+            "name": "BooleanTest",
+            "module": "my-element.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "boolean-test",
+          "declaration": {
+            "name": "BooleanTest",
+            "module": "my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}
