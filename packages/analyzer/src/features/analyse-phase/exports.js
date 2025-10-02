@@ -94,7 +94,6 @@ export function exportsPlugin() {
             .replace(/"/g, "");
 
           const isBare = isBareModuleSpecifier(specifier);
-          console.log(specifier, `file://${moduleDoc.path}`);
           const _export = {
             kind: "js",
             name: "*",
