@@ -4,6 +4,30 @@
   "modules": [
     {
       "kind": "javascript-module",
+      "path": "foo.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "foo",
+          "type": {
+            "text": "number"
+          },
+          "default": "1"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "foo",
+          "declaration": {
+            "name": "foo",
+            "module": "foo.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "my-element.js",
       "declarations": [
         {
@@ -174,7 +198,7 @@
           "name": "*",
           "declaration": {
             "name": "foo",
-            "module": "/foo.js"
+            "module": "foo.js"
           }
         },
         {

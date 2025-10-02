@@ -12,7 +12,7 @@
           "name": "*",
           "declaration": {
             "name": "dur",
-            "module": "/01-class/-default/package/foo.js"
+            "module": "fixtures/01-class/-default/package/foo.js"
           }
         }
       ]

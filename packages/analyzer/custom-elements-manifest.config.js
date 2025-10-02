@@ -43,7 +43,7 @@ function test(getTypeChecker) {
   return {
     name: "test",
     initialize() {
-      console.log("initialize");
+      // console.log("initialize");
       typeChecker = getTypeChecker();
     },
     collectPhase({ ts, node }) {

@@ -44,7 +44,6 @@ export function create({ modules, plugins = [], context = { dev: false } }) {
       declarations: [],
       exports: [],
     };
-
     /**
      * ANALYZE PHASE
      * Go through the AST of every separate module, and gather as much as information as we can

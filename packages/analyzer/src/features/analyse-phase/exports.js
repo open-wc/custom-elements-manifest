@@ -94,6 +94,7 @@ export function exportsPlugin() {
             .replace(/"/g, "");
 
           const isBare = isBareModuleSpecifier(specifier);
+          console.log(specifier, `file://${moduleDoc.path}`);
           const _export = {
             kind: "js",
             name: "*",
@@ -102,8 +103,10 @@ export function exportsPlugin() {
               ...(isBare
                 ? { package: specifier }
                 : {
-                    module: new URL(specifier, `file://${moduleDoc.path}`)
-                      .pathname,
+                    module: new URL(
+                      specifier,
+                      `file:///${moduleDoc.path}`
+                    ).pathname.replace(/^\/+/, ""),
                   }),
             },
           };
