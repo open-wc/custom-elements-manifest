@@ -1,2 +1,5 @@
-export * as dur from "./foo.js";
-// export { var1 } from "./my-module.js";
+const foo = 1;
+
+export const bar = {
+  foo,
+};

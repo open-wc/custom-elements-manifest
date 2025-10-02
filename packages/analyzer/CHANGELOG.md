@@ -1,3 +1,7 @@
+## Release 0.10.10
+
+- Dont filter out a declaration is it is exported as key of an object
+
 ## Release 0.10.9
 
 - Fix declaration data on `export`s

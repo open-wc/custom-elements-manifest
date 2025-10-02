@@ -5,21 +5,6 @@
     {
       "kind": "javascript-module",
       "path": "fixtures/01-class/-default/package/bar.js",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "*",
-          "declaration": {
-            "name": "dur",
-            "module": "fixtures/01-class/-default/package/foo.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "fixtures/01-class/-default/package/foo.js",
       "declarations": [
         {
           "kind": "variable",
@@ -28,15 +13,23 @@
             "text": "number"
           },
           "default": "1"
+        },
+        {
+          "kind": "variable",
+          "name": "bar",
+          "type": {
+            "text": "object"
+          },
+          "default": "{ foo, }"
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "foo",
+          "name": "bar",
           "declaration": {
-            "name": "foo",
-            "module": "fixtures/01-class/-default/package/foo.js"
+            "name": "bar",
+            "module": "fixtures/01-class/-default/package/bar.js"
           }
         }
       ]
