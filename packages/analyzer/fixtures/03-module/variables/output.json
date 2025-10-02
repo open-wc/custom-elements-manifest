@@ -168,6 +168,22 @@
             "name": "asConstRef",
             "module": "my-element.js"
           }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "foo",
+            "module": "./foo.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "bar",
+            "package": "bar"
+          }
         }
       ]
     }

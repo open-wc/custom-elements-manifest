@@ -1,30 +1,33 @@
-import { getDeclarationInFile, hasIgnoreJSDoc } from '../../utils/ast-helpers.js';
+import {
+  getDeclarationInFile,
+  hasIgnoreJSDoc,
+} from "../../utils/ast-helpers.js";
 import {
   hasExportModifier,
   hasDefaultModifier,
   hasNamedExports,
   isReexport,
-} from '../../utils/exports.js';
-import { isBareModuleSpecifier } from '../../utils/index.js';
+} from "../../utils/exports.js";
+import { isBareModuleSpecifier, url } from "../../utils/index.js";
 
 /**
  * EXPORTS
- * 
+ *
  * Analyzes a modules exports and adds them to the moduleDoc
  */
 export function exportsPlugin() {
   return {
-    name: 'CORE - EXPORTS',
-    analyzePhase({ts, node, moduleDoc}){
-      if(hasIgnoreJSDoc(node)) return;
+    name: "CORE - EXPORTS",
+    analyzePhase({ ts, node, moduleDoc }) {
+      if (hasIgnoreJSDoc(node)) return;
 
       /**
        * @example export const foo = '';
        */
-      if(hasExportModifier(node) && ts.isVariableStatement(node)) {
-        node?.declarationList?.declarations?.forEach(declaration => {
-          const _export = {          
-            kind: 'js',
+      if (hasExportModifier(node) && ts.isVariableStatement(node)) {
+        node?.declarationList?.declarations?.forEach((declaration) => {
+          const _export = {
+            kind: "js",
             name: declaration.name.getText(),
             declaration: {
               name: declaration.name.getText(),
@@ -41,8 +44,8 @@ export function exportsPlugin() {
        */
       if (node.kind === ts.SyntaxKind.ExportAssignment) {
         const _export = {
-          kind: 'js',
-          name: 'default',
+          kind: "js",
+          name: "default",
           declaration: {
             name: node.expression.text,
             module: moduleDoc.path,
@@ -52,17 +55,21 @@ export function exportsPlugin() {
       }
 
       if (node.kind === ts.SyntaxKind.ExportDeclaration) {
-
         /**
          * @example export { var1, var2 };
          */
         if (hasNamedExports(node) && !isReexport(node)) {
           node.exportClause?.elements?.forEach((element) => {
-            if (hasIgnoreJSDoc(element) || hasIgnoreJSDoc(getDeclarationInFile(element, node.getSourceFile())))
+            if (
+              hasIgnoreJSDoc(element) ||
+              hasIgnoreJSDoc(
+                getDeclarationInFile(element, node.getSourceFile())
+              )
+            )
               return;
 
             const _export = {
-              kind: 'js',
+              kind: "js",
               name: element.name.getText(),
               declaration: {
                 name: element.propertyName?.getText() || element.name.getText(),
@@ -77,14 +84,27 @@ export function exportsPlugin() {
         /**
          * @example export * from 'foo';
          * @example export * from './my-module.js';
+         * @example export * as foo from 'foo';
+         * @example export * as foo from './my-module.js';
          */
         if (isReexport(node) && !hasNamedExports(node)) {
+          const specifier = node.moduleSpecifier
+            ?.getText()
+            .replace(/'/g, "")
+            .replace(/"/g, "");
+
+          const isBare = isBareModuleSpecifier(specifier);
           const _export = {
-            kind: 'js',
-            name: '*',
+            kind: "js",
+            name: "*",
             declaration: {
-              name: '*',
-              package: node.moduleSpecifier.getText().replace(/'/g, ''),
+              name: node?.exportClause?.name?.getText?.() ?? "*",
+              ...(isBare
+                ? { package: specifier }
+                : {
+                    module: new URL(specifier, `file://${moduleDoc.path}`)
+                      .pathname,
+                  }),
             },
           };
           moduleDoc.exports = [...(moduleDoc.exports || []), _export];
@@ -97,7 +117,7 @@ export function exportsPlugin() {
         if (isReexport(node) && hasNamedExports(node)) {
           node.exportClause?.elements?.forEach((element) => {
             const _export = {
-              kind: 'js',
+              kind: "js",
               name: element.name.getText(),
               declaration: {
                 name: element.propertyName?.getText() || element.name.getText(),
@@ -105,9 +125,15 @@ export function exportsPlugin() {
             };
 
             if (isBareModuleSpecifier(node.moduleSpecifier.getText())) {
-              _export.declaration.package = node.moduleSpecifier.getText().replace(/'/g, '');
+              _export.declaration.package = node.moduleSpecifier
+                .getText()
+                .replace(/'/g, "")
+                .replace(/"/g, "");
             } else {
-              _export.declaration.module = node.moduleSpecifier.getText().replace(/'/g, '');
+              _export.declaration.module = node.moduleSpecifier
+                .getText()
+                .replace(/'/g, "")
+                .replace(/"/g, "");
             }
 
             moduleDoc.exports = [...(moduleDoc.exports || []), _export];
@@ -122,10 +148,10 @@ export function exportsPlugin() {
         if (hasExportModifier(node)) {
           const isDefault = hasDefaultModifier(node);
           const _export = {
-            kind: 'js',
-            name: isDefault ? 'default' : node.name?.getText() || '',
+            kind: "js",
+            name: isDefault ? "default" : node.name?.getText() || "",
             declaration: {
-              name: node.name?.getText() || '',
+              name: node.name?.getText() || "",
               module: moduleDoc.path,
             },
           };
@@ -141,16 +167,16 @@ export function exportsPlugin() {
         if (hasExportModifier(node)) {
           const isDefault = hasDefaultModifier(node);
           const _export = {
-            kind: 'js',
-            name: isDefault ? 'default' : node?.name?.text || '',
+            kind: "js",
+            name: isDefault ? "default" : node?.name?.text || "",
             declaration: {
-              name: node?.name?.text || '',
+              name: node?.name?.text || "",
               module: moduleDoc.path,
             },
           };
           moduleDoc.exports = [...(moduleDoc.exports || []), _export];
         }
       }
-    }
-  }
+    },
+  };
 }

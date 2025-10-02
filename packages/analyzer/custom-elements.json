@@ -4,63 +4,39 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "fixtures/01-class/-default/package/bar.js",
+      "path": "/Users/au87xu/custom-elements-manifest/packages/analyzer/fixtures/01-class/-default/package/bar.js",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "dur",
+            "module": "/Users/au87xu/custom-elements-manifest/packages/analyzer/fixtures/01-class/-default/package/foo.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "/Users/au87xu/custom-elements-manifest/packages/analyzer/fixtures/01-class/-default/package/foo.js",
       "declarations": [
         {
-          "kind": "class",
-          "description": "",
-          "name": "BooleanTest",
-          "members": [
-            {
-              "kind": "field",
-              "name": "normalAttr"
-            },
-            {
-              "kind": "field",
-              "name": "booleanAttr"
-            },
-            {
-              "kind": "field",
-              "name": "explicitName"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "normalAttr",
-              "fieldName": "normalAttr"
-            },
-            {
-              "name": "booleanAttr",
-              "fieldName": "booleanAttr"
-            },
-            {
-              "name": "customName",
-              "fieldName": "explicitName"
-            }
-          ],
-          "superclass": {
-            "name": "FASTElement",
-            "package": "@microsoft/fast-element"
+          "kind": "variable",
+          "name": "foo",
+          "type": {
+            "text": "number"
           },
-          "tagName": "boolean-test",
-          "customElement": true
+          "default": "1"
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "BooleanTest",
+          "name": "foo",
           "declaration": {
-            "name": "BooleanTest",
-            "module": "fixtures/01-class/-default/package/bar.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "boolean-test",
-          "declaration": {
-            "name": "BooleanTest",
-            "module": "fixtures/01-class/-default/package/bar.js"
+            "name": "foo",
+            "module": "/Users/au87xu/custom-elements-manifest/packages/analyzer/fixtures/01-class/-default/package/foo.js"
           }
         }
       ]
