@@ -54,7 +54,7 @@ export async function cli({
             const fullPath = path.resolve(cwd, glob);
             const source = fs.readFileSync(fullPath).toString();
             return ts.createSourceFile(
-              fullPath,
+              glob,
               source,
               ts.ScriptTarget.ES2015,
               true
