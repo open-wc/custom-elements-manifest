@@ -1,3 +1,7 @@
+## Release 0.10.9
+
+- Fix declaration data on `export`s
+
 ## Release 0.10.8
 
 - Add `.npmignore` to prevent stuff from being published
