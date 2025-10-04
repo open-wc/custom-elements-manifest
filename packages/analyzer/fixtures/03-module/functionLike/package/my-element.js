@@ -39,6 +39,16 @@ export function emptyReturn() {
   return;
 }
 
+export function functionWithRestParam1(...args: string){}
+/**
+ * @param {...number} args
+ */
+export function functionWithRestParam2(args: string){}
+/**
+ * @param {...number} args
+ */
+export function functionWithRestParam3(args){}
+
 /**
  * METHODS
  */
@@ -57,4 +67,14 @@ export class MyEl {
    * @return {string}
    */
   functionDeclaration6(bar:string):boolean{}
+
+  functionWithRestParam1(...args: string){}
+  /**
+   * @param {...number} args
+   */
+  functionWithRestParam2(args: string){}
+  /**
+  * @param {...number} args
+  */
+  functionWithRestParam3(args){}
 }
