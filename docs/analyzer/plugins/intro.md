@@ -55,6 +55,7 @@ export default {
 | [cem-plugin-reactify](https://www.npmjs.com/package/cem-plugin-reactify) | plugin to automatically create React wrappers for your custom elements |
 | [cem-plugin-readonly](https://www.npmjs.com/package/cem-plugin-readonly) | plugin to handle read-only class members |
 | [cem-plugin-type-descriptions-markdown](https://www.npmjs.com/package/cem-plugin-type-descriptions-markdown) | plugin to add markdown type documentation to manifest member descriptions |
+| [cem-plugin-wrec](https://www.npmjs.com/package/cem-plugin-wrec)                                                    | plugin to handle [wrec](https://www.npmjs.com/package/wrec) web components |
 | [custom-element-jet-brains-integration](https://www.npmjs.com/package/custom-element-jet-brains-integration) | a mapper to take the information captured in the CEM and generate the appropriate `web-types.json` file for [JetBrains IDEs](https://www.jetbrains.com/) |
 | [custom-element-jsx-integration](https://www.npmjs.com/package/custom-element-jsx-integration) | a custom type generator to convert the CEM data into usable types to integrate custom elements into _non-React_ projects that use JSX templates |
 | [custom-element-lazy-loader](https://www.npmjs.com/package/custom-element-lazy-loader) | Create a single entry point to lazy-load your custom elements/web components as needed! |
