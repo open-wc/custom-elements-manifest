@@ -62,7 +62,7 @@ export async function findDependencies (paths, options = {}) {
   const basePath = options?.basePath ?? process.cwd()
 
   const input = paths.map(path => getFileNameWithSource(path))
-
+  console.log('input', input)
   const { output } = await rsModuleLexer.parseAsync({ input })
   output.forEach(result => {
     result.imports?.forEach(i => {
@@ -165,7 +165,7 @@ export async function findDependencies (paths, options = {}) {
  * @example
  * resolveDependencyPath('lodash', '/project/packages/my-package')
  */
-export function resolveDependencyPath (dep, basePath, nodeModulesDepth = 3, packageRoot) {
+export function resolveDependencyPath (dep, basePath, nodeModulesDepth = 5, packageRoot) {
   try {
     if (typeof dep!=='string' || !dep) {
       throw new Error('Nieprawidłowa nazwa zależności')
@@ -205,7 +205,9 @@ export function resolveDependencyPath (dep, basePath, nodeModulesDepth = 3, pack
     // Szukanie w node_modules w katalogach nadrzędnych
     for (const dir of paths) {
       try {
-        const nodeModulesPath = path.join(dir, 'node_modules', dep)
+        const nodeModulesPath = dep.includes('node_modules')
+          ? path.resolve(dep)
+          : path.join(dir, 'node_modules', dep)
         if (fs.existsSync(nodeModulesPath)) {
           const resolved = resolveWithExtensions(nodeModulesPath)
           if (resolved) return resolved
