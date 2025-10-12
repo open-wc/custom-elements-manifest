@@ -205,7 +205,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "this description never gets picked up by the analyzer. \nso we lose some info about default values and the fact it is both property and attribute",
+              "description": "this description never gets picked up by the analyzer. \r\nso we lose some info about default values and the fact it is both property and attribute",
               "attribute": "disabled"
             }
           ],
@@ -216,7 +216,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "this description never gets picked up by the analyzer. \nso we lose some info about default values and the fact it is both property and attribute",
+              "description": "this description never gets picked up by the analyzer. \r\nso we lose some info about default values and the fact it is both property and attribute",
               "fieldName": "disabled"
             }
           ],

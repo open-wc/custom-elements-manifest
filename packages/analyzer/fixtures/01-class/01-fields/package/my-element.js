@@ -13,10 +13,10 @@ class MyEl extends HTMLElement {
   prop5;
 
   /** @type {boolean} */
-  set setter() {}
+  set setter(value) {}
   get setter() {}
 
-  set getter2(){}
+  set getter2(value){}
   /** @type {string} */
   get getter2(){}
 
