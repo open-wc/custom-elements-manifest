@@ -60,21 +60,21 @@ export async function findDependencies (paths, options = {}) {
 
   const nodeModulesDepth = options?.nodeModulesDepth ?? 3
   const basePath = options?.basePath ?? process.cwd()
+  const absoluteBasePath = path.isAbsolute(basePath) ? basePath : path.resolve(basePath)
 
   const input = paths.map(path => getFileNameWithSource(path))
-  console.log('input', input)
   const { output } = await rsModuleLexer.parseAsync({ input })
+  
   output.forEach(result => {
     result.imports?.forEach(i => {
       /** Skip built-in modules like fs, path, etc */
       if (builtinModules.includes(i.n)) return
       try {
-        const pathToDependency = resolveDependencyPath(i.n, basePath || result.filename, nodeModulesDepth)
-
+        const pathToDependency = resolveDependencyPath(i.n, basePath || result.filename, nodeModulesDepth, undefined, absoluteBasePath)
         importsToScan.add(pathToDependency)
         dependencies.add(pathToDependency)
-      } catch {
-        console.log(`Failed to resolve dependency "${i.n}".`)
+      } catch (error) {
+        console.log(`Failed to resolve dependency "${i.n}": ${error.message}`)
       }
     })
   })
@@ -90,12 +90,23 @@ export async function findDependencies (paths, options = {}) {
           if (builtinModules.includes(i.n)) return
           try {
             const { packageRoot } = splitPath(dep)
-            const fileToFind = isBareModuleSpecifier(i.n) ? i.n : path.join(path.dirname(dep), i.n)
-            /**
-             * First check in the dependencies' node_modules, then in the project's node_modules,
-             * then up, and up, and up
-             */
-            const pathToDependency = resolveDependencyPath(fileToFind, basePath, nodeModulesDepth, packageRoot)
+            let pathToDependency
+            
+            if (isBareModuleSpecifier(i.n)) {
+              // Bare module specifier - use normal resolution
+              pathToDependency = resolveDependencyPath(i.n, dep, nodeModulesDepth, packageRoot, absoluteBasePath)
+            } else {
+              // Relative path - resolve directly from the current file's directory
+              const baseDir = path.dirname(dep)
+              const resolvedLocal = path.resolve(baseDir, i.n)
+              const resolved = resolveWithExtensions(resolvedLocal)
+              if (resolved) {
+                pathToDependency = resolved
+              } else {
+                throw new Error(`Local file not found: ${resolvedLocal}`)
+              }
+            }
+            
             /**
              * Don't add dependencies we've already scanned, also avoids circular dependencies
              * and multiple modules importing from the same module
@@ -104,8 +115,8 @@ export async function findDependencies (paths, options = {}) {
               importsToScan.add(pathToDependency)
               dependencies.add(pathToDependency)
             }
-          } catch (e) {
-            console.log(`Failed to resolve dependency "${i.n}".`)
+          } catch (error) {
+            console.error(`Failed to resolve dependency "${i.n}" in file "${dep}": ${error.message}`)
           }
         })
       })
@@ -165,88 +176,88 @@ export async function findDependencies (paths, options = {}) {
  * @example
  * resolveDependencyPath('lodash', '/project/packages/my-package')
  */
-export function resolveDependencyPath (dep, basePath, nodeModulesDepth = 5, packageRoot) {
-  try {
-    if (typeof dep!=='string' || !dep) {
-      throw new Error('Nieprawidłowa nazwa zależności')
-    }
+export function resolveDependencyPath (dep, basePath, nodeModulesDepth = 5, packageRoot, originalBasePath) {
+  if (typeof dep !== 'string' || !dep) {
+    throw new Error('Invalid dependency name')
+  }
 
-    // Rozwiązanie ścieżki względnej
-    if (!isBareModuleSpecifier(dep)) {
-      const baseDir = fs.existsSync(basePath) && fs.statSync(basePath).isDirectory()
-                      ? basePath
-                      : path.dirname(basePath)
-      const resolvedLocal = path.resolve(baseDir, dep)
-      if (fs.existsSync(resolvedLocal)) {
-        return resolvedLocal
-      }
-      throw new Error(`Nie znaleziono lokalnego pliku: ${resolvedLocal}`)
+  // Handle relative paths
+  if (!isBareModuleSpecifier(dep)) {
+    const baseDir = fs.existsSync(basePath) && fs.statSync(basePath).isDirectory()
+                    ? basePath
+                    : path.dirname(basePath)
+    const resolvedLocal = path.resolve(baseDir, dep)
+    const resolved = resolveWithExtensions(resolvedLocal)
+    if (resolved) {
+      return resolved
     }
+    throw new Error(`Local file not found: ${resolvedLocal}`)
+  }
 
-    const paths = [basePath, ...traverseUp(nodeModulesDepth, { cwd: basePath })]
-    if (packageRoot) {
-      paths.push(packageRoot)
-    }
+  const paths = [basePath, ...traverseUp(nodeModulesDepth, { cwd: basePath })]
+  if (packageRoot) {
+    paths.push(packageRoot)
+  }
 
-    // Próba zmapowania aliasu z tsconfig-paths
-    if (matchPath) {
+  // Try TypeScript path mapping using originalBasePath if available
+  const tsconfigSearchPath = originalBasePath || basePath
+  const absoluteTsconfigPath = path.isAbsolute(tsconfigSearchPath) ? tsconfigSearchPath : path.resolve(tsconfigSearchPath)
+  let currentDir = fs.existsSync(absoluteTsconfigPath) && fs.statSync(absoluteTsconfigPath).isDirectory()
+                   ? absoluteTsconfigPath
+                   : path.dirname(absoluteTsconfigPath)
+  
+  while (currentDir !== path.dirname(currentDir)) {
+    const configResult = loadConfig(currentDir)
+    if (configResult.resultType === 'success') {
+      const matchPath = createMatchPath(configResult.absoluteBaseUrl, configResult.paths)
       const mapped = matchPath(dep, readJsonSync, fs.existsSync, TS_EXTENSIONS)
       if (mapped) {
-        try {
-          const resolved = resolveWithExtensions(mapped)
-          if (resolved) return resolved
-        } catch (error) {
-          console.log(error)
-          // jeżeli mapowanie nie wskazuje na istniejący plik, spróbuj dalej
-        }
+        const resolved = resolveWithExtensions(mapped)
+        if (resolved) return resolved
       }
     }
+    currentDir = path.dirname(currentDir)
+  }
 
-    // Szukanie w node_modules w katalogach nadrzędnych
-    for (const dir of paths) {
-      try {
-        const nodeModulesPath = dep.includes('node_modules')
-          ? path.resolve(dep)
-          : path.join(dir, 'node_modules', dep)
-        if (fs.existsSync(nodeModulesPath)) {
-          const resolved = resolveWithExtensions(nodeModulesPath)
-          if (resolved) return resolved
-        }
-      } catch (e) {
-        console.log(e)
-      }
-
+  // Search in node_modules directories
+  for (const dir of paths) {
+    const nodeModulesDir = path.join(dir, 'node_modules')
+    if (!fs.existsSync(nodeModulesDir)) continue
+    
+    const packagePath = path.join(nodeModulesDir, dep)
+    if (fs.existsSync(packagePath)) {
+      const resolved = resolveWithExtensions(packagePath)
+      if (resolved) return resolved
     }
+  }
 
-    // Ostateczna próba przez require.resolve
-    try {
-      const resolved = require.resolve(dep, { paths })
-      if (fs.existsSync(resolved)) {
-        return resolved
-      }
-      throw new Error(`Plik ${resolved} nie istnieje po rozwiązaniu przez require.resolve`)
-    } catch (err) {
-      throw new Error(`Nie udało się rozwiązać zależności: ${dep}. ${err.message}`)
-    }
-  } catch (e) {
-    console.log(e)
+  // Try require.resolve as fallback
+  try {
+    return require.resolve(dep, { paths })
+  } catch (err) {
+    throw new Error(`Could not resolve dependency: ${dep}. ${err.message}`)
   }
 }
 
 function resolveWithExtensions (candidate) {
-  // Dokładny plik
-  try {
-    if (fs.existsSync(candidate)) {
-      const stat = fs.statSync(candidate)
-      if (stat.isFile()) return candidate
-      if (stat.isDirectory()) {
-        for (const ext of TS_EXTENSIONS) {
-          const idx = path.join(candidate, 'index' + ext)
-          if (fs.existsSync(idx)) return idx
-        }
+  // Check if exact file exists
+  if (fs.existsSync(candidate)) {
+    const stat = fs.statSync(candidate)
+    if (stat.isFile()) return candidate
+    if (stat.isDirectory()) {
+      // Try index files with different extensions
+      for (const ext of TS_EXTENSIONS) {
+        const indexPath = path.join(candidate, 'index' + ext)
+        if (fs.existsSync(indexPath)) return indexPath
       }
     }
-  } catch (e) {
-    console.log(e)
   }
+  
+  // Try with different extensions
+  for (const ext of TS_EXTENSIONS) {
+    const pathWithExt = candidate + ext
+    if (fs.existsSync(pathWithExt)) return pathWithExt
+  }
+  
+  return null
 }
