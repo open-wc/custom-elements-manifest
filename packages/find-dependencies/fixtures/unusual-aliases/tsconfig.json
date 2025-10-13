@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "snake_case/*": ["src/my_utilities/*"],
+      "lib2024/*": ["src/ui_components/*"],
+      "myAppConfig/*": ["src/app_config/*"],
+      "domain.types/*": ["src/core_types/*"],
+      "u/*": ["src/my_utilities/*"],
+      "c/*": ["src/ui_components/*"]
+    },
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  }
+}
