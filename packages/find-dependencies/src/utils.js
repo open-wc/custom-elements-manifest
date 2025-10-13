@@ -202,7 +202,7 @@ export function getFileNameWithSource(filePath) {
         break;
       }
     }
-    if (!found) console.log(`Nie znaleziono pliku: ${filePath} ani alternatyw`);
+    if (!found) console.log(`File not found: ${filePath} or alternatives`);
   }
   return {
     filename,
