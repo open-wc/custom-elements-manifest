@@ -1,11 +1,8 @@
 import { describe } from '@asdgf/cli'
 import { globby } from 'globby'
 import assert from 'assert'
-import fs from "fs";
-import path from 'path'
-import os from 'os'
 
-import { findDependencies, resolveDependencyPath } from '../src/find-dependencies.js'
+import { findDependencies } from '../src/find-dependencies.js'
 import { toPosix } from '../src/utils.js'
 
 describe('find-dependencies', ({ it }) => {
@@ -66,28 +63,52 @@ describe('find-dependencies', ({ it }) => {
       ]
     )
   })
-  // it('resolves .ts, directory index.* and .d.ts without specifying extensions', async () => {
-  //   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'fd-'))
-  //   const dir = path.resolve('fixtures/regular-react/dir')
-  //   fs.mkdirSync(dir, { recursive: true })
-  //
-  //   const main = path.resolve('fixtures/regular-react/internal-ts.ts')
-  //   const foo = path.resolve('fixtures/regular-react/internal-ts.ts')
-  //   const jsx = path.resolve('fixtures/regular-react/internal-jsx.jsx')
-  //   const tsx = path.resolve('fixtures/regular-react/internal-tsx.tsx')
-  //   const dts = path.resolve('fixtures/regular-react/types.d.ts')
-  //   const subIndex = path.resolve('fixtures/regular-react/dir/index.ts')
-  //
-  //   const fooResolved = resolveDependencyPath('./internal-ts', main)
-  //   const jsxResolved = resolveDependencyPath('./internal-jsx', main)
-  //   const tsxResolved = resolveDependencyPath('./internal-tsx', main)
-  //   const dtsResolved = resolveDependencyPath('./types', main)
-  //   const dirResolved = resolveDependencyPath('./dir', main)
-  //
-  //   assert.equal(path.normalize(fooResolved), path.normalize(foo))
-  //   assert.equal(path.normalize(jsxResolved), path.normalize(jsx))
-  //   assert.equal(path.normalize(tsxResolved), path.normalize(tsx))
-  //   assert.equal(path.normalize(dtsResolved), path.normalize(dts))
-  //   assert.equal(path.normalize(dirResolved), path.normalize(subIndex))
-  // })
+
+  it('finds dependencies for regular-ts setup with TypeScript path mapping', async () => {
+    const globs = await globby(['fixtures/regular-ts/src/index.ts'])
+    let dependencies = await findDependencies(globs, { basePath: 'fixtures/regular-ts/src' })
+    dependencies = dependencies
+    .map(d => d.split('regular-ts')[1])
+    .map(d => toPosix(d))
+    .sort()
+
+    const expected = [
+      '/src/components/my-element/index.ts',
+      '/src/components/second-element/index.ts',
+      '/src/utils/helper.ts',
+      '/src/shared/constants.ts',
+      '/src/utils/validation.ts',
+      '/src/components/base/BaseComponent.ts',
+      '/src/shared/config.ts',
+      '/src/types/config.ts',        // from import type
+      '/src/shared/types.ts',        // from import type
+      '/src/components/my-element/src/MyElement.ts',
+      '/src/components/my-element/src/types.ts',
+      '/src/components/second-element/src/SecondElement.ts'
+    ].sort()
+
+    assert.deepEqual(dependencies, expected)
+  })
+
+  it('finds dependencies with unusual TypeScript path aliases', async () => {
+    const globs = await globby(['fixtures/unusual-aliases/src/index.ts'])
+    let dependencies = await findDependencies(globs, { basePath: 'fixtures/unusual-aliases/src' })
+    dependencies = dependencies
+    .map(d => d.split('unusual-aliases')[1])
+    .map(d => toPosix(d))
+    .sort()
+
+    const expected = [
+      '/src/my_utilities/validation.ts',     // snake_case/*
+      '/src/my_utilities/formatter.ts',     // snake_case/* and u/*
+      '/src/ui_components/BaseWidget.ts',   // lib2024/*
+      '/src/ui_components/SmartButton.ts',  // lib2024/* and c/*
+      '/src/app_config/settings.ts',        // myAppConfig/*
+      '/src/app_config/environment.ts',     // myAppConfig/*
+      '/src/core_types/config.ts',          // domain.types/*
+      '/src/core_types/events.ts'           // domain.types/*
+    ].sort()
+
+    assert.deepEqual(dependencies, expected)
+  })
 })
