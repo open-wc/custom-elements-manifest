@@ -187,7 +187,23 @@ export function toPosix(p) {
  */
 export function getFileNameWithSource(filePath) {
   const filename = filePath.split("/").pop();
-  const code = fs.readFileSync(filePath).toString();
+  let code;
+  if (fs.existsSync(filePath)) {
+    code = fs.readFileSync(filePath).toString();
+  } else {
+    const exts = ["js", "jsx", "ts", "tsx", 'svelte', 'vue', 'mjs', 'cjs'];
+    const base = filePath.replace(/\.[^/.]+$/, "");
+    let found = false;
+    for (const ext of exts) {
+      const altPath = `${base}.${ext}`;
+      if (fs.existsSync(altPath)) {
+        code = fs.readFileSync(altPath).toString();
+        found = true;
+        break;
+      }
+    }
+    if (!found) console.log(`File not found: ${filePath} or alternatives`);
+  }
   return {
     filename,
     code,

@@ -39,6 +39,43 @@ Will output:
 ]
 ```
 
+## TypeScript Support
+
+This package provides full TypeScript support including:
+
+### Path Mapping
+Automatically resolves TypeScript path mapping from `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@utils/*": ["src/utils/*"],
+      "@components/*": ["src/components/*"],
+      "snake_case/*": ["src/my_utilities/*"],
+      "lib2024/*": ["src/ui_components/*"],
+      "domain.types/*": ["src/core_types/*"]
+    }
+  }
+}
+```
+
+### Flexible Alias Patterns
+Supports various alias naming conventions:
+- **Standard**: `@utils/*`, `@components/*`
+- **Snake case**: `snake_case/*`, `my_utils/*`  
+- **Numeric**: `lib2024/*`, `v2/*`
+- **Domain-style**: `domain.types/*`, `app.config/*`
+- **Cryptic**: `u/*`, `c/*`
+
+### Import Types
+Handles all TypeScript import/export variants:
+- `import type { Type } from './module.js'`
+- `export type { Type } from './module.js'`  
+- `import('./module.js')` (dynamic imports)
+- Mixed JavaScript/TypeScript projects
+
 ## Configuration
 
 ```ts
