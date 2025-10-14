@@ -1,11 +1,8 @@
 import { describe } from '@asdgf/cli'
 import { globby } from 'globby'
 import assert from 'assert'
-import fs from 'fs'
-import path from 'path'
-import os from 'os'
 
-import { findDependencies, resolveDependencyPath } from '../src/find-dependencies.js'
+import { findDependencies } from '../src/find-dependencies.js'
 import { toPosix } from '../src/utils.js'
 
 describe('find-dependencies', ({ it }) => {
@@ -68,30 +65,22 @@ describe('find-dependencies', ({ it }) => {
     )
   })
 
-  it('resolves .ts, directory index.* and .d.ts without specifying extensions', async () => {
-    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'fd-'))
-    const dir = path.join(tmp, 'pkg')
-    fs.mkdirSync(dir, { recursive: true })
+  it('finds dependencies for resolve-extensions setup with .ts, directory index.* and .d.ts without specifying extensions', async () => {
+    const globs = await globby(['fixtures/resolve-extensions/index.ts'])
+    let dependencies = await findDependencies(globs, { basePath: 'fixtures/resolve-extensions' })
+    dependencies = dependencies
+    .map(d => d.split('fixtures')[1])
+    .map(d => toPosix(d))
+    .sort()
 
-    const main = path.join(dir, 'main.ts')
-    const foo = path.join(dir, 'foo.ts')
-    const dts = path.join(dir, 'types.d.ts')
-    const subDir = path.join(dir, 'dir')
-    const subIndex = path.join(subDir, 'index.ts')
+    const expected = [
+      '/resolve-extensions/foo.ts',
+      '/resolve-extensions/types.d.ts',
+      '/resolve-extensions/types/config.d.ts',
+      '/resolve-extensions/types/example.types.d.ts'
+    ].sort()
 
-    fs.mkdirSync(subDir, { recursive: true })
-    fs.writeFileSync(main, 'export {}')
-    fs.writeFileSync(foo, 'export const x = 1;')
-    fs.writeFileSync(subIndex, 'export const y = 2;')
-    fs.writeFileSync(dts, 'declare const z: number; export {};')
-
-    const fooResolved = resolveDependencyPath('./foo', main)
-    const dirResolved = resolveDependencyPath('./dir', main)
-    const dtsResolved = resolveDependencyPath('./types', main)
-
-    assert.equal(path.normalize(fooResolved), path.normalize(foo))
-    assert.equal(path.normalize(dirResolved), path.normalize(subIndex))
-    assert.equal(path.normalize(dtsResolved), path.normalize(dts))
+    assert.deepEqual(dependencies, expected)
   })
 
   it('finds dependencies for regular-ts setup with TypeScript path mapping', async () => {
@@ -104,7 +93,7 @@ describe('find-dependencies', ({ it }) => {
 
     const expected = [
       '/src/components/my-element/index.js',      // This exists as .js file
-      '/src/components/second-element/index.ts',  // This should be resolved from .js to .ts  
+      '/src/components/second-element/index.ts',  // This should be resolved from .js to .ts
       '/src/utils/helper.ts',                     // This should be resolved from .js to .ts
       '/src/shared/constants.ts',                 // This should be resolved from .js to .ts
       '/src/utils/validation.ts',                 // This should be resolved from .js to .ts
@@ -117,5 +106,3 @@ describe('find-dependencies', ({ it }) => {
     assert.deepEqual(dependencies, expected)
   })
 })
-
-
