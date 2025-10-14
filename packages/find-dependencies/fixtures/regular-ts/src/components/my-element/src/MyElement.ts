@@ -1,6 +1,5 @@
-import type { MyElementElement } from './types.js'
-import { BaseComponent } from '@components/base/BaseComponent.js'
-import { validation } from '@utils/validation.js'
+import { BaseComponent } from '../../base/BaseComponent.js'
+import { validation } from '../../../utils/validation.js'
 
 declare global {
   interface HTMLElementTagNameMap {

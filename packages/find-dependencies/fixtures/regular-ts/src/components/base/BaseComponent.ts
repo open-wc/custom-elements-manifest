@@ -1,5 +1,5 @@
 // Use TypeScript path mapping import
-import type { ComponentConfig } from '@/types/config.js'
+import type { ComponentConfig } from '../../types/config.js'
 
 export class BaseComponent {
   protected config: ComponentConfig
