@@ -7,39 +7,37 @@ import {
 } from './utils.js'
 import { ResolverFactory } from 'oxc-resolver'
 
-const resolver = new ResolverFactory({
-  // TODO consider how to handle alias: {},
+/**
+ * @typedef {import('oxc-resolver').NapiResolveOptions} NapiResolveOptions
+ */
+
+/**
+ *
+ * @type {NapiResolveOptions}
+ */
+const DEFAULT_RESOLUTION_OPTIONS = {
   extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.d.ts', ''],
   extensionAlias: {
     '.js': ['.ts', '.js'],
     '.jsx': ['.tsx', '.jsx']
   },
-  // Odpowiada resolve.mainFiles
   mainFiles: ['index'],
-  // Odpowiada resolve.mainFields
   mainFields: ['module', 'browser', 'main'],
-  // Odpowiada resolve.conditionNames
   conditionNames: ['import', 'require', 'node'],
-  // Odpowiada resolve.descriptionFiles
-  descriptionFiles: ['package.json'],
-  // Odpowiada resolve.exportsFields
   exportsFields: ['exports'],
-  // Odpowiada resolve.alias (jeśli masz aliasy, dodaj je tutaj)
-  alias: {
-    // 'my-alias': path.resolve(__dirname, '../src/my-alias')
-  },
-  // Odpowiada resolve.symlinks
+  alias: {},
   symlinks: true,
-  // Odpowiada resolve.modules
   modules: ['node_modules']
-})
+}
+
+
 
 /**
  * Find all dependencies of the given file paths
  * @param {string[]} paths - Array of file paths to analyze
  * @param {{
- *  nodeModulesDepth?: number,
  *  basePath?: string,
+ *  resolutionOptions?: NapiResolveOptions
  * }} options - Options object
  * @returns {Promise<string[]>} Array of dependency paths
  */
@@ -53,6 +51,7 @@ export async function findDependencies (paths, options = {}) {
 
   const basePath = options?.basePath ?? process.cwd()
   const absoluteBasePath = path.isAbsolute(basePath) ? basePath : path.resolve(basePath)
+  const resolver = new ResolverFactory({ ...DEFAULT_RESOLUTION_OPTIONS, ...(options?.resolutionOptions ?? {}) });
 
   const input = paths.map(filePath => getFileNameWithSource(filePath))
 
@@ -63,7 +62,7 @@ export async function findDependencies (paths, options = {}) {
         /** Skip built-in modules like fs, path, etc */
         if (builtinModules.includes(i.n)) return
         try {
-          const pathToDependency = resolveDependencyPath(absoluteBasePath, i.n)
+          const pathToDependency = resolveImport(resolver,absoluteBasePath, i.n)
 
           if (pathToDependency) {
             importsToScan.add(pathToDependency)
@@ -91,7 +90,7 @@ export async function findDependencies (paths, options = {}) {
           if (builtinModules.includes(i.n)) return
           try {
             const baseDir = path.dirname(dep)
-            const pathToDependency = resolveDependencyPath(baseDir, i.n)
+            const pathToDependency = resolveImport(resolver,baseDir, i.n)
 
             /**
              * Don't add dependencies we've already scanned, also avoids circular dependencies
@@ -114,11 +113,12 @@ export async function findDependencies (paths, options = {}) {
 
 /**
  *
+ * @param resolver
  * @param absoluteBasePath
  * @param dependency
  * @returns {string}
  */
-export function resolveDependencyPath (absoluteBasePath, dependency) {
+export function resolveImport (resolver, absoluteBasePath, dependency) {
   const result = resolver.sync(absoluteBasePath, dependency)
   if (!result || !result.path) {
     console.log(`Cannot resolve '${dependency}' from '${absoluteBasePath}'`)
