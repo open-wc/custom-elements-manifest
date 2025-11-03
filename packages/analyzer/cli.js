@@ -20,6 +20,7 @@ import {
   MENU,
 } from "./src/utils/cli-helpers.js";
 import { findExternalManifests } from "./src/utils/find-external-manifests.js";
+import { mergeResolutionOptions } from "./src/utils/resolver-config.js";
 
 /**
  * @param {{argv:string[]; cwd: string; noWrite:boolean}} [opts]
@@ -47,6 +48,10 @@ export async function cli({
     const mergedOptions = { ...DEFAULTS, ...userConfig, ...cliConfig };
     const merged = mergeGlobsAndExcludes(DEFAULTS, userConfig, cliConfig);
     async function run() {
+
+    // Merge resolution options with priority: CLI > user config > defaults
+    const resolutionOptions = mergeResolutionOptions(userConfig, cliConfig);
+
       const globs = await globby(merged, { cwd });
       const modules = userConfig?.overrideModuleCreation
         ? userConfig.overrideModuleCreation({ ts, globs })
@@ -67,6 +72,7 @@ export async function cli({
           const fullPathGlobs = globs.map((glob) => path.resolve(cwd, glob));
           thirdPartyCEMs = await findExternalManifests(fullPathGlobs, {
             basePath: cwd,
+            resolutionOptions
           });
         } catch (e) {
           if (mergedOptions.dev)

@@ -1,3 +1,5 @@
+import { DEFAULT_RESOLUTION_OPTIONS } from './src/utils/resolver-config.js';
+
 // const defaultCompilerOptions = {
 //   noEmitOnError: false,
 //   allowJs: true,
@@ -24,6 +26,7 @@ export default {
   dependencies: false,
   dev: false,
   packagejson: true,
+  resolutionOptions: DEFAULT_RESOLUTION_OPTIONS,
   plugins: [
     test(() => typeChecker),
     /** myAwesomePlugin() */
