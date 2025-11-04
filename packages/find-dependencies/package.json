@@ -22,6 +22,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "oxc-resolver": "^11.9.0",
     "rs-module-lexer": "^2.5.1"
   },
   "files": [

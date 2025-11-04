@@ -28,20 +28,57 @@ cem analyze
 
 ## Options
 
-| Command/option     | Type       | Description                                                 | Example                                               |
-| ------------------ | ---------- | ----------------------------------------------------------- | ----------------------------------------------------- |
-| analyze            |            | Analyze your components                                     |                                                       |
-| --config           | string     | Path to custom config location                              | `--config "../custom-elements-manifest.config.js"`    |
-| --globs            | string[]   | Globs to analyze                                            | `--globs "foo.js"`                                    |
-| --exclude          | string[]   | Globs to exclude                                            | `--exclude "foo.js"`                                  |
-| --outdir           | string     | Directory to output the Manifest to                         | `--outdir dist`                                       |
-| --dependencies     | boolean    | Include third party custom elements manifests               | `--dependencies`                                      |
-| --packagejson      | boolean    | Output CEM path to `package.json`, defaults to true         | `--packagejson`                                       |
-| --watch            | boolean    | Enables watch mode, generates a new manifest on file change | `--watch`                                             |
-| --dev              | boolean    | Enables extra logging for debugging                         | `--dev`                                               |
-| --quiet            | boolean    | Hides all logging                                           | `--quiet`                                             |
-| --litelement       | boolean    | Enable special handling for LitElement syntax               | `--litelement`                                        |
-| --fast             | boolean    | Enable special handling for FASTElement syntax              | `--fast`                                              |
-| --stencil          | boolean    | Enable special handling for Stencil syntax                  | `--stencil`                                           |
-| --catalyst         | boolean    | Enable special handling for Catalyst syntax                 | `--catalyst`                                          |
-| --catalyst-major-2 | boolean    | Enable special handling for Catalyst syntax ^2.0.0          | `--catalyst-major-2`                                  |
+| Command/option        | Type       | Description                                                 | Example                                               |
+|-----------------------|------------| ----------------------------------------------------------- | ----------------------------------------------------- |
+| analyze               |            | Analyze your components                                     |                                                       |
+| --config              | string     | Path to custom config location                              | `--config "../custom-elements-manifest.config.js"`    |
+| --globs               | string[]   | Globs to analyze                                            | `--globs "foo.js"`                                    |
+| --exclude             | string[]   | Globs to exclude                                            | `--exclude "foo.js"`                                  |
+| --outdir              | string     | Directory to output the Manifest to                         | `--outdir dist`                                       |
+| --dependencies        | boolean    | Include third party custom elements manifests               | `--dependencies`                                      |
+| --packagejson         | boolean    | Output CEM path to `package.json`, defaults to true         | `--packagejson`                                       |
+| --watch               | boolean    | Enables watch mode, generates a new manifest on file change | `--watch`                                             |
+| --dev                 | boolean    | Enables extra logging for debugging                         | `--dev`                                               |
+| --quiet               | boolean    | Hides all logging                                           | `--quiet`                                             |
+| --litelement          | boolean    | Enable special handling for LitElement syntax               | `--litelement`                                        |
+| --fast                | boolean    | Enable special handling for FASTElement syntax              | `--fast`                                              |
+| --stencil             | boolean    | Enable special handling for Stencil syntax                  | `--stencil`                                           |
+| --catalyst            | boolean    | Enable special handling for Catalyst syntax                 | `--catalyst`                                          |
+| --catalyst-major-2    | boolean    | Enable special handling for Catalyst syntax ^2.0.0          | `--catalyst-major-2`                                  |
+| --resolution-options  | string     | JSON string with resolution options                         | `--resolution-options '{"exportConditions":["node"]}'`|
+
+
+## Resolution Options
+
+The analyzer supports customizing module resolution through the `resolutionOptions` configuration option. These options are passed directly to the `oxc-resolver` package.
+
+### Via Configuration File
+
+```js
+// custom-elements-manifest.config.js
+export default {
+  // ... other options
+  resolutionOptions: {
+    extensions: ['.js', '.ts'],
+    mainFields: ['module', 'main'],
+    conditionNames: ['import', 'require'],
+    // ... other oxc-resolver options
+  }
+}
+```
+
+### Available Options
+
+The following options can be configured:
+
+- `extensions` - Array of file extensions to try when resolving modules
+- `extensionAlias` - Map of extension aliases
+- `mainFiles` - Array of filenames to try when resolving directory imports
+- `mainFields` - Array of package.json fields to check when resolving modules
+- `conditionNames` - Array of conditions for package.json exports
+- `exportsFields` - Array of package.json fields for exports
+- `alias` - Object mapping module names to their aliases
+- `symlinks` - Boolean to enable/disable symlink resolution
+- `modules` - Array of directories to search for modules
+
+For detailed information about each option, please refer to the [oxc-resolver documentation](https://github.com/oxc-project/oxc-resolver?tab=readme-ov-file#options).
