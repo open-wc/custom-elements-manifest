@@ -1,4 +1,6 @@
 import { Module, Package } from 'custom-elements-manifest/schema';
+import type * as ts from "typescript";
+import { NapiResolveOptions } from 'oxc-resolver';
 
 /** Plugin execution context. Pass arbitrary data here. */
 export type Context = Record<string, unknown>;
@@ -140,4 +142,39 @@ export interface Plugin {
    * Runs once per package, after modules have been parsed and after per-module post-processing
    */
   packageLinkPhase?(params: PackageLinkPhaseParams): void;
+}
+
+
+export interface Config {
+  /** Globs to analyze */
+  globs: string[];
+  /** Globs to exclude */
+  exclude?: string[];
+  /** Directory to output CEM to */
+  outdir?: string;
+  /** Run in dev mode, provides extra logging */
+  dev?: boolean;
+  /** Run in watch mode, runs on file changes */
+  watch?: boolean;
+  /** Include third party custom elements manifests */
+  dependencies?: boolean;
+  /** Output CEM path to `package.json`, defaults to true */
+  packagejson?: boolean;
+  /** Enable special handling for litelement */
+  litelement?: boolean;
+  /** Enable special handling for catalyst */
+  catalyst?: boolean;
+  /** Enable special handling for fast */
+  fast?: boolean;
+  /** Enable special handling for stencil */
+  stencil?: boolean;
+  /** Provide custom plugins */
+  plugins?: Array<() => unknown>;
+  /** Overrides default module creation */
+  overrideModuleCreation?: (opts: {
+    ts: typeof ts;
+    globs: string[];
+  }) => unknown[];
+  /** Resolution options when using `dependencies: true` */
+  resolutionOptions?: NapiResolveOptions;
 }

@@ -1,3 +1,7 @@
+## Release 0.11.0
+
+- Update `find-dependencies` package to use `oxc-resolver`
+
 ## Release 0.10.10
 
 - Dont filter out a declaration is it is exported as key of an object

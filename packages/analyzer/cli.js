@@ -40,7 +40,6 @@ export async function cli({
   if (mainOptions.command === "analyze") {
     const { config: configPath, ...cliConfig } = getCliConfig(cliArgs);
     const userConfig = await getUserConfig(configPath, cwd);
-
     /**
      * Merged config options
      * Command line options override userConfig options
@@ -48,9 +47,10 @@ export async function cli({
     const mergedOptions = { ...DEFAULTS, ...userConfig, ...cliConfig };
     const merged = mergeGlobsAndExcludes(DEFAULTS, userConfig, cliConfig);
     async function run() {
-
-    // Merge resolution options with priority: CLI > user config > defaults
-    const resolutionOptions = mergeResolutionOptions(userConfig, cliConfig);
+      // Merge resolution options with priority: CLI > user config > defaults
+      const resolutionOptions = mergeResolutionOptions(
+        userConfig?.resolutionOptions
+      );
 
       const globs = await globby(merged, { cwd });
       const modules = userConfig?.overrideModuleCreation
@@ -72,7 +72,7 @@ export async function cli({
           const fullPathGlobs = globs.map((glob) => path.resolve(cwd, glob));
           thirdPartyCEMs = await findExternalManifests(fullPathGlobs, {
             basePath: cwd,
-            resolutionOptions
+            resolutionOptions,
           });
         } catch (e) {
           if (mergedOptions.dev)
