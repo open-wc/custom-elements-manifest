@@ -16,6 +16,8 @@ npm i -D @custom-elements-manifest/analyzer
 
 ## Usage
 
+### CLI
+
 ```bash
 custom-elements-manifest analyze
 ```
@@ -25,6 +27,89 @@ or
 ```bash
 cem analyze
 ```
+
+### Programmatic API
+
+You can also use the analyzer programmatically in your Node.js scripts:
+
+```javascript
+import { generateManifest } from '@custom-elements-manifest/analyzer';
+
+// Using a configuration object
+const manifest = await generateManifest({
+  globs: ['src/**/*.js'],
+  exclude: ['**/*.test.js'],
+  outdir: './dist',
+  litelement: true,
+  dependencies: true
+});
+
+console.log(manifest);
+```
+
+Or load from a config file:
+
+```javascript
+import { generateManifest } from '@custom-elements-manifest/analyzer';
+
+// Using a config file path
+const manifest = await generateManifest('./custom-elements-manifest.config.js', {
+  cwd: process.cwd(),
+  write: true  // Write to disk (default: true)
+});
+```
+
+Generate without writing to disk:
+
+```javascript
+import { generateManifest } from '@custom-elements-manifest/analyzer';
+
+// Generate manifest without writing to disk
+const manifest = await generateManifest({
+  globs: ['src/**/*.js'],
+  outdir: './dist'
+}, {
+  write: false  // Don't write to disk
+});
+
+// Process manifest in memory
+console.log(JSON.stringify(manifest, null, 2));
+```
+
+### Build Tool Plugins
+
+#### Rollup Plugin
+
+Integrate manifest generation into your Rollup build process:
+
+```javascript
+// rollup.config.js
+import { rollupCemAnalyzerPlugin } from '@custom-elements-manifest/analyzer';
+
+export default {
+  input: 'src/index.js',
+  output: {
+    dir: 'dist',
+    format: 'es'
+  },
+  plugins: [
+    rollupCemAnalyzerPlugin({
+      globs: ['src/**/*.js'],
+      exclude: ['**/*.test.js'],
+      outdir: './dist',
+      litelement: true
+    })
+  ]
+};
+```
+
+You can also pass a config file path:
+
+```javascript
+rollupCemAnalyzerPlugin('./custom-elements-manifest.config.js')
+```
+
+The plugin is compatible with Rollup and Rollup-based tools like Vite and Web Dev Server. It automatically generates the manifest at the start of each build.
 
 ## Options
 
