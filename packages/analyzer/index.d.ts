@@ -180,9 +180,9 @@ export interface Config {
 }
 
 /**
- * Generate a custom elements manifest from a configuration object or config file path.
+ * Generate a custom elements manifest from a configuration object.
  * 
- * @param config - Configuration object or path to a config file
+ * @param config - Configuration object
  * @param options - Additional options
  * @param options.cwd - Current working directory (defaults to process.cwd())
  * @param options.write - Whether to write the manifest to disk (defaults to true)
@@ -196,15 +196,10 @@ export interface Config {
  *   outdir: './dist',
  *   litelement: true
  * });
- * 
- * // Using a config file path
- * const manifest = await generateManifest('./custom-elements-manifest.config.js', {
- *   cwd: process.cwd()
- * });
  * ```
  */
 export function generateManifest(
-  config: Config | string,
+  config?: Config,
   options?: {
     cwd?: string;
     write?: boolean;

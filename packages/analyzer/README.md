@@ -47,18 +47,6 @@ const manifest = await generateManifest({
 console.log(manifest);
 ```
 
-Or load from a config file:
-
-```javascript
-import { generateManifest } from '@custom-elements-manifest/analyzer';
-
-// Using a config file path
-const manifest = await generateManifest('./custom-elements-manifest.config.js', {
-  cwd: process.cwd(),
-  write: true  // Write to disk (default: true)
-});
-```
-
 Generate without writing to disk:
 
 ```javascript
@@ -101,12 +89,6 @@ export default {
     })
   ]
 };
-```
-
-You can also pass a config file path:
-
-```javascript
-rollupCemAnalyzerPlugin('./custom-elements-manifest.config.js')
 ```
 
 The plugin is compatible with Rollup and Rollup-based tools like Vite and Web Dev Server. It automatically generates the manifest at the start of each build.

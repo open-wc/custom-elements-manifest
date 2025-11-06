@@ -150,38 +150,6 @@ describe('generateManifest', ({ it, afterEach }) => {
     });
   });
 
-  describe('with config file path', ({ it }) => {
-    it('should load config from file path', async () => {
-      const packagePath = path.join(fixturesDir, '01-class/01-fields/package');
-      
-      // Create a temporary config file
-      const configPath = path.join(packagePath, 'custom-elements-manifest.config.js');
-      
-      const configContent = `export default {
-  globs: ['**/*.js'],
-  outdir: '.',
-  quiet: true,
-};`;
-      
-      fs.writeFileSync(configPath, configContent);
-
-      try {
-        const manifest = await generateManifest(configPath, {
-          cwd: packagePath,
-          write: false
-        });
-
-        assert.ok(manifest.schemaVersion, 'Manifest should have schemaVersion');
-        assert.ok(Array.isArray(manifest.modules), 'Manifest should have modules array');
-      } finally {
-        // Clean up the temporary config file
-        if (fs.existsSync(configPath)) {
-          fs.unlinkSync(configPath);
-        }
-      }
-    });
-  });
-
   describe('framework plugins', ({ it }) => {
     it('should support litelement option', async () => {
       const packagePath = path.join(fixturesDir, '07-plugin-lit/package');

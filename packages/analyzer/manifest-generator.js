@@ -5,7 +5,6 @@ import fs from "fs";
 
 import { create } from "./src/create.js";
 import {
-  getUserConfig,
   addFrameworkPlugins,
   mergeGlobsAndExcludes,
   DEFAULTS,
@@ -16,22 +15,16 @@ import { mergeResolutionOptions } from "./src/utils/resolver-config.js";
 /**
  * This module provides functionality to generate a manifest file
  * based on the provided configuration.
- * @param {import('./index').Config | string} config - Configuration object or path to config file
+ * @param {import('./index').Config} config - Configuration object
  * @param {Object} options - Additional options
  * @param {string} [options.cwd=process.cwd()] - Current working directory
  * @param {boolean} [options.write=true] - Whether to write the manifest to disk
  * @returns {Promise<import('custom-elements-manifest/schema').Package>} The generated custom elements manifest
  */
-export async function generateManifest(config, options = {}) {
+export async function generateManifest(config = {}, options = {}) {
   const { cwd = process.cwd(), write = true } = options;
   
-  // Load user config if a path was provided
-  let userConfig = {};
-  if (typeof config === 'string') {
-    userConfig = await getUserConfig(config, cwd);
-  } else {
-    userConfig = config || {};
-  }
+  const userConfig = config || {};
 
   // Merge with defaults
   const mergedOptions = { ...DEFAULTS, ...userConfig };
