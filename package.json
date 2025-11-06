@@ -4,15 +4,15 @@
   "license": "MIT",
   "type": "module",
   "engines": {
-    "node": ">=18.0.0"
+    "node": "^18.0.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/open-wc/custom-elements-manifest.git"
   },
   "scripts": {
-    "docs": "rocket build",
-    "start": "rocket start",
+    "docs": "NODE_OPTIONS='--openssl-legacy-provider' rocket build",
+    "start": "NODE_OPTIONS='--openssl-legacy-provider' rocket start",
     "test": "yarn workspaces run test",
     "changeset": "changeset",
     "version": "changeset version",
