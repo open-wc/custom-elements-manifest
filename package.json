@@ -13,11 +13,15 @@
   "scripts": {
     "docs": "rocket build",
     "start": "rocket start",
-    "test": "yarn workspaces run test"
+    "test": "yarn workspaces run test",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "yarn test && changeset publish"
   },
   "dependencies": {},
   "devDependencies": {
     "@asdgf/cli": "^0.0.15",
+    "@changesets/cli": "^2.29.7",
     "@rocket/blog": "^0.3.0",
     "@rocket/cli": "^0.9.6",
     "@rocket/launch": "^0.5.3",
