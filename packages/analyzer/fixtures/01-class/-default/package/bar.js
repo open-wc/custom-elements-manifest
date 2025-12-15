@@ -1,4 +1,5 @@
+const foo = 1;
 
-export class Foo extends HTMLElement{ 
-  #foo() {}
-}
+export const bar = {
+  foo,
+};

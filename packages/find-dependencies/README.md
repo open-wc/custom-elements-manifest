@@ -41,13 +41,14 @@ Will output:
 
 ## Configuration
 
-```js
+```ts
 interface Options {
-  /** 
-   * In case `node_modules` is higher up in the file tree, for example in a monorepo
-   * Defaults to 3 
+  /**
+   * Module Resolution Options
+   *
+   * See [oxc-resolver](https://github.com/oxc-project/oxc-resolver) for more informations
    */
-  nodeModulesDepth?: number,
+  resolutionOptions?: NapiResolveOptions,
   /** Defaults to `process.cwd()` */
   basePath?: string
 }
@@ -56,7 +57,20 @@ interface Options {
 ```js
 findDependencies(inputPaths, {
   basePath: 'foo/bar',
-  nodeModulesDepth: 5,
+  resolutionOptions: {
+    extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.d.ts', ''],
+    extensionAlias: {
+      '.js': ['.ts', '.js'],
+      '.jsx': ['.tsx', '.jsx']
+    },
+    mainFiles: ['index'],
+    mainFields: ['module', 'browser', 'main'],
+    conditionNames: ['import', 'require', 'node'],
+    exportsFields: ['exports'],
+    alias: {},
+    symlinks: true,
+    modules: ['node_modules']
+  },
 });
 ```
 
@@ -107,7 +121,7 @@ isScopedPackage('@foo/bar') // true
 getUniquePackages([
   'blank/node_modules/foo/index.js', 
   'blank/node_modules/bar/index.js',
-  'blank/node_modules/bar/index2.js'
+  'blank/node_modules/bar/index2.js',
   'blank/node_modules/bar/index3.js'
 ])
 // ['foo', 'bar',]

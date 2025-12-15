@@ -4,21 +4,22 @@ import {findDependencies, splitPath} from '@custom-elements-manifest/find-depend
 
 /**
  * @typedef {import('custom-elements-manifest/schema').Package} Package
+ * @typedef {import('oxc-resolver').NapiResolveOptions} NapiResolveOptions
  */
 
 /**
  * @param {string[]} paths
  * @param {{
- *  nodeModulesDepth?: number,
+ *  resolutionOptions?: NapiResolveOptions,
  *  basePath?: string,
  * }} [options]
  */
-export async function findExternalManifests(paths, {basePath = process.cwd(), nodeModulesDepth}) {
+export async function findExternalManifests(paths, {basePath = process.cwd(), resolutionOptions = undefined }) {
   /** @type {Package[]} */
   const cemsToMerge = [];
   const visited = new Set();
 
-  const dependencies = await findDependencies(paths, {basePath, nodeModulesDepth});
+  const dependencies = await findDependencies(paths, {basePath, resolutionOptions });
 
   dependencies?.forEach((dependencyPath) => {
     const isCurrentPackageRegex = new RegExp(`^${basePath}\\${path.sep}(?!.*node_modules).*`);

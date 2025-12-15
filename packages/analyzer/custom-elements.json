@@ -7,28 +7,28 @@
       "path": "fixtures/01-class/-default/package/bar.js",
       "declarations": [
         {
-          "kind": "class",
-          "description": "",
-          "name": "Foo",
-          "members": [
-            {
-              "kind": "method",
-              "name": "#foo",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "HTMLElement"
+          "kind": "variable",
+          "name": "foo",
+          "type": {
+            "text": "number"
           },
-          "customElement": true
+          "default": "1"
+        },
+        {
+          "kind": "variable",
+          "name": "bar",
+          "type": {
+            "text": "object"
+          },
+          "default": "{ foo, }"
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "Foo",
+          "name": "bar",
           "declaration": {
-            "name": "Foo",
+            "name": "bar",
             "module": "fixtures/01-class/-default/package/bar.js"
           }
         }

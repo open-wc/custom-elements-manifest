@@ -3,3 +3,5 @@
 
 # Declare files that will always have LF line endings on checkout.
 /fixtures/**/output.json text eol=lf
+
+/browser/index.js linguist-generated

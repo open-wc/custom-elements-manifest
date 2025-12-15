@@ -1,97 +1,127 @@
-import fs from 'fs';
-import path from 'path';
-import { createRequire, builtinModules } from 'module';
-import { init, parse } from 'es-module-lexer';
+import path from 'path'
+import { builtinModules } from 'module'
+import rsModuleLexer from 'rs-module-lexer'
 
 import {
-  isBareModuleSpecifier,
-  splitPath,
-  traverseUp
-} from './utils.js';
+  getFileNameWithSource,
+} from './utils.js'
+import { ResolverFactory } from 'oxc-resolver'
 
-const require = createRequire(import.meta.url);
+/**
+ * @typedef {import('oxc-resolver').NapiResolveOptions} NapiResolveOptions
+ */
 
 /**
  *
- * @param {string[]} paths
- * @param {{
- *  nodeModulesDepth?: number,
- *  basePath?: string,
- * }} options
- * @returns {Promise<string[]>}
+ * @type {NapiResolveOptions}
  */
-export async function findDependencies(paths, options = {}) {
-  const importsToScan = new Set();
-  const dependencies = new Set();
+const DEFAULT_RESOLUTION_OPTIONS = {
+  extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.d.ts', ''],
+  extensionAlias: {
+    '.js': ['.ts', '.js'],
+    '.jsx': ['.tsx', '.jsx']
+  },
+  mainFiles: ['index'],
+  mainFields: ['module', 'browser', 'main'],
+  conditionNames: ['import', 'require', 'node'],
+  exportsFields: ['exports'],
+  alias: {},
+  symlinks: true,
+  modules: ['node_modules']
+}
 
-  const nodeModulesDepth = options?.nodeModulesDepth ?? 3;
-  const basePath = options?.basePath ?? process.cwd();
 
-  /** Init es-module-lexer wasm */
-  await init;
 
-  paths.forEach(path => {
-    const source = fs.readFileSync(path).toString();
-    const [imports] = parse(source);
-
-    imports?.forEach(i => {
-      /** Skip built-in modules like fs, path, etc */
-      if(builtinModules.includes(i.n)) return;
-      try {
-        const pathToDependency = require.resolve(i.n, {paths: [
-          /** Current project's node_modules */
-          basePath,
-          /** Monorepo, look upwards in filetree n times */
-          ...traverseUp(nodeModulesDepth, { cwd: basePath })
-        ]});
-
-        importsToScan.add(pathToDependency);
-        dependencies.add(pathToDependency);
-      } catch {
-        console.log(`Failed to resolve dependency "${i.n}".`);
-      }
-    });
-  });
-
-  while(importsToScan.size) {
-    importsToScan.forEach(dep => {
-      importsToScan.delete(dep);
-
-      const source = fs.readFileSync(dep).toString();
-      const [imports] = parse(source);
-
-      imports?.forEach(i => {
-        /** Skip built-in modules like fs, path, etc */
-        if(builtinModules.includes(i.n)) return;
-        const { packageRoot } = splitPath(dep);
-        const fileToFind = isBareModuleSpecifier(i.n) ? i.n : path.join(path.dirname(dep), i.n);
-        try {
-          /**
-           * First check in the dependencies' node_modules, then in the project's node_modules,
-           * then up, and up, and up
-           */
-          const pathToDependency = require.resolve(fileToFind, {paths: [
-            /** Nested node_modules */
-            packageRoot,
-            /** Current project's node_modules */
-            basePath,
-            /** Monorepo, look upwards in filetree n times */
-            ...traverseUp(nodeModulesDepth, { cwd: basePath })
-          ]});
-          /**
-           * Don't add dependencies we've already scanned, also avoids circular dependencies
-           * and multiple modules importing from the same module
-           */
-          if(!dependencies.has(pathToDependency)) {
-            importsToScan.add(pathToDependency);
-            dependencies.add(pathToDependency);
-          }
-        } catch(e) {
-          console.log(`Failed to resolve dependency "${i.n}".`);
-        }
-      });
-    });
+/**
+ * Find all dependencies of the given file paths
+ * @param {string[]} paths - Array of file paths to analyze
+ * @param {{
+ *  basePath?: string,
+ *  resolutionOptions?: NapiResolveOptions
+ * }} options - Options object
+ * @returns {Promise<string[]>} Array of dependency paths
+ */
+export async function findDependencies (paths, options = {}) {
+  if (!Array.isArray(paths) || paths.length===0) {
+    throw new Error('paths must be a non-empty array')
   }
 
-  return [...dependencies];
+  const importsToScan = new Set()
+  const dependencies = new Set()
+
+  const basePath = options?.basePath ?? process.cwd()
+  const absoluteBasePath = path.isAbsolute(basePath) ? basePath : path.resolve(basePath)
+  const resolver = new ResolverFactory({ ...DEFAULT_RESOLUTION_OPTIONS, ...(options?.resolutionOptions ?? {}) });
+
+  const input = paths.map(filePath => getFileNameWithSource(filePath))
+
+  for (const fileData of input) {
+    const { output } = await rsModuleLexer.parseAsync({ input: [fileData] })
+    output.forEach(result => {
+      result.imports?.forEach(i => {
+        /** Skip built-in modules like fs, path, etc */
+        if (builtinModules.includes(i.n)) return
+        try {
+          const pathToDependency = resolveImport(resolver,absoluteBasePath, i.n)
+
+          if (pathToDependency) {
+            importsToScan.add(pathToDependency)
+            dependencies.add(pathToDependency)
+          }
+        } catch (error) {
+          console.log(`Failed to resolve dependency "${i.n}": ${error.message}`)
+        }
+      })
+    })
+  }
+
+  while (importsToScan.size) {
+    for (const dep of importsToScan) {
+      importsToScan.delete(dep)
+      if (!dep || typeof dep!=='string') {
+        console.log(`Skipping invalid dependency: ${dep}`)
+        continue
+      }
+      const fileData = getFileNameWithSource(dep)
+      const { output } = await rsModuleLexer.parseAsync({ input: [fileData] })
+      output.forEach(result => {
+        result.imports?.forEach(i => {
+          /** Skip built-in modules like fs, path, etc */
+          if (builtinModules.includes(i.n)) return
+          try {
+            const baseDir = path.dirname(dep)
+            const pathToDependency = resolveImport(resolver,baseDir, i.n)
+
+            /**
+             * Don't add dependencies we've already scanned, also avoids circular dependencies
+             * and multiple modules importing from the same module
+             */
+            if (pathToDependency && !dependencies.has(pathToDependency)) {
+              importsToScan.add(pathToDependency)
+              dependencies.add(pathToDependency)
+            }
+          } catch (error) {
+            console.log(`Failed to resolve dependency "${i.n}" in file "${dep}": ${error.message}`)
+          }
+        })
+      })
+    }
+  }
+
+  return [...dependencies]
+}
+
+/**
+ *
+ * @param resolver
+ * @param absoluteBasePath
+ * @param dependency
+ * @returns {string}
+ */
+export function resolveImport (resolver, absoluteBasePath, dependency) {
+  const result = resolver.sync(absoluteBasePath, dependency)
+  if (!result || !result.path) {
+    console.log(`Cannot resolve '${dependency}' from '${absoluteBasePath}'`)
+  }
+  return result.path
 }

@@ -13,3 +13,6 @@ export class Class1 {}
 export const typeinferrence = '';
 export const asConst = 'const' as const;
 export const asConstRef = {foo:'bar'} as const;
+
+export * as foo from "./foo.js";
+export * as bar from "bar";

@@ -27,8 +27,8 @@ describe('utils', () => {
     it('gets unique packages', () => {
       assert.deepEqual(
         getUniquePackages([
-          'blank/node_modules/foo/index.js', 
-          'blank/node_modules/bar/index.js',
+          'blank/node_modules/foo/index.ts',
+          'blank/node_modules/bar/index.ts',
           'blank/node_modules/bar/index2.js'
         ]),
         ['foo', 'bar',]
@@ -42,7 +42,7 @@ describe('utils', () => {
     });
 
     it('windows - is scoped package', () => {
-      assert(isScopedPackage('@foo\\bar\\baz.index.js'));
+      assert(isScopedPackage('@foo\\bar\\baz.index.ts'));
     });
 
     it('is scoped package', () => {
@@ -57,22 +57,22 @@ describe('utils', () => {
   describe('splitPath', ({it}) => {
     [
       {
-        path: 'C:\\Users\\IEUser\\long\\mock\\path\\node_modules\\@foo\\bar\\index.js', 
+        path: 'C:\\Users\\IEUser\\long\\mock\\path\\node_modules\\@foo\\bar\\index.ts',
         packageRoot: 'C:/Users/IEUser/long/mock/path/node_modules/@foo/bar', 
         packageName: '@foo/bar', 
-        specifier: '@foo/bar/index.js'
+        specifier: '@foo/bar/index.ts'
       },
       {
-        path: '/long/mock/path/node_modules/@foo/bar/index.js', 
+        path: '/long/mock/path/node_modules/@foo/bar/index.ts',
         packageRoot: '/long/mock/path/node_modules/@foo/bar', 
         packageName: '@foo/bar', 
-        specifier: '@foo/bar/index.js'
+        specifier: '@foo/bar/index.ts'
       },
       {
-        path: '/long/mock/path/node_modules/bar/index.js', 
+        path: '/long/mock/path/node_modules/bar/index.ts',
         packageRoot: '/long/mock/path/node_modules/bar', 
         packageName: 'bar', 
-        specifier: 'bar/index.js'
+        specifier: 'bar/index.ts'
       },
       {
         path: '/long/mock/path/node_modules/@foo/bar/baz/asd.js', 
@@ -81,10 +81,10 @@ describe('utils', () => {
         specifier: '@foo/bar/baz/asd.js'
       },
       {
-        path: '/long/mock/path/node_modules/foo/index.js', 
+        path: '/long/mock/path/node_modules/foo/index.ts',
         packageRoot: '/long/mock/path/node_modules/foo', 
         packageName: 'foo', 
-        specifier: 'foo/index.js'
+        specifier: 'foo/index.ts'
       },
     ].forEach((test) => {
       it(test.path, () => {
