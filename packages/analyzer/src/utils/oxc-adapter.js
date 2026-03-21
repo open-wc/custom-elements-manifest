@@ -560,10 +560,9 @@ function augmentVariableDeclarator(node, source, jsDocComments) {
 
 function augmentClass(node, source, jsDocComments) {
   // Add .name alias pointing to .id (with getText(), text)
+  // Leave undefined (not null) for anonymous classes so isUnnamed checks work correctly
   if (node.id) {
     node.name = node.id;
-  } else {
-    node.name = null;
   }
 
   // Add .members alias pointing to body.body
@@ -581,6 +580,17 @@ function augmentClass(node, source, jsDocComments) {
     }];
   } else {
     node.heritageClauses = [];
+  }
+
+  // Build modifiers array including decorators (TypeScript puts decorators in modifiers).
+  // If modifiers were already set by augmentExportNamedDeclaration (e.g., ExportKeyword),
+  // append the class's own decorators to keep the existing keywords.
+  const decoratorMods = Array.isArray(node.decorators) ? node.decorators : [];
+  if (Array.isArray(node.modifiers)) {
+    // Modifiers already initialized (by parent export wrapper) – just append decorators
+    node.modifiers.push(...decoratorMods);
+  } else {
+    node.modifiers = buildModifiers(node);
   }
 }
 
@@ -605,6 +615,10 @@ function augmentFunction(node) {
 
 function augmentArrowFunction(node) {
   node.parameters = node.params || [];
+  // Add return type node (separate from node.type discriminant)
+  if (node.returnType && node.returnType.typeAnnotation) {
+    node.returnTypeNode = node.returnType.typeAnnotation;
+  }
   if (node.params) {
     for (const param of node.params) {
       augmentParam(param);
@@ -614,6 +628,10 @@ function augmentArrowFunction(node) {
 
 function augmentParam(param) {
   if (!param) return;
+  // Idempotency guard: prevent double-augmentation when augmentParam is called from both
+  // augmentMethodDefinition and augmentFunction (for the same FunctionExpression params).
+  if (param._paramAugmented) return;
+  param._paramAugmented = true;
 
   if (param.type === 'AssignmentPattern') {
     // function foo(a = 'default') {}
@@ -626,22 +644,11 @@ function augmentParam(param) {
       getText: () => nameStr,
     };
     param.initializer = param.right || null;
-    if (param.right) {
-      // Ensure getText is on the default value
-      if (!param.right.getText && param.right.start !== undefined) {
-        // will be set by general augmentation
-      }
-    }
   } else if (param.type === 'Identifier') {
-    // function foo(a: string, b?: number) {}
-    // param.name is the STRING identifier name (ESTree)
-    // TypeScript expects param.name to be an Identifier object with getText()
-    const nameStr = param.name; // this is the string
-    param.name = {
-      name: nameStr,
-      text: nameStr,
-      getText: () => nameStr,
-    };
+    // For Identifier params, param.name is already a string in ESTree.
+    // We do NOT convert it to an object here – handleParametersAndReturnType handles strings directly.
+    // This avoids double-augmentation bugs when both augmentMethodDefinition and augmentFunction
+    // call augmentParam on the same param nodes.
   } else if (param.type === 'RestElement') {
     // function foo(...args) {}
     const nameStr = param.argument?.name || '';
@@ -972,7 +979,7 @@ function attachJsDoc(node, source, jsDocComments) {
   // Only attach to statement-level or class-member-level nodes
   const attachableTypes = new Set([
     'ClassDeclaration', 'ClassExpression', 'FunctionDeclaration',
-    'VariableDeclaration', 'ExportNamedDeclaration', 'ExportDefaultDeclaration',
+    'VariableDeclaration', 'VariableStatement', 'ExportNamedDeclaration', 'ExportDefaultDeclaration',
     // Class members
     'PropertyDeclaration', 'MethodDeclaration', 'GetAccessor', 'SetAccessor', 'Constructor',
     // Object properties

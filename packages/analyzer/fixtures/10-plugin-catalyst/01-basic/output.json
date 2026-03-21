@@ -5,8 +5,52 @@
     {
       "kind": "javascript-module",
       "path": "my-element.js",
-      "declarations": [],
-      "exports": []
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HelloWorldElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "fooBar",
+              "type": {
+                "text": "string"
+              },
+              "default": "'hello'"
+            },
+            {
+              "kind": "field",
+              "name": "bar"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "data-foo-bar",
+              "type": {
+                "text": "string"
+              },
+              "default": "'hello'",
+              "fieldName": "fooBar"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hello-world",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "hello-world",
+          "declaration": {
+            "name": "HelloWorldElement",
+            "module": "my-element.js"
+          }
+        }
+      ]
     }
   ]
 }

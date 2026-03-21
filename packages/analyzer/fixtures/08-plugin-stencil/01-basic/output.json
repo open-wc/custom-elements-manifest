@@ -50,19 +50,31 @@
           "attributes": [
             {
               "name": "color",
-              "fieldName": "color"
+              "fieldName": "color",
+              "type": {
+                "text": "string"
+              }
             },
             {
               "name": "is-valid",
-              "fieldName": "isValid"
+              "fieldName": "isValid",
+              "type": {
+                "text": "boolean"
+              }
             },
             {
               "name": "controller",
-              "fieldName": "controller"
+              "fieldName": "controller",
+              "type": {
+                "text": "MyController"
+              }
             },
             {
               "name": "valid",
-              "fieldName": "isValid"
+              "fieldName": "isValid",
+              "type": {
+                "text": "boolean"
+              }
             },
             {
               "name": "message",
@@ -70,6 +82,7 @@
               "default": "'Hello'"
             }
           ],
+          "tagName": "todo-list",
           "events": [
             {
               "name": "todoCompleted",
@@ -83,13 +96,22 @@
                 "text": "EventEmitter<Todo>"
               }
             }
-          ]
+          ],
+          "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
           "name": "TodoList",
+          "declaration": {
+            "name": "TodoList",
+            "module": "my-element.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "todo-list",
           "declaration": {
             "name": "TodoList",
             "module": "my-element.js"

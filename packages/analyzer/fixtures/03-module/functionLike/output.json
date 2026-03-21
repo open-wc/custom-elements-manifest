@@ -35,6 +35,11 @@
         {
           "kind": "function",
           "name": "arrow4",
+          "return": {
+            "type": {
+              "text": "boolean"
+            }
+          },
           "parameters": [
             {
               "name": "bar",
@@ -47,6 +52,11 @@
         {
           "kind": "function",
           "name": "arrow5",
+          "return": {
+            "type": {
+              "text": "boolean"
+            }
+          },
           "parameters": [
             {
               "name": "bar",
@@ -59,6 +69,11 @@
         {
           "kind": "function",
           "name": "arrow6",
+          "return": {
+            "type": {
+              "text": "string"
+            }
+          },
           "parameters": [
             {
               "name": "bar",
@@ -66,12 +81,7 @@
                 "text": "number"
               }
             }
-          ],
-          "return": {
-            "type": {
-              "text": "string"
-            }
-          }
+          ]
         },
         {
           "kind": "function",
@@ -168,10 +178,7 @@
               "name": "functionDeclaration2",
               "parameters": [
                 {
-                  "name": {
-                    "name": "bar",
-                    "text": "bar"
-                  }
+                  "name": "bar"
                 }
               ]
             },
@@ -180,10 +187,7 @@
               "name": "functionDeclaration3",
               "parameters": [
                 {
-                  "name": {
-                    "name": "bar",
-                    "text": "bar"
-                  },
+                  "name": "bar",
                   "type": {
                     "text": "string"
                   }
@@ -200,10 +204,7 @@
               },
               "parameters": [
                 {
-                  "name": {
-                    "name": "bar",
-                    "text": "bar"
-                  },
+                  "name": "bar",
                   "type": {
                     "text": "string"
                   }
@@ -219,15 +220,6 @@
                 }
               },
               "parameters": [
-                {
-                  "name": {
-                    "name": "bar",
-                    "text": "bar"
-                  },
-                  "type": {
-                    "text": "string"
-                  }
-                },
                 {
                   "name": "bar",
                   "type": {
@@ -245,15 +237,6 @@
                 }
               },
               "parameters": [
-                {
-                  "name": {
-                    "name": "bar",
-                    "text": "bar"
-                  },
-                  "type": {
-                    "text": "string"
-                  }
-                },
                 {
                   "name": "bar",
                   "type": {

@@ -72,7 +72,10 @@ export function stencilPlugin() {
               }
 
               if(!currClass.attributes) currClass.attributes = [];
-              const hasType = !!property?.type?.getText?.();
+              // Use typeNode (the actual TypeScript type annotation) instead of node.type
+              // which is the ESTree node type discriminant string in the oxc-parser adapter
+              const typeNode = property?.typeNode || property?.type;
+              const hasType = !!typeNode?.getText?.();
 
                 currClass.attributes.push({
                   name: attrName,
@@ -80,7 +83,7 @@ export function stencilPlugin() {
                   ...(member?.default ? { default: member.default } : {}),
                   ...(member?.description ? { description: member.description } : {}),
                   ...(hasType ? {
-                    type: { text: property?.type?.getText?.() }
+                    type: { text: typeNode?.getText?.() }
                   } : {})
                 })
             });

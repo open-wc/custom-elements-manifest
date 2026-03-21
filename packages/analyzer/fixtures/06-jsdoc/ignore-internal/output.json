@@ -63,26 +63,6 @@
           },
           "tagName": "include-me",
           "customElement": true
-        },
-        {
-          "kind": "variable",
-          "name": "ignoreMePlease",
-          "type": {
-            "text": "string"
-          },
-          "default": "'haha'"
-        },
-        {
-          "kind": "variable",
-          "name": "excludeMe"
-        },
-        {
-          "kind": "variable",
-          "name": "andMe",
-          "type": {
-            "text": "string"
-          },
-          "default": "'something private'"
         }
       ],
       "exports": [
@@ -123,30 +103,6 @@
           "name": "include-me",
           "declaration": {
             "name": "IncludeMe",
-            "module": "my-element.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "ignoreMePlease",
-          "declaration": {
-            "name": "ignoreMePlease",
-            "module": "my-element.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "excludeMe",
-          "declaration": {
-            "name": "excludeMe",
-            "module": "my-element.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "andMe",
-          "declaration": {
-            "name": "andMe",
             "module": "my-element.js"
           }
         }

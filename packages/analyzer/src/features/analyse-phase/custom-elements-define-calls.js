@@ -28,7 +28,11 @@ export function customElementsDefineCallsPlugin() {
       if(isCustomElementsDefineCall(node)) {
         const classArg = node.parent.arguments[1];
         let isAnonymousClass = classArg?.kind === ts.SyntaxKind.ClassExpression;
-        let isUnnamed = classArg?.name === undefined;
+        // In TypeScript's AST, Identifier nodes do not have a .name property (they use .text),
+        // so classArg.name was undefined for Identifier args too. In ESTree, Identifier.name
+        // is the string identifier. To preserve the original counter behavior (increment for
+        // every define call), treat non-ClassExpression args as "unnamed" just like TypeScript did.
+        let isUnnamed = !isAnonymousClass || classArg?.name === undefined;
 
         if(isAnonymousClass) {
           const klass = createClass(classArg, moduleDoc, context);

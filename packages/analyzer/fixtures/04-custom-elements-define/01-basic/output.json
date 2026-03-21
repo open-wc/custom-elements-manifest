@@ -39,6 +39,16 @@
         {
           "kind": "class",
           "description": "",
+          "name": "anonymous_4",
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "anon-1",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
           "name": "MyEl",
           "superclass": {
             "name": "HTMLElement"
@@ -84,6 +94,7 @@
           "kind": "custom-element-definition",
           "name": "anon-1",
           "declaration": {
+            "name": "anonymous_4",
             "module": "my-element.js"
           }
         },
