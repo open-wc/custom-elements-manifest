@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import ts from '../../../utils/oxc-adapter.js';
 import { handleParametersAndReturnType } from './createFunctionLike.js';
 import { handleJsDoc } from './handlers.js';
 

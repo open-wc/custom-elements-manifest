@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import ts from '../../../utils/oxc-adapter.js';
 
 export function isAlsoAttribute(node) {
   let result = true;

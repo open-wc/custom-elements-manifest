@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import ts from './oxc-adapter.js';
 
 import { getReturnValue } from '../utils/ast-helpers.js';
 

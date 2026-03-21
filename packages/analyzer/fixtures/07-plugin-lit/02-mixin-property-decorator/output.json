@@ -7,69 +7,6 @@
       "path": "my-element.js",
       "declarations": [
         {
-          "kind": "class",
-          "description": "",
-          "name": "MyElement",
-          "members": [
-            {
-              "kind": "field",
-              "name": "firstName",
-              "type": {
-                "text": "string"
-              },
-              "default": "'John'",
-              "attribute": "firstName"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "disabled",
-              "inheritedFrom": {
-                "name": "InputMixin",
-                "module": "my-element.js"
-              }
-            }
-          ],
-          "attributes": [
-            {
-              "name": "firstName",
-              "type": {
-                "text": "string"
-              },
-              "default": "'John'",
-              "fieldName": "firstName"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "disabled",
-              "inheritedFrom": {
-                "name": "InputMixin",
-                "module": "my-element.js"
-              }
-            }
-          ],
-          "mixins": [
-            {
-              "name": "InputMixin",
-              "module": "my-element.js"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "my-element",
-          "customElement": true
-        },
-        {
           "kind": "mixin",
           "description": "",
           "name": "InputMixin",
@@ -102,14 +39,6 @@
         }
       ],
       "exports": [
-        {
-          "kind": "custom-element-definition",
-          "name": "my-element",
-          "declaration": {
-            "name": "MyElement",
-            "module": "my-element.js"
-          }
-        },
         {
           "kind": "js",
           "name": "InputMixin",

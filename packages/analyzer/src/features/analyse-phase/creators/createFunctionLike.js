@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import ts from '../../../utils/oxc-adapter.js';
 import { has } from '../../../utils/index.js';
 import { handleModifiers, handleJsDoc } from './handlers.js';
 
@@ -38,28 +38,33 @@ export function handleKind(functionLike, node) {
  * Handle a functionLikes return type and parameters/parameter types
  */
 export function handleParametersAndReturnType(functionLike, node) {
-  if(node?.type) {
+  // In ESTree, node.type is the node discriminant string; returnTypeNode is the actual return type
+  const returnTypeNode = node?.returnTypeNode;
+  if(returnTypeNode) {
     functionLike.return = {
-      type: { text: node.type.getText() }
+      type: { text: returnTypeNode.getText?.() || '' }
     }
   }
 
   const parameters = [];
   node?.parameters?.forEach((param) => {  
+    // In ESTree, param.name is already a synthetic object {name, text, getText}
+    // (set by augmentParam). param.typeNode is the TypeScript type annotation.
     const parameter = {
-      name: param.name.getText(),
+      name: typeof param.name === 'object' ? param.name.getText() : (param.name || ''),
     }
 
     if(param?.initializer) {
-      parameter.default = param.initializer.getText();
+      parameter.default = param.initializer.getText?.() || '';
     }
 
-    if(param?.questionToken) {
+    if(param?.questionToken || param?.optional) {
       parameter.optional = true;
     }
 
-    if(param?.type) {
-      parameter.type = {text: param.type.getText() }
+    // Use typeNode (set by the adapter) instead of param.type (which is the ESTree discriminant)
+    if(param?.typeNode) {
+      parameter.type = {text: param.typeNode.getText?.() || ''}
     }
 
     parameters.push(parameter);

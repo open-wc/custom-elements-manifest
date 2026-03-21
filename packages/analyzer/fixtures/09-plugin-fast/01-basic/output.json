@@ -42,7 +42,6 @@
             "name": "FASTElement",
             "package": "@microsoft/fast-element"
           },
-          "tagName": "name-tag",
           "customElement": true
         }
       ],
@@ -50,14 +49,6 @@
         {
           "kind": "js",
           "name": "NameTag",
-          "declaration": {
-            "name": "NameTag",
-            "module": "my-element.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "name-tag",
           "declaration": {
             "name": "NameTag",
             "module": "my-element.js"

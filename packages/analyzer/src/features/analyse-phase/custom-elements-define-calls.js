@@ -62,7 +62,7 @@ export function customElementsDefineCallsPlugin() {
          * @example customElements.define('m-e', class MyElement extends HTMLElement{}) 
          *                                             ^^^^^^^^^
          */
-        if(classArg?.name) {
+        if(classArg?.name && typeof classArg.name.getText === 'function') {
           elementClass = classArg?.name?.getText();
         }
 

@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import ts from '../../../utils/oxc-adapter.js';
 import { decorator } from '../../../utils/index.js';
 import { createAttributeFromField } from '../../analyse-phase/creators/createAttribute.js';
 import { hasPropertyDecorator, isAlsoAttribute, getAttributeName, reflects } from './utils.js';

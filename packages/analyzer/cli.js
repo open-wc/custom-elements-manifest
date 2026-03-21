@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-import ts from "typescript";
+import { createSourceFile } from "./src/utils/oxc-adapter.js";
+import oxcAdapter from "./src/utils/oxc-adapter.js";
 import path from "path";
 import globby from "globby";
 import fs from "fs";
@@ -54,16 +55,11 @@ export async function cli({
 
       const globs = await globby(merged, { cwd });
       const modules = userConfig?.overrideModuleCreation
-        ? userConfig.overrideModuleCreation({ ts, globs })
+        ? userConfig.overrideModuleCreation({ ts: oxcAdapter, globs })
         : globs.map((glob) => {
             const fullPath = path.resolve(cwd, glob);
             const source = fs.readFileSync(fullPath).toString();
-            return ts.createSourceFile(
-              glob,
-              source,
-              ts.ScriptTarget.ES2015,
-              true
-            );
+            return createSourceFile(glob, source);
           });
 
       let thirdPartyCEMs = [];

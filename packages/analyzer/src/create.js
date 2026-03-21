@@ -1,4 +1,4 @@
-import ts from "typescript";
+import ts from "./utils/oxc-adapter.js";
 import { FEATURES } from "./features/index.js";
 import { withErrorHandling } from "./utils/index.js";
 

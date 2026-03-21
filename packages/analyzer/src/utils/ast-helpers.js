@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import ts from './oxc-adapter.js';
 import { safe } from './index.js';
 
 /**
@@ -115,8 +115,8 @@ function isAsConst(initializer) {
     initializer &&
     initializer.kind &&
     ts.isAsExpression(initializer) &&
-    ts.isTypeReferenceNode(initializer.type) &&
-    initializer.type.typeName.getText() === 'const'
+    ts.isTypeReferenceNode(initializer.typeNode) &&
+    initializer.typeNode?.typeName?.getText() === 'const'
   );
 }
 
@@ -178,9 +178,13 @@ export function getDeclarationInFile(nodeOrName, sourceFile) {
     return undefined;
   const sourceFileStatements = sourceFile.statements ?? [];
   return sourceFileStatements.find(statement => {
-    if (ts.isVariableStatement(statement))
-      return statement.declarationList.declarations.find(declaration => declaration.name.getText() === name)
-    else if (statement.name?.getText)
-      return statement.name.getText() === name;
+    // Handle ExportNamedDeclaration wrappers (ESTree wraps exported declarations)
+    const actualStatement = (statement.type === 'ExportNamedDeclaration' && statement.declaration)
+      ? statement.declaration
+      : statement;
+    if (ts.isVariableStatement(actualStatement))
+      return actualStatement.declarationList.declarations.find(declaration => declaration.name.getText() === name)
+    else if (actualStatement.name?.getText)
+      return actualStatement.name.getText() === name;
   });
 }

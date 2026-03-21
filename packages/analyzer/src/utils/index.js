@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import ts from './oxc-adapter.js';
 
 /**
  * GENERAL UTILITIES

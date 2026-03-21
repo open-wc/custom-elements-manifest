@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import ts from '../../../utils/oxc-adapter.js';
 import { createFunctionLike } from './createFunctionLike.js';
 import { createAttribute, createAttributeFromField } from './createAttribute.js';
 import { createField } from './createClassField.js';

@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import ts from '../../../utils/oxc-adapter.js';
 import { parse } from 'comment-parser';
 
 import { has, resolveModuleOrPackageSpecifier, safe } from '../../../utils/index.js';
@@ -315,8 +315,10 @@ export function handleDefaultValue(doc, node, expression) {
  * @example class Foo { bar: string = ''; }
  */
 export function handleExplicitType(doc, node) {
-  if(node.type) {
-    doc.type = { text: node.type.getText() }
+  // In ESTree, node.type is the node discriminant string; typeNode is the actual type annotation
+  const typeNode = node.typeNode;
+  if(typeNode) {
+    doc.type = { text: typeNode.getText?.() || '' }
 
     if(node?.questionToken) {
       doc.type.text += ' | undefined';

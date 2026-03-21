@@ -114,15 +114,9 @@
           ],
           "parameters": [
             {
-              "name": "klass",
-              "type": {
-                "text": "string"
-              }
+              "name": "klass"
             }
-          ],
-          "type": {
-            "text": "Element"
-          }
+          ]
         }
       ],
       "exports": [

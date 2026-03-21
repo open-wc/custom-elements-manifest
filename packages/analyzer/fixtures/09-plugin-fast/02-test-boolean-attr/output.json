@@ -42,7 +42,6 @@
             "name": "FASTElement",
             "package": "@microsoft/fast-element"
           },
-          "tagName": "boolean-test",
           "customElement": true
         }
       ],
@@ -50,14 +49,6 @@
         {
           "kind": "js",
           "name": "BooleanTest",
-          "declaration": {
-            "name": "BooleanTest",
-            "module": "my-element.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "boolean-test",
           "declaration": {
             "name": "BooleanTest",
             "module": "my-element.js"

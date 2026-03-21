@@ -3,7 +3,7 @@
  * Do not use directly, but import from ./browser/index.js
  */
 
-import ts from 'typescript';
+import ts from './utils/oxc-adapter.js';
 
 import { create } from './create.js';
 import { catalystPlugin } from './features/framework-plugins/catalyst/catalyst.js';
