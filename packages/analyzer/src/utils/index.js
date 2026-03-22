@@ -1,5 +1,3 @@
-import ts from './oxc-adapter.js';
-
 /**
  * GENERAL UTILITIES
  */
@@ -9,7 +7,7 @@ export const has = arr => Array.isArray(arr) && arr.length > 0;
 /**
  * @example node?.modifiers?.find(decorator('Component'))
  */
-export const decorator = type => decorator => ts.isDecorator(decorator) && decorator?.expression?.expression?.getText() === type || decorator?.expression?.getText() === type;
+export const decorator = type => decorator => decorator?.type === 'Decorator' && decorator?.expression?.expression?.getText() === type || decorator?.expression?.getText() === type;
 
 export function isBareModuleSpecifier(specifier) {
   return !!specifier?.replace(/'/g, '')[0].match(/[@a-zA-Z]/g);

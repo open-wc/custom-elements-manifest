@@ -18,13 +18,13 @@ import { isBareModuleSpecifier, url } from "../../utils/index.js";
 export function exportsPlugin() {
   return {
     name: "CORE - EXPORTS",
-    analyzePhase({ ts, node, moduleDoc }) {
+    analyzePhase({ node, moduleDoc }) {
       if (hasIgnoreJSDoc(node)) return;
 
       /**
        * @example export const foo = '';
        */
-      if (hasExportModifier(node) && ts.isVariableStatement(node)) {
+      if (hasExportModifier(node) && node.kind === 'VariableStatement') {
         node?.declarationList?.declarations?.forEach((declaration) => {
           const _export = {
             kind: "js",
@@ -42,7 +42,7 @@ export function exportsPlugin() {
       /**
        * @example export default var1;
        */
-      if (node.kind === ts.SyntaxKind.ExportAssignment) {
+      if (node.kind === 'ExportAssignment') {
         const _export = {
           kind: "js",
           name: "default",
@@ -54,7 +54,7 @@ export function exportsPlugin() {
         moduleDoc.exports = [...(moduleDoc.exports || []), _export];
       }
 
-      if (node.kind === ts.SyntaxKind.ExportDeclaration) {
+      if (node.kind === 'ExportDeclaration') {
         /**
          * @example export { var1, var2 };
          */
@@ -146,7 +146,7 @@ export function exportsPlugin() {
       /**
        * @example export function foo() {}
        */
-      if (node.kind === ts.SyntaxKind.FunctionDeclaration) {
+      if (node.kind === 'FunctionDeclaration') {
         if (hasExportModifier(node)) {
           const isDefault = hasDefaultModifier(node);
           const _export = {
@@ -165,7 +165,7 @@ export function exportsPlugin() {
       /**
        * @example export class Class1 {}
        */
-      if (node.kind === ts.SyntaxKind.ClassDeclaration) {
+      if (node.kind === 'ClassDeclaration') {
         if (hasExportModifier(node)) {
           const isDefault = hasDefaultModifier(node);
           const _export = {

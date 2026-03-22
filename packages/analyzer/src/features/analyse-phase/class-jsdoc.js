@@ -10,9 +10,9 @@ import { has, safe } from '../../utils/index.js';
 export function classJsDocPlugin() {
   return {
     name: 'CORE - CLASS-JSDOC',
-    analyzePhase({ts, node, moduleDoc}){
+    analyzePhase({node, moduleDoc}){
       switch (node.kind) {
-        case ts.SyntaxKind.ClassDeclaration:
+        case 'ClassDeclaration':
           const className = node?.name?.getText();
           const classDoc = moduleDoc?.declarations?.find(declaration => declaration.name === className);
 

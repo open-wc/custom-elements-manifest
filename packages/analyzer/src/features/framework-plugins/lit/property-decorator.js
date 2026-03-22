@@ -1,4 +1,3 @@
-import ts from '../../../utils/oxc-adapter.js';
 import { decorator } from '../../../utils/index.js';
 import { createAttributeFromField } from '../../analyse-phase/creators/createAttribute.js';
 import { hasPropertyDecorator, isAlsoAttribute, getAttributeName, reflects } from './utils.js';
@@ -15,10 +14,10 @@ import { handleName } from '../../analyse-phase/creators/createMixin.js';
 export function propertyDecoratorPlugin() {
   return {
     name: 'CORE - LIT-PROPERTY-DECORATOR',
-    analyzePhase({ts, node, moduleDoc}){
+    analyzePhase({node, moduleDoc}){
       switch (node.kind) {
-        case ts.SyntaxKind.VariableStatement:
-        case ts.SyntaxKind.FunctionDeclaration:
+        case 'VariableStatement':
+        case 'FunctionDeclaration':
           if(isMixin(node)) {
             const { mixinFunction, mixinClass } = extractMixinNodes(node);
             const { name } = handleName({}, mixinFunction);
@@ -26,7 +25,7 @@ export function propertyDecoratorPlugin() {
           }
           break;
 
-        case ts.SyntaxKind.ClassDeclaration:    
+        case 'ClassDeclaration':    
           handlePropertyDecorator(node, moduleDoc);
           break;
         }
@@ -50,7 +49,7 @@ function handlePropertyDecorator(classNode, moduleDoc, mixinName = null) {
   classNode?.members?.forEach(member => {
     if (hasPropertyDecorator(member)) {
       const propertyDecorator = member.modifiers.find(decorator('property'));
-      const propertyOptions = propertyDecorator?.expression?.arguments?.find(arg => ts.isObjectLiteralExpression(arg));
+      const propertyOptions = propertyDecorator?.expression?.arguments?.find(arg => arg?.kind === 'ObjectExpression');
 
       /**
        * If property does _not_ have `attribute: false`, also create an attribute based on the field

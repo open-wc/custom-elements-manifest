@@ -5,9 +5,9 @@ import { createAttributeFromField } from "../../analyse-phase/creators/createAtt
 export function attrDecoratorPlugin(converter) {
   return {
     name: "CORE - ATTR-DECORATOR",
-    analyzePhase({ ts, node, moduleDoc }) {
+    analyzePhase({ node, moduleDoc }) {
       switch (node.kind) {
-        case ts.SyntaxKind.ClassDeclaration:
+        case 'ClassDeclaration':
           const className = node?.name?.getText();
           const classDoc = moduleDoc?.declarations?.find(
             (declaration) => declaration.name === className

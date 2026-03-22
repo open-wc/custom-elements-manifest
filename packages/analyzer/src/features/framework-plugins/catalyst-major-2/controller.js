@@ -3,9 +3,9 @@ import { toKebabCase, resolveModuleOrPackageSpecifier, decorator } from '../../.
 export function controllerPlugin() {
   return {
     name: 'CORE - CONTROLLER',
-    analyzePhase({ts, node, moduleDoc, context}){
+    analyzePhase({node, moduleDoc, context}){
       switch(node.kind) {
-        case ts.SyntaxKind.ClassDeclaration:
+        case 'ClassDeclaration':
           /**
            * handle @controller
            */

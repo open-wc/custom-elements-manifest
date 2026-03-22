@@ -11,9 +11,9 @@ import { createArrowFunction } from './creators/createArrowFunction.js';
 export function arrowFunctionPlugin() {
   return {
     name: 'CORE - ARROW-FUNCTION',
-    analyzePhase({ts, node, moduleDoc}){
+    analyzePhase({node, moduleDoc}){
       switch(node.kind) {
-        case ts.SyntaxKind.VariableStatement:
+        case 'VariableStatement':
           if(!isMixin(node) && hasInitializer(node)) {
             const functionLike = createArrowFunction(node);
             moduleDoc.declarations.push(functionLike);

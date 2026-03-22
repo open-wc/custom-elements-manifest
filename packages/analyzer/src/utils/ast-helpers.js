@@ -1,24 +1,23 @@
-import ts from './oxc-adapter.js';
 import { safe } from './index.js';
 
 /**
  * AST HELPERS
  */
 
-export const isProperty = node => ts.isPropertyDeclaration(node) || ts.isGetAccessor(node) || ts.isSetAccessor(node);
+export const isProperty = node => node?.kind === 'PropertyDeclaration' || node?.kind === 'GetAccessor' || node?.kind === 'SetAccessor';
 
 /**
  * @example this.dispatchEvent(new Event('foo'));
  */
-export const isDispatchEvent = node => node.expression?.name?.getText() === 'dispatchEvent' && node?.expression?.expression?.kind === ts.SyntaxKind.ThisKeyword
+export const isDispatchEvent = node => node.expression?.name?.getText() === 'dispatchEvent' && node?.expression?.expression?.kind === 'ThisExpression'
 
-export const isReturnStatement = statement => statement?.kind === ts.SyntaxKind.ReturnStatement;
+export const isReturnStatement = statement => statement?.kind === 'ReturnStatement';
 
 /**
  * @example customElements.define('my-el', MyEl);
  * @example window.customElements.define('my-el', MyEl);
  */
-export const isCustomElementsDefineCall = node => (node?.expression?.getText() === 'customElements' || node?.expression?.getText() === 'window.customElements' || node?.expression?.getText() === 'globalThis.customElements') && node?.name?.getText() === 'define' && node?.parent?.kind === ts.SyntaxKind.CallExpression;
+export const isCustomElementsDefineCall = node => (node?.expression?.getText() === 'customElements' || node?.expression?.getText() === 'window.customElements' || node?.expression?.getText() === 'globalThis.customElements') && node?.name?.getText() === 'define' && node?.parent?.kind === 'CallExpression';
 
 /**
  * @example @attr
@@ -37,13 +36,13 @@ export function hasAttrAnnotation(member) {
  * - Null
  */
 export function isPrimitive(node) {
-  return node && (ts.isNumericLiteral(node) ||
-  ts.isStringLiteral(node) ||
-  node?.kind === ts.SyntaxKind.NullKeyword ||
-  node?.kind === ts.SyntaxKind.TrueKeyword ||
-  node?.kind === ts.SyntaxKind.FalseKeyword) ||
+  return node && (node?.kind === 'NumericLiteral' ||
+  node?.kind === 'StringLiteral' ||
+  node?.kind === 'NullKeyword' ||
+  node?.kind === 'TrueKeyword' ||
+  node?.kind === 'FalseKeyword') ||
   // Handle only empty arrays for now
-  (node?.kind === ts.SyntaxKind.ArrayLiteralExpression && node?.elements?.length === 0)
+  (node?.kind === 'ArrayExpression' && node?.elements?.length === 0)
 }
 
 /**
@@ -61,7 +60,7 @@ export function getElementNameFromDecorator(decorator) {
   /**
    * @example @customElement('my-el')
    */
-  if(argument.kind === ts.SyntaxKind.StringLiteral) {
+  if(argument.kind === 'StringLiteral') {
     return argument.text;
   }
 
@@ -71,7 +70,7 @@ export function getElementNameFromDecorator(decorator) {
    *   template
    * })
    */
-  if(argument.kind === ts.SyntaxKind.ObjectLiteralExpression) {
+  if(argument.kind === 'ObjectExpression') {
     let result;
     argument?.properties?.forEach(property => {
       if(property?.name?.getText() === 'name') {
@@ -87,13 +86,13 @@ export function getElementNameFromDecorator(decorator) {
  * Gets the name of an attr from a decorators callExpression
  * @example @attr({attribute: 'my-el'})
  */
-export const getOptionsObject = decorator => decorator?.expression?.arguments?.find(arg => arg.kind === ts.SyntaxKind.ObjectLiteralExpression);
+export const getOptionsObject = decorator => decorator?.expression?.arguments?.find(arg => arg.kind === 'ObjectExpression');
 
 /**
  * Get the return value expression of a return statement, omitting the type assertion
  */
 export const getReturnValue = returnStatement => {
-  let value = returnStatement.expression?.kind === ts.SyntaxKind.AsExpression
+  let value = returnStatement.expression?.kind === 'TSAsExpression'
     ? returnStatement.expression.expression.getText()
     : returnStatement.expression?.getText()
 
@@ -104,7 +103,7 @@ export const getReturnValue = returnStatement => {
  * Is this class member a static member?
  */
 export const isStaticMember = member =>
-  member?.modifiers?.some?.(x => x.kind === ts.SyntaxKind.StaticKeyword);
+  member?.modifiers?.some?.(x => x.kind === 'StaticKeyword');
 
 /**
  * @param  {import('typescript').Expression}  initializer
@@ -114,8 +113,8 @@ function isAsConst(initializer) {
   return (
     initializer &&
     initializer.kind &&
-    ts.isAsExpression(initializer) &&
-    ts.isTypeReferenceNode(initializer.typeNode) &&
+    initializer?.kind === 'TSAsExpression' &&
+    initializer?.typeNode?.kind === 'TSTypeReference' &&
     initializer.typeNode?.typeName?.getText() === 'const'
   );
 }
@@ -182,7 +181,7 @@ export function getDeclarationInFile(nodeOrName, sourceFile) {
     const actualStatement = (statement.type === 'ExportNamedDeclaration' && statement.declaration)
       ? statement.declaration
       : statement;
-    if (ts.isVariableStatement(actualStatement))
+    if (actualStatement?.kind === 'VariableStatement')
       return actualStatement.declarationList.declarations.find(declaration => declaration.name.getText() === name)
     else if (actualStatement.name?.getText)
       return actualStatement.name.getText() === name;

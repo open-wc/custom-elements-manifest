@@ -1,4 +1,4 @@
-import ts from '../../../utils/oxc-adapter.js';
+import { forEachChild } from '../../../utils/oxc-adapter.js';
 import { createFunctionLike } from './createFunctionLike.js';
 import { createAttribute, createAttributeFromField } from './createAttribute.js';
 import { createField } from './createClassField.js';
@@ -37,9 +37,9 @@ export function createClass(node, moduleDoc, context) {
         /**
          * @example static observedAttributes
          */
-        if (ts.isPropertyDeclaration(member)) {
+        if (member?.kind === 'PropertyDeclaration') {
           member?.initializer?.elements?.forEach((element) => {
-            if (ts.isStringLiteral(element)) {
+            if (element?.kind === 'StringLiteral') {
               const attribute = createAttribute(element);
               classTemplate.attributes.push(attribute);
             }
@@ -49,11 +49,11 @@ export function createClass(node, moduleDoc, context) {
         /**
          * @example static get observedAttributes() {}
          */
-        if (ts.isGetAccessor(member)) {
+        if (member?.kind === 'GetAccessor') {
           const returnStatement = member?.body?.statements?.find(isReturnStatement);
 
           returnStatement?.expression?.elements?.forEach((element) => {
-            if (ts.isStringLiteral(element)) {
+            if (element?.kind === 'StringLiteral') {
               const attribute = createAttribute(element);
               classTemplate.attributes.push(attribute);
             }
@@ -72,7 +72,7 @@ export function createClass(node, moduleDoc, context) {
     /**
      * Handle class methods
      */
-    if (ts.isMethodDeclaration(member) && !hasIgnoreJSDoc(member)) {
+    if (member?.kind === 'MethodDeclaration' && !hasIgnoreJSDoc(member)) {
       const method = createFunctionLike(member);
       classTemplate.members.push(method);
     }
@@ -84,15 +84,15 @@ export function createClass(node, moduleDoc, context) {
       const field = createField(member);
 
       /** If a member has only a getAccessor, it means it's readonly */
-      if(ts.isGetAccessor(member)) {
-        const hasSetter = node.members.some(m => ts.isSetAccessor(m) && m.name.getText() === field.name);
+      if(member?.kind === 'GetAccessor') {
+        const hasSetter = node.members.some(m => m?.kind === 'SetAccessor' && m.name.getText() === field.name);
         if(!hasSetter) {
           field.readonly = true;
         }
       }
 
       /** Flag class fields that get assigned a variable, so we can resolve it later (in the RESOLVE-INITIALIZERS plugin) */
-      if (member?.initializer?.kind === ts.SyntaxKind.Identifier) {
+      if (member?.initializer?.kind === 'Identifier') {
         field.resolveInitializer = {
           ...resolveModuleOrPackageSpecifier(moduleDoc, context, member?.initializer?.getText()),
         }
@@ -148,7 +148,7 @@ export function createClass(node, moduleDoc, context) {
      *
      * In order to find `this.dispatchEvent` calls, we have to traverse a method's AST
      */
-    if (ts.isMethodDeclaration(member)) {
+    if (member?.kind === 'MethodDeclaration') {
       eventsVisitor(member, classTemplate);
     }
   });
@@ -170,12 +170,12 @@ function eventsVisitor(source, classTemplate) {
 
   function visitNode(node) {
     switch (node.kind) {
-      case ts.SyntaxKind.CallExpression:
+      case 'CallExpression':
 
         /** If callexpression is `this.dispatchEvent` */
         if (isDispatchEvent(node) && !hasIgnoreJSDoc(node.parent)) {
           node?.arguments?.forEach((arg) => {
-            if (arg.kind === ts.SyntaxKind.NewExpression) {
+            if (arg.kind === 'NewExpression') {
               /** e.g. `selected-changed` */
               const eventName = arg?.arguments?.[0]?.text;
               /**
@@ -201,7 +201,7 @@ function eventsVisitor(source, classTemplate) {
         }
     }
 
-    ts.forEachChild(node, visitNode);
+    forEachChild(node, visitNode);
   }
 }
 
@@ -210,19 +210,19 @@ export function getDefaultValuesFromConstructorVisitor(source, classTemplate, co
 
   function visitNode(node) {
     switch (node.kind) {
-      case ts.SyntaxKind.Constructor:
+      case 'Constructor':
         /**
          * For every member that was added in the classDoc, we want to add a default value if we can
          * To do this, we visit a class's constructor, and loop through the statements
          */
-        node.body?.statements?.filter((statement) => statement.kind === ts.SyntaxKind.ExpressionStatement)
-          .filter((statement) => statement.expression.kind === ts.SyntaxKind.BinaryExpression)
+        node.body?.statements?.filter((statement) => statement.kind === 'ExpressionStatement')
+          .filter((statement) => statement.expression.kind === 'BinaryExpression')
           .forEach((statement) => mapClassMember(source, classTemplate, context, node, statement, statement.expression));
 
         break;
     }
 
-    ts.forEachChild(node, visitNode);
+    forEachChild(node, visitNode);
   }
 }
 
@@ -230,11 +230,11 @@ function mapClassMember(source, classTemplate, context, node, statement, express
   let existingMember = classTemplate?.members?.find(member => expression?.left?.name?.getText() === member.name && member.kind === 'field');
 
   // If the source is minified, or otherwise has a comma separated prop initialization
-  if (expression?.operatorToken?.kind === ts.SyntaxKind.CommaToken) {
-    if (expression.left.kind === ts.SyntaxKind.BinaryExpression) {
+  if (expression?.operatorToken?.kind === ',') {
+    if (expression.left.kind === 'BinaryExpression') {
       mapClassMember(source, classTemplate, context, node, statement, expression.left);
     }
-    if (expression.right.kind === ts.SyntaxKind.BinaryExpression) {
+    if (expression.right.kind === 'BinaryExpression') {
       mapClassMember(source, classTemplate, context, node, statement, expression.right);
     }
     return;
@@ -270,7 +270,7 @@ function mapClassMember(source, classTemplate, context, node, statement, express
     existingMember = handleDefaultValue(existingMember, statement, expression);
 
     /** Flag class fields that get assigned a variable, so we can resolve it later (in the RESOLVE-INITIALIZERS plugin) */
-    if (expression?.right?.kind === ts.SyntaxKind.Identifier) {
+    if (expression?.right?.kind === 'Identifier') {
       existingMember.resolveInitializer = {
         ...resolveModuleOrPackageSpecifier({ path: source.getSourceFile().fileName }, context, expression?.right?.getText()),
       }

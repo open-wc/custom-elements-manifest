@@ -20,14 +20,14 @@ import { createClassDeclarationMixin } from './creators/handlers.js';
 export function reexportedWrappedMixinExportsPlugin() {
   return {
     name: 'CORE - REEXPORTED-WRAPPED-MIXINS',
-    analyzePhase({ts, node, moduleDoc, context}){
+    analyzePhase({node, moduleDoc, context}){
       switch(node.kind) {
-        case ts.SyntaxKind.VariableStatement:
+        case 'VariableStatement':
           if(!isMixin(node)) {
             node?.declarationList?.declarations?.forEach(declaration => {
 
               const mixins = [];
-              if(ts.SyntaxKind.CallExpression === declaration?.initializer?.kind) {
+              if('CallExpression' === declaration?.initializer?.kind) {
                 /**
                  * If an exported variable has a callExpression, it might try to export a mixin
                  * We need to check if the current module contains any mixins
@@ -43,7 +43,7 @@ export function reexportedWrappedMixinExportsPlugin() {
                   /** 
                    * Handle nested Mixin calls 
                    */
-                  while(node && ts.isCallExpression(node)) {
+                  while(node && node?.kind === 'CallExpression') {
                     const mixinName = node.expression.getText();
                     mixins.push(mixinName);
   

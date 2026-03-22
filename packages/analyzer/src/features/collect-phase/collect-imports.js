@@ -17,8 +17,8 @@ export function collectImportsPlugin() {
 
   return {
     name: 'CORE - IMPORTS',
-    collectPhase({ts, node}) {
-      if(node.kind === ts.SyntaxKind.SourceFile) {
+    collectPhase({node}) {
+      if(node.kind === 'Program') {
         /**
          * Create an empty array for each module we visit
          */
@@ -85,8 +85,8 @@ export function collectImportsPlugin() {
         currModuleImports.push(importTemplate);
       }
     },
-    analyzePhase({ts, node, context}) {
-      if(node.kind === ts.SyntaxKind.SourceFile) {
+    analyzePhase({node, context}) {
+      if(node.kind === 'Program') {
         
         /** Makes the imports available on the context object for a given module */
         context.imports = files[node.fileName];

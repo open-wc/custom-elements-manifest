@@ -1,4 +1,3 @@
-import ts from '../../../utils/oxc-adapter.js';
 import { has } from '../../../utils/index.js';
 import { handleModifiers, handleJsDoc } from './handlers.js';
 
@@ -24,10 +23,10 @@ export function createFunctionLike(node) {
  */
 export function handleKind(functionLike, node) {
   switch(node.kind) {
-    case ts.SyntaxKind.FunctionDeclaration:
+    case 'FunctionDeclaration':
       functionLike.kind = 'function';
       break;
-    case ts.SyntaxKind.MethodDeclaration:
+    case 'MethodDeclaration':
       functionLike.kind = 'method';
       break;
   }

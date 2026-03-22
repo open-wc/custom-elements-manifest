@@ -9,10 +9,10 @@ import { createMixin } from './creators/createMixin.js';
 export function mixinPlugin() {
   return {
     name: 'CORE - MIXINS',
-    analyzePhase({ts, node, moduleDoc, context}){
+    analyzePhase({node, moduleDoc, context}){
       switch(node.kind) {
-        case ts.SyntaxKind.VariableStatement:
-        case ts.SyntaxKind.FunctionDeclaration:
+        case 'VariableStatement':
+        case 'FunctionDeclaration':
           /**
            * Try to extract mixin nodes, if its a mixin
            */

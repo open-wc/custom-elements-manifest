@@ -1,4 +1,3 @@
-import ts from '../../../utils/oxc-adapter.js';
 import { parse } from 'comment-parser';
 
 import { has, resolveModuleOrPackageSpecifier, safe } from '../../../utils/index.js';
@@ -13,22 +12,22 @@ import { isWellKnownType } from '../../../utils/ast-helpers.js';
  */
 export function handleModifiers(doc, node) {
   node?.modifiers?.forEach(modifier => {
-    if(modifier?.kind === ts.SyntaxKind.StaticKeyword) {
+    if(modifier?.kind === 'StaticKeyword') {
       doc.static = true;
     }
 
-    if (modifier?.kind === ts.SyntaxKind.ReadonlyKeyword) {
+    if (modifier?.kind === 'ReadonlyKeyword') {
       doc.readonly = true;
     }
 
     switch (modifier.kind) {
-      case ts.SyntaxKind.PublicKeyword:
+      case 'PublicKeyword':
         doc.privacy = 'public';
         break;
-      case ts.SyntaxKind.PrivateKeyword:
+      case 'PrivateKeyword':
         doc.privacy = 'private';
         break;
-      case ts.SyntaxKind.ProtectedKeyword:
+      case 'ProtectedKeyword':
         doc.privacy = 'protected';
         break;
     }
@@ -56,12 +55,12 @@ export function handleJsDoc(doc, node) {
 
     jsDocComment?.tags?.forEach(tag => {
       /** @readonly */
-      if(tag.kind === ts.SyntaxKind.JSDocReadonlyTag) {
+      if(tag.kind === 'JSDocReadonlyTag') {
         doc.readonly = true;
       }
 
       /** @param */
-      if(tag.kind === ts.SyntaxKind.JSDocParameterTag) {
+      if(tag.kind === 'JSDocParameterTag') {
         const parameter = doc?.parameters?.find(parameter => parameter.name === tag.name.text);
         const parameterAlreadyExists = !!parameter;
         const parameterTemplate = parameter || {};
@@ -94,7 +93,7 @@ export function handleJsDoc(doc, node) {
       }
 
       /** @returns */
-      if(tag.kind === ts.SyntaxKind.JSDocReturnTag) {
+      if(tag.kind === 'JSDocReturnTag') {
         doc.return = {
           type: {
             text: handleJsDocType(tag?.typeExpression?.type?.getText())
@@ -103,7 +102,7 @@ export function handleJsDoc(doc, node) {
       }
 
       /** @type */
-      if(tag.kind === ts.SyntaxKind.JSDocTypeTag) {
+      if(tag.kind === 'JSDocTypeTag') {
         if(tag?.comment) {
           doc.description = normalizeDescription(tag.comment);
         }
@@ -140,13 +139,13 @@ export function handleJsDoc(doc, node) {
        * @protected
        */
       switch(tag.kind) {
-        case ts.SyntaxKind.JSDocPublicTag:
+        case 'JSDocPublicTag':
           doc.privacy = 'public';
           break;
-        case ts.SyntaxKind.JSDocPrivateTag:
+        case 'JSDocPrivateTag':
           doc.privacy = 'private';
           break;
-        case ts.SyntaxKind.JSDocProtectedTag:
+        case 'JSDocProtectedTag':
           doc.privacy = 'protected';
           break;
       }
@@ -175,7 +174,7 @@ export function createClassDeclarationMixin(name, moduleDoc, context) {
 export function handleHeritage(classTemplate, moduleDoc, context, node) {
   node?.heritageClauses?.forEach((clause) => {
     /* Ignoring `ImplementsKeyword` for now, future revisions may retrieve docs per-field for the implemented methods. */
-    if (clause.token !== ts.SyntaxKind.ExtendsKeyword) return;
+    if (clause.token !== 'ExtendsKeyword') return;
 
     clause?.types?.forEach((type) => {
       const mixins = [];
@@ -183,10 +182,10 @@ export function handleHeritage(classTemplate, moduleDoc, context, node) {
       let superClass;
 
       /* gather mixin calls */
-      if (ts.isCallExpression(node)) {
+      if (node?.kind === 'CallExpression') {
         const mixinName = node.expression.getText();
         mixins.push(createClassDeclarationMixin(mixinName, moduleDoc, context))
-        while (ts.isCallExpression(node.arguments[0])) {
+        while (node.arguments[0]?.kind === 'CallExpression') {
           node = node.arguments[0];
           const mixinName = node.expression.getText();
           mixins.push(createClassDeclarationMixin(mixinName, moduleDoc, context));
@@ -238,26 +237,26 @@ export function handleAttrJsDoc(node, doc) {
 export function handleTypeInference(doc, node) {
   const n = node?.initializer || node;
   switch(n?.kind) {
-    case ts.SyntaxKind.TrueKeyword:
-    case ts.SyntaxKind.FalseKeyword:
+    case 'TrueKeyword':
+    case 'FalseKeyword':
       doc.type = { text: "boolean" }
       break;
-    case ts.SyntaxKind.StringLiteral:
+    case 'StringLiteral':
       doc.type = { text: "string" }
       break;
-    case ts.SyntaxKind.PrefixUnaryExpression:
-      doc.type = n?.operator === ts.SyntaxKind.ExclamationToken ? { text: "boolean" } : { text: "number" };
+    case 'UnaryExpression':
+      doc.type = n?.operator === '!' ? { text: "boolean" } : { text: "number" };
       break;
-    case ts.SyntaxKind.NumericLiteral:
+    case 'NumericLiteral':
       doc.type = { text: "number" }
       break;
-    case ts.SyntaxKind.NullKeyword:
+    case 'NullKeyword':
       doc.type = { text: "null" }
       break;
-    case ts.SyntaxKind.ArrayLiteralExpression:
+    case 'ArrayExpression':
       doc.type = { text: "array" }
       break;
-    case ts.SyntaxKind.ObjectLiteralExpression:
+    case 'ObjectExpression':
       doc.type = { text: "object" }
       break;
   }
@@ -287,18 +286,18 @@ export function handleDefaultValue(doc, node, expression) {
   const initializer = node?.initializer || expression?.right;
 
   /** Ignore the following */
-  if(initializer?.kind === ts.SyntaxKind.BinaryExpression) return doc;
-  if(initializer?.kind === ts.SyntaxKind.ConditionalExpression) return doc;
-  if(initializer?.kind === ts.SyntaxKind.PropertyAccessExpression) return doc;
-  if(initializer?.kind === ts.SyntaxKind.CallExpression) return doc;
-  if(initializer?.kind === ts.SyntaxKind.ArrowFunction) return doc;
+  if(initializer?.kind === 'BinaryExpression') return doc;
+  if(initializer?.kind === 'ConditionalExpression') return doc;
+  if(initializer?.kind === 'MemberExpression') return doc;
+  if(initializer?.kind === 'CallExpression') return doc;
+  if(initializer?.kind === 'ArrowFunctionExpression') return doc;
 
   let defaultValue;
   /**
    * Check if value has `as const`
    * @example const foo = 'foo' as const;
    */
-  if(initializer?.kind === ts.SyntaxKind.AsExpression) {
+  if(initializer?.kind === 'TSAsExpression') {
     defaultValue = initializer?.expression?.getText()
   } else {
     defaultValue = initializer?.getText()
@@ -333,7 +332,7 @@ export function handleExplicitType(doc, node) {
  * @example class Foo { #bar = ''; }
  */
 export function handlePrivateMember(doc, node) {
-  if (ts.isPrivateIdentifier(node.name)) {
+  if (node.name?.type === 'PrivateIdentifier') {
     doc.privacy = 'private';
   }
   return doc;

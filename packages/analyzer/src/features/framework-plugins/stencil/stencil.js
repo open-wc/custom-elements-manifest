@@ -8,9 +8,9 @@ export function stencilPlugin() {
   return {
     name: 'CORE - STENCIL',
     // Runs for each module
-    analyzePhase({ts, node, moduleDoc}){
+    analyzePhase({node, moduleDoc}){
       switch (node.kind) {
-        case ts.SyntaxKind.ClassDeclaration:
+        case 'ClassDeclaration':
           /**
            * Add tagName to classDoc, extracted from `@Component({tag: 'foo-bar'})` decorator
            * Add custom-element-definition to exports

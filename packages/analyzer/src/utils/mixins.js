@@ -1,22 +1,20 @@
-import ts from './oxc-adapter.js';
-
 import { getReturnValue } from '../utils/ast-helpers.js';
 
 export const isMixin = node => !!extractMixinNodes(node);
 
 export function extractMixinNodes(node) {
-  if (ts.isVariableStatement(node) || ts.isFunctionDeclaration(node)) {
-    if (ts.isVariableStatement(node)) {
+  if (node?.kind === 'VariableStatement' || node?.kind === 'FunctionDeclaration') {
+    if (node?.kind === 'VariableStatement') {
       /**
        * @example const MyMixin = klass => class MyMixin extends klass {}
        * @example export const MyMixin = klass => class MyMixin extends klass {}
        */
       const variableDeclaration = node.declarationList.declarations.find(declaration =>
-        ts.isVariableDeclaration(declaration),
+        declaration?.kind === 'VariableDeclaration',
       );
       if (variableDeclaration) {
         const body = variableDeclaration?.initializer?.body;
-        if (body && ts.isClassExpression(body)) {
+        if (body && body?.kind === 'ClassExpression') {
           return { 
             mixinFunction: node,
             mixinClass: body,
@@ -26,10 +24,10 @@ export function extractMixinNodes(node) {
         /**
          * @example const MyMixin = klass => { return class MyMixin extends Klass{} }
          */
-        if (body && ts.isBlock(body)) {
-          const returnStatement = body.statements.find(statement => ts.isReturnStatement(statement));
+        if (body && body?.kind === 'BlockStatement') {
+          const returnStatement = body.statements.find(statement => statement?.kind === 'ReturnStatement');
 
-          if (returnStatement && returnStatement?.expression?.kind && ts.isClassExpression(returnStatement.expression)) {
+          if (returnStatement && returnStatement?.expression?.kind && returnStatement.expression?.kind === 'ClassExpression') {
             return { 
               mixinFunction: variableDeclaration.initializer,
               mixinClass: returnStatement.expression
@@ -40,9 +38,9 @@ export function extractMixinNodes(node) {
         /**
          * @example const MyMixin = klass => { class MyMixin extends klass {} return MyMixin;}
          */
-        if (body && ts.isBlock(body)) {
-          const classDeclaration = body.statements.find(statement => ts.isClassDeclaration(statement));
-          const returnStatement = body.statements.find(statement => ts.isReturnStatement(statement));
+        if (body && body?.kind === 'BlockStatement') {
+          const classDeclaration = body.statements.find(statement => statement?.kind === 'ClassDeclaration');
+          const returnStatement = body.statements.find(statement => statement?.kind === 'ReturnStatement');
           /** Avoid undefined === undefined */
           if(!(classDeclaration && returnStatement))
             return;
@@ -65,12 +63,12 @@ export function extractMixinNodes(node) {
     /**
      *  @example function MyMixin(klass) { return class MyMixin extends Klass{} }
      */
-    if (ts.isFunctionDeclaration(node)) {
-      if (node.body && ts.isBlock(node.body)) {
+    if (node?.kind === 'FunctionDeclaration') {
+      if (node.body && node.body?.kind === 'BlockStatement') {
 
-        const returnStatement = node.body.statements.find(statement => ts.isReturnStatement(statement));
+        const returnStatement = node.body.statements.find(statement => statement?.kind === 'ReturnStatement');
 
-        if (returnStatement?.expression && ts.isClassExpression(returnStatement.expression)) {
+        if (returnStatement?.expression && returnStatement.expression?.kind === 'ClassExpression') {
           return { 
             mixinFunction: node, 
             mixinClass: returnStatement.expression
@@ -82,10 +80,10 @@ export function extractMixinNodes(node) {
     /**
      * @example function MyMixin(klass) {class A extends klass {} return A;}
      */
-    if (ts.isFunctionDeclaration(node)) {
-      if (node.body && ts.isBlock(node.body)) {
-        const classDeclaration = node.body.statements.find(statement => ts.isClassDeclaration(statement));
-        const returnStatement = node.body.statements.find(statement => ts.isReturnStatement(statement));
+    if (node?.kind === 'FunctionDeclaration') {
+      if (node.body && node.body?.kind === 'BlockStatement') {
+        const classDeclaration = node.body.statements.find(statement => statement?.kind === 'ClassDeclaration');
+        const returnStatement = node.body.statements.find(statement => statement?.kind === 'ReturnStatement');
 
         /** Avoid undefined === undefined */
         if(!(classDeclaration && returnStatement))

@@ -21,26 +21,26 @@ import { handleName } from '../../analyse-phase/creators/createMixin.js';
 export function staticPropertiesPlugin() {
   return {
     name: 'CORE - LIT-STATIC-PROPERTIES',
-    analyzePhase({ ts, node, moduleDoc, context }) {
+    analyzePhase({ node, moduleDoc, context }) {
       switch (node.kind) {
-        case ts.SyntaxKind.VariableStatement:
-        case ts.SyntaxKind.FunctionDeclaration:
+        case 'VariableStatement':
+        case 'FunctionDeclaration':
           if (isMixin(node)) {
             const { mixinFunction, mixinClass } = extractMixinNodes(node);
             const { name } = handleName({}, mixinFunction);
-            handleStaticProperties(mixinClass, moduleDoc, context, name, ts);
+            handleStaticProperties(mixinClass, moduleDoc, context, name);
           }
           break;
 
-        case ts.SyntaxKind.ClassDeclaration:
-          handleStaticProperties(node, moduleDoc, context, null, ts);
+        case 'ClassDeclaration':
+          handleStaticProperties(node, moduleDoc, context, null);
           break;
       }
     },
   };
 }
 
-function handleStaticProperties(classNode, moduleDoc, context, mixinName = null, ts) {
+function handleStaticProperties(classNode, moduleDoc, context, mixinName = null) {
   let className;
   if (!mixinName) {
     className = classNode?.name?.getText();
@@ -53,7 +53,7 @@ function handleStaticProperties(classNode, moduleDoc, context, mixinName = null,
     if (hasStaticKeyword(member) && member.name.text === 'properties') {
       const propertiesObject = getPropertiesObject(member);
       propertiesObject?.properties?.forEach(property => {
-        if (property.kind !== ts.SyntaxKind.PropertyAssignment) return;
+        if (property.kind !== 'Property') return;
 
         let classMember = {
           kind: 'field',

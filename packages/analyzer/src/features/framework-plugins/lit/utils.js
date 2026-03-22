@@ -1,11 +1,9 @@
-import ts from '../../../utils/oxc-adapter.js';
-
 export function isAlsoAttribute(node) {
   let result = true;
   (node?.initializer || node)?.properties?.forEach((property) => {
     if (
       property.name.text === 'attribute' &&
-      property.initializer.kind === ts.SyntaxKind.FalseKeyword
+      property.initializer.kind === 'FalseKeyword'
     ) {
       result = false;
     }
@@ -18,7 +16,7 @@ export function reflects(node) {
   (node?.initializer || node)?.properties?.forEach((property) => {
     if (
       property.name.text === 'reflect' &&
-      property.initializer.kind === ts.SyntaxKind.TrueKeyword
+      property.initializer.kind === 'TrueKeyword'
     ) {
       result = true;
     }
@@ -41,7 +39,7 @@ export function getAttributeName(node) {
   (node?.initializer || node)?.properties?.forEach((property) => {
     if (
       property.name.text === 'attribute' &&
-      property.initializer.kind === ts.SyntaxKind.StringLiteral
+      property.initializer.kind === 'StringLiteral'
     ) {
       result = property.initializer.text;
     }
@@ -51,15 +49,15 @@ export function getAttributeName(node) {
 
 export function hasPropertyDecorator(node) {
   return node?.modifiers?.some((decorator) => { 
-    return ts.isDecorator(decorator) && decorator?.expression?.expression?.getText() === 'property'
+    return decorator?.type === 'Decorator' && decorator?.expression?.expression?.getText() === 'property'
   });
 }
 
-export const hasStaticKeyword = node => node?.modifiers?.some(mod => mod.kind === ts.SyntaxKind.StaticKeyword);
+export const hasStaticKeyword = node => node?.modifiers?.some(mod => mod.kind === 'StaticKeyword');
 
 export function getPropertiesObject(node) {
-  if (ts.isGetAccessor(node)) {
-    return node.body?.statements?.find(ts.isReturnStatement)?.expression;
+  if (node?.kind === 'GetAccessor') {
+    return node.body?.statements?.find(statement => statement?.kind === 'ReturnStatement')?.expression;
   } else {
     return node.initializer;
   }

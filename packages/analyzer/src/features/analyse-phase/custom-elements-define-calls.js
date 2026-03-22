@@ -13,8 +13,8 @@ export function customElementsDefineCallsPlugin() {
   let counter;
   return {
     name: 'CORE - CUSTOM-ELEMENTS-DEFINE-CALLS',
-    analyzePhase({ts, node, moduleDoc, context}){    
-      if(node?.kind === ts.SyntaxKind.SourceFile) {
+    analyzePhase({node, moduleDoc, context}){    
+      if(node?.kind === 'Program') {
         counter = 0;
       }
 
@@ -27,7 +27,7 @@ export function customElementsDefineCallsPlugin() {
        */
       if(isCustomElementsDefineCall(node)) {
         const classArg = node.parent.arguments[1];
-        let isAnonymousClass = classArg?.kind === ts.SyntaxKind.ClassExpression;
+        let isAnonymousClass = classArg?.kind === 'ClassExpression';
         // In TypeScript's AST, Identifier nodes do not have a .name property (they use .text),
         // so classArg.name was undefined for Identifier args too. In ESTree, Identifier.name
         // is the string identifier. To preserve the original counter behavior (increment for

@@ -1,4 +1,3 @@
-import ts from './oxc-adapter.js';
 import { has } from './index.js';
 
 /**
@@ -7,7 +6,7 @@ import { has } from './index.js';
 
 export function hasExportModifier(node) {
   if (has(node?.modifiers)) {
-    if (node.modifiers.some(mod => mod.kind === ts.SyntaxKind.ExportKeyword)) {
+    if (node.modifiers.some(mod => mod.kind === 'ExportKeyword')) {
       return true;
     }
   }
@@ -16,7 +15,7 @@ export function hasExportModifier(node) {
 
 export function hasDefaultModifier(node) {
   if (has(node?.modifiers)) {
-    if (node.modifiers.some(mod => mod.kind === ts.SyntaxKind.DefaultKeyword)) {
+    if (node.modifiers.some(mod => mod.kind === 'DefaultKeyword')) {
       return true;
     }
   }

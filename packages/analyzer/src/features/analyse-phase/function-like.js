@@ -10,9 +10,9 @@ import { isMixin } from '../../utils/mixins.js';
 export function functionLikePlugin() {
   return {
     name: 'CORE - FUNCTION-LIKE',
-    analyzePhase({ts, node, moduleDoc}){
+    analyzePhase({node, moduleDoc}){
       switch(node.kind) {
-        case ts.SyntaxKind.FunctionDeclaration:
+        case 'FunctionDeclaration':
           if(!isMixin(node)) {
             const functionLike = createFunctionLike(node);
             moduleDoc.declarations.push(functionLike);

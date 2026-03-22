@@ -1,9 +1,8 @@
-import ts from '../../../utils/oxc-adapter.js';
 import { handleParametersAndReturnType } from './createFunctionLike.js';
 import { handleJsDoc } from './handlers.js';
 
 export function createArrowFunction(node) {
-  const arrowFunction = node?.declarationList?.declarations?.find(declaration => ts.SyntaxKind.ArrowFunction === declaration?.initializer?.kind);
+  const arrowFunction = node?.declarationList?.declarations?.find(declaration => 'ArrowFunctionExpression' === declaration?.initializer?.kind);
 
   let functionLikeTemplate = {
     kind: 'function',
