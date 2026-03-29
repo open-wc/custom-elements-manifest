@@ -138,7 +138,7 @@ function findExternalManifestsFromGraph(externalModules, basePath) {
           const cem = JSON.parse(fs.readFileSync(resolvedCemPath).toString());
           cemsToMerge.push(cem);
         } catch (e) {
-          throw new Error(`Failed to read custom-elements.json at path "${cemPath}". \n\n${e.stack}`);
+          throw new Error(`Failed to read custom-elements.json at path "${resolvedCemPath}". \n\n${e.stack}`);
         }
       }
     }
