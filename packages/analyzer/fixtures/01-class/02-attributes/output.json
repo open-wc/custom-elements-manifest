@@ -75,7 +75,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "is the description",
+              "description": "this is the description",
               "default": "''"
             }
           ],

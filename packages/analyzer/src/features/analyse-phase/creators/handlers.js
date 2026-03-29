@@ -122,8 +122,12 @@ export function handleJsDoc(doc, node) {
 
       /** @type */
       if(tag.tag === 'type') {
-        if(tag?.description) {
-          doc.description = normalizeDescription(tag.description);
+        // @type doesn't have a name parameter, so combine name + description
+        const fullDesc = tag.name 
+          ? `${tag.name} ${tag.description || ''}`.trim()
+          : (tag.description || '');
+        if(fullDesc) {
+          doc.description = normalizeDescription(fullDesc);
         }
 
         doc.type = {
