@@ -17,14 +17,12 @@ export function collectImportsPlugin() {
 
   return {
     name: 'CORE - IMPORTS',
-    collectPhase({node}) {
+    collectPhase({node, context}) {
       if(node.type === 'Program') {
         /**
          * Create an empty array for each module we visit
          */
-        files[node._sourceText ? node.start + ':' + node.end : ''] = [];
-        // Store using fileName from the module
-        const fileName = node._program?._fileName || '';
+        const fileName = context._currentFileName || '';
         files[fileName] = [];
         currModuleImports = files[fileName];
       }
@@ -94,7 +92,7 @@ export function collectImportsPlugin() {
     },
     analyzePhase({node, context}) {
       if(node.type === 'Program') {
-        const fileName = node._program?._fileName || '';
+        const fileName = context._currentFileName || '';
         /** Makes the imports available on the context object for a given module */
         context.imports = files[fileName];
       }

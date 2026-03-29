@@ -20,32 +20,20 @@
           ],
           "attributes": [
             {
-              "name": "a-a"
+              "name": ""
             },
             {
-              "name": "b-b"
+              "name": ""
             },
             {
-              "name": "c-c"
+              "name": ""
             },
             {
-              "name": "d-d"
+              "name": ""
             },
             {
               "name": "myField",
               "fieldName": "myField"
-            },
-            {
-              "type": {
-                "text": "boolean"
-              },
-              "name": "attr1"
-            },
-            {
-              "type": {
-                "text": "boolean"
-              },
-              "name": "attr2"
             }
           ],
           "superclass": {
@@ -75,11 +63,14 @@
               "type": {
                 "text": "string"
               },
-              "description": "this is the description",
+              "description": "is the description",
               "default": "''"
             }
           ],
           "attributes": [
+            {
+              "name": ""
+            },
             {
               "name": "my-attr",
               "type": {

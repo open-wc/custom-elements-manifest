@@ -10,12 +10,6 @@
           "kind": "class",
           "description": "",
           "name": "MyElement",
-          "cssStates": [
-            {
-              "description": "Applies when the element is active",
-              "name": "active"
-            }
-          ],
           "superclass": {
             "name": "HTMLElement"
           },

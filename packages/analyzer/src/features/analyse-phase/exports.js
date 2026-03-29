@@ -15,7 +15,7 @@ import { isBareModuleSpecifier, url } from "../../utils/index.js";
 export function exportsPlugin() {
   return {
     name: "CORE - EXPORTS",
-    analyzePhase({ node, moduleDoc }) {
+    analyzePhase({ node, moduleDoc, context }) {
       if (hasIgnoreJSDoc(node)) return;
 
       /**
@@ -89,7 +89,7 @@ export function exportsPlugin() {
         if (hasSpecifiers && !hasSource) {
           /** @example export { var1, var2 }; */
           node.specifiers.forEach((specifier) => {
-            const sourceFile = node._program;
+            const sourceFile = context._currentProgram;
             if (
               hasIgnoreJSDoc(specifier) ||
               hasIgnoreJSDoc(

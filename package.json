@@ -33,5 +33,6 @@
   "workspaces": [
     "packages/*",
     "plugins/*"
-  ]
+  ],
+  "customElements": "custom-elements.json"
 }

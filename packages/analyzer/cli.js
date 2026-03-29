@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 
 import { parseSync } from "oxc-parser";
-import { createModuleGraph } from "@thepassle/module-graph";
 import { walk } from "oxc-walker";
-import { parse as parseJsDoc } from "comment-parser";
 import path from "path";
 import globby from "globby";
 import fs from "fs";
@@ -11,7 +9,7 @@ import commandLineArgs from "command-line-args";
 import chokidar from "chokidar";
 import debounce from "debounce";
 
-import { create } from "./src/create.js";
+import { create, associateJsDoc } from "./src/create.js";
 import {
   getUserConfig,
   getCliConfig,
@@ -24,77 +22,25 @@ import {
 } from "./src/utils/cli-helpers.js";
 import { findExternalManifests } from "./src/utils/find-external-manifests.js";
 import { mergeResolutionOptions } from "./src/utils/resolver-config.js";
-
-/**
- * Associate JSDoc comments with AST nodes by position.
- */
-function associateJsDoc(program, comments, sourceText) {
-  if (!comments || comments.length === 0) return;
-
-  const jsDocComments = comments
-    .filter(c => c.type === 'Block' && c.value.startsWith('*'))
-    .map(c => ({
-      ...c,
-      fullText: `/*${c.value}*/`,
-      commentEnd: c.end + 2,
-    }));
-
-  if (jsDocComments.length === 0) return;
-
-  walk(program, {
-    enter(node) {
-      if (!node || node.start == null) return;
-      for (const comment of jsDocComments) {
-        const between = sourceText.slice(comment.commentEnd, node.start);
-        if (between.trim() === '' || between.trim() === 'export' || between.trim() === 'export default') {
-          if (!node._jsdoc) {
-            node._jsdoc = [];
-          }
-          const parsed = parseJsDoc(comment.fullText);
-          if (parsed.length > 0) {
-            node._jsdoc.push(parsed[0]);
-          }
-          node._rawJsDoc = node._rawJsDoc || [];
-          node._rawJsDoc.push(comment.fullText);
-          break;
-        }
-      }
-    }
-  });
-}
-
-/**
- * Annotate all nodes in the tree with _sourceText and _program references.
- */
-function annotateTree(program, sourceText) {
-  walk(program, {
-    enter(node) {
-      if (node) {
-        node._sourceText = sourceText;
-        node._program = program;
-      }
-    }
-  });
-}
+import { annotateTree } from "./src/utils/index.js";
 
 /**
  * Parse a source file with oxc-parser and return a module object.
  */
 function parseModule(filePath, source) {
   const ext = path.extname(filePath);
-  const langMap = { '.ts': 'ts', '.tsx': 'tsx', '.jsx': 'jsx' };
-  const opts = {};
-  if (langMap[ext]) {
-    opts.lang = langMap[ext];
-  }
+  // Always parse with TypeScript support to handle TS annotations in JS files
+  // (accessibility modifiers, type annotations, as const, etc.)
+  const langMap = { '.tsx': 'tsx', '.jsx': 'jsx' };
+  const opts = { lang: langMap[ext] || 'ts' };
   
   const result = parseSync(filePath, source, opts);
   
-  // Associate JSDoc comments with nodes
+  // Associate JSDoc comments with nodes (uses non-enumerable properties)
   associateJsDoc(result.program, result.comments, source);
   
-  // Annotate tree with source text
-  annotateTree(result.program, source);
+  // Annotate tree with source text and program refs (uses non-enumerable properties)
+  annotateTree(result.program, source, walk);
   
   return {
     program: result.program,

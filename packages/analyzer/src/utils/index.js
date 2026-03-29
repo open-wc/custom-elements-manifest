@@ -85,5 +85,22 @@ export function withErrorHandling(name, cb) {
  */
 export function getNodeText(node, sourceText) {
   if (!node || node.start == null || node.end == null) return '';
-  return sourceText.slice(node.start, node.end);
+  // sourceText can also be passed as the _sourceText non-enumerable property on the node
+  const src = sourceText || node._sourceText || '';
+  return src.slice(node.start, node.end);
+}
+
+/**
+ * Annotate all nodes in the tree with _sourceText and _program references.
+ * Uses non-enumerable properties so oxc-walker doesn't traverse them.
+ */
+export function annotateTree(program, sourceText, walk) {
+  walk(program, {
+    enter(node) {
+      if (node) {
+        Object.defineProperty(node, '_sourceText', { value: sourceText, writable: true, enumerable: false, configurable: true });
+        Object.defineProperty(node, '_program', { value: program, writable: true, enumerable: false, configurable: true });
+      }
+    }
+  });
 }

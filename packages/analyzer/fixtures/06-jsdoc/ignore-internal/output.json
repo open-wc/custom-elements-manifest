@@ -8,6 +8,22 @@
       "declarations": [
         {
           "kind": "variable",
+          "name": "dontIncludeMe",
+          "type": {
+            "text": "boolean"
+          },
+          "default": "false"
+        },
+        {
+          "kind": "variable",
+          "name": "meNeither",
+          "type": {
+            "text": "boolean"
+          },
+          "default": "false"
+        },
+        {
+          "kind": "variable",
           "name": "variable",
           "type": {
             "text": "string"
@@ -17,11 +33,20 @@
         {
           "kind": "class",
           "description": "",
+          "name": "IgnoreMe",
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "ignore-me",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
           "name": "IamDeprecated",
           "superclass": {
             "name": "HTMLElement"
           },
-          "deprecated": "true",
           "customElement": true
         },
         {
@@ -31,7 +56,6 @@
           "superclass": {
             "name": "HTMLElement"
           },
-          "deprecated": "the reason for the deprecation.",
           "customElement": true
         },
         {
@@ -58,19 +82,77 @@
               "deprecated": "the reason for the deprecation."
             }
           ],
+          "events": [
+            {
+              "name": "my-event",
+              "type": {
+                "text": "CustomEvent"
+              }
+            },
+            {
+              "name": "my-other-event",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
           "superclass": {
             "name": "HTMLElement"
           },
           "tagName": "include-me",
           "customElement": true
+        },
+        {
+          "kind": "variable",
+          "name": "ignoreMePlease",
+          "type": {
+            "text": "string"
+          },
+          "default": "'haha'"
+        },
+        {
+          "kind": "variable",
+          "name": "excludeMe"
+        },
+        {
+          "kind": "variable",
+          "name": "andMe",
+          "type": {
+            "text": "string"
+          },
+          "default": "'something private'"
         }
       ],
       "exports": [
         {
           "kind": "js",
+          "name": "dontIncludeMe",
+          "declaration": {
+            "name": "dontIncludeMe",
+            "module": "my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "meNeither",
+          "declaration": {
+            "name": "meNeither",
+            "module": "my-element.js"
+          }
+        },
+        {
+          "kind": "js",
           "name": "variable",
           "declaration": {
             "name": "variable",
+            "module": "my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "IgnoreMe",
+          "declaration": {
+            "name": "IgnoreMe",
             "module": "my-element.js"
           }
         },
@@ -91,6 +173,14 @@
           }
         },
         {
+          "kind": "custom-element-definition",
+          "name": "ignore-me",
+          "declaration": {
+            "name": "IgnoreMe",
+            "module": "my-element.js"
+          }
+        },
+        {
           "kind": "js",
           "name": "IncludeMe",
           "declaration": {
@@ -103,6 +193,30 @@
           "name": "include-me",
           "declaration": {
             "name": "IncludeMe",
+            "module": "my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ignoreMePlease",
+          "declaration": {
+            "name": "ignoreMePlease",
+            "module": "my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "excludeMe",
+          "declaration": {
+            "name": "excludeMe",
+            "module": "my-element.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "andMe",
+          "declaration": {
+            "name": "andMe",
             "module": "my-element.js"
           }
         }

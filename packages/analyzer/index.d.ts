@@ -1,16 +1,10 @@
 import { Module, Package } from 'custom-elements-manifest/schema';
-import type * as ts from "typescript";
 import { NapiResolveOptions } from 'oxc-resolver';
 
 /** Plugin execution context. Pass arbitrary data here. */
 export type Context = Record<string, unknown>;
 
 export interface InitializeParams {
-  /**
-   * TypeScript API
-   */
-  ts: typeof import('typescript')
-
   /**
    * The newly initialized manifest.
    */
@@ -24,11 +18,6 @@ export interface InitializeParams {
 
 export interface PackageLinkPhaseParams {
   /**
-   * TypeScript API
-   */
-  ts: typeof import('typescript');
-
-  /**
    * The newly initialized manifest.
    */
   customElementsManifest: Package;
@@ -41,14 +30,9 @@ export interface PackageLinkPhaseParams {
 
 export interface CollectPhaseParams {
   /**
-   * TypeScript API
+   * The current ESTree AST Node
    */
-  ts: typeof import('typescript');
-
-  /**
-   * The current TypeScript AST Node
-   */
-  node: import('typescript').Node;
+  node: any;
 
   /**
    * Plugin execution context. Pass arbitrary data here.
@@ -58,14 +42,9 @@ export interface CollectPhaseParams {
 
 export interface AnalyzePhaseParams {
   /**
-   * TypeScript API
+   * The current ESTree AST Node
    */
-  ts: typeof import('typescript');
-
-  /**
-   * The current TypeScript AST Node
-   */
-  node: import('typescript').Node;
+  node: any;
 
   /**
    * The current state of the current module's manifest
@@ -83,18 +62,6 @@ export interface ModuleLinkPhaseParams {
    * The completed moduleDoc, i.e. the output of the analyze phase
    */
   moduleDoc: Module;
-
-  /**
-   * Plugin execution context. Pass arbitrary data here.
-   */
-  context: Context;
-}
-
-export interface PackageLinkPhaseParams {
-  /**
-   * The completed manifest, i.e. the output of the analyze phase
-   */
-  customElementsManifest: Package;
 
   /**
    * Plugin execution context. Pass arbitrary data here.
@@ -170,11 +137,6 @@ export interface Config {
   stencil?: boolean;
   /** Provide custom plugins */
   plugins?: Array<() => unknown>;
-  /** Overrides default module creation */
-  overrideModuleCreation?: (opts: {
-    ts: typeof ts;
-    globs: string[];
-  }) => unknown[];
   /** Resolution options when using `dependencies: true` */
   resolutionOptions?: NapiResolveOptions;
 }

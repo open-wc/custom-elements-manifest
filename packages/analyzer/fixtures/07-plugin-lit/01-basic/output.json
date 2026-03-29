@@ -57,7 +57,6 @@
                 "text": "string"
               },
               "default": "'foo'",
-              "description": "this is the description",
               "attribute": "prop1"
             },
             {
@@ -118,13 +117,6 @@
           ],
           "attributes": [
             {
-              "name": "my-attr",
-              "type": {
-                "text": "string"
-              },
-              "fieldName": "attr"
-            },
-            {
               "name": "decoratedProperty",
               "type": {
                 "text": "array"
@@ -154,7 +146,6 @@
                 "text": "string"
               },
               "default": "'foo'",
-              "description": "this is the description",
               "fieldName": "prop1"
             },
             {
@@ -163,6 +154,13 @@
                 "text": "boolean"
               },
               "fieldName": "prop2"
+            },
+            {
+              "name": "my-attr",
+              "type": {
+                "text": "string"
+              },
+              "fieldName": "attr"
             },
             {
               "name": "_privateProp",
@@ -195,7 +193,7 @@
         },
         {
           "kind": "mixin",
-          "description": "Picks up property decorator on mixins as well",
+          "description": "",
           "name": "InputMixin",
           "members": [
             {
@@ -205,7 +203,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "this description never gets picked up by the analyzer. \nso we lose some info about default values and the fact it is both property and attribute",
+              "description": "this description never gets picked up by the analyzer. so we lose some info about default values and the fact it is both property and attribute",
               "attribute": "disabled"
             }
           ],
@@ -216,7 +214,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "this description never gets picked up by the analyzer. \nso we lose some info about default values and the fact it is both property and attribute",
+              "description": "this description never gets picked up by the analyzer. so we lose some info about default values and the fact it is both property and attribute",
               "fieldName": "disabled"
             }
           ],

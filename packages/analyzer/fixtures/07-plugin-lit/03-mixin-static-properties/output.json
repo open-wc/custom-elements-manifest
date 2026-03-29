@@ -27,8 +27,8 @@
               "type": {
                 "text": "object"
               },
-              "static": true,
               "default": "{ disabled: { type: Boolean } }",
+              "static": true,
               "inheritedFrom": {
                 "name": "InputMixin",
                 "module": "my-element.js"
@@ -95,8 +95,8 @@
               "type": {
                 "text": "object"
               },
-              "static": true,
-              "default": "{ disabled: { type: Boolean } }"
+              "default": "{ disabled: { type: Boolean } }",
+              "static": true
             },
             {
               "kind": "field",

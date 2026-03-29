@@ -27,8 +27,8 @@
               "type": {
                 "text": "object"
               },
-              "static": true,
               "default": "{ mixB: { type: Boolean }, }",
+              "static": true,
               "inheritedFrom": {
                 "name": "MixinA",
                 "module": "my-element.js"

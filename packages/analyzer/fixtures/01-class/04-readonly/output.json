@@ -26,8 +26,8 @@
               "type": {
                 "text": "number"
               },
-              "readonly": true,
-              "default": "2"
+              "default": "2",
+              "readonly": true
             },
             {
               "kind": "field",

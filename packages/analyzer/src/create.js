@@ -6,8 +6,10 @@ import { withErrorHandling } from "./utils/index.js";
 /**
  * Associate JSDoc comments with AST nodes by position.
  * Comments that end right before a node (accounting for whitespace) are attached to that node.
+ * 
+ * Uses non-enumerable properties to avoid oxc-walker walking into them.
  */
-function associateJsDoc(program, comments, sourceText) {
+export function associateJsDoc(program, comments, sourceText) {
   if (!comments || comments.length === 0) return;
 
   // Build a sorted list of block comments that look like JSDoc (start with *)
@@ -19,23 +21,29 @@ function associateJsDoc(program, comments, sourceText) {
       fullText: `/*${c.value}*/`,
       // end position is after the closing */
       commentEnd: c.end + 2,
+      attached: false, // track if this comment has been attached
     }));
 
   if (jsDocComments.length === 0) return;
 
-  // Walk the AST and attach JSDoc to nodes
+  // Walk the AST and attach JSDoc to the first node that follows each comment
   walk(program, {
     enter(node) {
       if (!node || node.start == null) return;
       
       // Find the JSDoc comment that directly precedes this node
       for (const comment of jsDocComments) {
+        if (comment.attached) continue; // Already attached to a node
+        if (comment.commentEnd > node.start) continue; // Comment is after this node
+        
         // The comment should end before this node starts
-        // Allow whitespace between comment end and node start
+        // Allow only whitespace (and export keywords) between comment end and node start
         const between = sourceText.slice(comment.commentEnd, node.start);
-        if (between.trim() === '' || between.trim() === 'export' || between.trim() === 'export default') {
+        const trimmed = between.trim();
+        if (trimmed === '' || trimmed === 'export' || trimmed === 'export default') {
+          // Use non-enumerable property to avoid oxc-walker traversing it
           if (!node._jsdoc) {
-            node._jsdoc = [];
+            Object.defineProperty(node, '_jsdoc', { value: [], writable: true, enumerable: false });
           }
           // Parse the JSDoc using comment-parser
           const parsed = parseJsDoc(comment.fullText);
@@ -43,25 +51,13 @@ function associateJsDoc(program, comments, sourceText) {
             node._jsdoc.push(parsed[0]);
           }
           // Also store the raw comment text for handlers that need it
-          node._rawJsDoc = node._rawJsDoc || [];
+          if (!node._rawJsDoc) {
+            Object.defineProperty(node, '_rawJsDoc', { value: [], writable: true, enumerable: false });
+          }
           node._rawJsDoc.push(comment.fullText);
+          comment.attached = true;
           break;
         }
-      }
-    }
-  });
-}
-
-/**
- * Propagate _sourceText to all nodes in the tree so utilities can extract text.
- * Also propagate _program reference for looking up declarations.
- */
-function annotateTree(program, sourceText) {
-  walk(program, {
-    enter(node) {
-      if (node) {
-        node._sourceText = sourceText;
-        node._program = program;
       }
     }
   });
@@ -152,7 +148,12 @@ export function create({ modules, plugins = [], context = { dev: false } }) {
 }
 
 function collect(source, context, mergedPlugins) {
-  const { program } = source;
+  const { program, sourceText, fileName } = source;
+  
+  // Set the sourceText and fileName on context so plugins can access them
+  context._currentSourceText = sourceText;
+  context._currentFileName = fileName;
+  context._currentProgram = program;
   
   walk(program, {
     enter(node) {
@@ -166,7 +167,12 @@ function collect(source, context, mergedPlugins) {
 }
 
 function analyze(source, moduleDoc, context, mergedPlugins) {
-  const { program } = source;
+  const { program, sourceText, fileName } = source;
+  
+  // Set the sourceText and fileName on context so plugins can access them
+  context._currentSourceText = sourceText;
+  context._currentFileName = fileName;
+  context._currentProgram = program;
   
   /**
    * In ESTree, exports are wrapper nodes. We need to "unwrap" them so that plugins 
@@ -174,16 +180,16 @@ function analyze(source, moduleDoc, context, mergedPlugins) {
    * being exported attached.
    * 
    * We walk the tree and for export nodes, we mark the inner declaration with _exportNode,
-   * so plugins can detect exports.
+   * so plugins can detect exports. We use non-enumerable properties to avoid walker issues.
    */
   walk(program, {
     enter(node) {
       // For ExportNamedDeclaration with a declaration, mark the declaration
       if (node.type === 'ExportNamedDeclaration' && node.declaration) {
-        node.declaration._exportNode = node;
+        Object.defineProperty(node.declaration, '_exportNode', { value: node, writable: true, enumerable: false });
       }
       if (node.type === 'ExportDefaultDeclaration' && node.declaration) {
-        node.declaration._exportNode = node;
+        Object.defineProperty(node.declaration, '_exportNode', { value: node, writable: true, enumerable: false });
       }
 
       mergedPlugins.forEach(({ name, analyzePhase }) => {

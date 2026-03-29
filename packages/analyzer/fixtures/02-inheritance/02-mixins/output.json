@@ -30,7 +30,7 @@
           ],
           "attributes": [
             {
-              "name": "moduleMixin-attr"
+              "name": ""
             }
           ],
           "parameters": [
@@ -79,7 +79,7 @@
           ],
           "attributes": [
             {
-              "name": "nestedMixin-attr"
+              "name": ""
             }
           ],
           "parameters": [
@@ -138,10 +138,7 @@
           ],
           "attributes": [
             {
-              "name": "mixin-attr"
-            },
-            {
-              "name": "nestedMixin-attr",
+              "name": "",
               "inheritedFrom": {
                 "name": "NestedMixin",
                 "module": "my-element.js"
@@ -262,24 +259,7 @@
           ],
           "attributes": [
             {
-              "name": "class-attr"
-            },
-            {
-              "name": "moduleMixin-attr",
-              "inheritedFrom": {
-                "name": "ModuleMixin",
-                "module": "ModuleMixin.js"
-              }
-            },
-            {
-              "name": "mixin-attr",
-              "inheritedFrom": {
-                "name": "MyMixin",
-                "module": "my-element.js"
-              }
-            },
-            {
-              "name": "nestedMixin-attr",
+              "name": "",
               "inheritedFrom": {
                 "name": "NestedMixin",
                 "module": "my-element.js"

@@ -149,7 +149,14 @@ function isAsConst(initializer) {
  * Does the node have an initializer with `as const`?
  */
 export function isWellKnownType(node) {
-  const init = node?.value ?? node?.init ?? node?.initializer;
+  let init;
+  if (node?.type === 'PropertyDefinition') {
+    init = node.value;
+  } else if (node?.type === 'VariableDeclarator') {
+    init = node.init;
+  } else {
+    init = node?.initializer;
+  }
   return init && isAsConst(init);
 }
 

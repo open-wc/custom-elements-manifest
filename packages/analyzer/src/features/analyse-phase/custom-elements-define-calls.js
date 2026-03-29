@@ -68,7 +68,7 @@ export function customElementsDefineCallsPlugin() {
 
         const elementTag = node.arguments[0]?.value;
 
-        const sourceFile = node._program;
+        const sourceFile = context._currentProgram;
         const klass = getDeclarationInFile(elementClass, sourceFile);
 
         if (hasIgnoreJSDoc(klass))

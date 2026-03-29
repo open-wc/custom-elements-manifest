@@ -225,7 +225,19 @@ export function handleAttrJsDoc(node, doc) {
 }
 
 export function handleTypeInference(doc, node) {
-  const n = node?.value ?? node?.init ?? node;
+  // Determine the initializer node
+  // For PropertyDefinition: node.value is the initializer
+  // For VariableDeclarator: node.init is the initializer
+  // For a direct value node (from expression.right): use node itself
+  let n;
+  if (node?.type === 'PropertyDefinition') {
+    n = node.value;
+  } else if (node?.type === 'VariableDeclarator') {
+    n = node.init;
+  } else {
+    n = node;
+  }
+  
   if (!n) return doc;
   
   if (n.type === 'Literal') {
@@ -255,7 +267,7 @@ export function handleTypeInference(doc, node) {
  * @example class A { b = B.b }
  */
 export function handleWellKnownTypes(doc, node) {
-  const init = node?.value ?? node?.init;
+  const init = node?.type === 'PropertyDefinition' ? node.value : (node?.init ?? node);
   if (init?.expression) {
     const text = getNodeText(init.expression, node._sourceText);
     if (isWellKnownType(node)) {
@@ -271,7 +283,14 @@ export function handleDefaultValue(doc, node, expression) {
    * In case of a variable declarator: node.init
    * In case of a property assignment in constructor: expression.right
    */
-  const initializer = node?.value ?? node?.init ?? expression?.right;
+  let initializer;
+  if (node?.type === 'PropertyDefinition') {
+    initializer = node.value;
+  } else if (node?.type === 'VariableDeclarator') {
+    initializer = node.init;
+  } else {
+    initializer = expression?.right;
+  }
 
   /** Ignore the following */
   if(initializer?.type === 'BinaryExpression') return doc;
