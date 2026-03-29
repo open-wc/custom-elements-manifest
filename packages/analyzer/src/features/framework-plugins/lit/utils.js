@@ -1,11 +1,12 @@
-import ts from 'typescript';
+import { getNodeText } from '../../../utils/index.js';
 
 export function isAlsoAttribute(node) {
   let result = true;
-  (node?.initializer || node)?.properties?.forEach((property) => {
+  const props = (node?.value ?? node?.init ?? node)?.properties;
+  props?.forEach((property) => {
     if (
-      property.name.text === 'attribute' &&
-      property.initializer.kind === ts.SyntaxKind.FalseKeyword
+      (property.key?.name || property.key?.value) === 'attribute' &&
+      property.value?.type === 'Literal' && property.value?.value === false
     ) {
       result = false;
     }
@@ -15,10 +16,11 @@ export function isAlsoAttribute(node) {
 
 export function reflects(node) {
   let result = false;
-  (node?.initializer || node)?.properties?.forEach((property) => {
+  const props = (node?.value ?? node?.init ?? node)?.properties;
+  props?.forEach((property) => {
     if (
-      property.name.text === 'reflect' &&
-      property.initializer.kind === ts.SyntaxKind.TrueKeyword
+      (property.key?.name || property.key?.value) === 'reflect' &&
+      property.value?.type === 'Literal' && property.value?.value === true
     ) {
       result = true;
     }
@@ -28,9 +30,11 @@ export function reflects(node) {
 
 export function getType(node) {
   let result = false;
-  (node?.initializer || node)?.properties?.forEach((property) => {
-    if (property.name.text === 'type') {
-      result = property.initializer.text.toLowerCase();
+  const props = (node?.value ?? node?.init ?? node)?.properties;
+  props?.forEach((property) => {
+    if ((property.key?.name || property.key?.value) === 'type') {
+      const val = property.value?.name || property.value?.value;
+      result = typeof val === 'string' ? val.toLowerCase() : false;
     }
   });
   return result;
@@ -38,29 +42,32 @@ export function getType(node) {
 
 export function getAttributeName(node) {
   let result = false;
-  (node?.initializer || node)?.properties?.forEach((property) => {
+  const props = (node?.value ?? node?.init ?? node)?.properties;
+  props?.forEach((property) => {
     if (
-      property.name.text === 'attribute' &&
-      property.initializer.kind === ts.SyntaxKind.StringLiteral
+      (property.key?.name || property.key?.value) === 'attribute' &&
+      property.value?.type === 'Literal' && typeof property.value?.value === 'string'
     ) {
-      result = property.initializer.text;
+      result = property.value.value;
     }
   });
   return result;
 }
 
 export function hasPropertyDecorator(node) {
-  return node?.modifiers?.some((decorator) => { 
-    return ts.isDecorator(decorator) && decorator?.expression?.expression?.getText() === 'property'
+  return node?.decorators?.some((dec) => { 
+    return dec?.type === 'Decorator' && dec?.expression?.callee?.name === 'property';
   });
 }
 
-export const hasStaticKeyword = node => node?.modifiers?.some(mod => mod.kind === ts.SyntaxKind.StaticKeyword);
+export const hasStaticKeyword = node => !!node?.static;
 
 export function getPropertiesObject(node) {
-  if (ts.isGetAccessor(node)) {
-    return node.body?.statements?.find(ts.isReturnStatement)?.expression;
-  } else {
-    return node.initializer;
+  if (node?.type === 'MethodDefinition' && node?.kind === 'get') {
+    const returnStmt = node.value?.body?.body?.find(s => s.type === 'ReturnStatement');
+    return returnStmt?.argument;
+  } else if (node?.type === 'PropertyDefinition') {
+    return node.value;
   }
+  return null;
 }

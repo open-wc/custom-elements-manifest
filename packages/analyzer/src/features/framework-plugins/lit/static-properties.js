@@ -21,43 +21,43 @@ import { handleName } from '../../analyse-phase/creators/createMixin.js';
 export function staticPropertiesPlugin() {
   return {
     name: 'CORE - LIT-STATIC-PROPERTIES',
-    analyzePhase({ ts, node, moduleDoc, context }) {
-      switch (node.kind) {
-        case ts.SyntaxKind.VariableStatement:
-        case ts.SyntaxKind.FunctionDeclaration:
-          if (isMixin(node)) {
-            const { mixinFunction, mixinClass } = extractMixinNodes(node);
-            const { name } = handleName({}, mixinFunction);
-            handleStaticProperties(mixinClass, moduleDoc, context, name, ts);
-          }
-          break;
+    analyzePhase({ node, moduleDoc, context }) {
+      if (node.type === 'VariableDeclaration' || node.type === 'FunctionDeclaration') {
+        if (isMixin(node)) {
+          const { mixinFunction, mixinClass } = extractMixinNodes(node);
+          const { name } = handleName({}, mixinFunction);
+          handleStaticProperties(mixinClass, moduleDoc, context, name);
+        }
+      }
 
-        case ts.SyntaxKind.ClassDeclaration:
-          handleStaticProperties(node, moduleDoc, context, null, ts);
-          break;
+      if (node.type === 'ClassDeclaration') {
+        handleStaticProperties(node, moduleDoc, context, null);
       }
     },
   };
 }
 
-function handleStaticProperties(classNode, moduleDoc, context, mixinName = null, ts) {
+function handleStaticProperties(classNode, moduleDoc, context, mixinName = null) {
   let className;
   if (!mixinName) {
-    className = classNode?.name?.getText();
+    className = classNode?.id?.name;
   } else {
     className = mixinName;
   }
   const currClass = moduleDoc?.declarations?.find(declaration => declaration.name === className);
 
-  classNode?.members?.forEach(member => {
-    if (hasStaticKeyword(member) && member.name.text === 'properties') {
+  const members = classNode?.body?.body || [];
+  members.forEach(member => {
+    const memberName = member.key?.name || member.key?.value || '';
+    if (hasStaticKeyword(member) && memberName === 'properties') {
       const propertiesObject = getPropertiesObject(member);
       propertiesObject?.properties?.forEach(property => {
-        if (property.kind !== ts.SyntaxKind.PropertyAssignment) return;
+        if (property.type !== 'Property') return;
 
+        const propName = property.key?.name || property.key?.value || '';
         let classMember = {
           kind: 'field',
-          name: property?.name?.getText() || '',
+          name: propName,
           privacy: 'public',
         };
 
@@ -76,10 +76,6 @@ function handleStaticProperties(classNode, moduleDoc, context, mixinName = null,
         if (isAlsoAttribute(property)) {
           const attribute = createAttributeFromField(classMember);
 
-          /**
-           * If an attribute name is provided
-           * @example @property({attribute:'my-foo'})
-           */
           const attributeName = getAttributeName(property);
           if (attributeName) {
             attribute.name = attributeName;

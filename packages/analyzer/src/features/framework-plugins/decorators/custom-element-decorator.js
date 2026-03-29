@@ -11,11 +11,11 @@ export function customElementDecoratorPlugin() {
   return {
     name: 'CORE - CUSTOM-ELEMENT-DECORATOR',
     analyzePhase({node, moduleDoc, context}){
-      if (has(node.modifiers)) {
-        const customElementDecorator = node.modifiers?.find(decorator('customElement'));
+      if (node?.decorators && node.decorators.length > 0) {
+        const customElementDecorator = node.decorators?.find(decorator('customElement'));
 
         if(customElementDecorator) {
-          const className = node.name.text;
+          const className = node.id?.name;
           const tagName = getElementNameFromDecorator(customElementDecorator);
 
           const definitionDoc = {

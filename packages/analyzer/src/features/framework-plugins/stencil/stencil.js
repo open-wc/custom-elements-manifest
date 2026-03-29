@@ -1,4 +1,4 @@
-import { decorator, toKebabCase } from '../../../utils/index.js'
+import { decorator, toKebabCase, getNodeText } from '../../../utils/index.js'
 
 export function stencilPlugin() {
   let events = [];
@@ -7,93 +7,83 @@ export function stencilPlugin() {
 
   return {
     name: 'CORE - STENCIL',
-    // Runs for each module
-    analyzePhase({ts, node, moduleDoc}){
-      switch (node.kind) {
-        case ts.SyntaxKind.ClassDeclaration:
-          /**
-           * Add tagName to classDoc, extracted from `@Component({tag: 'foo-bar'})` decorator
-           * Add custom-element-definition to exports
-           */
-          const componentDecorator = node?.modifiers?.find(decorator('Component'))?.expression;
+    analyzePhase({node, moduleDoc}){
+      if (node.type === 'ClassDeclaration') {
+        /**
+         * Add tagName to classDoc, extracted from `@Component({tag: 'foo-bar'})` decorator
+         */
+        const componentDecorator = node?.decorators?.find(decorator('Component'))?.expression;
 
-          const tagName = componentDecorator?.arguments?.[0]?.properties?.find(prop => {
-            return prop?.name?.getText() === 'tag'
-          })?.initializer?.text;
+        const tagName = componentDecorator?.arguments?.[0]?.properties?.find(prop => {
+          return (prop?.key?.name || prop?.key?.value) === 'tag'
+        })?.value?.value;
 
-          const className = node?.name?.getText();
-          const currClass = moduleDoc?.declarations?.find(declaration => declaration.name === className);
-          if(tagName) {
-            currClass.tagName = tagName;
-            moduleDoc.exports.push({
-              kind: "custom-element-definition",
-              name: tagName,
-              declaration: {
-                name: className,
-                module: moduleDoc.path
-              }
-            });
-          }
+        const className = node?.id?.name;
+        const currClass = moduleDoc?.declarations?.find(declaration => declaration.name === className);
+        if(tagName) {
+          currClass.tagName = tagName;
+          moduleDoc.exports.push({
+            kind: "custom-element-definition",
+            name: tagName,
+            declaration: {
+              name: className,
+              module: moduleDoc.path
+            }
+          });
+        }
 
-          /**
-           * Collect fields with `@Event()` decorator so we can process them in `moduleLinkPhase`
-           */
-          const eventFields = node?.members
-            ?.filter(member => member?.modifiers?.find(decorator('Event')))
-            ?.map(member => {
-              const eventDecorator = member?.modifiers?.find(decorator('Event'));
-              const eventName = eventDecorator?.expression?.arguments?.[0]?.properties?.find(prop => {
-                return prop?.name?.getText() === 'eventName'
-              })?.initializer?.text;
+        /**
+         * Collect fields with `@Event()` decorator
+         */
+        const members = node?.body?.body || [];
+        const eventFields = members
+          ?.filter(member => member?.decorators?.find(decorator('Event')))
+          ?.map(member => {
+            const eventDecorator = member?.decorators?.find(decorator('Event'));
+            const eventName = eventDecorator?.expression?.arguments?.[0]?.properties?.find(prop => {
+              return (prop?.key?.name || prop?.key?.value) === 'eventName'
+            })?.value?.value;
 
-              return { field: member?.name?.getText(), as: eventName || member?.name?.getText() }
-            });
-          events = [...(eventFields || [])];
+            return { field: member?.key?.name || '', as: eventName || member?.key?.name || '' }
+          });
+        events = [...(eventFields || [])];
 
-          /**
-           * Handle `@Prop` decorator, and store attributes to add to manifest later
-           * - if type is primitive -> create attr
-           *  - if not `{ attribute: ''}` in decorator, just kebabcase the fieldname, otherwise use the value provided
-           * - if type is not primitive -> no attr
-           * - add fieldName to attr
-           */
-          node?.members
-            ?.filter(member => member?.modifiers?.find(decorator('Prop')))
-            ?.forEach(property => {
-              const fieldName = property?.name?.text;
-              const attrNameFromDecorator = property?.modifiers?.[0]?.expression?.arguments?.[0]?.properties?.find(prop => prop?.name?.getText() === 'attribute')?.initializer?.text;
-              const attrName = attrNameFromDecorator || toKebabCase(property?.name?.text);
+        /**
+         * Handle `@Prop` decorator
+         */
+        members
+          ?.filter(member => member?.decorators?.find(decorator('Prop')))
+          ?.forEach(property => {
+            const fieldName = property?.key?.name || '';
+            const propDecorator = property?.decorators?.find(decorator('Prop'));
+            const attrNameFromDecorator = propDecorator?.expression?.arguments?.[0]?.properties?.find(prop => (prop?.key?.name || prop?.key?.value) === 'attribute')?.value?.value;
+            const attrName = attrNameFromDecorator || toKebabCase(fieldName);
 
-              const reflects = property?.modifiers?.[0]?.expression?.arguments?.[0]?.properties?.find(prop => prop?.name?.getText() === 'reflects')?.initializer?.getText?.() === 'true';
-              const member = currClass?.members?.find(mem => mem?.name === fieldName);
-              if(reflects) {
-                member.reflects = true;
-                member.attribute = attrName;
-              }
+            const reflectsVal = propDecorator?.expression?.arguments?.[0]?.properties?.find(prop => (prop?.key?.name || prop?.key?.value) === 'reflects')?.value?.value === true;
+            const member = currClass?.members?.find(mem => mem?.name === fieldName);
+            if(reflectsVal) {
+              member.reflects = true;
+              member.attribute = attrName;
+            }
 
-              if(!currClass.attributes) currClass.attributes = [];
-              const hasType = !!property?.type?.getText?.();
+            if(!currClass.attributes) currClass.attributes = [];
+            const typeAnnotation = property?.typeAnnotation?.typeAnnotation;
+            const hasType = !!typeAnnotation;
 
-                currClass.attributes.push({
-                  name: attrName,
-                  fieldName,
-                  ...(member?.default ? { default: member.default } : {}),
-                  ...(member?.description ? { description: member.description } : {}),
-                  ...(hasType ? {
-                    type: { text: property?.type?.getText?.() }
-                  } : {})
-                })
-            });
-
-          break;
+              currClass.attributes.push({
+                name: attrName,
+                fieldName,
+                ...(member?.default ? { default: member.default } : {}),
+                ...(member?.description ? { description: member.description } : {}),
+                ...(hasType ? {
+                  type: { text: getNodeText(typeAnnotation, property._sourceText) }
+                } : {})
+              })
+          });
       }
     },
 
-    // Runs for each module, after analyzing, all information about your module should now be available
     moduleLinkPhase({moduleDoc}){
-      /**
-       * Remove lifecycle methods
-       */
       const classes = moduleDoc?.declarations?.filter(declaration => declaration.kind === 'class');
 
       classes?.forEach(klass => {
@@ -103,9 +93,6 @@ export function stencilPlugin() {
         });
       });
 
-      /**
-       * Events
-       */
       classes?.forEach(klass => {
         if(!klass?.members) return;
         const eventsAsFields = klass.members
@@ -117,13 +104,9 @@ export function stencilPlugin() {
             return member;
           }) || [];
 
-        /* Add events as eventDocs */
         klass.events = [...(klass?.events || []), ...eventsAsFields]
-
-        /* Remove events as class fields */
         klass.members = klass?.members?.filter(member => !events.some(event => event.field === member.name || event.as === member.name));
       });
-
     }
   }
 }
