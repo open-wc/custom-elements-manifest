@@ -98,11 +98,18 @@ export function classJsDocPlugin() {
             });
 
             /**
-             * Description - from the parsed JSDoc comment
+             * Description - extracted from source lines to preserve newlines
              */
             const parsedFirst = parsed?.[0];
-            if(parsedFirst?.description) {
-              classDoc.description = normalizeDescription(parsedFirst.description);
+            if(parsedFirst?.source) {
+              // Extract description lines from source (lines with no tag)
+              const descriptionLines = parsedFirst.source
+                .filter(s => !s.tokens.tag && !s.tokens.end && s.tokens.description)
+                .map(s => s.tokens.description);
+              
+              if (descriptionLines.length > 0) {
+                classDoc.description = normalizeDescription(descriptionLines.join('\n'));
+              }
             }
 
             /**

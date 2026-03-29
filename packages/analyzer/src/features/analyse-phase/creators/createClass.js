@@ -143,7 +143,7 @@ export function createClass(node, moduleDoc, context) {
     }
   });
 
-  getDefaultValuesFromConstructorVisitor(node, classTemplate, context);
+  getDefaultValuesFromConstructorVisitor(node, classTemplate, context, moduleDoc);
 
   classTemplate.members = classTemplate?.members?.filter(mem => !mem.ignore);
 
@@ -185,7 +185,7 @@ function eventsVisitor(source, classTemplate) {
   });
 }
 
-export function getDefaultValuesFromConstructorVisitor(source, classTemplate, context) {
+export function getDefaultValuesFromConstructorVisitor(source, classTemplate, context, moduleDoc) {
   const members = source?.body?.body || [];
   
   const constructor = members.find(m => m.type === 'MethodDefinition' && m.kind === 'constructor');
@@ -194,11 +194,11 @@ export function getDefaultValuesFromConstructorVisitor(source, classTemplate, co
   const statements = constructor.value?.body?.body || [];
   statements
     .filter(statement => statement.type === 'ExpressionStatement')
-    .filter(statement => statement.expression?.type === 'AssignmentExpression')
-    .forEach(statement => mapClassMember(source, classTemplate, context, constructor, statement, statement.expression));
+    .filter(statement => statement.expression?.type === 'AssignmentExpression' || statement.expression?.type === 'SequenceExpression')
+    .forEach(statement => mapClassMember(source, classTemplate, context, constructor, statement, statement.expression, moduleDoc));
 }
 
-function mapClassMember(source, classTemplate, context, node, statement, expression) {
+function mapClassMember(source, classTemplate, context, node, statement, expression, moduleDoc) {
   const memberName = expression?.left?.property?.name;
   let existingMember = classTemplate?.members?.find(member => memberName === member.name && member.kind === 'field');
 
@@ -206,7 +206,7 @@ function mapClassMember(source, classTemplate, context, node, statement, express
   if (expression?.type === 'SequenceExpression') {
     expression.expressions?.forEach(expr => {
       if (expr.type === 'AssignmentExpression') {
-        mapClassMember(source, classTemplate, context, node, statement, expr);
+        mapClassMember(source, classTemplate, context, node, statement, expr, moduleDoc);
       }
     });
     return;
@@ -242,9 +242,8 @@ function mapClassMember(source, classTemplate, context, node, statement, express
 
     /** Flag class fields that get assigned a variable, so we can resolve it later */
     if (expression?.right?.type === 'Identifier') {
-      const sourceFileName = source._program?._fileName || source._sourceText;
       existingMember.resolveInitializer = {
-        ...resolveModuleOrPackageSpecifier({ path: source._program?._fileName || '' }, context, expression?.right?.name),
+        ...resolveModuleOrPackageSpecifier(moduleDoc || { path: context?._currentFileName || '' }, context, expression?.right?.name),
       }
     }
 

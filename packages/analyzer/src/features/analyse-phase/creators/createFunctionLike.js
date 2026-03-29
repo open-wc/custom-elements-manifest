@@ -5,9 +5,12 @@ import { handleModifiers, handleJsDoc } from './handlers.js';
  * Creates a functionLike, does _not_ handle arrow functions
  */
 export function createFunctionLike(node) {
+  const name = node?.key?.type === 'PrivateIdentifier' 
+    ? `#${node.key.name}` 
+    : (node?.key?.name || node?.id?.name || '');
   let functionLikeTemplate = {
     kind: '',
-    name: node?.key?.name || node?.id?.name || ''
+    name,
   };
   
   functionLikeTemplate = handleKind(functionLikeTemplate, node);

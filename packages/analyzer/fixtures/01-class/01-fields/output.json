@@ -171,7 +171,10 @@
             {
               "kind": "field",
               "name": "asVariableAssignedInConstructor",
-              "default": "foo"
+              "default": "'foo'",
+              "type": {
+                "text": "string"
+              }
             },
             {
               "kind": "field",
@@ -261,8 +264,32 @@
             },
             {
               "kind": "method",
-              "name": "truePrivateMethod",
+              "name": "#truePrivateMethod",
               "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "commaprop1",
+              "type": {
+                "text": "string"
+              },
+              "default": "'default'"
+            },
+            {
+              "kind": "field",
+              "name": "commaprop2",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "kind": "field",
+              "name": "commaprop3",
+              "type": {
+                "text": "number"
+              },
+              "default": "123"
             }
           ],
           "attributes": [
