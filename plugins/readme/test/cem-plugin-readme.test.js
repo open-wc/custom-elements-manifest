@@ -1,10 +1,12 @@
 import { describe } from '@asdgf/core';
 import assert from 'assert';
 
-import ts from 'typescript';
+import { parseSync } from 'oxc-parser';
+import { walk } from 'oxc-walker';
 
 import { readmePlugin } from '../index.js';
-import { create } from '@custom-elements-manifest/analyzer/src/create.js';
+import { create, associateJsDoc } from '@custom-elements-manifest/analyzer/src/create.js';
+import { annotateTree } from '@custom-elements-manifest/analyzer/src/utils/index.js';
 import { readdirSync, readFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 import { fileURLToPath } from 'url';
@@ -12,6 +14,18 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(new URL(import.meta.url)));
 
 const read = path => readFileSync(path, 'utf8');
+
+function parseModule(filePath, source) {
+  const result = parseSync(filePath, source, { lang: 'ts' });
+  associateJsDoc(result.program, result.comments, source);
+  annotateTree(result.program, source, walk);
+  return {
+    program: result.program,
+    sourceText: source,
+    fileName: filePath,
+    comments: result.comments,
+  };
+}
 
 const casesDir = join(__dirname, 'cases');
 
@@ -63,11 +77,9 @@ describe('README plugin', ({it}) => {
       const { description, ...options } = OPTIONS[testCase] ?? {};
   
       const customElementsManifest = create({
-        modules: [ts.createSourceFile(
+        modules: [parseModule(
           join('./fixture', 'my-element.js'),
           source,
-          ts.ScriptTarget.ES2015,
-          true
         )],
         plugins: [readmePlugin({ from, to, ...options })],
       });

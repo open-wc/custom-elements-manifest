@@ -13,7 +13,7 @@
   "scripts": {
     "docs": "rocket build",
     "start": "rocket start",
-    "test": "yarn workspaces run test"
+    "test": "npm run test --workspaces --if-present"
   },
   "dependencies": {},
   "devDependencies": {
