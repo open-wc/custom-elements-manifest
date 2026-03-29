@@ -8,12 +8,95 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "",
+          "description": "{@link https://a.b} [CD]{@link https://e.f} {@link g|HIJ} {@link klm En? Oh Pee}",
           "name": "MyElement",
+          "cssProperties": [
+            {
+              "description": "Controls the color of foo",
+              "name": "--text-color"
+            },
+            {
+              "description": "Controls the color of bar",
+              "name": "--background-color",
+              "default": "red"
+            }
+          ],
+          "cssParts": [
+            {
+              "description": "Styles the color of bar",
+              "name": "bar"
+            }
+          ],
+          "slots": [
+            {
+              "description": "This is the default slot",
+              "name": ""
+            },
+            {
+              "description": "You can put some elements here",
+              "name": "container"
+            }
+          ],
+          "members": [
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "some description",
+              "name": "prop1",
+              "kind": "field"
+            },
+            {
+              "type": {
+                "text": "number"
+              },
+              "description": "some description",
+              "name": "prop2",
+              "kind": "field"
+            }
+          ],
+          "events": [
+            {
+              "description": "some description for custom-event",
+              "name": "custom-event"
+            },
+            {
+              "type": {
+                "text": "Event"
+              },
+              "description": "some description for typed-event",
+              "name": "typed-event"
+            },
+            {
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "some description for typed-custom-event",
+              "name": "typed-custom-event"
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "disables the element",
+              "name": "disabled"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "description for foo",
+              "name": "foo"
+            }
+          ],
           "superclass": {
             "name": "HTMLElement"
           },
-          "customElement": true
+          "tagName": "my-element",
+          "customElement": true,
+          "summary": "This is MyElement"
         }
       ],
       "exports": [

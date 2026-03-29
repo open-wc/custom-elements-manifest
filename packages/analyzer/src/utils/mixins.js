@@ -26,7 +26,7 @@ export function extractMixinNodes(node) {
          * @example const MyMixin = klass => { return class MyMixin extends Klass{} }
          */
         if (body && body.type === 'BlockStatement') {
-          const returnStatement = body.statements.find(statement => statement.type === 'ReturnStatement');
+          const returnStatement = body.body.find(statement => statement.type === 'ReturnStatement');
 
           if (returnStatement && returnStatement?.argument?.type === 'ClassExpression') {
             return { 
@@ -40,8 +40,8 @@ export function extractMixinNodes(node) {
          * @example const MyMixin = klass => { class MyMixin extends klass {} return MyMixin;}
          */
         if (body && body.type === 'BlockStatement') {
-          const classDeclaration = body.statements.find(statement => statement.type === 'ClassDeclaration');
-          const returnStatement = body.statements.find(statement => statement.type === 'ReturnStatement');
+          const classDeclaration = body.body.find(statement => statement.type === 'ClassDeclaration');
+          const returnStatement = body.body.find(statement => statement.type === 'ReturnStatement');
           /** Avoid undefined === undefined */
           if(!(classDeclaration && returnStatement))
             return;

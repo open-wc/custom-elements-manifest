@@ -46,7 +46,10 @@
             },
             {
               "kind": "field",
-              "name": "prop5"
+              "name": "prop5",
+              "type": {
+                "text": "string"
+              }
             },
             {
               "kind": "field",

@@ -57,6 +57,7 @@
                 "text": "string"
               },
               "default": "'foo'",
+              "description": "this is the description",
               "attribute": "prop1"
             },
             {
@@ -117,6 +118,13 @@
           ],
           "attributes": [
             {
+              "name": "my-attr",
+              "type": {
+                "text": "string"
+              },
+              "fieldName": "attr"
+            },
+            {
               "name": "decoratedProperty",
               "type": {
                 "text": "array"
@@ -146,6 +154,7 @@
                 "text": "string"
               },
               "default": "'foo'",
+              "description": "this is the description",
               "fieldName": "prop1"
             },
             {
@@ -154,13 +163,6 @@
                 "text": "boolean"
               },
               "fieldName": "prop2"
-            },
-            {
-              "name": "my-attr",
-              "type": {
-                "text": "string"
-              },
-              "fieldName": "attr"
             },
             {
               "name": "_privateProp",
@@ -193,7 +195,7 @@
         },
         {
           "kind": "mixin",
-          "description": "",
+          "description": "Picks up property decorator on mixins as well",
           "name": "InputMixin",
           "members": [
             {

@@ -19,8 +19,8 @@ export function associateJsDoc(program, comments, sourceText) {
       ...c,
       // The full text including delimiters for comment-parser
       fullText: `/*${c.value}*/`,
-      // end position is after the closing */
-      commentEnd: c.end + 2,
+      // In oxc-parser, comment.end already points past the closing */
+      commentEnd: c.end,
       attached: false, // track if this comment has been attached
     }));
 
@@ -30,6 +30,8 @@ export function associateJsDoc(program, comments, sourceText) {
   walk(program, {
     enter(node) {
       if (!node || node.start == null) return;
+      // Skip Program nodes - JSDoc should attach to actual declarations
+      if (node.type === 'Program') return;
       
       // Find the JSDoc comment that directly precedes this node
       for (const comment of jsDocComments) {
@@ -57,6 +59,21 @@ export function associateJsDoc(program, comments, sourceText) {
           node._rawJsDoc.push(comment.fullText);
           comment.attached = true;
           break;
+        }
+      }
+    }
+  });
+
+  // Propagate JSDoc from export wrappers to their inner declarations
+  // This ensures that JSDoc above `export class/function/const` is available on the declaration itself
+  walk(program, {
+    enter(node) {
+      if ((node.type === 'ExportNamedDeclaration' || node.type === 'ExportDefaultDeclaration') && node.declaration) {
+        if (node._jsdoc && !node.declaration._jsdoc) {
+          Object.defineProperty(node.declaration, '_jsdoc', { value: node._jsdoc, writable: true, enumerable: false });
+        }
+        if (node._rawJsDoc && !node.declaration._rawJsDoc) {
+          Object.defineProperty(node.declaration, '_rawJsDoc', { value: node._rawJsDoc, writable: true, enumerable: false });
         }
       }
     }
