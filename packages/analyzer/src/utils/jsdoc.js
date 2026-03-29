@@ -26,10 +26,6 @@ function resolveInlineLinks(text) {
 }
 
 export function normalizeDescription(desc) {
-  if (Array.isArray(desc)) {
-    desc = desc.reduce((prev, curr) => prev += (typeof curr === 'string' ? curr : (curr?.getText?.() ?? '')), '');
-  }
-
   if (typeof desc === 'string' && desc?.startsWith('- ')) {
     desc = desc.slice(2);
   }

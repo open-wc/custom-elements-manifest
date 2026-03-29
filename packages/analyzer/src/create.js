@@ -42,7 +42,7 @@ export function associateJsDoc(program, comments, sourceText) {
         // Allow only whitespace (and export keywords) between comment end and node start
         const between = sourceText.slice(comment.commentEnd, node.start);
         const trimmed = between.trim();
-        if (trimmed === '' || trimmed === 'export' || trimmed === 'export default') {
+        if (trimmed === '' || /^export(\s+default)?$/.test(trimmed)) {
           // Use non-enumerable property to avoid oxc-walker traversing it
           if (!node._jsdoc) {
             Object.defineProperty(node, '_jsdoc', { value: [], writable: true, enumerable: false });

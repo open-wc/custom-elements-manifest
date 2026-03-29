@@ -156,12 +156,14 @@ export function createClass(node, moduleDoc, context) {
 }
 
 function eventsVisitor(source, classTemplate) {
-  let parentNode = null;
+  const parentStack = [];
   walk(source, {
     enter(node) {
       if (isDispatchEvent(node)) {
+        // Find the nearest ExpressionStatement parent
+        const exprStmt = parentStack.findLast(p => p.type === 'ExpressionStatement');
         // Check both the CallExpression and its parent ExpressionStatement for @ignore/@internal
-        if (hasIgnoreJSDoc(node) || hasIgnoreJSDoc(parentNode)) {
+        if (hasIgnoreJSDoc(node) || hasIgnoreJSDoc(exprStmt)) {
           return;
         }
         node?.arguments?.forEach((arg) => {
@@ -178,7 +180,7 @@ function eventsVisitor(source, classTemplate) {
               };
 
               // Look for JSDoc on the containing ExpressionStatement
-              eventDoc = handleJsDoc(eventDoc, parentNode);
+              eventDoc = handleJsDoc(eventDoc, exprStmt);
               delete eventDoc.privacy;
               classTemplate.events.push(eventDoc);
             }
@@ -186,10 +188,10 @@ function eventsVisitor(source, classTemplate) {
         });
       }
       
-      // Track parent for the next enter calls (ExpressionStatement → CallExpression)
-      if (node.type === 'ExpressionStatement') {
-        parentNode = node;
-      }
+      parentStack.push(node);
+    },
+    leave() {
+      parentStack.pop();
     }
   });
 }
