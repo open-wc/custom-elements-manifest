@@ -1,22 +1,21 @@
-import ts from 'typescript';
-
 import { getReturnValue } from '../utils/ast-helpers.js';
+import { getNodeText } from '../utils/index.js';
 
 export const isMixin = node => !!extractMixinNodes(node);
 
 export function extractMixinNodes(node) {
-  if (ts.isVariableStatement(node) || ts.isFunctionDeclaration(node)) {
-    if (ts.isVariableStatement(node)) {
+  if (node?.type === 'VariableDeclaration' || node?.type === 'FunctionDeclaration') {
+    if (node.type === 'VariableDeclaration') {
       /**
        * @example const MyMixin = klass => class MyMixin extends klass {}
        * @example export const MyMixin = klass => class MyMixin extends klass {}
        */
-      const variableDeclaration = node.declarationList.declarations.find(declaration =>
-        ts.isVariableDeclaration(declaration),
+      const variableDeclarator = node.declarations?.find(decl =>
+        decl.type === 'VariableDeclarator',
       );
-      if (variableDeclaration) {
-        const body = variableDeclaration?.initializer?.body;
-        if (body && ts.isClassExpression(body)) {
+      if (variableDeclarator) {
+        const body = variableDeclarator?.init?.body;
+        if (body && body.type === 'ClassExpression') {
           return { 
             mixinFunction: node,
             mixinClass: body,
@@ -26,13 +25,13 @@ export function extractMixinNodes(node) {
         /**
          * @example const MyMixin = klass => { return class MyMixin extends Klass{} }
          */
-        if (body && ts.isBlock(body)) {
-          const returnStatement = body.statements.find(statement => ts.isReturnStatement(statement));
+        if (body && body.type === 'BlockStatement') {
+          const returnStatement = body.statements.find(statement => statement.type === 'ReturnStatement');
 
-          if (returnStatement && returnStatement?.expression?.kind && ts.isClassExpression(returnStatement.expression)) {
+          if (returnStatement && returnStatement?.argument?.type === 'ClassExpression') {
             return { 
-              mixinFunction: variableDeclaration.initializer,
-              mixinClass: returnStatement.expression
+              mixinFunction: variableDeclarator.init,
+              mixinClass: returnStatement.argument
             };
           }
         }
@@ -40,14 +39,14 @@ export function extractMixinNodes(node) {
         /**
          * @example const MyMixin = klass => { class MyMixin extends klass {} return MyMixin;}
          */
-        if (body && ts.isBlock(body)) {
-          const classDeclaration = body.statements.find(statement => ts.isClassDeclaration(statement));
-          const returnStatement = body.statements.find(statement => ts.isReturnStatement(statement));
+        if (body && body.type === 'BlockStatement') {
+          const classDeclaration = body.statements.find(statement => statement.type === 'ClassDeclaration');
+          const returnStatement = body.statements.find(statement => statement.type === 'ReturnStatement');
           /** Avoid undefined === undefined */
           if(!(classDeclaration && returnStatement))
             return;
-          const classDeclarationName = classDeclaration.name?.getText?.();
-          const returnValue = getReturnValue(returnStatement)
+          const classDeclarationName = classDeclaration.id?.name;
+          const returnValue = getReturnValue(returnStatement, node._sourceText)
           /**
            * If the classDeclaration inside the function body has the same name as whats being
            * returned from the function, consider it a mixin
@@ -65,15 +64,15 @@ export function extractMixinNodes(node) {
     /**
      *  @example function MyMixin(klass) { return class MyMixin extends Klass{} }
      */
-    if (ts.isFunctionDeclaration(node)) {
-      if (node.body && ts.isBlock(node.body)) {
+    if (node.type === 'FunctionDeclaration') {
+      if (node.body && node.body.type === 'BlockStatement') {
 
-        const returnStatement = node.body.statements.find(statement => ts.isReturnStatement(statement));
+        const returnStatement = node.body.body.find(statement => statement.type === 'ReturnStatement');
 
-        if (returnStatement?.expression && ts.isClassExpression(returnStatement.expression)) {
+        if (returnStatement?.argument && returnStatement.argument.type === 'ClassExpression') {
           return { 
             mixinFunction: node, 
-            mixinClass: returnStatement.expression
+            mixinClass: returnStatement.argument
           };
         }
       }
@@ -82,18 +81,18 @@ export function extractMixinNodes(node) {
     /**
      * @example function MyMixin(klass) {class A extends klass {} return A;}
      */
-    if (ts.isFunctionDeclaration(node)) {
-      if (node.body && ts.isBlock(node.body)) {
-        const classDeclaration = node.body.statements.find(statement => ts.isClassDeclaration(statement));
-        const returnStatement = node.body.statements.find(statement => ts.isReturnStatement(statement));
+    if (node.type === 'FunctionDeclaration') {
+      if (node.body && node.body.type === 'BlockStatement') {
+        const classDeclaration = node.body.body.find(statement => statement.type === 'ClassDeclaration');
+        const returnStatement = node.body.body.find(statement => statement.type === 'ReturnStatement');
 
         /** Avoid undefined === undefined */
         if(!(classDeclaration && returnStatement))
           return;
 
-        const classDeclarationName = classDeclaration.name?.getText?.();
+        const classDeclarationName = classDeclaration.id?.name;
 
-        const returnValue = getReturnValue(returnStatement)
+        const returnValue = getReturnValue(returnStatement, node._sourceText)
 
         /**
          * If the classDeclaration inside the function body has the same name as whats being

@@ -1,9 +1,9 @@
 /**
- * This file is the entrypoint for rollup to correctly bundle the analyzer for the browser.
+ * This file is the entrypoint for bundling the analyzer for the browser.
  * Do not use directly, but import from ./browser/index.js
  */
 
-import ts from 'typescript';
+import { parseSync } from 'oxc-parser';
 
 import { create } from './create.js';
 import { catalystPlugin } from './features/framework-plugins/catalyst/catalyst.js';
@@ -13,7 +13,7 @@ import { litPlugin } from './features/framework-plugins/lit/lit.js';
 import { fastPlugin } from './features/framework-plugins/fast/fast.js';
 
 export { 
-  ts,
+  parseSync,
   create,
   catalystPlugin,
   catalystPlugin2,

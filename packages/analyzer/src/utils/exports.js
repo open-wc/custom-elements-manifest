@@ -1,33 +1,34 @@
-import ts from 'typescript';
 import { has } from './index.js';
 
 /**
  * UTILITIES RELATED TO MODULE EXPORTS
+ *
+ * In ESTree, exports are represented as separate node types:
+ * - ExportNamedDeclaration (with or without declaration)
+ * - ExportDefaultDeclaration
+ * - ExportAllDeclaration
+ *
+ * These helpers check for the old TS-style export/default modifiers on declarations,
+ * which in ESTree means the parent node is an export wrapper.
  */
 
+/**
+ * In ESTree, a declaration that is exported will be wrapped in ExportNamedDeclaration or ExportDefaultDeclaration.
+ * This function is kept for compatibility but now checks the node's _parentExport flag set during walking.
+ */
 export function hasExportModifier(node) {
-  if (has(node?.modifiers)) {
-    if (node.modifiers.some(mod => mod.kind === ts.SyntaxKind.ExportKeyword)) {
-      return true;
-    }
-  }
-  return false;
+  return !!node?._exportNode;
 }
 
 export function hasDefaultModifier(node) {
-  if (has(node?.modifiers)) {
-    if (node.modifiers.some(mod => mod.kind === ts.SyntaxKind.DefaultKeyword)) {
-      return true;
-    }
-  }
-  return false;
+  return node?._exportNode?.type === 'ExportDefaultDeclaration';
 }
 
 /**
  * @example export { var1, var2 };
  */
 export function hasNamedExports(node) {
-  if (has(node?.exportClause?.elements)) {
+  if (has(node?.specifiers)) {
     return true;
   }
   return false;
@@ -37,7 +38,7 @@ export function hasNamedExports(node) {
  * @example export { var1, var2 } from 'foo';
  */
 export function isReexport(node) {
-  if (node?.moduleSpecifier !== undefined) {
+  if (node?.source !== undefined && node?.source !== null) {
     return true;
   }
   return false;

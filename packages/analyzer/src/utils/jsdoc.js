@@ -8,7 +8,8 @@ export function handleJsDocType(type) {
 
 export function normalizeDescription(desc) {
   if (Array.isArray(desc)) {
-    desc = desc.reduce((prev, curr) => prev += curr.getText(), '');
+    // In ESTree, description parts are strings already
+    desc = desc.reduce((prev, curr) => prev += (typeof curr === 'string' ? curr : (curr?.getText?.() ?? '')), '');
   }
 
   if (typeof desc === 'string' && desc?.startsWith('- ')) {

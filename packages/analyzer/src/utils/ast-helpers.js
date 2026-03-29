@@ -1,58 +1,82 @@
-import ts from 'typescript';
-import { safe } from './index.js';
+import { safe, getNodeText } from './index.js';
 
 /**
  * AST HELPERS
+ * 
+ * Refactored for ESTree AST (oxc-parser) instead of TypeScript AST.
  */
 
-export const isProperty = node => ts.isPropertyDeclaration(node) || ts.isGetAccessor(node) || ts.isSetAccessor(node);
+export const isProperty = node => 
+  node?.type === 'PropertyDefinition' || 
+  (node?.type === 'MethodDefinition' && (node.kind === 'get' || node.kind === 'set'));
 
 /**
  * @example this.dispatchEvent(new Event('foo'));
  */
-export const isDispatchEvent = node => node.expression?.name?.getText() === 'dispatchEvent' && node?.expression?.expression?.kind === ts.SyntaxKind.ThisKeyword
+export const isDispatchEvent = node => {
+  if (node?.type !== 'CallExpression') return false;
+  const callee = node?.callee;
+  return callee?.type === 'MemberExpression' &&
+    callee?.object?.type === 'ThisExpression' &&
+    callee?.property?.name === 'dispatchEvent';
+};
 
-export const isReturnStatement = statement => statement?.kind === ts.SyntaxKind.ReturnStatement;
+export const isReturnStatement = statement => statement?.type === 'ReturnStatement';
 
 /**
  * @example customElements.define('my-el', MyEl);
  * @example window.customElements.define('my-el', MyEl);
  */
-export const isCustomElementsDefineCall = node => (node?.expression?.getText() === 'customElements' || node?.expression?.getText() === 'window.customElements' || node?.expression?.getText() === 'globalThis.customElements') && node?.name?.getText() === 'define' && node?.parent?.kind === ts.SyntaxKind.CallExpression;
+export const isCustomElementsDefineCall = node => {
+  if (node?.type !== 'CallExpression') return false;
+  const callee = node?.callee;
+  if (callee?.type !== 'MemberExpression') return false;
+  if (callee?.property?.name !== 'define') return false;
+  
+  const obj = callee?.object;
+  // customElements.define(...)
+  if (obj?.type === 'Identifier' && obj?.name === 'customElements') return true;
+  // window.customElements.define(...) or globalThis.customElements.define(...)
+  if (obj?.type === 'MemberExpression' && 
+      obj?.property?.name === 'customElements' &&
+      obj?.object?.type === 'Identifier' &&
+      (obj?.object?.name === 'window' || obj?.object?.name === 'globalThis')) return true;
+  
+  return false;
+};
 
 /**
  * @example @attr
  * @example @attribute
  */
 export function hasAttrAnnotation(member) {
-  return member?.jsDoc?.some(jsDoc => jsDoc?.tags?.some(tag => safe(() => ["attribute", "attr"].includes(tag?.tagName?.getText()))));
+  return member?._jsdoc?.some(jsDoc => jsDoc?.tags?.some(tag => ["attribute", "attr"].includes(tag?.tag)));
 }
 
 
 /**
- * Whether or not node is:
- * - Number
- * - String
- * - Boolean
- * - Null
+ * Whether or not node is a primitive value
  */
 export function isPrimitive(node) {
-  return node && (ts.isNumericLiteral(node) ||
-  ts.isStringLiteral(node) ||
-  node?.kind === ts.SyntaxKind.NullKeyword ||
-  node?.kind === ts.SyntaxKind.TrueKeyword ||
-  node?.kind === ts.SyntaxKind.FalseKeyword) ||
-  // Handle only empty arrays for now
-  (node?.kind === ts.SyntaxKind.ArrayLiteralExpression && node?.elements?.length === 0)
+  if (!node) return false;
+  if (node.type === 'Literal') {
+    return typeof node.value === 'number' || 
+           typeof node.value === 'string' || 
+           typeof node.value === 'boolean' ||
+           node.value === null;
+  }
+  // Handle empty arrays
+  if (node.type === 'ArrayExpression' && node.elements?.length === 0) return true;
+  return false;
 }
 
 /**
- * Checks if a VariableStatement has an initializer
+ * Checks if a VariableDeclaration has an initializer
  * @example `let foo;` will return false
  * @example `let foo = '';` will return true
  */
 export function hasInitializer(node) {
-  return node?.declarationList?.declarations?.some(declaration => declaration?.initializer);
+  return node?.declarations?.some(declaration => declaration?.init);
 }
 
 export function getElementNameFromDecorator(decorator) {
@@ -61,8 +85,8 @@ export function getElementNameFromDecorator(decorator) {
   /**
    * @example @customElement('my-el')
    */
-  if(argument.kind === ts.SyntaxKind.StringLiteral) {
-    return argument.text;
+  if(argument.type === 'Literal' && typeof argument.value === 'string') {
+    return argument.value;
   }
 
   /**
@@ -71,11 +95,11 @@ export function getElementNameFromDecorator(decorator) {
    *   template
    * })
    */
-  if(argument.kind === ts.SyntaxKind.ObjectLiteralExpression) {
+  if(argument.type === 'ObjectExpression') {
     let result;
     argument?.properties?.forEach(property => {
-      if(property?.name?.getText() === 'name') {
-        result = property?.initializer?.text;
+      if(property?.key?.name === 'name' || property?.key?.value === 'name') {
+        result = property?.value?.value;
       }
     });
     return result;
@@ -87,100 +111,113 @@ export function getElementNameFromDecorator(decorator) {
  * Gets the name of an attr from a decorators callExpression
  * @example @attr({attribute: 'my-el'})
  */
-export const getOptionsObject = decorator => decorator?.expression?.arguments?.find(arg => arg.kind === ts.SyntaxKind.ObjectLiteralExpression);
+export const getOptionsObject = decorator => decorator?.expression?.arguments?.find(arg => arg.type === 'ObjectExpression');
 
 /**
- * Get the return value expression of a return statement, omitting the type assertion
+ * Get the return value expression of a return statement, omitting type assertions
  */
-export const getReturnValue = returnStatement => {
-  let value = returnStatement.expression?.kind === ts.SyntaxKind.AsExpression
-    ? returnStatement.expression.expression.getText()
-    : returnStatement.expression?.getText()
-
-  return value?.split?.(' ')?.[0];
+export const getReturnValue = (returnStatement, sourceText) => {
+  const expr = returnStatement?.argument;
+  if (!expr) return undefined;
+  
+  // Handle TSAsExpression
+  if (expr.type === 'TSAsExpression') {
+    return getNodeText(expr.expression, sourceText)?.split?.(' ')?.[0];
+  }
+  
+  return getNodeText(expr, sourceText)?.split?.(' ')?.[0];
 }
 
 /**
  * Is this class member a static member?
  */
-export const isStaticMember = member =>
-  member?.modifiers?.some?.(x => x.kind === ts.SyntaxKind.StaticKeyword);
+export const isStaticMember = member => !!member?.static;
 
 /**
- * @param  {import('typescript').Expression}  initializer
- * @return {initializer is import('typescript').AsExpression & { type: import("typescript").TypeReference }}
+ * Check if a node has `as const` assertion on its initializer
  */
 function isAsConst(initializer) {
   return (
     initializer &&
-    initializer.kind &&
-    ts.isAsExpression(initializer) &&
-    ts.isTypeReferenceNode(initializer.type) &&
-    initializer.type.typeName.getText() === 'const'
+    initializer.type === 'TSAsExpression' &&
+    initializer.typeAnnotation?.type === 'TSTypeReference' &&
+    initializer.typeAnnotation?.typeName?.name === 'const'
   );
 }
 
-
 /**
- * Does the name have an initializer with `as const`?
- * @param  {import('typescript').Node}  node
- * @return {Boolean}
+ * Does the node have an initializer with `as const`?
  */
 export function isWellKnownType(node) {
-  return (
-    node?.initializer && (
-      isAsConst(node?.initializer)
-    )
-  );
+  const init = node?.value ?? node?.init ?? node?.initializer;
+  return init && isAsConst(init);
 }
 
 /**
  * Whether or not a node has an `@ignore` jsdoc annotation
  */
-export const hasIgnoreJSDoc = node => node?.jsDoc?.some(doc => doc?.tags?.some(tag => safe(() => tag?.tagName?.getText()) === 'ignore' || safe(() => tag?.tagName?.getText()) === 'internal'));
+export const hasIgnoreJSDoc = node => {
+  return node?._jsdoc?.some(doc => doc?.tags?.some(tag => tag?.tag === 'ignore' || tag?.tag === 'internal'));
+};
 
 
 /**
  * @example this.__onClick = this.__onClick.bind(this);
  */
 export function isBindCall(statement) {
-  const { expression } = statement;
-  if(expression) {
-    const leftName = expression?.left?.name?.getText();
-    const rightName = expression?.right?.expression?.expression?.name?.getText();
-    const isBind = expression?.right?.expression?.name?.getText() === 'bind';
-
-    if(leftName === undefined || rightName === undefined) return false;
-
-    if(leftName === rightName && isBind) {
-      return true;
-    }
-  }
+  const expression = statement?.expression;
+  if (!expression || expression.type !== 'AssignmentExpression') return false;
+  
+  const left = expression.left;
+  const right = expression.right;
+  
+  if (!left || !right) return false;
+  
+  // left: this.__onClick (MemberExpression with ThisExpression)
+  const leftName = left?.property?.name;
+  
+  // right: this.__onClick.bind(this) (CallExpression -> MemberExpression)
+  if (right?.type !== 'CallExpression') return false;
+  const rightCallee = right?.callee;
+  if (rightCallee?.type !== 'MemberExpression') return false;
+  
+  const rightName = rightCallee?.object?.property?.name;
+  const isBind = rightCallee?.property?.name === 'bind';
+  
+  if(leftName === undefined || rightName === undefined) return false;
+  if(leftName === rightName && isBind) return true;
+  
   return false;
 }
 
 /**
- * Does the variable have an `@ignore` or `@internal` JSDoc tag?
- * @param  {import('typescript').Node|string} nodeOrName
- * @param  {import('typescript').SourceFile}  sourceFile
- * @return {import('typescript').Node}
+ * Find a declaration in the source file's top-level statements
  */
 export function getDeclarationInFile(nodeOrName, sourceFile) {
   let name = nodeOrName;
-  if (typeof nodeOrName === 'string') {
-    if (!sourceFile)
-      throw new Error('must provide sourceFile when first argument is a string');
-  } else {
-    sourceFile = nodeOrName?.getSourceFile();
-    name = nodeOrName?.name?.getText();
+  if (typeof nodeOrName !== 'string') {
+    name = nodeOrName?.id?.name || nodeOrName?.name;
   }
-  if (!name)
-    return undefined;
-  const sourceFileStatements = sourceFile.statements ?? [];
-  return sourceFileStatements.find(statement => {
-    if (ts.isVariableStatement(statement))
-      return statement.declarationList.declarations.find(declaration => declaration.name.getText() === name)
-    else if (statement.name?.getText)
-      return statement.name.getText() === name;
+  if (!name || !sourceFile) return undefined;
+  
+  const statements = sourceFile?.body ?? [];
+  return statements.find(statement => {
+    // Variable declarations
+    if (statement.type === 'VariableDeclaration') {
+      return statement.declarations?.some(decl => decl.id?.name === name);
+    }
+    // Export wrappers - look inside
+    if (statement.type === 'ExportNamedDeclaration' && statement.declaration) {
+      const decl = statement.declaration;
+      if (decl.type === 'VariableDeclaration') {
+        return decl.declarations?.some(d => d.id?.name === name);
+      }
+      return decl.id?.name === name;
+    }
+    if (statement.type === 'ExportDefaultDeclaration' && statement.declaration) {
+      return statement.declaration.id?.name === name;
+    }
+    // Class/Function declarations
+    return statement.id?.name === name;
   });
 }

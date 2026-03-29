@@ -1,12 +1,79 @@
-import ts from "typescript";
+import { walk } from "oxc-walker";
+import { parse as parseJsDoc } from 'comment-parser';
 import { FEATURES } from "./features/index.js";
 import { withErrorHandling } from "./utils/index.js";
 
 /**
+ * Associate JSDoc comments with AST nodes by position.
+ * Comments that end right before a node (accounting for whitespace) are attached to that node.
+ */
+function associateJsDoc(program, comments, sourceText) {
+  if (!comments || comments.length === 0) return;
+
+  // Build a sorted list of block comments that look like JSDoc (start with *)
+  const jsDocComments = comments
+    .filter(c => c.type === 'Block' && c.value.startsWith('*'))
+    .map(c => ({
+      ...c,
+      // The full text including delimiters for comment-parser
+      fullText: `/*${c.value}*/`,
+      // end position is after the closing */
+      commentEnd: c.end + 2,
+    }));
+
+  if (jsDocComments.length === 0) return;
+
+  // Walk the AST and attach JSDoc to nodes
+  walk(program, {
+    enter(node) {
+      if (!node || node.start == null) return;
+      
+      // Find the JSDoc comment that directly precedes this node
+      for (const comment of jsDocComments) {
+        // The comment should end before this node starts
+        // Allow whitespace between comment end and node start
+        const between = sourceText.slice(comment.commentEnd, node.start);
+        if (between.trim() === '' || between.trim() === 'export' || between.trim() === 'export default') {
+          if (!node._jsdoc) {
+            node._jsdoc = [];
+          }
+          // Parse the JSDoc using comment-parser
+          const parsed = parseJsDoc(comment.fullText);
+          if (parsed.length > 0) {
+            node._jsdoc.push(parsed[0]);
+          }
+          // Also store the raw comment text for handlers that need it
+          node._rawJsDoc = node._rawJsDoc || [];
+          node._rawJsDoc.push(comment.fullText);
+          break;
+        }
+      }
+    }
+  });
+}
+
+/**
+ * Propagate _sourceText to all nodes in the tree so utilities can extract text.
+ * Also propagate _program reference for looking up declarations.
+ */
+function annotateTree(program, sourceText) {
+  walk(program, {
+    enter(node) {
+      if (node) {
+        node._sourceText = sourceText;
+        node._program = program;
+      }
+    }
+  });
+}
+
+/**
  * CORE
  *
- * This function is the core of the analyzer. It takes an array of ts sourceFiles, and creates a
+ * This function is the core of the analyzer. It takes an array of parsed modules, and creates a
  * custom elements manifest.
+ * 
+ * Each module should be: { program, sourceText, fileName, comments }
  */
 export function create({ modules, plugins = [], context = { dev: false } }) {
   const customElementsManifest = {
@@ -22,7 +89,7 @@ export function create({ modules, plugins = [], context = { dev: false } }) {
   if (dev) console.log("[INITIALIZE PLUGINS]");
   mergedPlugins.forEach(({ name, initialize }) => {
     withErrorHandling(name, () => {
-      initialize?.({ ts, customElementsManifest, context });
+      initialize?.({ customElementsManifest, context });
     });
   });
 
@@ -62,7 +129,7 @@ export function create({ modules, plugins = [], context = { dev: false } }) {
      */
     mergedPlugins.forEach(({ name, moduleLinkPhase }) => {
       withErrorHandling(name, () => {
-        moduleLinkPhase?.({ ts, moduleDoc, context });
+        moduleLinkPhase?.({ moduleDoc, context });
       });
     });
   });
@@ -85,29 +152,45 @@ export function create({ modules, plugins = [], context = { dev: false } }) {
 }
 
 function collect(source, context, mergedPlugins) {
-  visitNode(source);
-
-  function visitNode(node) {
-    mergedPlugins.forEach(({ name, collectPhase }) => {
-      withErrorHandling(name, () => {
-        collectPhase?.({ ts, node, context });
+  const { program } = source;
+  
+  walk(program, {
+    enter(node) {
+      mergedPlugins.forEach(({ name, collectPhase }) => {
+        withErrorHandling(name, () => {
+          collectPhase?.({ node, context });
+        });
       });
-    });
-
-    ts.forEachChild(node, visitNode);
-  }
+    }
+  });
 }
 
 function analyze(source, moduleDoc, context, mergedPlugins) {
-  visitNode(source);
+  const { program } = source;
+  
+  /**
+   * In ESTree, exports are wrapper nodes. We need to "unwrap" them so that plugins 
+   * see the inner declaration (class, function, variable) directly, with metadata about
+   * being exported attached.
+   * 
+   * We walk the tree and for export nodes, we mark the inner declaration with _exportNode,
+   * so plugins can detect exports.
+   */
+  walk(program, {
+    enter(node) {
+      // For ExportNamedDeclaration with a declaration, mark the declaration
+      if (node.type === 'ExportNamedDeclaration' && node.declaration) {
+        node.declaration._exportNode = node;
+      }
+      if (node.type === 'ExportDefaultDeclaration' && node.declaration) {
+        node.declaration._exportNode = node;
+      }
 
-  function visitNode(node) {
-    mergedPlugins.forEach(({ name, analyzePhase }) => {
-      withErrorHandling(name, () => {
-        analyzePhase?.({ ts, node, moduleDoc, context });
+      mergedPlugins.forEach(({ name, analyzePhase }) => {
+        withErrorHandling(name, () => {
+          analyzePhase?.({ node, moduleDoc, context });
+        });
       });
-    });
-
-    ts.forEachChild(node, visitNode);
-  }
+    }
+  });
 }

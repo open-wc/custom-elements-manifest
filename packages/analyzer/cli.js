@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 
-import ts from "typescript";
+import { parseSync } from "oxc-parser";
+import { createModuleGraph } from "@thepassle/module-graph";
+import { walk } from "oxc-walker";
+import { parse as parseJsDoc } from "comment-parser";
 import path from "path";
 import globby from "globby";
 import fs from "fs";
@@ -21,6 +24,85 @@ import {
 } from "./src/utils/cli-helpers.js";
 import { findExternalManifests } from "./src/utils/find-external-manifests.js";
 import { mergeResolutionOptions } from "./src/utils/resolver-config.js";
+
+/**
+ * Associate JSDoc comments with AST nodes by position.
+ */
+function associateJsDoc(program, comments, sourceText) {
+  if (!comments || comments.length === 0) return;
+
+  const jsDocComments = comments
+    .filter(c => c.type === 'Block' && c.value.startsWith('*'))
+    .map(c => ({
+      ...c,
+      fullText: `/*${c.value}*/`,
+      commentEnd: c.end + 2,
+    }));
+
+  if (jsDocComments.length === 0) return;
+
+  walk(program, {
+    enter(node) {
+      if (!node || node.start == null) return;
+      for (const comment of jsDocComments) {
+        const between = sourceText.slice(comment.commentEnd, node.start);
+        if (between.trim() === '' || between.trim() === 'export' || between.trim() === 'export default') {
+          if (!node._jsdoc) {
+            node._jsdoc = [];
+          }
+          const parsed = parseJsDoc(comment.fullText);
+          if (parsed.length > 0) {
+            node._jsdoc.push(parsed[0]);
+          }
+          node._rawJsDoc = node._rawJsDoc || [];
+          node._rawJsDoc.push(comment.fullText);
+          break;
+        }
+      }
+    }
+  });
+}
+
+/**
+ * Annotate all nodes in the tree with _sourceText and _program references.
+ */
+function annotateTree(program, sourceText) {
+  walk(program, {
+    enter(node) {
+      if (node) {
+        node._sourceText = sourceText;
+        node._program = program;
+      }
+    }
+  });
+}
+
+/**
+ * Parse a source file with oxc-parser and return a module object.
+ */
+function parseModule(filePath, source) {
+  const ext = path.extname(filePath);
+  const langMap = { '.ts': 'ts', '.tsx': 'tsx', '.jsx': 'jsx' };
+  const opts = {};
+  if (langMap[ext]) {
+    opts.lang = langMap[ext];
+  }
+  
+  const result = parseSync(filePath, source, opts);
+  
+  // Associate JSDoc comments with nodes
+  associateJsDoc(result.program, result.comments, source);
+  
+  // Annotate tree with source text
+  annotateTree(result.program, source);
+  
+  return {
+    program: result.program,
+    sourceText: source,
+    fileName: filePath,
+    comments: result.comments,
+  };
+}
 
 /**
  * @param {{argv:string[]; cwd: string; noWrite:boolean}} [opts]
@@ -53,18 +135,12 @@ export async function cli({
       );
 
       const globs = await globby(merged, { cwd });
-      const modules = userConfig?.overrideModuleCreation
-        ? userConfig.overrideModuleCreation({ ts, globs })
-        : globs.map((glob) => {
-            const fullPath = path.resolve(cwd, glob);
-            const source = fs.readFileSync(fullPath).toString();
-            return ts.createSourceFile(
-              glob,
-              source,
-              ts.ScriptTarget.ES2015,
-              true
-            );
-          });
+      
+      const modules = globs.map((glob) => {
+        const fullPath = path.resolve(cwd, glob);
+        const source = fs.readFileSync(fullPath).toString();
+        return parseModule(glob, source);
+      });
 
       let thirdPartyCEMs = [];
       if (mergedOptions?.dependencies) {

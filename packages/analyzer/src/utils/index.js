@@ -1,5 +1,3 @@
-import ts from 'typescript';
-
 /**
  * GENERAL UTILITIES
  */
@@ -7,9 +5,22 @@ import ts from 'typescript';
 export const has = arr => Array.isArray(arr) && arr.length > 0;
 
 /**
- * @example node?.modifiers?.find(decorator('Component'))
+ * Finds a decorator by name on a node's decorators array
+ * @example node?.decorators?.find(decorator('Component'))
  */
-export const decorator = type => decorator => ts.isDecorator(decorator) && decorator?.expression?.expression?.getText() === type || decorator?.expression?.getText() === type;
+export const decorator = type => decorator => {
+  if (decorator?.type !== 'Decorator') return false;
+  const expr = decorator?.expression;
+  // @customElement('my-el') - CallExpression with Identifier callee
+  if (expr?.type === 'CallExpression') {
+    return expr?.callee?.name === type;
+  }
+  // @controller - plain Identifier
+  if (expr?.type === 'Identifier') {
+    return expr?.name === type;
+  }
+  return false;
+};
 
 export function isBareModuleSpecifier(specifier) {
   return !!specifier?.replace(/'/g, '')[0].match(/[@a-zA-Z]/g);
@@ -44,8 +55,7 @@ export const toKebabCase = str => {
 }
 
 /**
- * TS seems to struggle sometimes with the `.getText()` method on JSDoc annotations, like `@deprecated` in ts v4.0.0 and `@override` in ts v4.3.2
- * This is a bug in TS, but still annoying, so we add some safety rails here
+ * Safety wrapper for operations that might throw
  */
 export const safe = (cb, returnType = '') => {
   try {
@@ -68,4 +78,12 @@ export function withErrorHandling(name, cb) {
 
     throw new Error(`\n\n[${name ?? 'unnamed-plugin'}]: ${errorMessage}\n\n ${e.stack}\n`);
   }
+}
+
+/**
+ * Get the text of a node from source code using span positions
+ */
+export function getNodeText(node, sourceText) {
+  if (!node || node.start == null || node.end == null) return '';
+  return sourceText.slice(node.start, node.end);
 }
