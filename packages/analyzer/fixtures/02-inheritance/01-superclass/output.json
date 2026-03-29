@@ -38,7 +38,7 @@
           ],
           "attributes": [
             {
-              "name": ""
+              "name": "superClass-attr"
             }
           ],
           "superclass": {
@@ -128,7 +128,10 @@
           ],
           "attributes": [
             {
-              "name": "",
+              "name": "class-attr"
+            },
+            {
+              "name": "superClass-attr",
               "inheritedFrom": {
                 "name": "BatchingElement",
                 "module": "BatchingElement.js"
@@ -218,7 +221,10 @@
           ],
           "attributes": [
             {
-              "name": "",
+              "name": "class-attr"
+            },
+            {
+              "name": "superClass-attr",
               "inheritedFrom": {
                 "name": "BatchingElement",
                 "module": "BatchingElement.js"

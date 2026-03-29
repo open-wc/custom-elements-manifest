@@ -14,7 +14,7 @@
             {
               "kind": "field",
               "name": "defaultViaJsDoc",
-              "default": "'default"
+              "default": "'default from jsdoc'"
             },
             {
               "kind": "field",

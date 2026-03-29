@@ -102,13 +102,20 @@ export function classJsDocPlugin() {
              */
             const parsedFirst = parsed?.[0];
             if(parsedFirst?.source) {
-              // Extract description lines from source (lines with no tag)
-              const descriptionLines = parsedFirst.source
-                .filter(s => !s.tokens.tag && !s.tokens.end && s.tokens.description)
-                .map(s => s.tokens.description);
+              // Extract description lines from source (lines before first tag, excluding delimiters)
+              const descLines = [];
+              for (const line of parsedFirst.source) {
+                if (line.tokens.delimiter === '/**') continue;
+                if (line.tokens.end === '*/') continue;
+                if (line.tokens.tag) break;
+                descLines.push(line.tokens.description);
+              }
+              while (descLines.length > 0 && descLines[descLines.length - 1] === '') {
+                descLines.pop();
+              }
               
-              if (descriptionLines.length > 0) {
-                classDoc.description = normalizeDescription(descriptionLines.join('\n'));
+              if (descLines.length > 0) {
+                classDoc.description = normalizeDescription(descLines.join('\n'));
               }
             }
 

@@ -11,10 +11,18 @@ export function handleJsDocType(type) {
  * @example {@link https://a.b} → https://a.b
  * @example [CD]{@link https://e.f} → [CD]https://e.f
  * @example {@link g|HIJ} → g|HIJ
+ * @example {@link klm En? Oh Pee} → klmEn? Oh Pee
+ * 
+ * In TS, {@link target display} concatenates target+display without space
  */
 function resolveInlineLinks(text) {
   if (!text || typeof text !== 'string') return text;
-  return text.replace(/\{@link\s+([^}]+)\}/g, '$1');
+  return text.replace(/\{@link\s+([^}\s]+)(?:\s+([^}]*))?\}/g, (match, target, displayText) => {
+    if (displayText) {
+      return target + displayText;
+    }
+    return target;
+  });
 }
 
 export function normalizeDescription(desc) {

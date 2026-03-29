@@ -156,9 +156,14 @@ export function createClass(node, moduleDoc, context) {
 }
 
 function eventsVisitor(source, classTemplate) {
+  let parentNode = null;
   walk(source, {
     enter(node) {
-      if (isDispatchEvent(node) && !hasIgnoreJSDoc(node)) {
+      if (isDispatchEvent(node)) {
+        // Check both the CallExpression and its parent ExpressionStatement for @ignore/@internal
+        if (hasIgnoreJSDoc(node) || hasIgnoreJSDoc(parentNode)) {
+          return;
+        }
         node?.arguments?.forEach((arg) => {
           if (arg.type === 'NewExpression') {
             const eventName = arg?.arguments?.[0]?.value;
@@ -173,13 +178,17 @@ function eventsVisitor(source, classTemplate) {
               };
 
               // Look for JSDoc on the containing ExpressionStatement
-              // The parent in this walk context would be the expression statement
-              eventDoc = handleJsDoc(eventDoc, node);
+              eventDoc = handleJsDoc(eventDoc, parentNode);
               delete eventDoc.privacy;
               classTemplate.events.push(eventDoc);
             }
           }
         });
+      }
+      
+      // Track parent for the next enter calls (ExpressionStatement → CallExpression)
+      if (node.type === 'ExpressionStatement') {
+        parentNode = node;
       }
     }
   });

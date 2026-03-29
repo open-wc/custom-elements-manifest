@@ -1,6 +1,6 @@
 export function createAttribute(node) {
   const attributeTemplate = {
-    name: node?.text || ''
+    name: node?.value || node?.text || ''
   }
   return attributeTemplate;
 }

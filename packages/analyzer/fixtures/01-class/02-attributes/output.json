@@ -20,16 +20,16 @@
           ],
           "attributes": [
             {
-              "name": ""
+              "name": "a-a"
             },
             {
-              "name": ""
+              "name": "b-b"
             },
             {
-              "name": ""
+              "name": "c-c"
             },
             {
-              "name": ""
+              "name": "d-d"
             },
             {
               "name": "myField",
@@ -80,9 +80,6 @@
             }
           ],
           "attributes": [
-            {
-              "name": ""
-            },
             {
               "name": "my-attr",
               "type": {

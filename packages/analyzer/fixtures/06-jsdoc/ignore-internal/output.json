@@ -58,20 +58,6 @@
               "deprecated": "the reason for the deprecation."
             }
           ],
-          "events": [
-            {
-              "name": "my-event",
-              "type": {
-                "text": "CustomEvent"
-              }
-            },
-            {
-              "name": "my-other-event",
-              "type": {
-                "text": "CustomEvent"
-              }
-            }
-          ],
           "superclass": {
             "name": "HTMLElement"
           },

@@ -33,6 +33,34 @@ export function handleModifiers(doc, node) {
 }
 
 /**
+ * Extract description from comment-parser source lines, preserving newlines.
+ * comment-parser's .description field joins lines with spaces, losing newlines.
+ */
+function extractDescriptionFromSource(jsDocComment) {
+  if (!jsDocComment?.source) return jsDocComment?.description || '';
+  
+  // Get description lines from source (lines before the first tag, excluding delimiters)
+  const descLines = [];
+  for (const line of jsDocComment.source) {
+    // Skip the opening /** line
+    if (line.tokens.delimiter === '/**') continue;
+    // Skip the closing */ line
+    if (line.tokens.end === '*/') continue;
+    // Stop if we hit a tag
+    if (line.tokens.tag) break;
+    // Add the description content
+    descLines.push(line.tokens.description);
+  }
+  
+  // Trim trailing empty lines
+  while (descLines.length > 0 && descLines[descLines.length - 1] === '') {
+    descLines.pop();
+  }
+  
+  return descLines.join('\n');
+}
+
+/**
  * Handles JsDoc (using _jsdoc attached by the JSDoc association pass)
  */
 export function handleJsDoc(doc, node) {
@@ -40,8 +68,9 @@ export function handleJsDoc(doc, node) {
   if (!jsdocEntries || jsdocEntries.length === 0) return doc;
 
   jsdocEntries.forEach(jsDocComment => {
-    if(jsDocComment?.description) {
-      doc.description = normalizeDescription(jsDocComment.description);
+    const desc = extractDescriptionFromSource(jsDocComment);
+    if(desc) {
+      doc.description = normalizeDescription(desc);
     }
 
     jsDocComment?.tags?.forEach(tag => {
@@ -119,7 +148,8 @@ export function handleJsDoc(doc, node) {
 
       /** @default */
       if (tag.tag === 'default' && doc?.kind === 'field') {
-        doc.default ??= tag.name || tag.description || '';
+        const fullDefault = tag.description ? `${tag.name || ''} ${tag.description}`.trim() : (tag.name || '');
+        doc.default ??= fullDefault;
       }
 
       /**
