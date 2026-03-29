@@ -1,5 +1,4 @@
-import ts from 'typescript';
-import { has } from '../../../utils/index.js';
+import { has, getNodeText } from '../../../utils/index.js';
 import { handleModifiers, handleJsDoc } from './handlers.js';
 
 /**
@@ -8,7 +7,7 @@ import { handleModifiers, handleJsDoc } from './handlers.js';
 export function createFunctionLike(node) {
   let functionLikeTemplate = {
     kind: '',
-    name: node?.name?.getText() || ''
+    name: node?.key?.name || node?.id?.name || ''
   };
   
   functionLikeTemplate = handleKind(functionLikeTemplate, node);
@@ -23,11 +22,11 @@ export function createFunctionLike(node) {
  * Determine the kind of the functionLike, either `'function'` or `'method'` 
  */
 export function handleKind(functionLike, node) {
-  switch(node.kind) {
-    case ts.SyntaxKind.FunctionDeclaration:
+  switch(node.type) {
+    case 'FunctionDeclaration':
       functionLike.kind = 'function';
       break;
-    case ts.SyntaxKind.MethodDeclaration:
+    case 'MethodDefinition':
       functionLike.kind = 'method';
       break;
   }
@@ -38,28 +37,44 @@ export function handleKind(functionLike, node) {
  * Handle a functionLikes return type and parameters/parameter types
  */
 export function handleParametersAndReturnType(functionLike, node) {
-  if(node?.type) {
+  // For MethodDefinition, the actual function is in node.value
+  const funcNode = node?.value || node;
+  
+  // Handle return type annotation
+  const returnType = funcNode?.returnType?.typeAnnotation;
+  if(returnType) {
     functionLike.return = {
-      type: { text: node.type.getText() }
+      type: { text: getNodeText(returnType, node._sourceText) }
     }
   }
 
   const parameters = [];
-  node?.parameters?.forEach((param) => {  
+  const params = funcNode?.params || [];
+  params.forEach((param) => {  
     const parameter = {
-      name: param.name.getText(),
+      name: getNodeText(param?.typeAnnotation ? { start: param.start, end: param.typeAnnotation.start, _sourceText: param._sourceText } : param, param._sourceText || node._sourceText).replace(/[,:?\s]*$/, '').trim(),
     }
 
-    if(param?.initializer) {
-      parameter.default = param.initializer.getText();
+    // Handle parameter name more precisely
+    if (param.type === 'Identifier') {
+      parameter.name = param.name;
+    } else if (param.type === 'AssignmentPattern') {
+      parameter.name = param.left?.name || getNodeText(param.left, node._sourceText);
+    } else if (param.type === 'RestElement') {
+      parameter.name = '...' + (param.argument?.name || '');
     }
 
-    if(param?.questionToken) {
+    if(param?.type === 'AssignmentPattern' && param?.right) {
+      parameter.default = getNodeText(param.right, node._sourceText);
+    }
+
+    if(param?.optional) {
       parameter.optional = true;
     }
 
-    if(param?.type) {
-      parameter.type = {text: param.type.getText() }
+    const typeAnnotation = param?.typeAnnotation?.typeAnnotation;
+    if(typeAnnotation) {
+      parameter.type = {text: getNodeText(typeAnnotation, node._sourceText) }
     }
 
     parameters.push(parameter);

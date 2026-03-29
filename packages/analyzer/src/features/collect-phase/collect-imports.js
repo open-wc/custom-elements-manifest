@@ -17,25 +17,29 @@ export function collectImportsPlugin() {
 
   return {
     name: 'CORE - IMPORTS',
-    collectPhase({ts, node}) {
-      if(node.kind === ts.SyntaxKind.SourceFile) {
+    collectPhase({node}) {
+      if(node.type === 'Program') {
         /**
          * Create an empty array for each module we visit
          */
-        files[node.fileName] = [];
-        currModuleImports = files[node.fileName];
+        files[node._sourceText ? node.start + ':' + node.end : ''] = [];
+        // Store using fileName from the module
+        const fileName = node._program?._fileName || '';
+        files[fileName] = [];
+        currModuleImports = files[fileName];
       }
 
       /** 
        * @example import defaultExport from 'foo'; 
        */
       if (hasDefaultImport(node)) {
+        const defaultSpec = node.specifiers.find(s => s.type === 'ImportDefaultSpecifier');
         const importTemplate = {
-          name: node.importClause.name.text,
+          name: defaultSpec.local.name,
           kind: 'default',
-          importPath: node.moduleSpecifier.text,
-          isBareModuleSpecifier: isBareModuleSpecifier(node.moduleSpecifier.text),
-          isTypeOnly: !!node?.importClause?.isTypeOnly
+          importPath: node.source.value,
+          isBareModuleSpecifier: isBareModuleSpecifier(node.source.value),
+          isTypeOnly: !!node?.importKind && node.importKind === 'type'
         };
         currModuleImports.push(importTemplate);
       }
@@ -46,28 +50,31 @@ export function collectImportsPlugin() {
        * @example import { export1, export2 as alias2 } from 'foo';
        */
       if (hasNamedImport(node)) {
-        node.importClause.namedBindings.elements.forEach((element) => {
-          const importTemplate = {
-            name: element.name.text,
-            kind: 'named',
-            importPath: node.moduleSpecifier.text,
-            isBareModuleSpecifier: isBareModuleSpecifier(node.moduleSpecifier.text),
-            isTypeOnly: !!node?.importClause?.isTypeOnly
-          };
-          currModuleImports.push(importTemplate);
-        });
+        node.specifiers
+          .filter(s => s.type === 'ImportSpecifier')
+          .forEach((element) => {
+            const importTemplate = {
+              name: element.local.name,
+              kind: 'named',
+              importPath: node.source.value,
+              isBareModuleSpecifier: isBareModuleSpecifier(node.source.value),
+              isTypeOnly: !!node?.importKind && node.importKind === 'type'
+            };
+            currModuleImports.push(importTemplate);
+          });
       }
 
       /**
        * @example import * as name from './my-module.js'; 
        */
       if (hasAggregatingImport(node)) {
+        const nsSpec = node.specifiers.find(s => s.type === 'ImportNamespaceSpecifier');
         const importTemplate = {
-          name: node.importClause.namedBindings.name.text,
+          name: nsSpec.local.name,
           kind: 'aggregate',
-          importPath: node.moduleSpecifier.text,
-          isBareModuleSpecifier: isBareModuleSpecifier(node.moduleSpecifier.text),
-          isTypeOnly: !!node?.importClause?.isTypeOnly
+          importPath: node.source.value,
+          isBareModuleSpecifier: isBareModuleSpecifier(node.source.value),
+          isTypeOnly: !!node?.importKind && node.importKind === 'type'
         };
         currModuleImports.push(importTemplate);
       }
@@ -78,18 +85,18 @@ export function collectImportsPlugin() {
       if(hasSideEffectImport(node)) {
         const importTemplate = {
           kind: 'side-effect',
-          importPath: node.moduleSpecifier.text,
-          isBareModuleSpecifier: isBareModuleSpecifier(node.moduleSpecifier.text),
+          importPath: node.source.value,
+          isBareModuleSpecifier: isBareModuleSpecifier(node.source.value),
           isTypeOnly: false
         };
         currModuleImports.push(importTemplate);
       }
     },
-    analyzePhase({ts, node, context}) {
-      if(node.kind === ts.SyntaxKind.SourceFile) {
-        
+    analyzePhase({node, context}) {
+      if(node.type === 'Program') {
+        const fileName = node._program?._fileName || '';
         /** Makes the imports available on the context object for a given module */
-        context.imports = files[node.fileName];
+        context.imports = files[fileName];
       }
     },
     packageLinkPhase({context}) {

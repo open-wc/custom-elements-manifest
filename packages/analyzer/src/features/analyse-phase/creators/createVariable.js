@@ -6,17 +6,17 @@ import {
   handleWellKnownTypes
 } from './handlers.js';
 
-export function createVariable(variableStatementNode, declarationNode) {
+export function createVariable(variableDeclarationNode, declaratorNode) {
   let variableTemplate = {
     kind: 'variable',
-    name: declarationNode?.name?.getText() || ''
+    name: declaratorNode?.id?.name || ''
   };
 
-  variableTemplate = handleTypeInference(variableTemplate, declarationNode);
-  variableTemplate = handleExplicitType(variableTemplate, declarationNode);
-  variableTemplate = handleWellKnownTypes(variableTemplate, declarationNode);
-  variableTemplate = handleDefaultValue(variableTemplate, declarationNode);
-  variableTemplate = handleJsDoc(variableTemplate, variableStatementNode);
+  variableTemplate = handleTypeInference(variableTemplate, declaratorNode);
+  variableTemplate = handleExplicitType(variableTemplate, declaratorNode?.id);
+  variableTemplate = handleWellKnownTypes(variableTemplate, declaratorNode);
+  variableTemplate = handleDefaultValue(variableTemplate, declaratorNode);
+  variableTemplate = handleJsDoc(variableTemplate, variableDeclarationNode);
 
   return variableTemplate;
 }

@@ -2,140 +2,130 @@ import {
   getDeclarationInFile,
   hasIgnoreJSDoc,
 } from "../../utils/ast-helpers.js";
-import {
-  hasExportModifier,
-  hasDefaultModifier,
-  hasNamedExports,
-  isReexport,
-} from "../../utils/exports.js";
 import { isBareModuleSpecifier, url } from "../../utils/index.js";
 
 /**
  * EXPORTS
  *
- * Analyzes a modules exports and adds them to the moduleDoc
+ * In ESTree, exports are represented as:
+ * - ExportNamedDeclaration (with declaration or with specifiers)
+ * - ExportDefaultDeclaration
+ * - ExportAllDeclaration
  */
 export function exportsPlugin() {
   return {
     name: "CORE - EXPORTS",
-    analyzePhase({ ts, node, moduleDoc }) {
+    analyzePhase({ node, moduleDoc }) {
       if (hasIgnoreJSDoc(node)) return;
 
       /**
        * @example export const foo = '';
+       * @example export function foo() {}
+       * @example export class Foo {}
        */
-      if (hasExportModifier(node) && ts.isVariableStatement(node)) {
-        node?.declarationList?.declarations?.forEach((declaration) => {
+      if (node.type === 'ExportNamedDeclaration' && node.declaration) {
+        const decl = node.declaration;
+        
+        if (decl.type === 'VariableDeclaration') {
+          decl.declarations?.forEach((declaration) => {
+            const _export = {
+              kind: "js",
+              name: declaration.id?.name || '',
+              declaration: {
+                name: declaration.id?.name || '',
+                module: moduleDoc.path,
+              },
+            };
+            moduleDoc.exports = [...(moduleDoc.exports || []), _export];
+          });
+        } else if (decl.type === 'FunctionDeclaration') {
           const _export = {
             kind: "js",
-            name: declaration.name.getText(),
+            name: decl.id?.name || '',
             declaration: {
-              name: declaration.name.getText(),
+              name: decl.id?.name || '',
               module: moduleDoc.path,
             },
           };
-
           moduleDoc.exports = [...(moduleDoc.exports || []), _export];
-        });
+        } else if (decl.type === 'ClassDeclaration') {
+          const _export = {
+            kind: "js",
+            name: decl.id?.name || '',
+            declaration: {
+              name: decl.id?.name || '',
+              module: moduleDoc.path,
+            },
+          };
+          moduleDoc.exports = [...(moduleDoc.exports || []), _export];
+        }
       }
 
       /**
-       * @example export default var1;
+       * @example export default MyEl;
+       * @example export default class MyEl {}
        */
-      if (node.kind === ts.SyntaxKind.ExportAssignment) {
+      if (node.type === 'ExportDefaultDeclaration') {
+        const decl = node.declaration;
         const _export = {
           kind: "js",
           name: "default",
           declaration: {
-            name: node.expression.text,
+            name: decl?.id?.name || decl?.name || '',
             module: moduleDoc.path,
           },
         };
         moduleDoc.exports = [...(moduleDoc.exports || []), _export];
       }
 
-      if (node.kind === ts.SyntaxKind.ExportDeclaration) {
-        /**
-         * @example export { var1, var2 };
-         */
-        if (hasNamedExports(node) && !isReexport(node)) {
-          node.exportClause?.elements?.forEach((element) => {
+      /**
+       * @example export { var1, var2 };
+       * @example export { var1, var2 } from 'foo';
+       */
+      if (node.type === 'ExportNamedDeclaration' && !node.declaration) {
+        const hasSource = !!node.source;
+        const hasSpecifiers = node.specifiers?.length > 0;
+
+        if (hasSpecifiers && !hasSource) {
+          /** @example export { var1, var2 }; */
+          node.specifiers.forEach((specifier) => {
+            const sourceFile = node._program;
             if (
-              hasIgnoreJSDoc(element) ||
+              hasIgnoreJSDoc(specifier) ||
               hasIgnoreJSDoc(
-                getDeclarationInFile(element, node.getSourceFile())
+                getDeclarationInFile(specifier.local?.name, sourceFile)
               )
             )
               return;
 
             const _export = {
               kind: "js",
-              name: element.name.getText(),
+              name: specifier.exported?.name || '',
               declaration: {
-                name: element.propertyName?.getText() || element.name.getText(),
+                name: specifier.local?.name || specifier.exported?.name || '',
                 module: moduleDoc.path,
               },
             };
-
             moduleDoc.exports = [...(moduleDoc.exports || []), _export];
           });
         }
 
-        /**
-         * @example export * from 'foo';
-         * @example export * from './my-module.js';
-         * @example export * as foo from 'foo';
-         * @example export * as foo from './my-module.js';
-         */
-        if (isReexport(node) && !hasNamedExports(node)) {
-          const specifier = node.moduleSpecifier
-            ?.getText()
-            .replace(/'/g, "")
-            .replace(/"/g, "");
-
-          const isBare = isBareModuleSpecifier(specifier);
-          const _export = {
-            kind: "js",
-            name: "*",
-            declaration: {
-              name: node?.exportClause?.name?.getText?.() ?? "*",
-              ...(isBare
-                ? { package: specifier }
-                : {
-                    module: new URL(
-                      specifier,
-                      `file:///${moduleDoc.path}`
-                    ).pathname.replace(/^\/+/, ""),
-                  }),
-            },
-          };
-          moduleDoc.exports = [...(moduleDoc.exports || []), _export];
-        }
-
-        /**
-         * @example export { var1, var2 } from 'foo';
-         * @example export { var1, var2 } from './my-module.js';
-         */
-        if (isReexport(node) && hasNamedExports(node)) {
-          node.exportClause?.elements?.forEach((element) => {
+        if (hasSpecifiers && hasSource) {
+          /** @example export { var1, var2 } from 'foo'; */
+          node.specifiers.forEach((specifier) => {
             const _export = {
               kind: "js",
-              name: element.name.getText(),
+              name: specifier.exported?.name || '',
               declaration: {
-                name: element.propertyName?.getText() || element.name.getText(),
+                name: specifier.local?.name || specifier.exported?.name || '',
               },
             };
 
-            if (isBareModuleSpecifier(node.moduleSpecifier.getText())) {
-              _export.declaration.package = node.moduleSpecifier
-                .getText()
-                .replace(/'/g, "")
-                .replace(/"/g, "");
+            const sourcePath = node.source.value;
+            if (isBareModuleSpecifier(sourcePath)) {
+              _export.declaration.package = sourcePath;
             } else {
-              _export.declaration.module = node.moduleSpecifier
-                .getText()
-                .replace(/'/g, "")
-                .replace(/"/g, "");
+              _export.declaration.module = sourcePath;
             }
 
             moduleDoc.exports = [...(moduleDoc.exports || []), _export];
@@ -144,40 +134,30 @@ export function exportsPlugin() {
       }
 
       /**
-       * @example export function foo() {}
+       * @example export * from 'foo';
+       * @example export * from './my-module.js';
+       * @example export * as foo from 'foo';
+       * @example export * as foo from './my-module.js';
        */
-      if (node.kind === ts.SyntaxKind.FunctionDeclaration) {
-        if (hasExportModifier(node)) {
-          const isDefault = hasDefaultModifier(node);
-          const _export = {
-            kind: "js",
-            name: isDefault ? "default" : node.name?.getText() || "",
-            declaration: {
-              name: node.name?.getText() || "",
-              module: moduleDoc.path,
-            },
-          };
-
-          moduleDoc.exports = [...(moduleDoc.exports || []), _export];
-        }
-      }
-
-      /**
-       * @example export class Class1 {}
-       */
-      if (node.kind === ts.SyntaxKind.ClassDeclaration) {
-        if (hasExportModifier(node)) {
-          const isDefault = hasDefaultModifier(node);
-          const _export = {
-            kind: "js",
-            name: isDefault ? "default" : node?.name?.text || "",
-            declaration: {
-              name: node?.name?.text || "",
-              module: moduleDoc.path,
-            },
-          };
-          moduleDoc.exports = [...(moduleDoc.exports || []), _export];
-        }
+      if (node.type === 'ExportAllDeclaration') {
+        const specifier = node.source?.value || '';
+        const isBare = isBareModuleSpecifier(specifier);
+        const _export = {
+          kind: "js",
+          name: "*",
+          declaration: {
+            name: node?.exported?.name ?? "*",
+            ...(isBare
+              ? { package: specifier }
+              : {
+                  module: new URL(
+                    specifier,
+                    `file:///${moduleDoc.path}`
+                  ).pathname.replace(/^\/+/, ""),
+                }),
+          },
+        };
+        moduleDoc.exports = [...(moduleDoc.exports || []), _export];
       }
     },
   };

@@ -8,12 +8,10 @@ import { createClass } from './creators/createClass.js';
 export function classPlugin() {
   return {
     name: 'CORE - CLASSES',
-    analyzePhase({ts, node, moduleDoc, context}){
-      switch(node.kind) {
-        case ts.SyntaxKind.ClassDeclaration:
-          const klass = createClass(node, moduleDoc, context);
-          moduleDoc.declarations.push(klass);
-          break;
+    analyzePhase({node, moduleDoc, context}){
+      if (node.type === 'ClassDeclaration') {
+        const klass = createClass(node, moduleDoc, context);
+        moduleDoc.declarations.push(klass);
       }
     }
   }

@@ -1,16 +1,17 @@
-import ts from 'typescript';
 import { handleParametersAndReturnType } from './createFunctionLike.js';
 import { handleJsDoc } from './handlers.js';
 
 export function createArrowFunction(node) {
-  const arrowFunction = node?.declarationList?.declarations?.find(declaration => ts.SyntaxKind.ArrowFunction === declaration?.initializer?.kind);
+  const arrowDeclarator = node?.declarations?.find(declaration => 
+    declaration?.init?.type === 'ArrowFunctionExpression'
+  );
 
   let functionLikeTemplate = {
     kind: 'function',
-    name: arrowFunction?.name?.getText() || '',
+    name: arrowDeclarator?.id?.name || '',
   };
   
-  functionLikeTemplate = handleParametersAndReturnType(functionLikeTemplate, arrowFunction?.initializer);
+  functionLikeTemplate = handleParametersAndReturnType(functionLikeTemplate, arrowDeclarator?.init);
   functionLikeTemplate = handleJsDoc(functionLikeTemplate, node);
 
   return functionLikeTemplate;

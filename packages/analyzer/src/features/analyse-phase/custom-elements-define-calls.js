@@ -13,8 +13,8 @@ export function customElementsDefineCallsPlugin() {
   let counter;
   return {
     name: 'CORE - CUSTOM-ELEMENTS-DEFINE-CALLS',
-    analyzePhase({ts, node, moduleDoc, context}){    
-      if(node?.kind === ts.SyntaxKind.SourceFile) {
+    analyzePhase({node, moduleDoc, context}){    
+      if(node?.type === 'Program') {
         counter = 0;
       }
 
@@ -26,9 +26,9 @@ export function customElementsDefineCallsPlugin() {
        * @example window.customElements.define('my-el', MyEl);
        */
       if(isCustomElementsDefineCall(node)) {
-        const classArg = node.parent.arguments[1];
-        let isAnonymousClass = classArg?.kind === ts.SyntaxKind.ClassExpression;
-        let isUnnamed = classArg?.name === undefined;
+        const classArg = node.arguments[1];
+        let isAnonymousClass = classArg?.type === 'ClassExpression';
+        let isUnnamed = classArg?.id === undefined || classArg?.id === null;
 
         if(isAnonymousClass) {
           const klass = createClass(classArg, moduleDoc, context);
@@ -45,7 +45,7 @@ export function customElementsDefineCallsPlugin() {
          * @example customElements.define('m-e', class extends HTMLElement{}) 
          *                                            ^
          */
-        if(isUnnamed) {
+        if(isAnonymousClass && isUnnamed) {
           elementClass = `anonymous_${counter}`;
           counter = counter + 1;
         }
@@ -54,21 +54,22 @@ export function customElementsDefineCallsPlugin() {
          * @example customElements.define('m-e', MyElement) 
          *                                       ^^^^^^^^^
          */
-        if(node?.parent?.arguments?.[1]?.text) {
-          elementClass = node.parent.arguments[1].text;
+        if(classArg?.type === 'Identifier') {
+          elementClass = classArg.name;
         }
 
         /** 
          * @example customElements.define('m-e', class MyElement extends HTMLElement{}) 
          *                                             ^^^^^^^^^
          */
-        if(classArg?.name) {
-          elementClass = classArg?.name?.getText();
+        if(classArg?.id?.name) {
+          elementClass = classArg.id.name;
         }
 
-        const elementTag = node.parent.arguments[0].text;
+        const elementTag = node.arguments[0]?.value;
 
-        const klass = getDeclarationInFile(elementClass, node?.getSourceFile());
+        const sourceFile = node._program;
+        const klass = getDeclarationInFile(elementClass, sourceFile);
 
         if (hasIgnoreJSDoc(klass))
           return;

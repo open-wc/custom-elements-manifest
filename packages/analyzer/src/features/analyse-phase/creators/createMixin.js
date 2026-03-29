@@ -9,7 +9,9 @@ import { handleJsDoc } from './handlers.js';
 export function createMixin(mixinFunctionNode, mixinClassNode, moduleDoc, context) {
   let mixinTemplate = createClass(mixinClassNode, moduleDoc, context);
 
-  mixinTemplate = handleParametersAndReturnType(mixinTemplate, mixinFunctionNode?.declarationList?.declarations?.[0]?.initializer || mixinFunctionNode);
+  // For VariableDeclaration, the init is the arrow function
+  const funcNode = mixinFunctionNode?.declarations?.[0]?.init || mixinFunctionNode;
+  mixinTemplate = handleParametersAndReturnType(mixinTemplate, funcNode);
   mixinTemplate = handleJsDoc(mixinTemplate, mixinFunctionNode);
   mixinTemplate = handleName(mixinTemplate, mixinFunctionNode);
   mixinTemplate = turnClassDocIntoMixin(mixinTemplate);
@@ -18,7 +20,7 @@ export function createMixin(mixinFunctionNode, mixinClassNode, moduleDoc, contex
 }
 
 export function handleName(mixin, node) {
-  mixin.name = node?.name?.getText()  || node?.parent?.name?.getText() || node?.declarationList?.declarations?.[0]?.name?.getText() || '';
+  mixin.name = node?.id?.name || node?.declarations?.[0]?.id?.name || '';
   return mixin;
 }
 

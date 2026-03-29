@@ -10,28 +10,22 @@ import { has, safe } from '../../utils/index.js';
 export function classJsDocPlugin() {
   return {
     name: 'CORE - CLASS-JSDOC',
-    analyzePhase({ts, node, moduleDoc}){
-      switch (node.kind) {
-        case ts.SyntaxKind.ClassDeclaration:
-          const className = node?.name?.getText();
-          const classDoc = moduleDoc?.declarations?.find(declaration => declaration.name === className);
+    analyzePhase({node, moduleDoc}){
+      if (node.type === 'ClassDeclaration') {
+        const className = node?.id?.name;
+        const classDoc = moduleDoc?.declarations?.find(declaration => declaration.name === className);
 
-          /**
-           * Because we use a bunch of 'non-standard' JSDoc annotations, TS doesn't recognize most of them.
-           * Instead we use `comment-parser` to parse the JSDoc.
-           *
-           * Loops through each JSDoc (yes, there can be multiple) above a class, and parses every JSDoc annotation
-           *
-           * Checks to see if the item is already in the classDoc, and if so merge and overwrite (JSDoc takes precedence)
-           */
-          node?.jsDoc?.forEach(jsDoc => {
-            const parsed = parse(jsDoc?.getFullText());
+        /**
+         * Because we use a bunch of 'non-standard' JSDoc annotations, we use `comment-parser` to parse the JSDoc.
+         *
+         * Loops through each JSDoc above a class, and parses every JSDoc annotation.
+         */
+        const rawJsDocs = node?._rawJsDoc;
+        if (rawJsDocs) {
+          rawJsDocs.forEach(rawText => {
+            const parsed = parse(rawText);
             parsed?.forEach(parsedJsDoc => {
 
-              /**
-               * If any of the tags is a `@typedef`, we ignore it; this JSDoc comment may be above a class,
-               * it probably doesnt _belong_ to the class, but something else in the file
-               */
               if(parsedJsDoc?.tags?.some(tag => tag?.tag === 'typedef')) return;
 
               parsedJsDoc?.tags?.forEach(jsDoc => {
@@ -104,33 +98,39 @@ export function classJsDocPlugin() {
             });
 
             /**
-             * Description
+             * Description - from the parsed JSDoc comment
              */
-            if(jsDoc?.comment) {
-              if(has(jsDoc?.comment)) {
-                classDoc.description = jsDoc.comment.map(com => `${safe(() => com?.name?.getText()) ?? ''}${com.text}`).join('');
-              } else {
-                classDoc.description = normalizeDescription(jsDoc.comment);
-              }
+            const parsedFirst = parsed?.[0];
+            if(parsedFirst?.description) {
+              classDoc.description = normalizeDescription(parsedFirst.description);
             }
 
             /**
-             * Comment-parse doesn't handle annotations with only a description correctly, for example:
-             * @summary foo bar
-             * will output only 'bar' as the description.
-             *
-             * Instead, we use TS for this JSDoc annotation.
+             * Summary - handled via the parsed JSDoc
              */
-            jsDoc?.tags?.forEach(tag => {
-              switch(safe(() => tag?.tagName?.getText())) {
-                case 'summary':
-                  classDoc.summary = tag?.comment;
-                  break;
+            parsedFirst?.tags?.forEach(tag => {
+              if (tag.tag === 'summary') {
+                classDoc.summary = tag.description ? `${tag.name || ''} ${tag.description}`.trim() : (tag.name || '');
               }
             });
           });
+        }
 
-          break;
+        /**
+         * Also check _jsdoc (comment-parser parsed) for description
+         */
+        if (node?._jsdoc) {
+          node._jsdoc.forEach(jsDocComment => {
+            if(jsDocComment?.description && !classDoc.description) {
+              classDoc.description = normalizeDescription(jsDocComment.description);
+            }
+            jsDocComment?.tags?.forEach(tag => {
+              if (tag.tag === 'summary') {
+                classDoc.summary = tag.description ? `${tag.name || ''} ${tag.description}`.trim() : (tag.name || '');
+              }
+            });
+          });
+        }
       }
     }
   }
