@@ -1,0 +1,7 @@
+{
+  "name": "ext-pkg-without-export-map",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "MyClass.js",
+  "customElements": "custom-elements.json"
+}
