@@ -2,7 +2,7 @@ import ts from 'typescript';
 import { parse } from 'comment-parser';
 
 import { has, resolveModuleOrPackageSpecifier, safe } from '../../../utils/index.js';
-import { handleJsDocType, normalizeDescription } from '../../../utils/jsdoc.js';
+import { handleJsDocType, normalizeComment, normalizeDescription } from '../../../utils/jsdoc.js';
 import { isWellKnownType } from '../../../utils/ast-helpers.js';
 
 /**
@@ -47,11 +47,7 @@ export function handleModifiers(doc, node) {
 export function handleJsDoc(doc, node) {
   node?.jsDoc?.forEach(jsDocComment => {
     if(jsDocComment?.comment) {
-      if(has(jsDocComment?.comment)) {
-        doc.description = jsDocComment.comment.map(com => `${safe(() => com?.name?.getText()) ?? ''}${com.text}`).join('');
-      } else {
-        doc.description = normalizeDescription(jsDocComment.comment);
-      }
+      doc.description = normalizeDescription(jsDocComment.comment);
     }
 
     jsDocComment?.tags?.forEach(tag => {
@@ -120,17 +116,17 @@ export function handleJsDoc(doc, node) {
 
       /** @summary */
       if(safe(() => tag?.tagName?.getText()) === 'summary') {
-        doc.summary = tag.comment;
+        doc.summary = normalizeComment(tag.comment);
       }
 
       /** @deprecated */
       if(safe(() => tag?.tagName?.getText()) === 'deprecated') {
-        doc.deprecated = tag.comment || "true";
+        doc.deprecated = normalizeComment(tag.comment) || "true";
       }
 
       /** @default */
       if (safe(() => tag?.tagName?.getText()) === 'default' && doc?.kind === 'field') {
-        doc.default ??= tag.comment;
+        doc.default ??= normalizeComment(tag.comment);
       }
 
       /**
