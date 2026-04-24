@@ -56,6 +56,11 @@
               "kind": "method",
               "name": "imDeprecatedWithReason",
               "deprecated": "the reason for the deprecation."
+            },
+            {
+              "kind": "method",
+              "name": "imDeprecatedWithLinkInReason",
+              "deprecated": "use somethingElse instead."
             }
           ],
           "superclass": {
