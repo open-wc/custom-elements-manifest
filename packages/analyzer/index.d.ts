@@ -178,3 +178,30 @@ export interface Config {
   /** Resolution options when using `dependencies: true` */
   resolutionOptions?: NapiResolveOptions;
 }
+
+/**
+ * Generate a custom elements manifest from a configuration object.
+ * 
+ * @param config - Configuration object
+ * @param options - Additional options
+ * @param options.cwd - Current working directory (defaults to process.cwd())
+ * @param options.write - Whether to write the manifest to disk (defaults to true)
+ * @returns The generated custom elements manifest
+ * 
+ * @example
+ * ```typescript
+ * // Using a config object
+ * const manifest = await generateManifest({
+ *   globs: ['src/**\/*.js'],
+ *   outdir: './dist',
+ *   litelement: true
+ * });
+ * ```
+ */
+export function generateManifest(
+  config?: Config,
+  options?: {
+    cwd?: string;
+    write?: boolean;
+  }
+): Promise<Package>;
