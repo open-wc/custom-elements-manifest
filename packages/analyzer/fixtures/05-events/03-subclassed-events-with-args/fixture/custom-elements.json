@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyElement",
+          "members": [
+            {
+              "kind": "method",
+              "name": "updateData",
+              "parameters": [
+                {
+                  "name": "newValue"
+                },
+                {
+                  "name": "oldValue"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "updateStatus",
+              "parameters": [
+                {
+                  "name": "statusData"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "dispatchOldWay"
+            }
+          ],
+          "events": [
+            {
+              "name": "data-change",
+              "type": {
+                "text": "DataChangeEvent"
+              }
+            },
+            {
+              "name": "status-update",
+              "type": {
+                "text": "StatusEvent"
+              }
+            },
+            {
+              "name": "old-way-event",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "my-element",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "my-element",
+          "declaration": {
+            "name": "MyElement",
+            "module": "my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

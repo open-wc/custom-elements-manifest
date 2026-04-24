@@ -149,7 +149,7 @@ export function createClass(node, moduleDoc, context) {
      * In order to find `this.dispatchEvent` calls, we have to traverse a method's AST
      */
     if (ts.isMethodDeclaration(member)) {
-      eventsVisitor(member, classTemplate);
+      eventsVisitor(member, classTemplate, context);
     }
   });
 
@@ -165,7 +165,7 @@ export function createClass(node, moduleDoc, context) {
   return classTemplate;
 }
 
-function eventsVisitor(source, classTemplate) {
+function eventsVisitor(source, classTemplate, context) {
   visitNode(source);
 
   function visitNode(node) {
@@ -176,8 +176,26 @@ function eventsVisitor(source, classTemplate) {
         if (isDispatchEvent(node) && !hasIgnoreJSDoc(node.parent)) {
           node?.arguments?.forEach((arg) => {
             if (arg.kind === ts.SyntaxKind.NewExpression) {
-              /** e.g. `selected-changed` */
-              const eventName = arg?.arguments?.[0]?.text;
+              const eventClassName = arg.expression.text;
+              let eventName;
+
+              /**
+               * First, try to extract event name from a string literal argument
+               * e.g. `new Event('my-event')` or `new CustomEvent('my-event', {...})`
+               */
+              const firstArg = arg?.arguments?.[0];
+              if (firstArg && ts.isStringLiteral(firstArg)) {
+                eventName = firstArg.text;
+              }
+              /**
+               * If no string literal found, check if this is a custom Event class
+               * that we collected earlier, and use the event name from its super() call
+               * e.g. `new MyCustomEvent()` where MyCustomEvent extends Event and calls super('my-event')
+               */
+              else if (context?.eventClasses?.[eventClassName]) {
+                eventName = context.eventClasses[eventClassName];
+              }
+
               /**
                * Check if event already exists
                */
@@ -187,7 +205,7 @@ function eventsVisitor(source, classTemplate) {
                 let eventDoc = {
                   ...(eventName ? { name: eventName } : {}),
                   type: {
-                    text: arg.expression.text,
+                    text: eventClassName,
                   },
                 };
 

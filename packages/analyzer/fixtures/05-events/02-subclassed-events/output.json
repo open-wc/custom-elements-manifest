@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyElement",
+          "members": [
+            {
+              "kind": "method",
+              "name": "dispatchMyEvent"
+            },
+            {
+              "kind": "method",
+              "name": "dispatchAnotherEvent"
+            }
+          ],
+          "events": [
+            {
+              "name": "my-custom-event",
+              "type": {
+                "text": "MyCustomEvent"
+              }
+            },
+            {
+              "name": "another-event",
+              "type": {
+                "text": "AnotherEvent"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "my-element",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "my-element",
+          "declaration": {
+            "name": "MyElement",
+            "module": "my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}
