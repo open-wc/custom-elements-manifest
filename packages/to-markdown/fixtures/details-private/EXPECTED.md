@@ -4,15 +4,15 @@
 
 ### Fields
 
-| Name  | Privacy | Type       | Default    | Description | Inherited From |
-| ----- | ------- | ---------- | ---------- | ----------- | -------------- |
-| `pub` | public  | `'public'` | `'public'` |             |                |
+| Name  | Type       | Default    | Description | Inherited From |
+| ----- | ---------- | ---------- | ----------- | -------------- |
+| `pub` | `'public'` | `'public'` |             |                |
 
 ### Methods
 
-| Name           | Privacy | Description | Parameters | Return | Inherited From |
-| -------------- | ------- | ----------- | ---------- | ------ | -------------- |
-| `publicMethod` | public  |             |            | `void` |                |
+| Name           | Description | Parameters | Return | Inherited From |
+| -------------- | ----------- | ---------- | ------ | -------------- |
+| `publicMethod` |             |            | `void` |                |
 
 <details><summary>Private API</summary>
 
