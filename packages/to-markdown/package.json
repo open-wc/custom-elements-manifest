@@ -59,5 +59,9 @@
     "remark-gfm": "^1.0.0",
     "remark-stringify": "^9.0.1",
     "unified": "^9.2.1"
+  },
+  "devDependencies": {
+    "@asdgf/cli": "https://gitpkg.now.sh/thepassle/asdgf/packages/cli?master",
+    "esbuild": "^0.19.2"
   }
 }
