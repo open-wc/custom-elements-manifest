@@ -82,6 +82,10 @@ export async function findDependencies (paths, options = {}) {
         console.log(`Skipping invalid dependency: ${dep}`)
         continue
       }
+      // skip dependency check for json files
+      if (dep.toLocaleLowerCase().endsWith(".json")) {
+        continue;
+      }
       const fileData = getFileNameWithSource(dep)
       const { output } = await rsModuleLexer.parseAsync({ input: [fileData] })
       output.forEach(result => {
