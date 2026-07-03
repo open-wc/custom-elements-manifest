@@ -24,6 +24,26 @@ Custom Elements Manifest is a file format that describes custom elements. This f
 
 ## Usage
 
+### With npx
+
+If you have `npx` installed use:
+
+```bash copy
+npx custom-elements-manifest analyze
+```
+
+or
+
+```bash copy
+npx cem analyze
+```
+
+### Without npx 
+
+If you don't have `npx`, you can add
+the modules to your PATH and run it
+with:
+
 ```bash copy
 custom-elements-manifest analyze
 ```
@@ -33,6 +53,16 @@ or
 ```bash copy
 cem analyze
 ```
+
+If you don't want to add it to your
+PATH, you can call it directly:
+
+
+```bash copy
+./node_modules/@custom-elements-manifest/analyzer/cem.js analyze
+```
+
+
 
 ## Demo
 
