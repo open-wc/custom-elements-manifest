@@ -1,0 +1,324 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyEl",
+          "members": [
+            {
+              "kind": "field",
+              "name": "prop1",
+              "type": {
+                "text": "string"
+              },
+              "default": "''"
+            },
+            {
+              "kind": "field",
+              "name": "prop2",
+              "type": {
+                "text": "string"
+              },
+              "default": "'default'"
+            },
+            {
+              "kind": "field",
+              "name": "prop3",
+              "type": {
+                "text": "SomeType"
+              },
+              "description": "prop3 description",
+              "default": "'default'"
+            },
+            {
+              "kind": "field",
+              "name": "prop4",
+              "type": {
+                "text": "Some.Type"
+              },
+              "default": "'default'"
+            },
+            {
+              "kind": "field",
+              "name": "prop5",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "setter",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "getter2",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "getter2",
+              "static": true
+            },
+            {
+              "kind": "field",
+              "name": "alsoAttr",
+              "description": "This is also an attribute",
+              "reflects": true,
+              "type": {
+                "text": "string"
+              },
+              "attribute": "also-attr"
+            },
+            {
+              "kind": "field",
+              "name": "prop6",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "prop7",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "prop8",
+              "privacy": "protected"
+            },
+            {
+              "kind": "field",
+              "name": "prop9",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "prop10",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "prop11",
+              "privacy": "protected"
+            },
+            {
+              "kind": "field",
+              "name": "prop11",
+              "static": true
+            },
+            {
+              "kind": "field",
+              "name": "prop12",
+              "static": true
+            },
+            {
+              "kind": "field",
+              "name": "bool",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "str",
+              "type": {
+                "text": "string"
+              },
+              "default": "''"
+            },
+            {
+              "kind": "field",
+              "name": "num",
+              "type": {
+                "text": "number"
+              },
+              "default": "1"
+            },
+            {
+              "kind": "field",
+              "name": "arr",
+              "type": {
+                "text": "array"
+              },
+              "default": "[{a: \"a\", b: 'b', c: `c`}, 1, \"a\", 'b', `c`]"
+            },
+            {
+              "kind": "field",
+              "name": "obj",
+              "type": {
+                "text": "object"
+              },
+              "default": "{a: \"a\", b: 'b', c: `c`}"
+            },
+            {
+              "kind": "field",
+              "name": "asVariable",
+              "default": "'bar'",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "asVariableAssignedInConstructor",
+              "default": "'foo'",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "asVariableThirdParty",
+              "default": "buu"
+            },
+            {
+              "kind": "field",
+              "name": "nu",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "asConst",
+              "default": "'const'",
+              "type": {
+                "text": "'const'"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "asConstRef",
+              "default": "{foo:'bar'}",
+              "type": {
+                "text": "{foo:'bar'}"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "strOverwritten",
+              "type": {
+                "text": "Foo"
+              },
+              "default": "''"
+            },
+            {
+              "kind": "field",
+              "name": "#prop13",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "optional",
+              "type": {
+                "text": "string | undefined"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "prefixUnary1",
+              "type": {
+                "text": "number"
+              },
+              "default": "+1"
+            },
+            {
+              "kind": "field",
+              "name": "prefixUnary2",
+              "type": {
+                "text": "number"
+              },
+              "default": "-1"
+            },
+            {
+              "kind": "field",
+              "name": "prefixUnary3",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "!1"
+            },
+            {
+              "kind": "field",
+              "name": "arrowfn"
+            },
+            {
+              "kind": "field",
+              "name": "#truePrivateField",
+              "privacy": "private",
+              "type": {
+                "text": "number"
+              },
+              "default": "1"
+            },
+            {
+              "kind": "method",
+              "name": "#truePrivateMethod",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "commaprop1",
+              "type": {
+                "text": "string"
+              },
+              "default": "'default'"
+            },
+            {
+              "kind": "field",
+              "name": "commaprop2",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "kind": "field",
+              "name": "commaprop3",
+              "type": {
+                "text": "number"
+              },
+              "default": "123"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "also-attr",
+              "description": "This is also an attribute",
+              "type": {
+                "text": "string"
+              },
+              "fieldName": "alsoAttr"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "my-el",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "my-el",
+          "declaration": {
+            "name": "MyEl",
+            "module": "my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "bar.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "foo",
+          "type": {
+            "text": "number"
+          },
+          "default": "1"
+        },
+        {
+          "kind": "variable",
+          "name": "bar",
+          "type": {
+            "text": "object"
+          },
+          "default": "{ foo, }"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "bar",
+          "declaration": {
+            "name": "bar",
+            "module": "bar.js"
+          }
+        }
+      ]
+    }
+  ]
+}
