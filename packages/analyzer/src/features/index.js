@@ -2,6 +2,7 @@
  * COLLECT
  */
 import { collectImportsPlugin } from './collect-phase/collect-imports.js';
+import { collectEventClassesPlugin } from './collect-phase/collect-event-classes.js';
 
 /**
  * ANALYSE
@@ -47,6 +48,7 @@ import { litPlugin } from './framework-plugins/lit/lit.js';
 export const FEATURES = [
   /** COLLECT */
   collectImportsPlugin(),
+  collectEventClassesPlugin(),
   
   /** ANALYSE */
   exportsPlugin(),
