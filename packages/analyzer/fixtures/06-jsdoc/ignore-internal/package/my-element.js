@@ -59,6 +59,11 @@ export class IncludeMe extends HTMLElement {
   
   }
 
+  /** @deprecated use {@link somethingElse} instead. */
+  imDeprecatedWithLinkInReason() {
+
+  }
+
   /** @internal */
   hideMe() {
     return '🙈'
