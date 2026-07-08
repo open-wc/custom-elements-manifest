@@ -1,0 +1,206 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "foo-mixin.js",
+      "declarations": [
+        {
+          "kind": "mixin",
+          "description": "",
+          "name": "FooMixin",
+          "members": [
+            {
+              "kind": "field",
+              "name": "__foo",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "foo"
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "the foo attribute",
+              "name": "foo"
+            }
+          ],
+          "parameters": [
+            {
+              "name": "klass"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FooMixin",
+          "declaration": {
+            "name": "FooMixin",
+            "module": "foo-mixin.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyElement",
+          "members": [
+            {
+              "kind": "method",
+              "name": "classMethod"
+            },
+            {
+              "kind": "field",
+              "name": "__foo",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "FooMixin",
+                "module": "foo-mixin.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "foo",
+              "inheritedFrom": {
+                "name": "FooMixin",
+                "module": "foo-mixin.js"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "renderSomeSlot",
+              "inheritedFrom": {
+                "name": "SlotMixin",
+                "module": "slot-mixin.js"
+              }
+            }
+          ],
+          "events": [
+            {
+              "name": "class-event",
+              "type": {
+                "text": "Event"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "class-attr"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "the foo attribute",
+              "name": "foo",
+              "inheritedFrom": {
+                "name": "FooMixin",
+                "module": "foo-mixin.js"
+              }
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FooMixin",
+              "module": "/foo-mixin.js"
+            },
+            {
+              "name": "SlotMixin",
+              "module": "/slot-mixin.js"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "customElement": true,
+          "slots": [
+            {
+              "description": "the foo slot description",
+              "name": "foo",
+              "inheritedFrom": {
+                "name": "SlotMixin",
+                "module": "slot-mixin.js"
+              }
+            }
+          ],
+          "cssParts": [
+            {
+              "description": "the header container",
+              "name": "header",
+              "inheritedFrom": {
+                "name": "SlotMixin",
+                "module": "slot-mixin.js"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MyElement",
+          "declaration": {
+            "name": "MyElement",
+            "module": "my-element.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "slot-mixin.js",
+      "declarations": [
+        {
+          "kind": "mixin",
+          "description": "",
+          "name": "SlotMixin",
+          "cssParts": [
+            {
+              "description": "the header container",
+              "name": "header"
+            }
+          ],
+          "slots": [
+            {
+              "description": "the foo slot description",
+              "name": "foo"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "renderSomeSlot"
+            }
+          ],
+          "parameters": [
+            {
+              "name": "superClass"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SlotMixin",
+          "declaration": {
+            "name": "SlotMixin",
+            "module": "slot-mixin.js"
+          }
+        }
+      ]
+    }
+  ]
+}
