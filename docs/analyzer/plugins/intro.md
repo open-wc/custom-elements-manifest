@@ -70,5 +70,6 @@ export default {
 | [custom-elements-manifest-inheritance](https://www.npmjs.com/package/custom-elements-manifest-inheritance) | A tool for mapping inherited content (including class members, attributes, CSS parts, CSS variables, slots, and events) from parent classes in the Custom Elements Manifest. |
 | [vite-plugin-cem](https://www.npmjs.com/package/vite-plugin-cem) | a [vite.js](https://vitejs.dev/) plugin based on the [@custom-elements-manifest/analyzer](https://custom-elements-manifest.open-wc.org/analyzer/getting-started) |
 | [skeleton-component-generator](https://www.npmjs.com/package/@addasoft/skeleton-component-generator) | Create skeleton web components using Lit based on given Custom Elements Manifest. |
+| [cem-plugin-litelement-slots](https://www.npmjs.com/package/@rogerta/cem-plugin-litelement-slots) | A plugin that maps `<slot>` elements in Lit-based web components to the "slots" property without requiring JSDoc `@slot` tags. |
 
 > Want your plugin listed here? Please create a PR!
