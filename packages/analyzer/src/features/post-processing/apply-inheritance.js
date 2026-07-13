@@ -1,5 +1,11 @@
-import { getAllDeclarationsOfKind, getModuleForClassLike, getModuleFromManifests, getInheritanceTree } from '../../utils/manifest-helpers.js';
-import { resolveModuleOrPackageSpecifier } from '../../utils/index.js';
+import {
+  getAllDeclarationsOfKind,
+  getInheritanceTree,
+  getModuleForClassLike,
+  getModuleFromManifests,
+  getPackageName
+} from '../../utils/manifest-helpers.js';
+import {resolveModuleOrPackageSpecifier} from '../../utils/index.js';
 
 /**
  * APPLY-INHERITANCE-PLUGIN
@@ -9,18 +15,22 @@ import { resolveModuleOrPackageSpecifier } from '../../utils/index.js';
 export function applyInheritancePlugin() {
   return {
     name: 'CORE - APPLY-INHERITANCE',
-    packageLinkPhase({customElementsManifest, context}){
+    packageLinkPhase({customElementsManifest, context}) {
+      // set package name for cem of this project
+      customElementsManifest.packageName = getPackageName();
+
       const allManifests = [customElementsManifest, ...(context.thirdPartyCEMs || [])];
       const classLikes = [];
 
       allManifests.forEach((manifest) => {
-        const classes =  getAllDeclarationsOfKind(manifest, 'class');
-        const mixins =  getAllDeclarationsOfKind(manifest, 'mixin');
+        const classes = getAllDeclarationsOfKind(manifest, 'class');
+        const mixins = getAllDeclarationsOfKind(manifest, 'mixin');
         classLikes.push(...[...classes, ...mixins]);
       });
 
       classLikes.forEach((customElement) => {
-        const inheritanceChain = getInheritanceTree(allManifests, customElement.name);
+
+        const inheritanceChain = getInheritanceTree(allManifests, customElement.name, customElement.packageName);
 
         inheritanceChain?.forEach(klass => {
           // ignore the current class itself
@@ -33,13 +43,13 @@ export function applyInheritancePlugin() {
               const containingModulePath = getModuleForClassLike(allManifests, klass.name);
               const containingModule = getModuleFromManifests(allManifests, containingModulePath);
 
-              const newItem = { ...currItem };
+              const newItem = {...currItem};
 
               /**
-                * If an attr or member is already present in the base class, but we encounter it here,
-                * it means that the base has overridden that method from the super class
-                * So we either add the data to the overridden method, or we add it to the array as a new item
-                */
+               * If an attr or member is already present in the base class, but we encounter it here,
+               * it means that the base has overridden that method from the super class
+               * So we either add the data to the overridden method, or we add it to the array as a new item
+               */
               const existing = customElement?.[type]?.find(item => newItem.name === item.name);
 
               if (existing) {
@@ -50,15 +60,15 @@ export function applyInheritancePlugin() {
                 }
 
                 customElement[type] = customElement?.[type]?.map(item => item.name === existing.name
-                  ? {
+                    ? {
                       ...newItem,
                       ...existing,
                       ...{
-                        ...(newItem.type ? { type: newItem.type } : {}),
-                        ...(newItem.privacy ? { privacy: newItem.privacy } : {})
+                        ...(newItem.type ? {type: newItem.type} : {}),
+                        ...(newItem.privacy ? {privacy: newItem.privacy} : {})
                       }
                     }
-                  : item);
+                    : item);
               } else {
                 newItem.inheritedFrom = {
                   name: klass.name,
@@ -66,11 +76,20 @@ export function applyInheritancePlugin() {
                 }
 
                 customElement[type] = [...(customElement[type] || []), newItem];
-              };
+              }
             });
           });
         });
       });
+
+      // clean up the manifest (remove the added packageName entries from the declaration)
+      delete customElementsManifest.packageName
+      customElementsManifest.modules.forEach(module => {
+        module.declarations.forEach((declaration) => {
+          delete declaration.packageName;
+        })
+
+      })
     }
   }
 }
