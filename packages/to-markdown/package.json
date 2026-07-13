@@ -49,7 +49,9 @@
       "import": "./index.js",
       "require": "./dist/index.cjs",
       "browser": "./dist/browser.js"
-    }
+    },
+    "./lib/*": "./lib/*",
+    "./dist/*": "./dist/*"
   },
   "dependencies": {
     "mdast-builder": "^1.1.1",
