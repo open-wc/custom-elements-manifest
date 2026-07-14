@@ -27,7 +27,7 @@ const MAIN_TEST_CASE_OPTIONS = {
 };
 
 const OUTPUT_OPTIONS_TESTS_OPTIONS = {
-  'no-heading': { omitSections: ['main-heading'] },
+  'no-heading': { omitSections: ['main-heading','main-description'] },
   'class-name-filter': { classNameFilter: 'My*' },
   'no-attributes': { omitSections: ['attributes'] },
   'no-cssparts': { omitSections: ['css-parts'] },
