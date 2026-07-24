@@ -9,8 +9,8 @@ const require = createRequire(import.meta.url);
 const { version } = require("../../package.json");
 
 const IGNORE = [
-  "!node_modules/**/*.*",
-  "!bower_components/**/*.*",
+  "!**/node_modules/**",
+  "!**/bower_components/**",
   "!**/*.test.{js,ts}",
   "!**/*.suite.{js,ts}",
   "!**/*.config.{js,ts}",
