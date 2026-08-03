@@ -2,6 +2,10 @@
 
 ## class: `SuperClass`
 
+This is a *super* class
+
+See [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org/)
+
 ### Superclass
 
 | Name         | Module | Package     |

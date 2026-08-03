@@ -10,7 +10,7 @@ import {
   isDefined
 } from './lib/fp.js';
 import * as CELLS from './lib/cells.js';
-import { serialize } from './lib/serialize.js';
+import { serialize, parse } from './lib/serialize.js';
 
 const line = html('<hr/>');
 
@@ -23,6 +23,7 @@ const DECLARATIONS = {
 
 const SECTIONS = {
   mainHeading: 'main-heading',
+  description: 'description',
   superClass: 'super-class',
   fields: 'fields', 
   methods: 'methods',
@@ -50,6 +51,26 @@ const declarationHeading = options =>
         ] : []
       ]
     );
+
+/** Options -> Declaration -> [Content] */
+const declarationDescription = options =>
+({ description }) => {
+  const headingOffset = 1 + (options?.headingOffset ?? 0);
+
+  try {
+    const contentNodes = parse(description).children || [];
+
+    contentNodes.forEach((node) => {
+      if (node.type === 'heading' && typeof node.depth === "number") {
+        node.depth = Math.min(node.depth + headingOffset, 6);
+      }
+    })
+
+    return contentNodes;
+  } catch {
+    return [];
+  }
+}
 
 /** String -> Descriptor */
 const defaultDescriptor = name =>
@@ -177,6 +198,7 @@ function makeModuleDoc(mod, options) {
 
   const makeTable = tableWithTitle(options);
   const makeHeading = declarationHeading(options);
+  const makeDescription = declarationDescription(options);
   const variablesDecl = filteredDeclarations(declarations, omittedDeclarations, classNameFilter).filter(kindIs('variable'));
   const functionsDecl = filteredDeclarations(declarations, omittedDeclarations, classNameFilter).filter(kindIs('function'));
 
@@ -193,6 +215,7 @@ function makeModuleDoc(mod, options) {
 
       const nodes = [
         !['mixin', 'class'].includes(kind) ? null : makeHeading(decl),
+        ...['mixin', 'class'].includes(kind) && optionEnabled(omittedSections.description) ? makeDescription(decl) : [],
         ...optionEnabled(omittedSections.superClass) ? makeTable('Superclass', [CELLS.NAME, 'module', 'package'], [decl.superclass]) : [],
         ...optionEnabled(omittedSections.mixins) ? makeTable('Mixins', [CELLS.NAME, 'module', 'package'], decl.mixins) : [],
         ...kind === 'mixin' && optionEnabled(omittedSections.mixins) ?  makeTable('Parameters', [CELLS.NAME, CELLS.TYPE, CELLS.DEFAULT, 'description'], decl.parameters) : [],

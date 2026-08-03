@@ -62,6 +62,7 @@ customElementsManifestToMarkdown(manifest, {
 The `omitSections` option is a `string[]` that controls which sections of a declaration's full entry in the manifest.json should be rendered in the final markdown output. The section names are:
 
 - mainHeading : "main-heading"
+- description : "description"
 - superClass : "super-class"
 - fields : "fields"
 - methods : "methods"
@@ -118,6 +119,7 @@ customElementsManifestToMarkdown(manifest, {
         {
           "kind": "class",
           "name": "SuperClass",
+          "description" : "Description of the *class*.",
           "events": [
             {
               "name": "custom-event",
@@ -423,6 +425,8 @@ customElementsManifestToMarkdown(manifest, {
   ## `./fixtures/-TEST/package/my-element.js`:
 
   ### class: `SuperClass`
+
+  Description of the *class*.
 
   #### Superclass
 

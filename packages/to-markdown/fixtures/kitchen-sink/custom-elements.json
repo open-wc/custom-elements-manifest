@@ -9,6 +9,7 @@
         {
           "kind": "class",
           "name": "SuperClass",
+          "description": "This is a *super* class\n\nSee [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org/)",
           "events": [
             {
               "name": "custom-event",
