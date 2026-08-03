@@ -83,8 +83,12 @@ export function handleJsDoc(doc, node) {
         }
 
         if(tag?.typeExpression) {
-          parameterTemplate.type = {
-            text: handleJsDocType(tag.typeExpression.type.getText())
+          const typeExpression = handleJsDoc(tag.typeExpression.type.getText());
+          if(typeExpression.startsWith('...')) {
+            parameterTemplate.type = { text: typeExpression.replace('...', '') };
+            parameterTemplate.rest = true;
+          } else {
+            parameterTemplate.type = { text: typeExpression };
           }
         }
 

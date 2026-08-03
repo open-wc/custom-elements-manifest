@@ -10,17 +10,17 @@ export function createFunctionLike(node) {
     kind: '',
     name: node?.name?.getText() || ''
   };
-  
+
   functionLikeTemplate = handleKind(functionLikeTemplate, node);
   functionLikeTemplate = handleModifiers(functionLikeTemplate, node);
   functionLikeTemplate = handleParametersAndReturnType(functionLikeTemplate, node);
   functionLikeTemplate = handleJsDoc(functionLikeTemplate, node);
-  
+
   return functionLikeTemplate;
 }
 
 /**
- * Determine the kind of the functionLike, either `'function'` or `'method'` 
+ * Determine the kind of the functionLike, either `'function'` or `'method'`
  */
 export function handleKind(functionLike, node) {
   switch(node.kind) {
@@ -45,7 +45,7 @@ export function handleParametersAndReturnType(functionLike, node) {
   }
 
   const parameters = [];
-  node?.parameters?.forEach((param) => {  
+  node?.parameters?.forEach((param) => {
     const parameter = {
       name: param.name.getText(),
     }
@@ -60,6 +60,10 @@ export function handleParametersAndReturnType(functionLike, node) {
 
     if(param?.type) {
       parameter.type = {text: param.type.getText() }
+    }
+
+    if(param?.dotDotDotToken) {
+      parameter.rest = true;
     }
 
     parameters.push(parameter);
