@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "child.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Child",
+          "members": [
+            {
+              "kind": "field",
+              "name": "property1",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "privacy": "public",
+              "inheritedFrom": {
+                "name": "Parent",
+                "module": "parent.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "property2",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "Parent",
+                "module": "parent.js"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "Parent",
+            "module": "/parent.js"
+          },
+          "tagName": "child-el",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Child",
+          "declaration": {
+            "name": "Child",
+            "module": "child.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "child-el",
+          "declaration": {
+            "name": "Child",
+            "module": "child.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "parent.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Parent",
+          "members": [
+            {
+              "kind": "field",
+              "name": "property1",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "property2",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "parent-el",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Parent",
+          "declaration": {
+            "name": "Parent",
+            "module": "parent.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "parent-el",
+          "declaration": {
+            "name": "Parent",
+            "module": "parent.js"
+          }
+        }
+      ]
+    }
+  ]
+}
