@@ -176,8 +176,14 @@ function eventsVisitor(source, classTemplate) {
         if (isDispatchEvent(node) && !hasIgnoreJSDoc(node.parent)) {
           node?.arguments?.forEach((arg) => {
             if (arg.kind === ts.SyntaxKind.NewExpression) {
+              const nameArg = arg?.arguments?.[0];
+
+              // skip event identifers and let an `@event` JSDoc tag declare the event instead.
+              if (nameArg?.kind !== ts.SyntaxKind.StringLiteral
+                && nameArg?.kind !== ts.SyntaxKind.NoSubstitutionTemplateLiteral) return;
+
               /** e.g. `selected-changed` */
-              const eventName = arg?.arguments?.[0]?.text;
+              const eventName = nameArg.text;
               /**
                * Check if event already exists
                */
@@ -193,7 +199,9 @@ function eventsVisitor(source, classTemplate) {
 
                 eventDoc = handleJsDoc(eventDoc, node?.parent);
                 delete eventDoc.privacy;
-                classTemplate.events.push(eventDoc);
+                if (eventDoc.name) {
+                  classTemplate.events.push(eventDoc);
+                }
               }
             }
           });
