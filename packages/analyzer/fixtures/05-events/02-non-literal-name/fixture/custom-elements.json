@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "bar.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyElement",
+          "members": [
+            {
+              "kind": "method",
+              "name": "foo"
+            },
+            {
+              "kind": "method",
+              "name": "bar"
+            }
+          ],
+          "events": [
+            {
+              "name": "literal-name",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "type": {
+                "text": "Event"
+              },
+              "description": "Declared with JSDoc, because the name is held in a constant.",
+              "name": "custom-name"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "my-element",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "my-element",
+          "declaration": {
+            "name": "MyElement",
+            "module": "bar.js"
+          }
+        }
+      ]
+    }
+  ]
+}
