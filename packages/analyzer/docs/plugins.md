@@ -278,7 +278,7 @@ export default function fooPlugin() {
 And as a result, the output `custom-elements.json` will look like this:
 ```diff
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.1.0",
   "readme": "",
   "modules": [
     {

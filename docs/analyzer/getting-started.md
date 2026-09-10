@@ -61,7 +61,7 @@ cem analyze
 
   ```json tab custom-elements.json
   {
-    "schemaVersion": "1.0.0",
+    "schemaVersion": "2.1.0",
     "readme": "",
     "modules": [
       {
@@ -208,7 +208,7 @@ For all supported syntax, please check the [fixtures](https://github.com/open-wc
 
   ```json tab custom-elements.json
   {
-    "schemaVersion": "1.0.0",
+    "schemaVersion": "2.1.0",
     "readme": "",
     "modules": [
       {

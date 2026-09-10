@@ -10,7 +10,7 @@ import { withErrorHandling } from "./utils/index.js";
  */
 export function create({ modules, plugins = [], context = { dev: false } }) {
   const customElementsManifest = {
-    schemaVersion: "1.0.0",
+    schemaVersion: "2.1.0",
     readme: "",
     modules: [],
   };

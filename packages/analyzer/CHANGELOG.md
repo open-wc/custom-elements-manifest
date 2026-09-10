@@ -1,3 +1,7 @@
+## Unreleased
+
+- Emit Custom Elements Manifest 2.1 and use its schema types. This changes the observable `schemaVersion` in generated manifests from `1.0.0` to `2.1.0`.
+
 ## Release 0.11.0
 
 - Update `find-dependencies` package to use `oxc-resolver`
