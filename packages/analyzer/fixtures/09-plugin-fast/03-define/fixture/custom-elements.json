@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "my-element.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "NameTag",
+          "superclass": {
+            "name": "FASTElement",
+            "package": "@microsoft/fast-element"
+          },
+          "tagName": "name-tag",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NameTag",
+          "declaration": {
+            "name": "NameTag",
+            "module": "my-element.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "name-tag",
+          "declaration": {
+            "name": "NameTag",
+            "module": "my-element.js"
+          }
+        }
+      ]
+    }
+  ]
+}
